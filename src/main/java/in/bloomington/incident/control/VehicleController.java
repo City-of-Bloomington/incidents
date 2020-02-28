@@ -5,8 +5,6 @@ package in.bloomington.incident.control;
  * @author W. Sibo <sibow@bloomington.in.gov>
  *
  */
-
-
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,19 +16,21 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import javax.validation.Valid;
-// import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import in.bloomington.incident.service.VehicleService;
 import in.bloomington.incident.service.IncidentService;
 import in.bloomington.incident.service.CarDamageTypeService;
 import in.bloomington.incident.model.Incident;
 import in.bloomington.incident.model.Vehicle;
 import in.bloomington.incident.model.CarDamageType;
-
+import in.bloomington.incident.utils.Helper;
 
 @Controller
 public class VehicleController {
 
+		final static Logger logger = LoggerFactory.getLogger(VehicleController.class);		
 		@Autowired
 		VehicleService vehicleService;
 		@Autowired
@@ -39,18 +39,27 @@ public class VehicleController {
 		CarDamageTypeService damageTypeService;
 		
 		String errors="", messages="";
+		/**
 		@GetMapping("/vehicles")
     public String getAll(Model model) {
         model.addAttribute("vehicles", vehicleService.getAll());
 
         return "vehicles";
     }
+		*/
 		@GetMapping("/vehicle/add/{incident_id}")
     public String newVehicle(@PathVariable("incident_id") int incident_id, Model model) {
 				
 				Vehicle vehicle = new Vehicle();
-				Incident incident = incidentService.findById(incident_id);
-				vehicle.setIncident(incident);
+				try{
+						Incident incident = incidentService.findById(incident_id);
+						vehicle.setIncident(incident);
+				}catch(Exception ex){
+						errors += "Invalid incident "+incident_id;
+						logger.error(errors+" "+ex);
+						model.addAttribute("errors", errors);
+						return "redirect:/start";
+				}				
         model.addAttribute("vehicle", vehicle);
 				List<CarDamageType> types = damageTypeService.getAll();
 				if(types != null)
@@ -60,6 +69,9 @@ public class VehicleController {
     @PostMapping("/vehicle/save")
     public String addVehicle(@Valid Vehicle vehicle, BindingResult result, Model model) {
         if (result.hasErrors()) {
+						errors = "Error new add vehicle";
+						errors += Helper.extractErrors(result);
+						logger.error(errors);
             return "vehicleAdd";
         }
         vehicleService.save(vehicle);
@@ -76,6 +88,7 @@ public class VehicleController {
 						
 				}catch(Exception ex){
 						errors += "Invalid vehicle Id "+id;
+						logger.error(errors+" "+ex);
 						model.addAttribute("errors", errors);
 						return "redirect:/index";
 				}
@@ -89,6 +102,9 @@ public class VehicleController {
 		public String updateVehicle(@Valid Vehicle vehicle, 
 														 BindingResult result, Model model) {
 				if (result.hasErrors()) {
+						errors = "Error update vehicle";
+						errors += Helper.extractErrors(result);
+						logger.error(errors);
 						return "reditect:/errors";
 				}
 				messages = "Updated Successfully";
@@ -110,7 +126,8 @@ public class VehicleController {
 						vehicleService.delete(id);
 						messages = "Deleted Succefully";
 				}catch(Exception ex){
-						errors += "Invalid vehicle ID "+id;
+						errors += "Error delete vehicle "+id;						
+						logger.error(errors+" "+ex);
 				}
 				model.addAttribute("properties", vehicleService.getAll());
 				if(!messages.equals("")){
@@ -130,6 +147,7 @@ public class VehicleController {
 						model.addAttribute("vehicle", vehicle);						
 				}catch(Exception ex){
 						errors += "Invalid vehicle ID "+id;
+						logger.error(errors+" "+ex);
 				}
 				return "vehicle";
 

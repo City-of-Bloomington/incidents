@@ -7,6 +7,8 @@ package in.bloomington.incident.utils;
  */
 
 import java.text.SimpleDateFormat;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.Date;
 import java.io.File;
 import java.nio.file.Files;
@@ -14,6 +16,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
+import org.springframework.validation.FieldError;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
@@ -30,7 +35,9 @@ public class Helper
 		public final static DateTimeFormatter dft = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm");
 		*/
 		public final static SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
-		public final static SimpleDateFormat dft = new SimpleDateFormat("MM/dd/yyyy HH:mm");		
+		public final static SimpleDateFormat dft = new SimpleDateFormat("MM/dd/yyyy HH:mm");
+		public final static NumberFormat curFr = NumberFormat.getCurrencyInstance();
+		public final static DecimalFormat dblFr = new DecimalFormat("###.##");
     final static Map<String, String>       mimeTypes = new HashMap<>();
     static {
         mimeTypes.put("image/gif",       "gif");
@@ -291,4 +298,15 @@ public class Helper
         }
         return back;
     }
+    public final static String extractErrors(final BindingResult result)
+    {
+				String errors = "";
+				if(result != null){
+						for (ObjectError error : result.getAllErrors()) {
+								if(!errors.equals("")) errors += " ";
+								errors += error.getObjectName() + " - " + error.getDefaultMessage();
+						}
+				}
+        return errors;
+    }		
 }

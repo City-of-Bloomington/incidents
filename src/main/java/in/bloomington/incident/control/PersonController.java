@@ -24,9 +24,9 @@ import org.springframework.core.env.Environment;
 import org.springframework.validation.ObjectError;
 import org.springframework.validation.FieldError;
 import javax.validation.Valid;
-// import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestParam;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import in.bloomington.incident.service.IncidentService;
 import in.bloomington.incident.service.PersonService;
 import in.bloomington.incident.service.PersonTypeService;
@@ -34,8 +34,8 @@ import in.bloomington.incident.service.PersonTypeService;
 import in.bloomington.incident.model.Incident;
 import in.bloomington.incident.model.Person;
 import in.bloomington.incident.model.PersonType;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import in.bloomington.incident.utils.Helper;
+
 
 @Controller
 public class PersonController {
@@ -76,11 +76,12 @@ public class PersonController {
 						incident = incidentService.findById(incident_id);
 				}catch(Exception ex){
 						errors += "Invalid incident Id: "+incident_id;
+						logger.error(errors+" "+ex);
 						model.addAttribute("errors", errors);
 						return "redirect:/start";
 				}
+				Person person = new Person();				
 				List<PersonType> personTypes = personTypeService.getAll();
-				Person person = new Person();
 				person.setIncident(incident);
 				model.addAttribute("person", person);
 				model.addAttribute("sexTypes", sexTypes);
@@ -95,16 +96,11 @@ public class PersonController {
 														 BindingResult result,
 														 Model model
 														 ) {
-				System.err.println(" *** person save *** ");				
         if (result.hasErrors()) {
-						errors = "";
-						System.err.println(" *** got error *** ");
-						for (ObjectError error : result.getAllErrors()) {
-								// if (error instanceof FieldError) {
-										if(!errors.equals("")) errors += " ";
-										errors += error.getObjectName() + " - " + error.getDefaultMessage();
-						}
+						errors = Helper.extractErrors(result);
 						System.err.println(" **** errors "+errors);
+						//
+						logger.error(errors);
 						List<PersonType> personTypes = personTypeService.getAll();
 						model.addAttribute("errors", errors);
 						model.addAttribute("person", person);
@@ -115,17 +111,17 @@ public class PersonController {
 						model.addAttribute("personTypes", personTypes);						
 						return "personAdd";
         }
-				/*
-				if(!incident.verifyAll(defaultCity,
-															 defaultState,
-															 zipCodes)){
-						errors = incident.getErrorInfo();
+				if(!person.verify()){
+						errors = person.getErrorInfo();
+						List<PersonType> personTypes = personTypeService.getAll();
+						model.addAttribute("sexTypes", sexTypes);
+						model.addAttribute("raceTypes", raceTypes);				
+						model.addAttribute("phoneTypes", phoneTypes);
+						model.addAttribute("personTitles", personTitles);
+						model.addAttribute("personTypes", personTypes);		
 						model.addAttribute("errors", errors);
-						model.addAttribute("entryTypes", entryTypes);
-
-						return "addIncident";
+						return "personAdd";
 				}
-				*/
         personService.save(person);
         return "redirect:/incident/"+person.getIncident().getId(); 
     }
@@ -137,6 +133,7 @@ public class PersonController {
 						person = personService.findById(id);
 				}catch(Exception ex){
 						errors += "Invalid person Id "+id;
+						logger.error(errors+" "+ex);
 						model.addAttribute("errors", errors);
 						return "index"; // need fix
 				}
@@ -153,6 +150,7 @@ public class PersonController {
 				}catch(Exception ex){
 						errors += "Invalid person Id";
 						model.addAttribute("errors", errors);
+						logger.error(errors+" "+ex);
 						return " "; // need fix
 				}
 				List<PersonType> personTypes = personTypeService.getAll();
@@ -170,13 +168,26 @@ public class PersonController {
 															 BindingResult result,
 															 Model model) {
 				if (result.hasErrors()) {
+						errors = Helper.extractErrors(result);
+						logger.error("Error update person "+errors);
 						person.setId(id);
 						return "redirect:/person/edit/"+id;
 						
 				}
-				messages = "Updated Successfully";
+				if(!person.verify()){
+						errors = person.getErrorInfo();
+						List<PersonType> personTypes = personTypeService.getAll();
+						model.addAttribute("sexTypes", sexTypes);
+						model.addAttribute("raceTypes", raceTypes);				
+						model.addAttribute("phoneTypes", phoneTypes);
+						model.addAttribute("personTitles", personTitles);
+						model.addAttribute("personTypes", personTypes);		
+						model.addAttribute("errors", errors);
+						return "personUpdate";						
+				}
 				Incident incident = person.getIncident();
 				personService.update(person);
+				messages = "Updated Successfully";				
 				model.addAttribute("messages", messages);
 				return "redirect:/incident/"+incident.getId();
 		}
@@ -192,6 +203,7 @@ public class PersonController {
 						personService.delete(id);
 						messages = "Deleted Succefully";
 				}catch(Exception ex){
+						logger.error("Error delete person "+id+" "+ex);
 						errors += "Invalid person ID "+id;
 				}
 				return "redirect:/incident/"+incident.getId();

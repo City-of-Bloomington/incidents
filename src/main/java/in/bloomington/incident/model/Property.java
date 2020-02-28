@@ -27,11 +27,11 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
-
+import in.bloomington.incident.utils.Helper;
 
 @Entity
 @Table(name = "properties")
-public class Property implements java.io.Serializable{
+public class Property extends TopModel implements java.io.Serializable{
 
 		@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -51,8 +51,15 @@ public class Property implements java.io.Serializable{
 		@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "incident_id")
 		Incident incident;
+		//
+		// we need these to check if the amount added exceeds the limit
+		//
 		@Transient
 		double balance = 0; // needed when we add multiple items
+		@Transient
+		double oldValue = 0;
+		@Transient
+		double maxTotalValue = 0;
 		
 		public Property(){
 
@@ -65,7 +72,10 @@ public class Property implements java.io.Serializable{
 				this.id = id;
 				this.brand = brand;
 				this.model = model;
-				this.value = value;
+				this.setValue(value);
+				if(value !=null){
+						this.setOldValue(value);
+				}
 				this.serialNum = serialNum;
 				this.owner = owner;
 				this.description = description;
@@ -110,18 +120,47 @@ public class Property implements java.io.Serializable{
 		public Double getValue() {
 				return value;
 		}
+		@Transient
+		public String getValueFr() {
+				String str = "";
+				if(value != null){
+						try{
+								str = Helper.curFr.format(value);
+						}catch(Exception ex){
+								System.err.println(value+" "+ex);
+						}
+				}
+				return str;
+		}		
 
 		public void setValue(Double value) {
 				if(value != null)
 						this.value = value;
 		}
+		
 		public double getBalance() {
 				return balance;
 		}
 
-		public void setBalance(double val) {
+		public void setBalance(Double val) {
+				if(val != null)
 						this.balance = val;
-		}		
+		}
+		public double getOldValue() {
+				return oldValue;
+		}
+
+		public void setOldValue(Double val) {
+				if(val != null)
+						this.oldValue = val;
+		}
+		public double getMaxTotalValue() {
+				return maxTotalValue;
+		}
+
+		public void setMaxTotalValue(double val) {
+						this.maxTotalValue = val;
+		}				
 
 		public String getSerialNum() {
 				return serialNum;
@@ -188,15 +227,33 @@ public class Property implements java.io.Serializable{
 						}
 						ret += " Owner: "+owner;
 				}				
-				if(value != null && value > 0){
-						if(!ret.isEmpty()){
-								ret += ", ";
-						}
-						ret += "Value: $"+value;
+				return ret;
+		}
+		@Transient
+		public boolean verify(){
+				boolean ret = true;
+				String str = getInfo();
+				if(str.isEmpty()){
+						addError("No identification of the item is provided");
+						ret = false;
+				}
+				if(!verifyMaxTotal()){
+						ret = false;
 				}
 				return ret;
 		}
-				
+		@Transient
+		public boolean verifyMaxTotal(){
+				boolean ret = true;
+				if(value != null){
+						double total = balance+value-oldValue;
+						if(total > maxTotalValue){
+								addError(total +" total value exceeds max total of  "+maxTotalValue);
+								ret = false;
+						}
+				}
+				return ret;
+		}
 		@Override
     public boolean equals(Object obj) { 
           
@@ -216,20 +273,7 @@ public class Property implements java.io.Serializable{
     }
 		@Override
 		public String toString() {
-				String ret = "Property [";
-				if(brand != null && !brand.isEmpty()){
-						ret += "brand: " + brand;
-				}
-				if(model != null && !model.isEmpty()){
-						ret += " model: " + model;
-				}				
-				if(serialNum != null && !serialNum.isEmpty()){
-						ret += "serial #: " + serialNum;
-				}
-				if(owner != null && !owner.isEmpty()){
-						ret += " owner: " + owner;
-				}							
-				ret += "]";
+				String ret = "Item ["+getInfo()+"]";
 				return ret;
 		} 		
 

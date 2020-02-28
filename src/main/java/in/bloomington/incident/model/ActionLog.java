@@ -100,6 +100,11 @@ public class ActionLog implements java.io.Serializable{
 		public void setComments(String comments) {
 			this.comments = comments;
 		}
+		@Transient
+		public void setDateNow(){
+				date = new Date();
+		}
+				
 		@Override
     public boolean equals(Object obj) { 
           

@@ -17,16 +17,18 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import javax.validation.Valid;
-// import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.core.env.Environment;
+import org.springframework.beans.factory.annotation.Value;
 import in.bloomington.incident.service.PropertyService;
 import in.bloomington.incident.service.IncidentService;
 import in.bloomington.incident.service.DamageTypeService;
 import in.bloomington.incident.model.Incident;
 import in.bloomington.incident.model.Property;
 import in.bloomington.incident.model.DamageType;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import in.bloomington.incident.utils.Helper;
 
 @Controller
 public class PropertyController {
@@ -38,20 +40,27 @@ public class PropertyController {
 		IncidentService incidentService;		
 		@Autowired
 		DamageTypeService damageTypeService;
-		
+		@Autowired
+		private Environment env;		
+		// max total value of damaged properties claim allowed
+		// default $750.0 if not set in properties file
+		@Value( "${incident.property.maxtotalvalue:750.0}")		
+		private Double maxTotalValue;				
 		String errors="", messages="";
-		@GetMapping("/properties")
-    public String getAll(Model model) {
-        model.addAttribute("properties", propertyService.getAll());
 
-        return "properties";
-    }
 		@GetMapping("/property/add/{incident_id}")
     public String newProperty(@PathVariable("incident_id") int incident_id, Model model) {
 				
 				Property property = new Property();
-				Incident incident = incidentService.findById(incident_id);
-				property.setIncident(incident);
+				try{
+						Incident incident = incidentService.findById(incident_id);
+						property.setIncident(incident);
+						property.setBalance(incident.getPropertiesTotalValue());
+						property.setMaxTotalValue(maxTotalValue);
+				}catch(Exception ex){
+						errors += "Invalid incident "+incident_id;
+						logger.error(errors+" "+ex);
+				}
         model.addAttribute("property", property);
 				List<DamageType> types = damageTypeService.getAll();
 				if(types != null)
@@ -61,8 +70,20 @@ public class PropertyController {
     @PostMapping("/property/save")
     public String addProperty(@Valid Property property, BindingResult result, Model model) {
         if (result.hasErrors()) {
+						errors = Helper.extractErrors(result);
+						errors = "Error saving new property "+errors;
+						logger.error(errors);
             return "propertyAdd";
         }
+				if(!property.verify()){
+						errors = property.getErrorInfo();
+						logger.error(errors);
+						List<DamageType> types = damageTypeService.getAll();
+						if(types != null)
+								model.addAttribute("damageTypes", types);
+						model.addAttribute("errors", errors);
+						return "propertyAdd";						
+				}				
         propertyService.save(property);
 				messages = "Added Successfully";
 				int incident_id = property.getIncident().getId();
@@ -74,9 +95,14 @@ public class PropertyController {
 				Property property = null;
 				try{
 						property = propertyService.findById(id);
-						
+						Incident incident = property.getIncident();
+						if(incident != null){
+								property.setBalance(incident.getPropertiesTotalValue());
+						}
+						property.setMaxTotalValue(maxTotalValue);
 				}catch(Exception ex){
-						errors += "Invalid property Id";
+						errors += "Invalid property "+id;
+						logger.error(errors+" "+ex);
 						model.addAttribute("properties", propertyService.getAll());
 						model.addAttribute("errors", errors);
 						return "redirect:/index";
@@ -91,11 +117,21 @@ public class PropertyController {
 		public String updateProperty(@PathVariable("id") int id, @Valid Property property, 
 														 BindingResult result, Model model) {
 				if (result.hasErrors()) {
+						errors = Helper.extractErrors(result);
+						errors += " Error update property "+id;
+						logger.error(errors);
 						property.setId(id);
-						return "propertyUpdate";
+						return "redirect:/property/edit/"+id;
 				}
-				messages = "Updated Successfully";
+				if(!property.verify()){
+						errors = property.getErrorInfo();
+						logger.error(errors);
+						model.addAttribute("properties", propertyService.getAll());
+						model.addAttribute("errors", errors);						
+						return "propertyUpdate";						
+				}
 				propertyService.save(property);
+				messages = "Updated Successfully";
 				Incident incident = property.getIncident();
 				int incident_id = incident.getId();
 				// need redirect to incident
@@ -113,6 +149,8 @@ public class PropertyController {
 						propertyService.delete(id);
 						messages = "Deleted Succefully";
 				}catch(Exception ex){
+						errors = "Error delete property "+id;
+						logger.error(errors+" "+ex);
 						errors += "Invalid property ID "+id;
 				}
 				model.addAttribute("properties", propertyService.getAll());
@@ -132,7 +170,8 @@ public class PropertyController {
 						Property property = propertyService.findById(id);
 						model.addAttribute("property", property);						
 				}catch(Exception ex){
-						errors += "Invalid property ID "+id;
+						errors += "Invalid property "+id;
+						logger.error(errors+" "+ex);
 				}
 				return "property";
 

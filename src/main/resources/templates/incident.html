@@ -19,7 +19,15 @@
 			click on <a th:href="@{/incident/edit/{id}(id=${incident.id})}">Edit</a>
 			link and do your changes.
 		</p>
-			<fieldset>
+		<div th:if="${incident.canBeSubmitted()}">
+			<ul>
+				<li>The incident is ready to be submitted.</li>
+				<li>If submitted no more changes can be done</li>
+				<li>Review your request again to make sure everything is correct</li>
+				<li>If no further changes is needed click on the 'Submit' button below</li>
+			</ul>
+		</div>
+		<fieldset>
 				<legend>Incident General Info</legend>
 				<table summary="layout for form fields" width="90%">
 					<tr>
@@ -74,42 +82,40 @@
 					</tr>
 				</table>
 				<table>
-					<tr th:if="${incident.hasPersonList()}">
-						<td>
+					<tr>
+						<td th:if="${incident.hasPersonList()}">
 							<a th:href="@{/person/add/{id}(id=${incident.id})}">Add Another Person </a>
 						</td>
-					</tr>
-					<tr th:unless="${incident.hasPersonList()}">					
+						<td th:unless="${incident.hasPersonList()}">					
 							<a th:href="@{/person/add/{id}(id=${incident.id})}">Add Person </a>
 						</td>
-					</tr>
-					<tr th:if="${incident.hasPropertyList()}">
-						<td>
+						<td th:if="${incident.hasPropertyList()}">
 							<a th:href="@{/property/add/{id}(id=${incident.id})}">Add Another Property </a>
 						</td>
-					</tr>
-					<tr th:unless="${incident.hasPropertyList()}">					
-						<td>
+						<td th:unless="${incident.hasPropertyList()}">					
 							<a th:href="@{/property/add/{id}(id=${incident.id})}">Add Property </a>
 						</td>
-					</tr>
-					<tr th:if="${incident.hasVehicleList()}">
-						<td>
+						<td th:if="${incident.hasVehicleList()}">
 							<a th:href="@{/vehicle/add/{id}(id=${incident.id})}">Add Another Vehicle </a>
 						</td>
-					</tr>
-					<tr th:unless="${incident.hasVehicleList()}">					
-						<td>
+						<td th:unless="${incident.hasVehicleList()}">					
 							<a th:href="@{/vehicle/add/{id}(id=${incident.id})}">Add Vehicle </a>
 						</td>
 					</tr>
+					<tr th:if="${incident.canBeSubmitted()}">
+						<td colspan="2">Your incident is ready to be submitted </td>
+						<td>
+							<a th:href="@{/incident/submit/{id}(id=${incident.id})}">Submit</a>
+						</td>
+					</tr>					
 				</table>
+
 			</fieldset>
 			<div th:if="${incident.hasPersonList()}">
 				<div th:insert="personsShort::persons(${incident.persons})"></div>
 			</div>
 			<div th:if="${incident.hasPropertyList()}">
-				<div th:insert="propertiesShort::properties(${incident.properties})"></div>
+				<div th:insert="propertiesShort::properties(${incident.properties},${incident.propertiesTotalValueFr})"></div>
 			</div>
 			<div th:if="${incident.hasVehicleList()}">
 				<div th:insert="vehiclesShort::vehicles(${incident.vehicles})"></div>

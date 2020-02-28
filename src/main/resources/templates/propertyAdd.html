@@ -19,7 +19,10 @@
 		<form action="#"
 					th:action="@{/property/save}"
 					th:object="${property}" method="post">
-			<input type="hidden" th:field="${property.incident}" />			
+			<input type="hidden" th:field="${property.incident}" />
+			<input type="hidden" id="old_value_id" th:field="${property.oldValue}" />
+			<input type="hidden" id="balance_id" th:field="${property.balance}" />
+			<input type="hidden" id="max_total_id" th:field="${property.maxTotalValue}" />			
 			<table>
 				<tr>
 					<td>Related incident</td>

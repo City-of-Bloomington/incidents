@@ -21,7 +21,7 @@
 					th:object="${person}"
 					method="post">
 			<input type="hidden" th:field="${person.incident}" />
-			<input type="hidden" name="email" th:value="${incident.email}" />			
+			<input type="hidden" name="email" th:value="${person.incident.email}" />
 			<fieldset>
 				<caption>Add Person</caption>
 				*Indicates Required Fields <br />

@@ -17,8 +17,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import javax.validation.Valid;
-// import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import in.bloomington.incident.service.UserService;
 import in.bloomington.incident.service.RoleService;
 import in.bloomington.incident.model.User;
@@ -28,6 +29,7 @@ import in.bloomington.incident.model.Role;
 @Controller
 public class UserController {
 
+		final static Logger logger = LoggerFactory.getLogger(UserController.class);			
 		@Autowired
 		UserService userService;
 		@Autowired
@@ -55,6 +57,7 @@ public class UserController {
         }
         userService.save(user);
 				messages = "Added Successfully";
+				logger.debug("New user added "+user);
         model.addAttribute("users", userService.getAll());
 				model.addAttribute("messages", messages);				
         return "users";
@@ -68,6 +71,7 @@ public class UserController {
 						
 				}catch(Exception ex){
 						errors += "Invalid user Id";
+						logger.error(errors+" "+ex);
 						model.addAttribute("users", userService.getAll());
 						model.addAttribute("errors", errors);
 						return "users";
@@ -82,6 +86,8 @@ public class UserController {
 		public String updateUser(@PathVariable("id") int id, @Valid User user, 
 														 BindingResult result, Model model) {
 				if (result.hasErrors()) {
+						errors = "Error update user ";
+						logger.error(errors);
 						user.setId(id);
 						return "userUpdate";
 				}
@@ -103,7 +109,8 @@ public class UserController {
 						userService.delete(id);
 						messages = "Deleted Succefully";
 				}catch(Exception ex){
-						errors += "Invalid user ID "+id;
+						errors += "Eror delete user "+id;
+						logger.error(errors+" "+ex);
 				}
 				model.addAttribute("users", userService.getAll());
 				if(!messages.equals("")){
@@ -112,7 +119,6 @@ public class UserController {
 				else if(!errors.equals("")){
 						model.addAttribute("errors", errors);
 				}
-					 
 				return "users";
 		}
 		

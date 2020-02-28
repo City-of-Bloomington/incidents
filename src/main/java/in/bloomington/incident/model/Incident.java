@@ -423,6 +423,25 @@ public class Incident extends TopModel implements java.io.Serializable{
 		public void setMedias(List<Media> medias){
 				this.medias = medias;
 		}
+		/**
+		 *
+		 the incident can be submitted if the following conditions are met
+		 1-It has at least one person
+		 2-It has either one property or one vehicle included
+		 3-Has no action logs yet
+		 */
+		@Transient
+		public boolean canBeSubmitted(){
+				boolean ret = false;
+				if(hasPropertyList() &&
+					 (hasPropertyList() ||
+						hasVehicleList()) &&
+					 !hasActionLogs()){
+						ret = true;
+				}
+				return ret;
+		}
+				
 		@Transient
 		public boolean hasPersonList(){
 				return persons != null && persons.size() > 0;
@@ -438,10 +457,38 @@ public class Incident extends TopModel implements java.io.Serializable{
 		@Transient
 		public boolean hasMediaList(){
 				return medias != null && medias.size() > 0;
-		}		
+		}
+		@Transient
+		public boolean hasActionLogs(){
+				return actionLogs != null && actionLogs.size() > 0;
+		}
+				
 		@Transient
 		public void setReceivedNow(){
 				received = new Date();
+		}
+		@Transient
+		public double getPropertiesTotalValue(){
+				double total = 0;
+				if(hasPropertyList()){
+						if(properties  != null){
+								for(Property one:properties){
+										if(one.getValue() != null){
+												total += one.getValue();
+										}
+								}
+						}
+				}
+				return total;
+		}
+		@Transient
+		public String getPropertiesTotalValueFr(){
+				String str="";
+				double total = getPropertiesTotalValue();
+				if(total > 0){
+						str = Helper.curFr.format(total);
+				}
+				return str;
 		}
 		@Transient
 		public String getAddressInfo(){

@@ -23,16 +23,19 @@ import org.springframework.core.env.Environment;
 import org.springframework.validation.ObjectError;
 import org.springframework.validation.FieldError;
 import javax.validation.Valid;
-// import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import in.bloomington.incident.service.IncidentService;
 import in.bloomington.incident.service.IncidentTypeService;
-
+import in.bloomington.incident.service.ActionService;
+import in.bloomington.incident.service.ActionLogService;
 import in.bloomington.incident.model.Incident;
 import in.bloomington.incident.model.IncidentType;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import in.bloomington.incident.model.Action;
+import in.bloomington.incident.model.ActionLog;
+import in.bloomington.incident.utils.Helper;
 
 @Controller
 public class IncidentController {
@@ -49,6 +52,10 @@ public class IncidentController {
 		@Autowired
 		IncidentTypeService incidentTypeService;
 		@Autowired
+		ActionService actionService;
+		@Autowired
+		ActionLogService actionLogService;
+		@Autowired
 		private Environment env;
 		@Value( "${incident.defaultcity}" )
 		private String defaultCity;
@@ -56,7 +63,7 @@ public class IncidentController {
 		private String defaultState;		
 		@Value( "${incident.zipcodes}" )
 		private List<String> zipCodes;
-		
+
 		String errors="", messages="";
 		public String getErrors(){
 				return errors;
@@ -81,18 +88,13 @@ public class IncidentController {
 				}
 				return allStates;
 		}
-		@GetMapping("/error")
-    public String getError(Model model) {
-				
-				// model.addAttribute("errors", errors);				
-        return "errors";
-    }		
+		/*
 		@GetMapping("/incidents")
     public String getAll(Model model) {
         model.addAttribute("incidents", incidentService.getAll());
-
         return "incidents";
     }
+		*/
 		@GetMapping("/incidentStart/{id}")
     public String startIncident(@PathVariable("id") int id, Model model) {
 				Incident incident = null;
@@ -100,6 +102,7 @@ public class IncidentController {
 						incident = incidentService.findById(id);
 				}catch(Exception ex){
 						errors += "Invalid incident Id: "+id;
+						logger.error(errors+" "+ex);
 						model.addAttribute("errors", errors);
 						return "redirect:/start";
 				}
@@ -116,13 +119,13 @@ public class IncidentController {
 															 BindingResult result, Model model
 															 ) {
         if (result.hasErrors()) {
-						errors = "";
+						errors = Helper.extractErrors(result);
+						/*
 						for (ObjectError error : result.getAllErrors()) {
-								if (error instanceof FieldError) {
-										if(!errors.equals("")) errors += " ";
-										errors += error.getObjectName() + " - " + error.getDefaultMessage();
-								}
+								if(!errors.equals("")) errors += " ";
+								errors += error.getObjectName() + " - " + error.getDefaultMessage();
 						}
+						*/
 						model.addAttribute("entryTypes", entryTypes);
 						model.addAttribute("allZipCodes", getAllZipCodes());
 						model.addAttribute("allStates", getAllStates());
@@ -159,17 +162,44 @@ public class IncidentController {
 						incident = incidentService.findById(id);
 				}catch(Exception ex){
 						errors += "Invalid incident Id";
+						logger.error(errors+" "+ex);
 						model.addAttribute("errors", errors);
 						return "index"; // need fix
 				}
         model.addAttribute("incident", incident);				
 				return "incident";
 		}
-		
+		@GetMapping("/incident/submit/{id}")
+		public String submitIncident(@PathVariable("id") int id, Model model) {
+				Incident incident = null;
+				try{
+						incident = incidentService.findById(id);
+						ActionLog actionLog = new ActionLog();
+						actionLog.setIncident(incident);
+						Action action = actionService.findById(1); // received action
+						actionLog.setAction(action);
+						actionLog.setDateNow();
+						actionLogService.save(actionLog);
+						//
+						// the success submission and what to do next
+						// confirmation email
+						//
+						
+				}catch(Exception ex){
+						errors += "Invalid incident Id";
+						logger.error(errors+" "+ex);
+						model.addAttribute("errors", errors);
+						return "index"; // need fix
+				}
+        model.addAttribute("incident", incident);				
+				return "incident";
+		}		
 
     @PostMapping("/incident/add")
     public String addIncident(@Valid Incident incident, BindingResult result, Model model) {
         if (result.hasErrors()) {
+						errors = Helper.extractErrors(result);
+						logger.error("Error starting add new incident "+errors);
             return "incidentAdd";
         }
         incidentService.save(incident);
@@ -185,6 +215,7 @@ public class IncidentController {
 						
 				}catch(Exception ex){
 						errors += "Invalid incident Id";
+						logger.error(errors+" "+ex);
 						model.addAttribute("errors", errors);
 						return "start";
 				}
@@ -200,6 +231,8 @@ public class IncidentController {
 																 @Valid Incident incident, 
 																 BindingResult result, Model model) {
 				if (result.hasErrors()) {
+						errors = Helper.extractErrors(result);
+						logger.error("Error update incident "+id+" "+errors);
 						incident.setId(id);
 						return "updateIncident";
 				}
@@ -218,6 +251,7 @@ public class IncidentController {
 						incidentService.delete(id);
 						messages = "Deleted Succefully";
 				}catch(Exception ex){
+						logger.error("Error delete incident "+id+" "+ex);
 						errors += "Invalid incident ID "+id;
 				}
 				model.addAttribute("incidents", incidentService.getAll());

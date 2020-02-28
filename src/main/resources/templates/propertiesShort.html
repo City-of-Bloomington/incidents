@@ -15,7 +15,7 @@
   <body>
 		<span th:if="${messages}" th:text="${messages}"></span>
 		<span th:if="${errors}" th:text="${errors}"></span>
-		<div th:fragment="properties(properties)">
+		<div th:fragment="properties(properties,totalBalance)">
 			<h2>Claimed Item(s)</h2>
 			<div th:switch="${properties}">
 				<h2 th:case="null">No properties found</h2>
@@ -33,8 +33,12 @@
 							<tr th:each="one : ${properties}">
 								<td th:text="${one.damageType}"></td>
 								<td th:text="${one.info}"></td>
-								<td th:text="${one.value}"></td>
+								<td th:text="${one.valueFr}">&#36;</td>
 								<td><a th:href="@{/property/{id}(id=${one.id})}">Details</a></td>
+							</tr>
+							<tr>
+								<td colspan="2">Total</td><td th:text="${totalBalance}"></td>
+								<td>&nbsp;</td>
 							</tr>
 						</tbody>
 					</table>

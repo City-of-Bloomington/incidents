@@ -40,9 +40,8 @@ public class ErrorControl implements ErrorController  {
 				return "errors";
 		}
 		*/
-
 		
-		@RequestMapping(value = "errors", method = RequestMethod.GET)
+		@RequestMapping(value = "error", method = RequestMethod.GET)
     public ModelAndView renderErrorPage(HttpServletRequest httpRequest) {
          
         ModelAndView errorPage = new ModelAndView("errorPage");
@@ -78,6 +77,6 @@ public class ErrorControl implements ErrorController  {
 		
     @Override
     public String getErrorPath() {
-        return "/errors";
+        return "/error";
     }
 }

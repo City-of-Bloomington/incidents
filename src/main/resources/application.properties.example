@@ -13,6 +13,9 @@ spring.cache.type=NONE
 ;; are required, if multiple cities, put comma in between
 ;; 
 incident.zipcodes=47401,47403,47404,47408
+;; maximum of total value of all properties damage allowed in dollars
+incident.property.maxtotalvalue=750.0
+
 ;;
 ;; now we are supporting one city and one state
 ;; for multiple cities you need 

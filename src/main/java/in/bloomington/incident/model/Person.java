@@ -483,6 +483,29 @@ public class Person extends TopModel implements java.io.Serializable{
 				this.reporter = val;
 		}
 		@Transient
+		public boolean verify(){
+				boolean ret = true;
+				if(firstname == null || firstname.isEmpty()){
+						addError("First name is required");
+						ret = false;
+				}
+				if(lastname == null || lastname.isEmpty()){
+						addError("Last name is required");
+						ret = false;
+				}
+				if(address == null || address.isEmpty()){
+						addError("Address is required");
+						ret = false;
+				}
+				String str = getContactInfo();
+				if(str.isEmpty()){
+						addError("A contact phone number or email is required");
+						ret = false;
+				}
+				return ret;
+		}
+				
+		@Transient
 		public String getSexAndRace(){
 				String ret = "";
 				if(sex != null && !sex.isEmpty()){

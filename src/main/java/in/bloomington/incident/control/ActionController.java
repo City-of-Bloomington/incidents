@@ -17,15 +17,15 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import javax.validation.Valid;
-// import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestParam;
-import in.bloomington.incident.service.ActionService;
-import in.bloomington.incident.model.Action;
 //
 // implementation of logging is logback
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+//
+import in.bloomington.incident.service.ActionService;
+import in.bloomington.incident.model.Action;
+
 
 @Controller
 public class ActionController {
@@ -49,10 +49,12 @@ public class ActionController {
     @PostMapping("/action/add")
     public String addAction(@Valid Action action, BindingResult result, Model model) {
         if (result.hasErrors()) {
+						logger.error(" Error creating new action ");
             return "addAction";
         }
         actionService.save(action);
 				messages = "Added Successfully";
+				logger.debug("Action added successfully");
         model.addAttribute("actions", actionService.getAll());
 				model.addAttribute("messages", messages);				
         return "actions";
@@ -68,6 +70,7 @@ public class ActionController {
 						errors += "Invalid action Id";
 						model.addAttribute("actions", actionService.getAll());
 						model.addAttribute("errors", errors);
+						logger.error("Exception getting action ="+id+" "+ex);
 						return "actions";
 				}
 				model.addAttribute("action", action);
@@ -78,6 +81,7 @@ public class ActionController {
 														 BindingResult result, Model model) {
 				if (result.hasErrors()) {
 						action.setId(id);
+						logger.error("Error update action ="+id);						
 						return "updateAction";
 				}
 				messages = "Updated Successfully";
@@ -95,6 +99,7 @@ public class ActionController {
 						actionService.delete(id);
 						messages = "Deleted Succefully";
 				}catch(Exception ex){
+						logger.error("Error delete action ="+id+" "+ex);								
 						errors += "Invalid action ID "+id;
 				}
 				model.addAttribute("actions", actionService.getAll());
