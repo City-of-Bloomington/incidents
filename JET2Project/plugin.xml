@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+   <extension
+         id=""
+         name=""
+         point="org.eclipse.jet.transform">
+      <transform 
+            startTemplate="templates/main.jet" 
+            templateLoaderClass="compiled._jet_transformation" 
+            enableEmbeddedExpressions="false"
+            >
+         <description></description>
+         <tagLibraries>
+            <importLibrary id="org.jmr.core.commonTags" usePrefix="" autoImport="true"/>
+            <importLibrary id="org.jmr.core.xmlTags" usePrefix="xml" autoImport="true"/>
+            <importLibrary id="org.jmr.core.taskTags" usePrefix="task" autoImport="true"/>
+            <importLibrary id="org.jmr.core.javaTags" usePrefix="java" autoImport="true"/> 
+         </tagLibraries>
+      </transform>
+   </extension>
+</plugin>

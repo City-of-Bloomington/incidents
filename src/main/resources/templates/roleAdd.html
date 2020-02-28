@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--
+ - @copyright Copyright (C) 2014-2015 City of Bloomington, Indiana. All rights reserved.
+ - @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
+ - @author W. Sibo <sibow@bloomington.in.gov>
+ -
+ -->
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+  <head>
+    <title>New User Role</title>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+		<link href = "css/styles.css" rel = "stylesheet"/>
+  </head>
+  <body>
+		<span th:if="${messages}" th:text="${messages}"></span>
+		<span th:if="${errors}" th:text="${errors}"></span>
+    <h2>New User Role</h2>
+		<form action="#"
+					th:action="@{/role/add}"
+					th:object="${role}" method="post">
+			<table>
+				<tr>
+					<td>
+						<label for="name">Name</label>
+					</td>
+					<td>
+						<input type="text" th:field="${role.name}" id="name" placeholder="Role name">
+						<span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label for="action_id">Assigned Action</label>
+					</td>
+					<td>
+						<select id="action_id" multiple th:field="*{{actions}}" >
+            <option th:each="r : ${actions}"
+                    th:value="${r.id}"
+                    th:text="${r.name}">
+            </option>
+						</select>
+					</td>
+				</tr>						
+				<tr>
+					<td>		
+						<input type="submit" value="Add Role">
+					</td>
+				</tr>
+			</table>
+		</form>
+	</body>
+</htmL>

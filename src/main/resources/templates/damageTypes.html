@@ -1,0 +1,48 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--
+ - @copyright Copyright (C) 2014-2015 City of Bloomington, Indiana. All rights reserved.
+ - @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
+ - @author W. Sibo <sibow@bloomington.in.gov>
+ -
+ -->
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+  <head>
+    <title>Damage Types</title>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+		<link href = "css/styles.css" rel = "stylesheet"/>
+  </head>
+  <body>
+		<span th:if="${messages}" th:text="${messages}"></span>
+		<span th:if="${errors}" th:text="${errors}"></span>
+    <h2>Damage Types</h2>
+		<p><a href="/damageType/new">Add a new damage type</a></p>
+		
+		<div th:switch="${types}">
+			<h2 th:case="null">No types found </h2>
+      <div th:case="*">
+        <h2>Types </h2>
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>							
+              <th>Name</th>
+              <th>Edit</th>
+              <th>Delete</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="type : ${types}">
+							<td th:text="${type.id}"></td>
+              <td th:text="${type.name}"></td>
+              <td><a th:href="@{/damageType/edit/{id}(id=${type.id})}">Edit</a></td>
+              <td><a th:href="@{/damageType/delete/{id}(id=${type.id})}">Delete</a></td>
+            </tr>
+          </tbody>
+        </table>
+			</div>      
+		</div>
+		<p><a href="/index"> Settings </a></p>
+		</body>
+	</htmL>
+		

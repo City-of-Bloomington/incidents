@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: JET2Project
+Bundle-SymbolicName: JET2Project;singleton:=true
+Bundle-Version: 1.0.0
+Bundle-Vendor: 
+Require-Bundle: org.eclipse.jet
+Bundle-ClassPath: .,bin/
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8

@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--
+ - @copyright Copyright (C) 2014-2015 City of Bloomington, Indiana. All rights reserved.
+ - @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
+ - @author W. Sibo <sibow@bloomington.in.gov>
+ -
+ -->
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+  <head>
+    <title>New User</title>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+		<link href = "css/styles.css" rel = "stylesheet"/>
+  </head>
+  <body>
+		<span th:if="${messages}" th:text="${messages}"></span>
+		<span th:if="${errors}" th:text="${errors}"></span>
+    <h2>New User</h2>
+		<form action="#"
+					th:action="@{/user/add}"
+					th:object="${user}" method="post">
+			<table>
+				<tr>
+					<td>
+						<label for="username">Username</label>
+					</td>
+					<td>
+						<input type="text" th:field="${user.username}" id="username" placeholder="Username">
+						<span th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></span>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label for="firstname">First Name</label>
+					</td>
+					<td>				
+						<input type="text" th:field="${user.firstname}" id="firstname" placeholder="First Name">
+						<span th:if="${#fields.hasErrors('firstname')}" th:errors="*{firstname}"></span>
+			</td>
+				</tr>
+				<tr>
+					<td>		
+						<label for="lastname">Last Name</label>
+					</td>
+					<td>
+						<input type="text" th:field="${user.lastname}" id="lastname" placeholder="Last Name">
+						<span th:if="${#fields.hasErrors('lastname')}" th:errors="*{lastname}"></span>
+					</td>
+				</tr>
+				<tr>
+					<td>		
+						<label for="role_id">User Roles</label>
+					</td>
+					<td>
+						<select id="role_id" multiple th:field="*{{roles}}" >
+            <option th:each="r : ${roles}"
+                    th:value="${r.id}"
+                    th:text="${r.name}">
+            </option>
+						</select>
+					</td>
+				</tr>							
+				<tr>
+					<td></td>
+					<td>		
+						<input type="submit" value="Save">
+					</td>
+				</tr>
+			</table>
+		</form>
+	</body>
+</htmL>

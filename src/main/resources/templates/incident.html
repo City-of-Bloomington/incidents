@@ -1,0 +1,118 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--
+ - @copyright Copyright (C) 2014-2015 City of Bloomington, Indiana. All rights reserved.
+ - @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
+ - @author W. Sibo <sibow@bloomington.in.gov>
+ -
+ -->
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+  <head>
+    <title>Incident Reporting</title>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+		<link href = "css/styles.css" rel = "stylesheet"/>
+  </head>
+  <body>
+		<h2>View Incident</h2>
+		<span th:if="${errors}" th:text="${errors}"></span>
+		<p>Incident details, if you notice any incident items need to be changed
+			click on <a th:href="@{/incident/edit/{id}(id=${incident.id})}">Edit</a>
+			link and do your changes.
+		</p>
+			<fieldset>
+				<legend>Incident General Info</legend>
+				<table summary="layout for form fields" width="90%">
+					<tr>
+						<th><label> Incident Type:</label></th>
+						<td>
+							<span th:text="${incident.incidentType}"> </span>
+						</td>
+					</tr>
+					<tr>
+						<th><label> Reporter Email</label></th>
+						<td>
+							<span th:text="${incident.email}"> </span>
+						</td>
+					</tr>
+					<tr>
+						<th><label> Report Date & Time </label></th>
+						<td>
+							<span th:text="${incident.receivedStr}"> </span>
+						</td>
+					</tr>
+					<tr>
+						<th>
+							<label>Incident Date & time </label>
+						</th>
+						<td>
+							<span th:text="${incident.dateTimeInfo}"> </span> 
+						</td>
+					</tr>
+					<tr>
+						<th>
+							<label>Incident address:</label>
+						</th>
+						<td>
+							<span th:text="${incident.addressInfo}"> </span>
+						</td>
+					</tr>
+					<tr>
+						<th>
+							<label>Entry access:</label>
+						</th>
+						<td>
+							<span th:text="${incident.entryInfo}" ></span>
+						</td>
+					</tr>
+					<tr>
+						<th>
+							<label>Incident Details</label>
+						</th>
+						<td>
+							<span th:text="${incident.details}" ></span>								
+						</td>
+					</tr>
+				</table>
+				<table>
+					<tr th:if="${incident.hasPersonList()}">
+						<td>
+							<a th:href="@{/person/add/{id}(id=${incident.id})}">Add Another Person </a>
+						</td>
+					</tr>
+					<tr th:unless="${incident.hasPersonList()}">					
+							<a th:href="@{/person/add/{id}(id=${incident.id})}">Add Person </a>
+						</td>
+					</tr>
+					<tr th:if="${incident.hasPropertyList()}">
+						<td>
+							<a th:href="@{/property/add/{id}(id=${incident.id})}">Add Another Property </a>
+						</td>
+					</tr>
+					<tr th:unless="${incident.hasPropertyList()}">					
+						<td>
+							<a th:href="@{/property/add/{id}(id=${incident.id})}">Add Property </a>
+						</td>
+					</tr>
+					<tr th:if="${incident.hasVehicleList()}">
+						<td>
+							<a th:href="@{/vehicle/add/{id}(id=${incident.id})}">Add Another Vehicle </a>
+						</td>
+					</tr>
+					<tr th:unless="${incident.hasVehicleList()}">					
+						<td>
+							<a th:href="@{/vehicle/add/{id}(id=${incident.id})}">Add Vehicle </a>
+						</td>
+					</tr>
+				</table>
+			</fieldset>
+			<div th:if="${incident.hasPersonList()}">
+				<div th:insert="personsShort::persons(${incident.persons})"></div>
+			</div>
+			<div th:if="${incident.hasPropertyList()}">
+				<div th:insert="propertiesShort::properties(${incident.properties})"></div>
+			</div>
+			<div th:if="${incident.hasVehicleList()}">
+				<div th:insert="vehiclesShort::vehicles(${incident.vehicles})"></div>
+			</div>				
+	</body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--
+ - @copyright Copyright (C) 2014-2015 City of Bloomington, Indiana. All rights reserved.
+ - @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
+ - @author W. Sibo <sibow@bloomington.in.gov>
+ -
+ -->
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+  <head>
+    <title>Users</title>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+		<link href = "css/styles.css" rel = "stylesheet"/>
+  </head>
+  <body>
+		<span th:if="${messages}" th:text="${messages}"></span>
+		<span th:if="${errors}" th:text="${errors}"></span>
+    <h2>Users list</h2>
+		<p><a href="/user/new">Add a new user</a></p>
+		
+		<div th:switch="${users}">
+			<h2 th:case="null">No users found</h2>
+      <div th:case="*">
+        <h2>Users</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>							
+              <th>Username</th>
+              <th>First Name</th>
+							<th>Last Name</th>
+							<th>Active?</th>
+							<th>Roles </th>
+							<th>Role Actions </th>							
+              <th>Edit</th>
+              <th>Delete</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="user : ${users}">
+							<td th:text="${user.id}"></td>
+              <td th:text="${user.username}"></td>
+              <td th:text="${user.firstname}"></td>
+							<td th:text="${user.lastname}"></td>										
+							<td th:text="${user.active}? 'Yes':'No'"></td>
+							<td th:text="${user.roles}? ${user.rolesInfo}:'' "></td>
+							<td th:text="${user.actions}? ${user.actionsInfo}:'' "></td>
+              <td><a th:href="@{/user/edit/{id}(id=${user.id})}">Edit</a></td>
+              <td><a th:href="@{/user/delete/{id}(id=${user.id})}">Delete</a></td>
+            </tr>
+          </tbody>
+        </table>
+			</div>      
+
+		</div>
+		<p><a href="/index"> Settings </a></p>
+		</body>
+	</htmL>
+		

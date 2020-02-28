@@ -1,0 +1,54 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--
+ - @copyright Copyright (C) 2014-2015 City of Bloomington, Indiana. All rights reserved.
+ - @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
+ - @author W. Sibo <sibow@bloomington.in.gov>
+ -
+ -->
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+  <head>
+    <title>Actions</title>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+		<link href = "css/styles.css" rel = "stylesheet"/>
+  </head>
+  <body>
+		<span th:if="${messages}" th:text="${messages}"></span>
+		<span th:if="${errors}" th:text="${errors}"></span>
+    <h2>Workflow Actions</h2>
+		<p><a href="/action/new">Add a new action</a></p>
+		
+		<div th:switch="${actions}">
+			<h2 th:case="null">No actions found</h2>
+      <div th:case="*">
+        <h2>Actions</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>							
+              <th>Name</th>
+              <th>Description</th>
+							<th>Workflow Step</th>
+              <th>Edit</th>
+              <th>Delete</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="action : ${actions}">
+							<td th:text="${action.id}"></td>
+              <td th:text="${action.name}"></td>
+              <td th:text="${action.description}"></td>
+							<td th:text="${action.workflow_step}"></td>										
+              <td><a th:href="@{/action/edit/{id}(id=${action.id})}">Edit</a></td>
+              <td><a th:href="@{/action/delete/{id}(id=${action.id})}">Delete</a></td>
+            </tr>
+          </tbody>
+        </table>
+			</div>      
+
+		</div>
+		<p><a href="/index"> Settings </a></p>
+		</body>
+	</htmL>
+		

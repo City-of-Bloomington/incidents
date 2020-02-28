@@ -1,0 +1,13 @@
+prepare.java
+quartz.properties
+context.xml
+web.xml
+target
+ansible/roles
+*.retry
+
+# Eclipse directories
+.settings
+.classpath
+.project
+/src/main/webapp/js/addressChooser.js

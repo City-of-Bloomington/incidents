@@ -1,0 +1,48 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--
+ - @copyright Copyright (C) 2014-2015 City of Bloomington, Indiana. All rights reserved.
+ - @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
+ - @author W. Sibo <sibow@bloomington.in.gov>
+ -
+ -->
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+  <head>
+    <title>Person(s)</title>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+		<link href = "css/styles.css" rel = "stylesheet"/>
+  </head>
+  <body>
+		<span th:if="${messages}" th:text="${messages}"></span>
+		<span th:if="${errors}" th:text="${errors}"></span>
+		<div th:fragment="persons(persons)">		
+			<h2>Incident Related People</h2>
+			<div th:switch="${persons}">
+				<h2 th:case="null">No person found </h2>
+				<div th:case="*">
+					<table>
+						<thead>
+							<tr>
+								<th>Person Category</th>
+								<th>Full Name </th>
+								<th>Address </th>
+								<th>Contact </th>
+								<th>More Details</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="person : ${persons}">
+								<td th:text="${person.personType}"></td>
+								<td th:text="${person.fullname}"></td>							
+								<td th:text="${person.fullAddress}"></td>
+								<td th:text="${person.contactInfo}"></td>
+								<td><a th:href="@{/person/{id}(id=${person.id})}">More Details</a></td>						
+							</tr>
+						</tbody>
+					</table>
+				</div>      
+			</div>
+		</div>
+	</body>
+</htmL>
+		

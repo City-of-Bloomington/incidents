@@ -1,0 +1,48 @@
+;;
+;; this is an example of application.properties file
+;; the following are needed for the application to work
+;; you can change the location of the this file in production
+;; to a more secure place, check the configuration file on how 
+;; to set the location
+;;
+spring.application.name=incidents
+address.required.message=address is required
+spring.cache.type=NONE
+;;
+;; the following zipcodes, defaultCity and defualState 
+;; are required, if multiple cities, put comma in between
+;; 
+incident.zipcodes=47401,47403,47404,47408
+;;
+;; now we are supporting one city and one state
+;; for multiple cities you need 
+;; some changes in the model Incident.java similar to the way 
+;; we handle zip codes above
+incident.defaultcity=Bloomington
+incident.defaultstate=IN
+;;
+;; we are using mysql database, you may use other ones as well
+;; need to be configured below
+;; 
+;;
+;; dbDatasouce is a bean name used in configuration
+incident.dbdatasource.driverClassName = com.mysql.jdbc.Driver
+incident.dbdatasource.url=
+;; time zone for Indiana, change it according to yours
+incident.dbdatasource.serverTimezone = GMT-5
+;;
+;; database username and passwod
+incident.dbdatasource.username = 
+incident.dbdatasource.password = 
+incident.dbdatasource.testOnBorrow = true
+incident.dbdatasource.testWhileIdle = true
+incident.dbdatasource.timeBetweenEvictionRunsMillis = 60000
+incident.dbdatasource.minEvictableIdleTimeMillis = 30000
+incident.dbdatasource.validationQuery = SELECT 1
+;;
+;; in production the following number should be change to higher 
+;; numberrs
+incident.dbdatasource.max-active = 15
+incident.dbdatasource.max-idle = 10
+incident.dbdatasource.max-wait = 8000
+

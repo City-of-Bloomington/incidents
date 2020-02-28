@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--
+ - @copyright Copyright (C) 2014-2015 City of Bloomington, Indiana. All rights reserved.
+ - @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
+ - @author W. Sibo <sibow@bloomington.in.gov>
+ -
+ -->
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+  <head>
+    <title>View Item</title>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+		<link href = "css/styles.css" rel = "stylesheet"/>
+  </head>
+  <body>
+		<span th:if="${messages}" th:text="${messages}"></span>
+		<span th:if="${errors}" th:text="${errors}"></span>
+    <h2>Damage Item</h2>
+		<p>
+			The following are the details about this item.
+		</p>
+		<ul>
+			<li>Check the info entered so far</li>
+			<li>if you want to change some of the data click on 'Edit' button below.				</li>
+			<li>You amy also delete this record if you think it is irrelevant, by clicking to 'Delete' button in the bottom of the page</li>
+			<li>If the data are correct, click on 'Back to incident' link below to continue </li>
+		</ul>
+		<table>
+			<tr>
+				<td>Related incident</td>
+				<td><a th:href="@{/incident/{id}(id=${property.incident.id})}">Back to Incident</a></td>							
+			</tr>				
+			<tr>
+				<td>
+					<label>Brand Info</label>
+				</td>
+				<td>
+					<span th:text="${property.brandInfo}"></span>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<label>Damage Type</label>
+				</td>
+				<td>
+					<span th:text="${property.damageType}"></span>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<label>Value</label>
+				</td>
+				<td>$
+					<span th:text="${property.value}"></span>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<label for="owener">Owner</label>
+				</td>
+				<td>
+					<span th:text="${property.owner}"></span>
+				</td>
+			</tr>					
+			<tr>
+				<td>
+					<label for="description">Description</label>
+				</td>
+				<td>				
+					<span th:text="${property.description}"></span>
+				</td>
+			</tr>
+			<tr>
+				<td><a th:href="@{/property/edit/{id}(id=${property.id})}">Edit</a></td>
+				<td><a th:href="@{/property/delete/{id}(id=${property.id})}">Delete</a></td>
+			</tr>
+		</table>
+	</body>
+</htmL>

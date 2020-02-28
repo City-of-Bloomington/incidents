@@ -1,0 +1,104 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--
+ - @copyright Copyright (C) 2014-2015 City of Bloomington, Indiana. All rights reserved.
+ - @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
+ - @author W. Sibo <sibow@bloomington.in.gov>
+ -
+ -->
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+  <head>
+    <title>New Damage Property</title>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+		<link href = "css/styles.css" rel = "stylesheet"/>
+  </head>
+  <body>
+		<span th:if="${messages}" th:text="${messages}"></span>
+		<span th:if="${errors}" th:text="${errors}"></span>
+    <h2>Add New Damage Property</h2>
+		<form action="#"
+					th:action="@{/property/save}"
+					th:object="${property}" method="post">
+			<input type="hidden" th:field="${property.incident}" />			
+			<table>
+				<tr>
+					<td>Related incident</td>
+					<td><a th:href="@{/incident/{id}(id=${property.incident.id})}">Back to Incident</a></td>							
+				</tr>		
+				<tr>
+					<td>
+						<label for="brand">Brand</label>
+					</td>
+					<td>
+						<input type="text" th:field="${property.brand}" id="brand" placeholder="Brand" />
+						<span th:if="${#fields.hasErrors('brand')}" th:errors="*{brand}"></span>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label for="model">Model</label>
+					</td>
+					<td>
+						<input type="text" th:field="${property.model}" id="model" placeholder="Model" />
+						<span th:if="${#fields.hasErrors('model')}" th:errors="*{model}"></span>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label for="serialNum">Serial Number</label>
+					</td>
+					<td>
+						<input type="text" th:field="${property.serialNum}" id="serialNum" placeholder="Serial Number" />
+						<span th:if="${#fields.hasErrors('serialNum')}" th:errors="*{serialNum}"></span>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label for="damageType">Damage Type</label>
+					</td>
+					<td>
+						<select id="damageType_id" th:field="${property.damageType}" >
+							<option th:each="r : ${damageTypes}"
+											th:value="${r.id}"
+											th:text="${r.name}">
+							</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label for="value_id">Value</label>
+					</td>
+					<td>$
+						<input type="text" th:field="${property.value}" id="value_id" placeholder="Value" />
+						<span th:if="${#fields.hasErrors('value')}" th:errors="*{value}"></span>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label for="owener">Owner</label>
+					</td>
+					<td>
+						<input type="text" th:field="${property.owner}" id="owner" placeholder="property owner if not yourself" size="30" maxlength="70" />
+						<span th:if="${#fields.hasErrors('owner')}" th:errors="*{owner}"></span>
+					</td>
+				</tr>					
+				<tr>
+					<td>
+						<label for="description">Description</label>
+					</td>
+					<td>				
+						<textarea th:field="${property.description}" id="description" placeholder="Description" rows="5" columns="50">
+							<span th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></span>
+							</textarea>
+					</td>
+				</tr>
+				<tr>
+					<td>		
+						<input type="submit" value="Add Property">
+					</td>
+				</tr>
+			</table>
+		</form>
+	</body>
+</htmL>

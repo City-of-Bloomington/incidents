@@ -1,0 +1,62 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--
+ - @copyright Copyright (C) 2014-2015 City of Bloomington, Indiana. All rights reserved.
+ - @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
+ - @author W. Sibo <sibow@bloomington.in.gov>
+ -
+ -->
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+  <head>
+    <title>Incident Reporting</title>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+		<link href = "css/styles.css" rel = "stylesheet"/>
+  </head>
+  <body>
+		<span th:if="${messages}" th:text="${messages}"></span>
+		<span th:if="${errors}" th:text="${errors}"></span>
+		<h2>Incident Reporting Steps</h2>
+		
+		<h4> To add an incident you will go through the following steps </h4>
+		<ul>
+			<li>Pick incident category (this page) </li>
+			<li>Add incident details (next page) </li>
+			<li> Optional, you can upload incident images </li>
+			<li> Add persons' info including witnesses (if any)</li>
+			<li> Add properties related to incident </li>
+			<li> Add vechile info if the incident include vehicle </li>
+			<li> Submit your request </li>
+		</ul>
+		<p> To start, please select one of incident categories below: </p>
+		
+		<form action="#"
+					th:action="@{/initialNext/{id}(id=${initial.id})}"
+					th:object="${initial}"
+					method="post">
+			<input type="hidden" th:field="${initial.email}" />
+			<input type="hidden" th:field="${initial.received}" />			
+			<table>
+				<tr>
+					<td>
+						<label for="type_id">Category of Incident you are reporting:</label>
+					</td>
+					<td>
+						<select id="type_id" th:field="${initial.incidentType}" >
+							<option value="-1">Pick Category</option>
+							<option th:each="r : ${types}"
+											th:value="${r.id}"
+											th:text="${r.name}">
+							</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<input type="submit" value="Next" />
+					</td>
+				</tr>
+			</table>
+		</form>
+	</body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--
+ - @copyright Copyright (C) 2014-2015 City of Bloomington, Indiana. All rights reserved.
+ - @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
+ - @author W. Sibo <sibow@bloomington.in.gov>
+ -
+ -->
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+  <head>
+    <title>Person(s)</title>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+		<link href = "css/styles.css" rel = "stylesheet"/>
+  </head>
+  <body>
+		<span th:if="${messages}" th:text="${messages}"></span>
+		<span th:if="${errors}" th:text="${errors}"></span>
+		<div th:fragment="persons(persons)">		
+			<h2>Incident Related People</h2>
+			<div th:switch="${persons}">
+				<h2 th:case="null">No person found </h2>
+				<div th:case="*">
+					<table>
+						<thead>
+							<tr>
+								<th>ID</th>							
+								<th>Person Category</th>
+								<th>Full Name </th>
+								<th>Address </th>
+								<th>City, State Zipcode </th>
+								<th>Phones </th>
+								<th>Emails </th>
+								<th>SSN</th>
+								<th>DLN</th>
+								<th>DOB</th>
+								<th>Race & Sex</th>
+								<th>Height</th>
+								<th>Weight</th>
+								<th>Occupation</th>
+								<th>Reporter?</th>
+								<th>Edit</th>
+								<th>Delete</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="person : ${persons}">
+								<td th:text="${person.id}"></td>
+								<td th:text="${person.personType}"></td>
+								<td th:text="${person.fullname}"></td>							
+								<td th:text="${person.address}"></td>
+								<td th:text="${person.cityStateZip}"></td>
+								<td th:text="${person.phones}"></td>
+								<td th:text="${person.emails}"></td>
+								<td th:text="${person.ssnLastFour}"></td>
+								<td th:text="${person.dln}"></td>
+								<td th:text="${person.dobStr}"></td>
+								<td th:text="${person.raceAndSex}"></td>
+								<td th:text="${person.height}"></td>
+								<td th:text="${person.weight}"></td>
+								<td th:text="${person.occupation}"></td>
+								<td th:text="${person.reporter == null ? 'No':'Yes'}"></td>							
+								<td><a th:href="@{/person/edit/{id}(id=${person.id})}">Edit</a></td>
+								<td><a th:href="@{/person/delete/{id}(id=${person.id})}">Delete</a></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>      
+			</div>
+		</div>
+	</body>
+</htmL>
+		
