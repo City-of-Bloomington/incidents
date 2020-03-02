@@ -278,7 +278,6 @@ public class Helper
     {
         String back = "";
         try {
-            // System.err.println(" file path " + filePath);
             File file = new File(filePath);
             if (!file.exists()) {
                 file.mkdirs();
@@ -298,6 +297,29 @@ public class Helper
         }
         return back;
     }
+
+		public final static String checkFilePath(final String filePath){
+        String back = "";
+        try {
+            File file = new File(filePath);
+            if (!file.exists()) {
+                file.mkdirs();
+                String os = System.getProperty("os.name").toLowerCase();
+                System.err.println(" OS " + os);
+                if (os.indexOf("win") == -1) { // linux
+                    String cmd  = "/bin/chgrp " + filePath;
+                    String cmd2 = "/bin/chmod 777 " + filePath;
+                    Runtime.getRuntime().exec(cmd);
+                    Runtime.getRuntime().exec(cmd2);
+                }
+            }
+        }
+        catch (Exception ex) {
+            back += ex;
+            System.err.println(ex);
+        }
+        return back;
+    }		
     public final static String extractErrors(final BindingResult result)
     {
 				String errors = "";

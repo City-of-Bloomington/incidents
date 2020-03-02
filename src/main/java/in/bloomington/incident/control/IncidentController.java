@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.validation.ObjectError;
@@ -43,10 +44,6 @@ public class IncidentController {
 		final static Logger logger = LoggerFactory.getLogger(IncidentController.class);		
 		final static List<String> entryTypes =
 				new ArrayList<>(Arrays.asList("Unlocked vehicle", "Broke window","Pried window","Pried door","Other specify"));
-		/*
-		final static List<String> zipCodes =
-				new ArrayList<>(Arrays.asList("47401", "47403","47404","47408"));
-		*/
 		@Autowired
 		IncidentService incidentService;		
 		@Autowired
@@ -96,7 +93,10 @@ public class IncidentController {
     }
 		*/
 		@GetMapping("/incidentStart/{id}")
-    public String startIncident(@PathVariable("id") int id, Model model) {
+    public String startIncident(@PathVariable("id") int id,
+																Model model,
+																RedirectAttributes redirectAttributes
+																) {
 				Incident incident = null;
 				try{
 						incident = incidentService.findById(id);
@@ -104,6 +104,8 @@ public class IncidentController {
 						errors += "Invalid incident Id: "+id;
 						logger.error(errors+" "+ex);
 						model.addAttribute("errors", errors);
+						redirectAttributes.addFlashAttribute("errors",
+																								 "invalid incident " + id + "!");
 						return "redirect:/start";
 				}
         model.addAttribute("incident", incident);
@@ -116,32 +118,28 @@ public class IncidentController {
 		@PostMapping("/incidentNext/{id}")
     public String incidentNext(@PathVariable("id") int id,
 															 @Valid Incident incident,
-															 BindingResult result, Model model
+															 BindingResult result, Model model,
+															 RedirectAttributes redirectAttributes
 															 ) {
         if (result.hasErrors()) {
 						errors = Helper.extractErrors(result);
-						/*
-						for (ObjectError error : result.getAllErrors()) {
-								if(!errors.equals("")) errors += " ";
-								errors += error.getObjectName() + " - " + error.getDefaultMessage();
-						}
-						*/
 						model.addAttribute("entryTypes", entryTypes);
 						model.addAttribute("allZipCodes", getAllZipCodes());
 						model.addAttribute("allStates", getAllStates());
-						model.addAttribute("allCities", getAllCities());						
-						model.addAttribute("errors", errors);
+						model.addAttribute("allCities", getAllCities());
+						redirectAttributes.addFlashAttribute("errors",errors);
+						// model.addAttribute("errors", errors);
             return "incidentAdd";
         }
 				if(!incident.verifyAll(defaultCity,
 															 defaultState,
 															 zipCodes)){
 						errors = incident.getErrorInfo();
-						model.addAttribute("errors", errors);
 						model.addAttribute("entryTypes", entryTypes);
 						model.addAttribute("allZipCodes", getAllZipCodes());
 						model.addAttribute("allStates", getAllStates());
-						model.addAttribute("allCities", getAllCities());	
+						model.addAttribute("allCities", getAllCities());
+						redirectAttributes.addFlashAttribute("errors",errors);
 						return "incidentAdd";
 				}
         incidentService.update(incident);
@@ -170,7 +168,10 @@ public class IncidentController {
 				return "incident";
 		}
 		@GetMapping("/incident/submit/{id}")
-		public String submitIncident(@PathVariable("id") int id, Model model) {
+		public String submitIncident(@PathVariable("id") int id,
+																 Model model,
+																 RedirectAttributes redirectAttributes
+																 ) {
 				Incident incident = null;
 				try{
 						incident = incidentService.findById(id);

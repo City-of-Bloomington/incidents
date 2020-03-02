@@ -36,11 +36,11 @@ public class Media implements java.io.Serializable{
     @JoinColumn(name = "incident_id")		
 		private Incident incident;
 		@NotNull
-		private String file_name;
-		private String old_file_name;
+		private String fileName;
+		private String oldFileName;
 		private Integer year;		
 
-		private String mime_type;		
+		private String mimeType;		
 		private String notes;
 
 		//
@@ -53,10 +53,10 @@ public class Media implements java.io.Serializable{
 			super();
 			this.id = id;
 			this.incident = incident;
-			this.file_name = file_name;
-			this.old_file_name = old_file_name;
+			this.fileName = file_name;
+			this.oldFileName = old_file_name;
 			this.year = year;
-			this.mime_type = mime_type;
+			this.mimeType = mimeType;
 			this.notes = notes;
 		}
 
@@ -76,20 +76,22 @@ public class Media implements java.io.Serializable{
 			this.incident = incident;
 		}
 
-		public String getFile_name() {
-			return file_name;
+		public String getFileName() {
+			return fileName;
 		}
 
-		public void setFile_name(String file_name) {
-			this.file_name = file_name;
+		public void setFileName(String val) {
+				if(val != null && !val.isEmpty())				
+						this.fileName = val;
 		}
 
-		public String getOld_file_name() {
-			return old_file_name;
+		public String getOldFileName() {
+			return oldFileName;
 		}
 
-		public void setOld_file_name(String old_file_name) {
-			this.old_file_name = old_file_name;
+		public void setOldFileName(String val) {
+				if(val != null && !val.isEmpty())
+						this.oldFileName = val;
 		}
 
 		public Integer getYear() {
@@ -100,12 +102,12 @@ public class Media implements java.io.Serializable{
 			this.year = year;
 		}
 
-		public String getMime_type() {
-			return mime_type;
+		public String getMimeType() {
+			return mimeType;
 		}
 
-		public void setMime_type(String mime_type) {
-			this.mime_type = mime_type;
+		public void setMimeType(String mime_type) {
+			this.mimeType = mime_type;
 		}
 
 		public String getNotes() {
@@ -136,6 +138,6 @@ public class Media implements java.io.Serializable{
 
 		@Override
 		public String toString() {
-			return "Media [" + id + ", " + old_file_name + "]";
+			return "Media [" + id + ", " + oldFileName + "]";
 		} 			
 }

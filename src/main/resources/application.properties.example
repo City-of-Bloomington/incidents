@@ -15,7 +15,20 @@ spring.cache.type=NONE
 incident.zipcodes=47401,47403,47404,47408
 ;; maximum of total value of all properties damage allowed in dollars
 incident.property.maxtotalvalue=750.0
-
+;;
+;;
+;; file storage location
+;;
+incident.upload.storage=c:/data/incidents/files
+;; uploaded file size restrictions
+;;
+spring.servlet.multipart.max-file-size=2MB
+spring.servlet.multipart.max-request-size=2MB
+;;
+;; enable or disable upload and temp file location
+;;
+spring.servlet.multipart.enabled=true
+spring.servlet.multipart.location=${java.io.tmpdir}
 ;;
 ;; now we are supporting one city and one state
 ;; for multiple cities you need 
