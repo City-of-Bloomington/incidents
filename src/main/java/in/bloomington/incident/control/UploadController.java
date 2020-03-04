@@ -65,12 +65,8 @@ public class UploadController {
 		@Value( "${incident.upload.storage}" )
 		private String storagePath;		
 
-		@GetMapping("/media/{id}")
-		public String showUploadedForm(@PathVariable("id") int id,
-																		Model model) throws IOException {
-				model.addAttribute("incident_id", id);
-				return "uploadForm";
-		}
+
+		/*
 		// get by id
     @GetMapping("/media/view/{id}")
     public String getAttachment(@PathVariable("id") int id, Model model)
@@ -84,7 +80,20 @@ public class UploadController {
 				}
 				return "redirect:/incident/"+id;
     }
-
+		*/
+    @GetMapping("/media/add/{id}")
+    public String mediaForm(@PathVariable("id") int id, Model model)
+    {
+				try{
+						Incident incident = incidentService.findById(id);
+						model.addAttribute("incident_id", id);
+						return "mediaAdd";
+				}catch(Exception ex){
+						errors = "invalid incident "+id;
+						errors += ex;
+				}
+				return "redirect:/start";
+    }		
     // delete by id
     @GetMapping("/media/delete/{id}")
     public String deleteAttachment(@PathVariable("id") int id)
@@ -100,20 +109,20 @@ public class UploadController {
     }
 
 
-    @PostMapping("/uploadMedia")
+    @PostMapping("/media/save")
     public String doUploadAndSave(@RequestParam("file" ) MultipartFile file,
-                           @RequestParam("id"   ) int           id,
-                           @RequestParam("notes") String        notes
+                           @RequestParam("incident_id"   ) int  incident_id,
+                           @RequestParam("notes") String  notes
                            ){
         String fileName = null;
         if (file == null || file.isEmpty()) {
             messages += "Please select a file to upload";
-            return "redirect:mediaNew/" + id;
+            return "redirect:media/add" + incident_id;
         }
         String oldFileName  = file.getOriginalFilename();
 				if(oldFileName.contains("..")){
 						errors = "file name should not have relative directory";
-						return "redirect:mediaNew/" + id;
+						return "redirect:media/add/" + incident_id;
 				}
 				String mimeType = file.getContentType();
         String ret_str   = "";
@@ -140,7 +149,7 @@ public class UploadController {
 								one.setNotes      (notes     );
 								one.setYear(year);
 								one.setMimeType(mimeType);
-								Incident incident = incidentService.findById(id);
+								Incident incident = incidentService.findById(incident_id);
 								one.setIncident(incident);
 								mediaService.save(one);
 								messages += "Uploaded Successfully";
@@ -150,7 +159,7 @@ public class UploadController {
             e.printStackTrace();
             errors += e;
         }
-        return "redirect:/incident/" +  id;
+        return "redirect:/incident/" +  incident_id;
     }
     @GetMapping("/media/download/{id}")
     public ResponseEntity<InputStreamResource> doDownload(@PathVariable int id)

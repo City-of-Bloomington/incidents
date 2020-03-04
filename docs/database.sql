@@ -225,7 +225,7 @@ insert into actions select * from statuses;
 	)engine=InnoDB;
 	
 	create table media(
-			 id int unsigned primary key,
+			 id int unsigned auto_increment primary key,
 			 incident_id int unsigned not null,
 			 file_name varchar(80),
 			 old_file_name varchar(150),
@@ -235,7 +235,8 @@ insert into actions select * from statuses;
  			 FOREIGN KEY (incident_id) REFERENCES incidents (id)
 			 )engine=InnoDB;	
  alter table media change name file_name varchar(80);
-
+ alter table media modify id int unsigned auto_increment;
+ 
   create table vehicles(
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `incident_id` int(10) unsigned NOT NULL,

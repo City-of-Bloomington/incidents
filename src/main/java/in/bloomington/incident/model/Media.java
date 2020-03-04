@@ -30,6 +30,7 @@ import javax.validation.constraints.NotNull;
 public class Media implements java.io.Serializable{
 
 		@Id
+		@GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
 		@ManyToOne(fetch = FetchType.EAGER)
@@ -117,7 +118,22 @@ public class Media implements java.io.Serializable{
 		public void setNotes(String notes) {
 			this.notes = notes;
 		}
-
+		@Transient
+		public String getInfo(){
+				String ret = "";
+				if(fileName != null){
+						ret = "name:"+fileName;
+				}
+				if(year != null){
+						if(!ret.isEmpty()) ret += " ";
+						ret += "year:"+year;
+				}
+				if(mimeType != null){
+						if(!ret.isEmpty()) ret += " ";
+						ret += "type:"+mimeType;
+				}
+				return ret;
+		}
 		@Override
     public boolean equals(Object obj) { 
           

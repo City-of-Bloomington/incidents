@@ -24,7 +24,7 @@
 				<li>The incident is ready to be submitted.</li>
 				<li>If submitted no more changes can be done</li>
 				<li>Review your request again to make sure everything is correct</li>
-				<li>If no further changes is needed click on the 'Submit' button below</li>
+				<li>If no further changes are needed click on the 'Submit' button below</li>
 			</ul>
 		</div>
 		<fieldset>
@@ -84,32 +84,60 @@
 				<table>
 					<tr>
 						<td th:if="${incident.hasPersonList()}">
+							<input type="button"
+										 th:attr="onclick=|window.location.href='/person/add/${incident.id}'|"
+										 value="Add Another Person" />
+							<!--
 							<a th:href="@{/person/add/{id}(id=${incident.id})}">Add Another Person </a>
+							-->
 						</td>
-						<td th:unless="${incident.hasPersonList()}">					
-							<a th:href="@{/person/add/{id}(id=${incident.id})}">Add Person </a>
+						<td th:unless="${incident.hasPersonList()}">
+							<input type="button"
+										 th:attr="onclick=|window.location.href='/person/add/${incident.id}'|"
+										 value="Add person" /> 
 						</td>
 						<td th:if="${incident.hasPropertyList()}">
-							<a th:href="@{/property/add/{id}(id=${incident.id})}">Add Another Property </a>
+							<input type="button"
+										 th:attr="onclick=|window.location.href='/property/add/${incident.id}'|"
+										 value="Add another property" /> 							
 						</td>
-						<td th:unless="${incident.hasPropertyList()}">					
-							<a th:href="@{/property/add/{id}(id=${incident.id})}">Add Property </a>
+						<td th:unless="${incident.hasPropertyList()}">
+							<input type="button"
+										 th:attr="onclick=|window.location.href='/property/add/${incident.id}'|"
+										 value="Add property" /> 	
+							
 						</td>
 						<td th:if="${incident.hasVehicleList()}">
-							<a th:href="@{/vehicle/add/{id}(id=${incident.id})}">Add Another Vehicle </a>
+							<input type="button"
+										 th:attr="onclick=|window.location.href='/vehicle/add/${incident.id}'|"
+										 value="Add another vehicle" /> 	
+							
 						</td>
 						<td th:unless="${incident.hasVehicleList()}">					
-							<a th:href="@{/vehicle/add/{id}(id=${incident.id})}">Add Vehicle </a>
+							<input type="button"
+										 th:attr="onclick=|window.location.href='/vehicle/add/${incident.id}'|"
+										 value="Add vehicle" /> 	
 						</td>
+						<td th:if="${incident.hasMediaList()}">
+							<input type="button"
+										 th:attr="onclick=|window.location.href='/media/add/${incident.id}'|"
+										 value="Upload anther image" /> 								
+						</td>
+						<td th:unless="${incident.hasMediaList()}">
+							<input type="button"							
+										 th:attr="onclick=|window.location.href='/media/add/${incident.id}'|"
+										 value="Upload image" /> 	
+						</td>						
 					</tr>
 					<tr th:if="${incident.canBeSubmitted()}">
 						<td colspan="2">Your incident is ready to be submitted </td>
 						<td>
-							<a th:href="@{/incident/submit/{id}(id=${incident.id})}">Submit</a>
+							<input type="button"							
+										 th:attr="onclick=|window.location.href='/incident/submit/${incident.id}'|"
+										 value="Submit the incident" /> 								
 						</td>
 					</tr>					
 				</table>
-
 			</fieldset>
 			<div th:if="${incident.hasPersonList()}">
 				<div th:insert="personsShort::persons(${incident.persons})"></div>
@@ -119,6 +147,9 @@
 			</div>
 			<div th:if="${incident.hasVehicleList()}">
 				<div th:insert="vehiclesShort::vehicles(${incident.vehicles})"></div>
-			</div>				
+			</div>
+			<div th:if="${incident.hasMediaList()}">
+				<div th:insert="medias::medias(${incident.medias})"></div>
+			</div>			
 	</body>
 </html>

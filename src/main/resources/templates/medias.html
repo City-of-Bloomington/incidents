@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--
+ - @copyright Copyright (C) 2014-2015 City of Bloomington, Indiana. All rights reserved.
+ - @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
+ - @author W. Sibo <sibow@bloomington.in.gov>
+ -
+ -->
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+  <head>
+    <title>Incident Images</title>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+		<link href = "css/styles.css" rel = "stylesheet"/>
+  </head>
+  <body>
+		<span th:if="${messages}" th:text="${messages}"></span>
+		<span th:if="${errors}" th:text="${errors}"></span>
+		<div th:fragment="medias(medias)">
+			
+			<h2>Uploaded Images</h2>
+			<div th:switch="${medias}">
+				<h2 th:case="null">No files found</h2>
+				<div th:case="*">
+					<table>
+						<thead>
+							<tr>
+								<th>ID</th>							
+								<th>Old Name</th>
+								<th>Description</th>
+								<th>Delete</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="one : ${medias}">
+								<td><a th:href="@{/media/download/{id}(id=${one.id})}">View/Download</a></td>
+								<td th:text="${one.oldFileName}"></td>
+								<td th:text="${one.notes}"></td>
+								<td><a th:href="@{/media/delete/{id}(id=${one.id})}">Delete</a></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>      
+			</div>
+		</div>
+		</body>
+	</htmL>
+		

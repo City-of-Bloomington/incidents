@@ -1,0 +1,54 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--
+ - @copyright Copyright (C) 2014-2015 City of Bloomington, Indiana. All rights reserved.
+ - @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
+ - @author W. Sibo <sibow@bloomington.in.gov>
+ -
+ -->
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+  <head>
+    <title>Upload Image</title>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+		<link href = "css/styles.css" rel = "stylesheet"/>
+  </head>
+  <body>
+		<span th:if="${messages}" th:text="${messages}"></span>
+		<span th:if="${errors}" th:text="${errors}"></span>
+    <h2>Upload Image</h2>
+		<ul>
+			<li>You can upload image files related to the incident showing the damages (if any)</li>
+			<li>file types should be of image types such as PDF, JPG, PNG, GIF</li>
+			<li>File size is limited to maximum of 2 mega bytes per file </li>
+			<li>If the file is large you can resize it using one of the image editing software such MS Paint</li>
+			<li>You can upload one file at a time</li>
+		</ul>
+		<form enctype="multipart/form-data"
+					th:action="@{/media/save}" method="post">
+			<input type="hidden" name="incident_id" th:value="${incident_id}" />
+			<table>
+				<tr>
+					<td>
+						<label for="file_id">Image File</label>
+					</td>
+					<td>
+						<input type="file" name="file" id="file_id" placeholder="Select file">
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">You may add description related to the uploaded image above (limit 500 characters)</td>
+				</tr>
+				<tr>
+					<td><label for="notes_id">Description</label>
+					</td>
+					<td><textarea name="notes" rows="5" cols="60" placeHolder="Type your description"></textarea>
+				</tr>						
+				<tr>
+					<td>		
+						<input type="submit" value="Save">
+					</td>
+				</tr>
+			</table>
+		</form>
+	</body>
+</htmL>
