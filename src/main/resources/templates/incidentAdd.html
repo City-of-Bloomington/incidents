@@ -6,14 +6,11 @@
  -
  -->
 <html xmlns="http://www.w3.org/1999/xhtml">
-
-  <head>
-    <title>Incident Reporting</title>
-    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
-		<link href = "css/styles.css" rel = "stylesheet"/>
-  </head>
+  <head th:insert="general::head('Incident')"></head>
   <body>
-		<h2>Add Incident</h2>
+		<header th:insert="general::header">
+		</header>
+		<h2>Add Incident Details</h2>
 		<span th:if="${errors}" th:text="${errors}"></span>
 		
 		<p>Incident Type <span th:text="${incident.incidentType}"> </span> </p>

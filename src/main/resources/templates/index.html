@@ -6,17 +6,13 @@
  -
  -->
 <html xmlns="http://www.w3.org/1999/xhtml">
-	
-   <head>
-     <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>		 
-     <link href = "css/styles.css" rel = "stylesheet"/>
-     <title>Incidents Application</title>
-   </head>
-   <body>
-      <h2>Welcome to Incident Reporting App</h2>
-			<h3> Reporting </h3>
+  <head th:insert="general::head('Incident')"></head>
+  <body>
+		<header th:insert="general::header">
+		</header>		
+			<h3> Test Page </h3>
 			<ul>
-				<li><a href="/startReport">Report Incident</a></li>
+				<li><a href="/start">Report Incident</a></li>
 				<li><a href="/incident/edit/5832">Edit incident 5831 </a></li>
 				<li><a href="/incident/5832">View incident 5831 </a></li>
 			</ul>

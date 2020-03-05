@@ -10,6 +10,7 @@ import java.text.SimpleDateFormat;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Date;
+import java.util.List;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -19,6 +20,8 @@ import java.time.format.DateTimeFormatter;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.validation.FieldError;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
@@ -330,5 +333,25 @@ public class Helper
 						}
 				}
         return errors;
-    }		
+    }
+		/**
+		 * we are assuming that the incident Id is already in the session
+		 * after incident is saved
+		 */
+		@SuppressWarnings("unchecked")
+		public final static boolean verifySession(final HttpServletRequest req, final String id){
+				// no new session
+				HttpSession session = req.getSession();
+				if(session != null){
+						List<String> ids = (List<String>) session.getAttribute("incident_ids");
+						if(ids != null){
+								System.err.println(" ** ids ** "+ids);
+								if(ids.contains(id)){
+										return true;
+								}
+						}
+				}
+				return false;
+		}
+		
 }

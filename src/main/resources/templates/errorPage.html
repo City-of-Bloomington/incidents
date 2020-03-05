@@ -6,17 +6,19 @@
  -
  -->
 <html xmlns="http://www.w3.org/1999/xhtml">
-
-  <head>
-    <title>Error</title>
-    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
-		<link href = "css/styles.css" rel = "stylesheet"/>
-  </head>
+  <head th:insert="general::head('Error')"></head>
   <body>
+		<header th:insert="general::header">
+		</header>
     <h2>Incident Reproting Error </h2>		
-		<span th:if="${errors}" th:text="${errors}"></span>
-    <h1>${errorMsg}</h1>
-    <p><span th:text="${errorMsg}"></span></p>
+    <h1><span th:text="${errorMsg}"></span></h1>
+		<div th:if="${errors}">
+			<div th:switch="${errors}">
+				<ul th:each="error : ${errors}">
+					<li th:text="${error}"></li>
+				</ul>
+			</div>
+		</div>
 		<p><a href="/index"> Settings </a></p>
 		</body>
 	</htmL>

@@ -61,4 +61,9 @@ incident.dbdatasource.validationQuery = SELECT 1
 incident.dbdatasource.max-active = 15
 incident.dbdatasource.max-idle = 10
 incident.dbdatasource.max-wait = 8000
-
+;;
+;; saving sesion in the database
+;;
+spring.session.store-type=jdbc
+spring.session.jdbc.initialize-schema=always
+spring.session.timeout.seconds=900

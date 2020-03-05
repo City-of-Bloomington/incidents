@@ -5,7 +5,7 @@ package in.bloomington.incident.control;
  * @author W. Sibo <sibow@bloomington.in.gov>
  *
  */
-
+import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import javax.servlet.http.HttpServletRequest;
@@ -22,51 +22,37 @@ import org.springframework.web.bind.annotation.PathVariable;
 @Controller
 public class ErrorControl implements ErrorController  {
 
-		/*
-		@RequestMapping("/error")
-		public String handleError(HttpServletRequest request) {
-				Object status = request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
-     
-				if (status != null) {
-						Integer statusCode = Integer.valueOf(status.toString());
-						
-						if(statusCode == HttpStatus.NOT_FOUND.value()) {
-								return "error-404";
-						}
-						else if(statusCode == HttpStatus.INTERNAL_SERVER_ERROR.value()) {
-								return "error-500";
-						}
-				}
-				return "errors";
-		}
-		*/
-		
 		@RequestMapping(value = "error", method = RequestMethod.GET)
-    public ModelAndView renderErrorPage(HttpServletRequest httpRequest) {
+    public ModelAndView renderErrorPage(HttpServletRequest
+																				httpRequest,
+																				@ModelAttribute("errors") List<String> errors
+																				) {
          
         ModelAndView errorPage = new ModelAndView("errorPage");
         String errorMsg = "";
         int httpErrorCode = getErrorCode(httpRequest);
- 
+				
         switch (httpErrorCode) {
             case 400: {
-                errorMsg = "Http Error Code: 400. Bad Request";
+                errorMsg = "Error Code: 400. Bad Request";
                 break;
             }
             case 401: {
-                errorMsg = "Http Error Code: 401. Unauthorized";
+                errorMsg = "Error Code: 401. Unauthorized";
                 break;
             }
             case 404: {
-                errorMsg = "Http Error Code: 404. Resource not found";
+                errorMsg = "Error Code: 404. Resource not found";
                 break;
             }
             case 500: {
-                errorMsg = "Http Error Code: 500. Internal Server Error";
+                errorMsg = "Error Code: 500. Internal Server Error";
                 break;		
 		      }
         }
         errorPage.addObject("errorMsg", errorMsg);
+				if(errors != null)
+						errorPage.addObject("errors", errors);
         return errorPage;
     }
      

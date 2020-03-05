@@ -23,6 +23,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.validation.ObjectError;
 import org.springframework.validation.FieldError;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.slf4j.Logger;
@@ -95,8 +96,13 @@ public class IncidentController {
 		@GetMapping("/incidentStart/{id}")
     public String startIncident(@PathVariable("id") int id,
 																Model model,
-																RedirectAttributes redirectAttributes
+																RedirectAttributes redirectAttributes,
+																HttpServletRequest req
 																) {
+				if(!Helper.verifySession(req, ""+id)){
+						System.err.println(" not in session ");
+						messages += " not in session ";
+				}
 				Incident incident = null;
 				try{
 						incident = incidentService.findById(id);
@@ -105,21 +111,23 @@ public class IncidentController {
 						logger.error(errors+" "+ex);
 						model.addAttribute("errors", errors);
 						redirectAttributes.addFlashAttribute("errors",
-																								 "invalid incident " + id + "!");
+																						"invalid incident " + id + "!");
 						return "redirect:/start";
 				}
         model.addAttribute("incident", incident);
 				model.addAttribute("entryTypes", entryTypes);
 				model.addAttribute("allZipCodes", getAllZipCodes());
 				model.addAttribute("allStates", getAllStates());
-				model.addAttribute("allCities", getAllCities());	
+				model.addAttribute("allCities", getAllCities());
+				model.addAttribute("messages", messages);
         return "incidentAdd";
     }
 		@PostMapping("/incidentNext/{id}")
     public String incidentNext(@PathVariable("id") int id,
 															 @Valid Incident incident,
 															 BindingResult result, Model model,
-															 RedirectAttributes redirectAttributes
+															 RedirectAttributes redirectAttributes,
+															 HttpServletRequest req
 															 ) {
         if (result.hasErrors()) {
 						errors = Helper.extractErrors(result);
@@ -127,6 +135,7 @@ public class IncidentController {
 						model.addAttribute("allZipCodes", getAllZipCodes());
 						model.addAttribute("allStates", getAllStates());
 						model.addAttribute("allCities", getAllCities());
+						// flash attribute is pass data to other model
 						redirectAttributes.addFlashAttribute("errors",errors);
 						// model.addAttribute("errors", errors);
             return "incidentAdd";
@@ -154,24 +163,40 @@ public class IncidentController {
     }
 		// view mode
 		@GetMapping("/incident/{id}")
-		public String showIncident(@PathVariable("id") int id, Model model) {
+		public String showIncident(@PathVariable("id") int id,
+															 Model model,
+															 HttpServletRequest req,
+															 RedirectAttributes redirectAttributes
+															 ) {
 				Incident incident = null;
+				if(!Helper.verifySession(req, ""+id)){
+						System.err.println(" not in session ");
+						messages += "not in session ";
+				}
 				try{
 						incident = incidentService.findById(id);
 				}catch(Exception ex){
-						errors += "Invalid incident Id";
+						errors += "Invalid incident Id "+id;
+						List<String> errlist = new ArrayList<>();
+						errlist.add(errors);
 						logger.error(errors+" "+ex);
-						model.addAttribute("errors", errors);
-						return "index"; // need fix
+						redirectAttributes.addFlashAttribute("errors", errlist);
+						return "redirect:/error";
 				}
-        model.addAttribute("incident", incident);				
+        model.addAttribute("incident", incident);
+				model.addAttribute("messages", messages);
 				return "incident";
 		}
 		@GetMapping("/incident/submit/{id}")
 		public String submitIncident(@PathVariable("id") int id,
 																 Model model,
-																 RedirectAttributes redirectAttributes
+																 RedirectAttributes redirectAttributes,
+																 HttpServletRequest req
 																 ) {
+				if(!Helper.verifySession(req, ""+id)){
+						System.err.println(" not in session ");
+						messages += "not in session ";						
+				}
 				Incident incident = null;
 				try{
 						incident = incidentService.findById(id);
@@ -192,7 +217,8 @@ public class IncidentController {
 						model.addAttribute("errors", errors);
 						return "index"; // need fix
 				}
-        model.addAttribute("incident", incident);				
+        model.addAttribute("incident", incident);
+				model.addAttribute("messages", messages);
 				return "incident";
 		}		
 
@@ -209,7 +235,14 @@ public class IncidentController {
     }
 
 		@GetMapping("/incident/edit/{id}")
-		public String showEditForm(@PathVariable("id") int id, Model model) {
+		public String showEditForm(@PathVariable("id") int id,
+															 Model model,
+															 HttpServletRequest req
+															 ) {
+				if(!Helper.verifySession(req, ""+id)){
+						System.err.println(" not in session ");
+						messages += " not in session ";
+				}
 				Incident incident = null;
 				try{
 						incident = incidentService.findById(id);
@@ -224,19 +257,26 @@ public class IncidentController {
 				model.addAttribute("entryTypes", entryTypes);
 				model.addAttribute("allZipCodes", getAllZipCodes());
 				model.addAttribute("allStates", getAllStates());
-				model.addAttribute("allCities", getAllCities());	
+				model.addAttribute("allCities", getAllCities());
+				model.addAttribute("messages", messages);
 				return "incidentUpdate";
 		}
 		@PostMapping("/incident/update/{id}")
 		public String updateIncident(@PathVariable("id") int id,
 																 @Valid Incident incident, 
-																 BindingResult result, Model model) {
+																 BindingResult result,
+																 Model model,
+																 HttpServletRequest req
+																 ) {
 				if (result.hasErrors()) {
 						errors = Helper.extractErrors(result);
 						logger.error("Error update incident "+id+" "+errors);
 						incident.setId(id);
 						return "updateIncident";
 				}
+				if(!Helper.verifySession(req, ""+id)){
+						System.err.println(" not in session ");
+				}				
 				incidentService.update(incident);
 				messages = "Updated Successfully";				
 				model.addAttribute("messages", messages);
@@ -244,8 +284,13 @@ public class IncidentController {
 		}
 		
 		@GetMapping("/incident/delete/{id}")
-		public String deleteIncident(@PathVariable("id") int id, Model model) {
-
+		public String deleteIncident(@PathVariable("id") int id,
+																 Model model,
+																 HttpServletRequest req
+																 ) {
+				if(!Helper.verifySession(req, ""+id)){
+						System.err.println(" not in session ");
+				}				
 				Incident incident = null;
 				try{
 						incident = incidentService.findById(id);

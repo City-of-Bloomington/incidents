@@ -6,13 +6,10 @@
  -
  -->
 <html xmlns="http://www.w3.org/1999/xhtml">
-
-  <head>
-    <title>New User Role</title>
-    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
-		<link href = "css/styles.css" rel = "stylesheet"/>
-  </head>
+  <head th:insert="general::head('Files')"></head>
   <body>
+		<header th:insert="general::header">
+		</header>		
 		<div th:if="${message}">
 			<h2 th:text="${message}"/>
 		</div>

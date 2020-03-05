@@ -6,17 +6,14 @@
  -
  -->
 <html xmlns="http://www.w3.org/1999/xhtml">
-
-  <head>
-    <title>Error</title>
-    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
-		<link href = "css/styles.css" rel = "stylesheet"/>
-  </head>
+  <head th:insert="general::head('Errors')"></head>
   <body>
+		<header th:insert="general::header">
+		</header>
     <h2>Errors</h2>		
 		<span th:if="${errors}" th:text="${errors}"></span>
 		
 		<p><a href="/index"> Settings </a></p>
-		</body>
-	</htmL>
-		
+	</body>
+</htmL>
+

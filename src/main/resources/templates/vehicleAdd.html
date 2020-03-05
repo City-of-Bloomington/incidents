@@ -6,18 +6,13 @@
  -
  -->
 <html xmlns="http://www.w3.org/1999/xhtml">
-
-  <head>
-    <title>Add Vehicle</title>
-    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
-		<link href = "css/styles.css" rel = "stylesheet"/>
-  </head>
+  <head th:insert="general::head('Vehicle')"></head>
   <body>
+		<header th:insert="general::header">
+		</header>		
 		<span th:if="${messages}" th:text="${messages}"></span>
 		<span th:if="${errors}" th:text="${errors}"></span>
-		<h2>Incident Reporting</h2>
-		
-    <h3>Add New Vehicle</h3>
+    <h2>Add New Vehicle</h2>
 		<p> *indicated required fields</p>		
 		<form action="#"
 					th:action="@{/vehicle/save}"

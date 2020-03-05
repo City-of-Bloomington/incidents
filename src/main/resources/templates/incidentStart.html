@@ -6,11 +6,10 @@
  -
  -->
 <html xmlns="http://www.w3.org/1999/xhtml">
-	
-  <head>
-    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>		 
-    <link href = "css/styles.css" rel = "stylesheet"/>
-    <title>Incident Reporting</title>
+  <head th:insert="general::head('Incident')"></head>
+  <body>
+		<header th:insert="general::header">
+		</header>	
 		<script type="text/javascript">
 			function verifyConfirm(){
 			   var checked = document.getElementById("confirm").checked;

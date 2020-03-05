@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import javax.validation.Valid;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 // import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestParam;
 import in.bloomington.incident.service.IncidentService;
@@ -41,7 +43,7 @@ public class IncidentInitialController {
 		
 		
 		String errors="", messages="";
-		@GetMapping("/startReport")
+		@GetMapping("/start")		
 		public String startIncident() {
 				return "initialStart";
 		}
@@ -63,10 +65,14 @@ public class IncidentInitialController {
 				model.addAttribute("types", types);				
 				return "initialSelectType";
 		}
+		@SuppressWarnings("unchecked")
 		@PostMapping("/initialNext/{id}")
 		public String initialNext(@PathVariable("id") int id,
 															IncidentInitial initial, 
-															BindingResult result, Model model) {
+															BindingResult result,
+															Model model,
+															HttpServletRequest req
+															) {
 				if (result.hasErrors()) {
 						initial.setId(id);
 						return "initialSelectType";
@@ -79,8 +85,24 @@ public class IncidentInitialController {
 				incident.setReceived(initial.getReceived());
 				incident.setIncidentType(initial.getIncidentType());
 				incidentService.save(incident);
+				//
+				// this is the only place we are adding
+				// incident ID in the session
+				//
+				HttpSession session = req.getSession(true);
+				List<String> ids = null;
+				try{
+						 ids = (List<String>) session.getAttribute("incident_ids");
+				}catch(Exception ex){
+						System.err.println(ex);
+				}
+				if(ids == null){
+						ids = new ArrayList<>();
+				}
+				ids.add(""+incident.getId());
+				session.setAttribute("incident_ids", ids);
 				return "redirect:/incidentStart/"+incident.getId();
 		}
-		
+
 		
 }

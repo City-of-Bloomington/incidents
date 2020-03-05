@@ -6,14 +6,11 @@
  -
  -->
 <html xmlns="http://www.w3.org/1999/xhtml">
-
-  <head>
-    <title>View Person</title>
-    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
-		<link href = "css/styles.css" rel = "stylesheet"/>
-  </head>
+  <head th:insert="general::head('Person')"></head>
   <body>
-		<h2>Incident Reporting</h2>
+		<header th:insert="general::header">
+		</header>			
+		<h2>Person Info</h2>
 		<span th:if="${messages}" th:text="${messages}"></span>
 		<span th:if="${errors}" th:text="${errors}"></span>
 			<fieldset>
