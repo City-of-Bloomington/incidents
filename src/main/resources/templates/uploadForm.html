@@ -14,30 +14,40 @@
 			<h2 th:text="${message}"/>
 		</div>
 		<span th:if="${errors}" th:text="${errors}"></span>
-
-		<div>
-			<form method="POST"
-						enctype="multipart/form-data"
-						action="/">
-				<input type="hidden" th:field="${incident.id}" />
-				<table>
-					<tr>
-						<td>File to upload:</td>
-						<td><input type="file" name="file" /></td>
-					</tr>
-					<tr>
-						<td></td>
-						<td><input type="submit" value="Upload" /></td>
-					</tr>
-				</table>
-			</form>
-		</div>
-		<div>
-			<ul>
-				<li th:each="file : ${files}">
-					<a th:href="${file}" th:text="${file}" />
-				</li>
-			</ul>
-		</div>
+		<h2> Add Image Files</h2>
+		<fieldset>
+			<caption>Upload Images of the Incident</caption>
+			<div th:insert="general::uploadInstructions">
+			</div>
+			<div>
+				<form method="POST"
+							enctype="multipart/form-data"
+							action="/">
+					<input type="hidden" th:field="${incident.id}" />
+					<dl>
+						<dd>Image File to Upload</dd>
+						<dt><input type="file" name="file" /></dt>
+					</dl>
+					<dl>
+						<dd>Notes (any explanation of the picture, optional)</dd>
+						<dt>
+							<textarea name="notes" rows="10" cols="50"></textarea>
+						</dt>
+					</dl>
+					<dl>
+						<dt>
+							<input type="submit" value="Submit" />
+						</dt>
+					</dl>
+				</form>
+			</div>
+			<div>
+				<ul>
+					<li th:each="file : ${files}">
+						<a th:href="${file}" th:text="${file}" />
+					</li>
+				</ul>
+			</div>
+		</fieldset>
 	</body>
 </htmL>

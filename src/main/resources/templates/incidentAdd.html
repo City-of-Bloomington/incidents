@@ -12,13 +12,10 @@
 		</header>
 		<h2>Add Incident Details</h2>
 		<span th:if="${errors}" th:text="${errors}"></span>
-		
+		<p th:insert="general::incidentInstructions">
+		</p>
+		<p> *indicated required fields</p>		
 		<p>Incident Type <span th:text="${incident.incidentType}"> </span> </p>
-		<p>
-			Please fill out the requested information as COMPLETE as you can.
-			The information you provide for your case is critical to the Department's overall crime analysis efforts. 		
-			</p>
-		<p> *indicated required fields</p>
 		<form action="#"
 					th:action="@{/incidentNext/{id}(id=${incident.id})}"
 					th:object="${incident}"
@@ -62,7 +59,7 @@
 				</table>
 			</fieldset>
 			<fieldset><legend>Location of Incident</legend>
-				<img src="/images/citylimits.jpg" alt="city limits" width="900"/>
+				<img th:src="@{/images/citylimits.jpg}" alt="city limits" width="900"/>
 				<table summary="layout for form fields" width="90%">
 					<tr>
 						<td colspan="2">
@@ -183,7 +180,7 @@
 				</fieldset>				
 				<table>
 					<tr>
-						<td>
+						<td> All required fields must be filled in to move on to next page 
 							<input type="submit" value="Next" />
 						</td>
 					</tr>

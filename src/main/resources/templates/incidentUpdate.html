@@ -12,14 +12,10 @@
 		</header>	
 		<h2>Update Incident</h2>
 		<span th:if="${errors}" th:text="${errors}"></span>
-		
-		<p>Incident Type <span th:text="${incident.incidentType}"> </span> </p>
-		<p>
-			Please fill out the requested information as COMPLETE as you can.
-			The information you provide for your case is critical to the Department's overall crime analysis efforts. 		
-			</p>
+		<p th:insert="general::incidentInstructions">
+		</p>
 		<p> *indicated required fields</p>
-		
+		<p>Incident Type <span th:text="${incident.incidentType}"> </span> </p>
 		<form action="#"
 					th:action="@{/incident/update/{id}(id=${incident.id})}"
 					th:object="${incident}"

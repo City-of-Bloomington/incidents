@@ -21,132 +21,111 @@
 				<li>The incident is ready to be submitted.</li>
 				<li>If submitted no more changes can be done</li>
 				<li>Review your request again to make sure everything is correct</li>
-				<li>If no further changes are needed click on the 'Submit' button below</li>
+				<li>If no further changes are needed click on the 'Final Submit Page'</li>
 			</ul>
 		</div>
 		<fieldset>
-				<legend>Incident General Info</legend>
-				<table summary="layout for form fields" width="90%">
-					<tr>
-						<th><label> Incident Type:</label></th>
-						<td>
-							<span th:text="${incident.incidentType}"> </span>
-						</td>
-					</tr>
-					<tr>
-						<th><label> Reporter Email</label></th>
-						<td>
-							<span th:text="${incident.email}"> </span>
-						</td>
-					</tr>
-					<tr>
-						<th><label> Report Date & Time </label></th>
-						<td>
-							<span th:text="${incident.receivedStr}"> </span>
-						</td>
-					</tr>
-					<tr>
-						<th>
-							<label>Incident Date & time </label>
-						</th>
-						<td>
-							<span th:text="${incident.dateTimeInfo}"> </span> 
-						</td>
-					</tr>
-					<tr>
-						<th>
-							<label>Incident address:</label>
-						</th>
-						<td>
-							<span th:text="${incident.addressInfo}"> </span>
-						</td>
-					</tr>
-					<tr>
-						<th>
-							<label>Entry access:</label>
-						</th>
-						<td>
-							<span th:text="${incident.entryInfo}" ></span>
-						</td>
-					</tr>
-					<tr>
-						<th>
-							<label>Incident Details</label>
-						</th>
-						<td>
-							<span th:text="${incident.details}" ></span>								
-						</td>
-					</tr>
-				</table>
-				<table>
-					<tr>
-						<td th:if="${incident.hasPersonList()}">
-							<input type="button"
-										 th:attr="onclick=|window.location.href='/person/add/${incident.id}'|"
-										 value="Add Another Person" />
-							<!--
-							<a th:href="@{/person/add/{id}(id=${incident.id})}">Add Another Person </a>
-							-->
-						</td>
-						<td th:unless="${incident.hasPersonList()}">
-							<input type="button"
-										 th:attr="onclick=|window.location.href='/person/add/${incident.id}'|"
-										 value="Add person" /> 
-						</td>
-						<td th:if="${incident.hasPropertyList()}">
-							<input type="button"
-										 th:attr="onclick=|window.location.href='/property/add/${incident.id}'|"
-										 value="Add another property" /> 							
-						</td>
-						<td th:unless="${incident.hasPropertyList()}">
-							<input type="button"
-										 th:attr="onclick=|window.location.href='/property/add/${incident.id}'|"
-										 value="Add property" /> 	
-							
-						</td>
-						<td th:if="${incident.hasVehicleList()}">
-							<input type="button"
-										 th:attr="onclick=|window.location.href='/vehicle/add/${incident.id}'|"
-										 value="Add another vehicle" /> 	
-							
-						</td>
-						<td th:unless="${incident.hasVehicleList()}">					
-							<input type="button"
-										 th:attr="onclick=|window.location.href='/vehicle/add/${incident.id}'|"
+			<legend>Incident General Info</legend>
+			<dl>
+				<dt><label> Incident Type:</label></dt>
+				<dd>
+					<span th:text="${incident.incidentType}"> </span>
+				</dd>
+				<dt><label> Reporter Email</label></dt>
+				<dd>
+					<span th:text="${incident.email}"> </span>
+				</dd>
+				<dt><label> Report Date & Time </label></dt>
+				<dd>
+					<span th:text="${incident.receivedStr}"> </span>
+				</dd>
+				<dt>
+					<label>Incident Date & time </label>
+				</dt>
+				<dd>
+					<span th:text="${incident.dateTimeInfo}"> </span> 
+				</dd>
+				<dt>
+					<label>Incident address:</label>
+				</dt>
+				<dd>
+					<span th:text="${incident.addressInfo}"> </span>
+				</dd>
+				<dt>
+					<label>Entry access:</label>
+				</dt>
+				<dd>
+					<span th:text="${incident.entryInfo}" ></span>
+				</dd>
+				<dt>
+					<label>Incident Details</label>
+				</dt>
+				<dd>
+					<span th:text="${incident.details}" ></span>								
+				</dd>
+			</dl>
+			<ul class="menu">
+				<li class="menu" th:if="${incident.hasPersonList()}">
+					<input type="button"
+								 th:attr="onclick=|window.location.href='/person/add/${incident.id}'|"
+								 value="Add Another Person" />
+				</li>
+				<li class="menu" th:unless="${incident.hasPersonList()}">
+					<input type="button"
+								 th:attr="onclick=|window.location.href='/person/add/${incident.id}'|"
+								 value="Add person" /> 
+				</li>
+				<li class="menu" th:if="${incident.hasPropertyList()}">
+					<input type="button"
+								 th:attr="onclick=|window.location.href='/property/add/${incident.id}'|"
+								 value="Add another property" /> 							
+				</li>
+				<li class="menu" th:unless="${incident.hasPropertyList()}">
+					<input type="button"
+								 th:attr="onclick=|window.location.href='/property/add/${incident.id}'|"
+								 value="Add property" /> 	
+					
+				</li>
+				<li class="menu" th:if="${incident.hasVehicleList()}">
+					<input type="button"
+								 th:attr="onclick=|window.location.href='/vehicle/add/${incident.id}'|"
+								 value="Add another vehicle" /> 	
+					
+				</li>
+				<li class="menu" th:unless="${incident.hasVehicleList()}">					
+					<input type="button"
+								 th:attr="onclick=|window.location.href='/vehicle/add/${incident.id}'|"
 										 value="Add vehicle" /> 	
-						</td>
-						<td th:if="${incident.hasMediaList()}">
-							<input type="button"
-										 th:attr="onclick=|window.location.href='/media/add/${incident.id}'|"
-										 value="Upload anther image" /> 								
-						</td>
-						<td th:unless="${incident.hasMediaList()}">
-							<input type="button"							
-										 th:attr="onclick=|window.location.href='/media/add/${incident.id}'|"
-										 value="Upload image" /> 	
-						</td>						
-					</tr>
-					<tr th:if="${incident.canBeSubmitted()}">
-						<td colspan="2">Your incident is ready to be submitted </td>
-						<td>
-							<input type="button"							
-										 th:attr="onclick=|window.location.href='/incident/submit/${incident.id}'|"
-										 value="Submit the incident" /> 								
-						</td>
-					</tr>					
-				</table>
-			</fieldset>
-			<div th:if="${incident.hasPersonList()}">
-				<div th:insert="personsShort::persons(${incident.persons})"></div>
-			</div>
-			<div th:if="${incident.hasPropertyList()}">
-				<div th:insert="propertiesShort::properties(${incident.properties},${incident.propertiesTotalValueFr})"></div>
-			</div>
-			<div th:if="${incident.hasVehicleList()}">
-				<div th:insert="vehiclesShort::vehicles(${incident.vehicles})"></div>
-			</div>
-			<div th:if="${incident.hasMediaList()}">
-				<div th:insert="medias::medias(${incident.medias})"></div>
-			</div>			
+				</li>
+				<li class="menu" th:if="${incident.hasMediaList()}">
+					<input type="button"
+								 th:attr="onclick=|window.location.href='/media/add/${incident.id}'|"
+								 value="Upload anther image" /> 								
+				</li>
+				<li class="menu" th:unless="${incident.hasMediaList()}">
+					<input type="button"							
+								 th:attr="onclick=|window.location.href='/media/add/${incident.id}'|"
+								 value="Upload image" /> 	
+				</li>						
+
+				<li class="menu" th:if="${incident.canBeSubmitted()}">
+					<input type="button"							
+								 th:attr="onclick=|window.location.href='/incident/finalPage/${incident.id}'|"
+									 value="Final Submit Page" /> 								
+				</li>
+			</ul>
+		</fieldset>
+		<div th:if="${incident.hasPersonList()}">
+			<div th:insert="personsShort::persons(${incident.persons})"></div>
+		</div>
+		<div th:if="${incident.hasPropertyList()}">
+			<div th:insert="propertiesShort::properties(${incident.properties},${incident.propertiesTotalValueFr})"></div>
+		</div>
+		<div th:if="${incident.hasVehicleList()}">
+			<div th:insert="vehiclesShort::vehicles(${incident.vehicles})"></div>
+		</div>
+		<div th:if="${incident.hasMediaList()}">
+			<div th:insert="medias::medias(${incident.medias})"></div>
+		</div>			
 	</body>
 </html>

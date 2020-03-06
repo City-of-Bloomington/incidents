@@ -30,9 +30,9 @@ public class ErrorControl implements ErrorController  {
          
         ModelAndView errorPage = new ModelAndView("errorPage");
         String errorMsg = "";
-        int httpErrorCode = getErrorCode(httpRequest);
+        int errorCode = getErrorCode(httpRequest);
 				
-        switch (httpErrorCode) {
+        switch (errorCode) {
             case 400: {
                 errorMsg = "Error Code: 400. Bad Request";
                 break;
@@ -48,7 +48,12 @@ public class ErrorControl implements ErrorController  {
             case 500: {
                 errorMsg = "Error Code: 500. Internal Server Error";
                 break;		
-		      }
+						}
+				default:{
+						errorMsg = "Error Code: "+errorCode+" Internal Server Error";
+						break;		
+				}
+								
         }
         errorPage.addObject("errorMsg", errorMsg);
 				if(errors != null)

@@ -13,6 +13,9 @@
 		<h2>Update Person</h2>
 		<span th:if="${messages}" th:text="${messages}"></span>
 		<span th:if="${errors}" th:text="${errors}"></span>
+		<p>*Indicates Required Fields </p>
+		<ul th:insert="general::personInstructions">
+		</ul>
 		<form action="#"
 					th:action="@{/person/update/{id}(id=${person.id})}"
 					th:object="${person}"
@@ -20,7 +23,6 @@
 			<input type="hidden" th:field="${person.incident}" />
 			<input type="hidden" th:field="${person.email}" />			
 			<fieldset>
-				*Indicates Required Fields <br />
 				<p>Information about the Person Reporting this Incident </p>
 				
 				<label for="person_type_id">Involvement of this person to this incident as: </label>

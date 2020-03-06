@@ -12,7 +12,11 @@
 		</header>			
 		<span th:if="${messages}" th:text="${messages}"></span>
 		<span th:if="${errors}" th:text="${errors}"></span>
-		<h2>Add Person</h2>		
+		<h2>Add Person</h2>
+		
+		*Indicates Required Fields <br />
+		<ul th:insert="general::personInstructions">
+		</ul>
 		<form action="#"
 					th:action="@{/person/save}"
 					th:object="${person}"
@@ -20,9 +24,6 @@
 			<input type="hidden" th:field="${person.incident}" />
 			<input type="hidden" name="email" th:value="${person.incident.email}" />
 			<fieldset>
-				*Indicates Required Fields <br />
-				<p>Information about the Person Reporting this Incident </p>
-				
 				<label for="person_type_id">Involvement of this person to this incident as: </label>
 				<select id="person_type_id" th:field="${person.personType}" required >
 					<option th:each="r : ${personTypes}"
@@ -230,7 +231,7 @@
 				</table>
 				<table>
 					<tr>
-						<td>
+						<td>	All required fields must be filled in to Save and move on
 							<input type="submit" value="Save" />
 						</td>
 					</tr>

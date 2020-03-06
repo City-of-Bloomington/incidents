@@ -91,6 +91,7 @@ legend {
 		float: left;
 		padding: 3px 8px;
 		text-decoration: none;
+		list-style-type: none;
 }
 .menu li a {
 		display: block;
@@ -111,15 +112,12 @@ dd::after {
 dd:last-of-type::after {
     content: '';
 }
-dd, dt {
-    display: inline;
-}
+
 dt {
     vertical-align:top;
-		width:20%;
 }
 dd {
-		width:80%;
+
 }
 dt {
     font-weight: bolder;
