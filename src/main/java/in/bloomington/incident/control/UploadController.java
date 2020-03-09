@@ -53,10 +53,9 @@ import in.bloomington.incident.utils.Helper;
 
 
 @Controller
-public class UploadController {
+public class UploadController extends TopController{
 
 		final static Logger logger = LoggerFactory.getLogger(UploadController.class);		
-		String errors="", messages="";
 		@Autowired
 		MediaService mediaService;		
 		@Autowired
@@ -89,8 +88,8 @@ public class UploadController {
 						model.addAttribute("incident_id", id);
 						return "mediaAdd";
 				}catch(Exception ex){
-						errors = "invalid incident "+id;
-						errors += ex;
+						addError("invalid incident "+id);
+						System.err.println(""+ ex);
 				}
 				return "redirect:/start";
     }		
@@ -101,8 +100,7 @@ public class UploadController {
         Media media  = mediaService.findById(id);
         Incident     incident       = media.getIncident();
         mediaService.delete(id);
-        messages += "Attachment deleted successfully";
-        
+				addMessage("Attachment deleted successfully");
         return 
             "redirect:/incident/" + incident.getId();
 
@@ -116,12 +114,12 @@ public class UploadController {
                            ){
         String fileName = null;
         if (file == null || file.isEmpty()) {
-            messages += "Please select a file to upload";
+						addMessage("Please select a file to upload");
             return "redirect:media/add" + incident_id;
         }
         String oldFileName  = file.getOriginalFilename();
 				if(oldFileName.contains("..")){
-						errors = "file name should not have relative directory";
+						addError("file name should not have relative directory");
 						return "redirect:media/add/" + incident_id;
 				}
 				String mimeType = file.getContentType();
@@ -137,7 +135,7 @@ public class UploadController {
 
             String back    = Helper.checkFilePath(dirPath);
             if (!back.equals("")) {
-                errors += back;
+                addError(back);
                 logger.error(back);
             }
 						else{
@@ -152,12 +150,12 @@ public class UploadController {
 								Incident incident = incidentService.findById(incident_id);
 								one.setIncident(incident);
 								mediaService.save(one);
-								messages += "Uploaded Successfully";
+								addMessage("Uploaded Successfully");
 						}
         }
         catch (Exception e) {
             e.printStackTrace();
-            errors += e;
+            addError(""+e);
         }
         return "redirect:/incident/" +  incident_id;
     }

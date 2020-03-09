@@ -10,11 +10,13 @@
   <body>
 		<header th:insert="general::header">
 		</header>		
-		<div th:if="${message}">
-			<h2 th:text="${message}"/>
-		</div>
-		<span th:if="${errors}" th:text="${errors}"></span>
 		<h2> Add Image Files</h2>
+		<div th:if="${errors}">
+			<div th:insert="general::errors(${errors})"></div>			
+		</div>
+		<div th:if="${messages}">
+			<div th:insert="general::messages(${messages})"></div>			
+		</div>	
 		<fieldset>
 			<caption>Upload Images of the Incident</caption>
 			<div th:insert="general::uploadInstructions">

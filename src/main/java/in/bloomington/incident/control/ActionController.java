@@ -28,13 +28,12 @@ import in.bloomington.incident.model.Action;
 
 
 @Controller
-public class ActionController {
+public class ActionController extends TopController{
 
 		final static Logger logger = LoggerFactory.getLogger(ActionController.class);
 		@Autowired
 		ActionService actionService;
 		
-		String errors="", messages="";
 		@GetMapping("/actions")
     public String getAll(Model model) {
         model.addAttribute("actions", actionService.getAll());
@@ -53,7 +52,7 @@ public class ActionController {
             return "addAction";
         }
         actionService.save(action);
-				messages = "Added Successfully";
+				addMessage("Added Successfully");
 				logger.debug("Action added successfully");
         model.addAttribute("actions", actionService.getAll());
 				model.addAttribute("messages", messages);				
@@ -67,7 +66,7 @@ public class ActionController {
 						action = actionService.findById(id);
 						
 				}catch(Exception ex){
-						errors += "Invalid action Id";
+						addError("Invalid action Id");
 						model.addAttribute("actions", actionService.getAll());
 						model.addAttribute("errors", errors);
 						logger.error("Exception getting action ="+id+" "+ex);
@@ -84,7 +83,7 @@ public class ActionController {
 						logger.error("Error update action ="+id);						
 						return "updateAction";
 				}
-				messages = "Updated Successfully";
+				addMessage("Updated Successfully");
 				actionService.update(action);
 				model.addAttribute("actions", actionService.getAll());				
 				model.addAttribute("messages", messages);
@@ -97,16 +96,16 @@ public class ActionController {
 				try{
 						Action action = actionService.findById(id);
 						actionService.delete(id);
-						messages = "Deleted Succefully";
+						addMessage("Deleted Succefully");
 				}catch(Exception ex){
 						logger.error("Error delete action ="+id+" "+ex);								
-						errors += "Invalid action ID "+id;
+						addError("Invalid action ID "+id);
 				}
 				model.addAttribute("actions", actionService.getAll());
-				if(!messages.equals("")){
+				if(hasMessages()){
 						model.addAttribute("messages", messages);
 				}
-				else if(!errors.equals("")){
+				else if(hasErrors()){
 						model.addAttribute("errors", errors);
 				}
 					 

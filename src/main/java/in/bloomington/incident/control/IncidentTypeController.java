@@ -24,12 +24,11 @@ import in.bloomington.incident.model.IncidentType;
 
 
 @Controller
-public class IncidentTypeController {
+public class IncidentTypeController extends TopController{
 
 		@Autowired
 		IncidentTypeService incidentTypeService;
 		
-		String errors="", messages="";
 		@GetMapping("/incidentTypes")
     public String getAll(Model model) {
         model.addAttribute("types", incidentTypeService.getAll());
@@ -47,7 +46,7 @@ public class IncidentTypeController {
             return "addIncidentType";
         }
         incidentTypeService.save(incidentType);
-				messages = "Added Successfully";
+				addMessage("Added Successfully");
         model.addAttribute("types", incidentTypeService.getAll());
 				model.addAttribute("messages", messages);				
         return "incidentTypes";
@@ -60,7 +59,7 @@ public class IncidentTypeController {
 						type = incidentTypeService.findById(id);
 						
 				}catch(Exception ex){
-						errors += "Invalid incident type Id";
+						addError("Invalid incident type Id");
 						model.addAttribute("types", incidentTypeService.getAll());
 						model.addAttribute("errors", errors);
 						return "incidentTypes";
@@ -75,7 +74,7 @@ public class IncidentTypeController {
 						type.setId(id);
 						return "incidentTypeUpdate";
 				}
-				messages = "Updated Successfully";
+				addMessage("Updated Successfully");
 				incidentTypeService.save(type);
 				model.addAttribute("types", incidentTypeService.getAll());				
 				model.addAttribute("messages", messages);
@@ -88,15 +87,15 @@ public class IncidentTypeController {
 				try{
 						IncidentType type = incidentTypeService.findById(id);
 						incidentTypeService.delete(id);
-						messages = "Deleted Succefully";
+						addMessage("Deleted Succefully");
 				}catch(Exception ex){
-						errors += "Invalid incidentType ID "+id;
+						addError("Invalid incidentType ID "+id);
 				}
 				model.addAttribute("types", incidentTypeService.getAll());
-				if(!messages.equals("")){
+				if(hasMessages()){
 						model.addAttribute("messages", messages);
 				}
-				else if(!errors.equals("")){
+				else if(hasErrors()){
 						model.addAttribute("errors", errors);
 				}
 					 

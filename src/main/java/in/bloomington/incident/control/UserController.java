@@ -24,10 +24,10 @@ import in.bloomington.incident.service.UserService;
 import in.bloomington.incident.service.RoleService;
 import in.bloomington.incident.model.User;
 import in.bloomington.incident.model.Role;
-
+import in.bloomington.incident.utils.Helper;
 
 @Controller
-public class UserController {
+public class UserController extends TopController{
 
 		final static Logger logger = LoggerFactory.getLogger(UserController.class);			
 		@Autowired
@@ -35,7 +35,6 @@ public class UserController {
 		@Autowired
 		RoleService roleService;
 		
-		String errors="", messages="";
 		@GetMapping("/users")
     public String getAll(Model model) {
         model.addAttribute("users", userService.getAll());
@@ -56,7 +55,7 @@ public class UserController {
             return "userAdd";
         }
         userService.save(user);
-				messages = "Added Successfully";
+				addMessage("Added Successfully");
 				logger.debug("New user added "+user);
         model.addAttribute("users", userService.getAll());
 				model.addAttribute("messages", messages);				
@@ -70,8 +69,8 @@ public class UserController {
 						user = userService.findById(id);
 						
 				}catch(Exception ex){
-						errors += "Invalid user Id";
-						logger.error(errors+" "+ex);
+						addError("Invalid user Id "+id);
+						logger.error(" "+ex);
 						model.addAttribute("users", userService.getAll());
 						model.addAttribute("errors", errors);
 						return "users";
@@ -86,12 +85,12 @@ public class UserController {
 		public String updateUser(@PathVariable("id") int id, @Valid User user, 
 														 BindingResult result, Model model) {
 				if (result.hasErrors()) {
-						errors = "Error update user ";
-						logger.error(errors);
+						String error = Helper.extractErrors(result);
+						addError("Error update user "+error);
 						user.setId(id);
 						return "userUpdate";
 				}
-				messages = "Updated Successfully";
+				addMessage("Updated Successfully");
 				userService.update(user);
 				model.addAttribute("users", userService.getAll());				
 				List<Role> roles = roleService.getAll();
@@ -107,16 +106,16 @@ public class UserController {
 				try{
 						User user = userService.findById(id);
 						userService.delete(id);
-						messages = "Deleted Succefully";
+						addMessage("Deleted Succefully");
 				}catch(Exception ex){
-						errors += "Eror delete user "+id;
-						logger.error(errors+" "+ex);
+						addError("Eror delete user "+id);
+						logger.error(" "+ex);
 				}
 				model.addAttribute("users", userService.getAll());
-				if(!messages.equals("")){
+				if(hasMessages()){
 						model.addAttribute("messages", messages);
 				}
-				else if(!errors.equals("")){
+				else if(hasErrors()){
 						model.addAttribute("errors", errors);
 				}
 				return "users";

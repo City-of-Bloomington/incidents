@@ -24,12 +24,11 @@ import in.bloomington.incident.model.CarDamageType;
 
 
 @Controller
-public class CarDamageTypeController {
+public class CarDamageTypeController extends TopController{
 
 		@Autowired
 		CarDamageTypeService carDamageTypeService;
 		
-		String errors="", messages="";
 		@GetMapping("/carDamageTypes")
     public String getAll(Model model) {
         model.addAttribute("types", carDamageTypeService.getAll());
@@ -47,7 +46,7 @@ public class CarDamageTypeController {
             return "addCarDamageType";
         }
         carDamageTypeService.save(carDamageType);
-				messages = "Added Successfully";
+				addMessage("Added Successfully");
         model.addAttribute("types", carDamageTypeService.getAll());
 				model.addAttribute("messages", messages);				
         return "carDamageTypes";
@@ -60,12 +59,15 @@ public class CarDamageTypeController {
 						type = carDamageTypeService.findById(id);
 						
 				}catch(Exception ex){
-						errors += "Invalid carDamage type Id";
+						addError("Invalid carDamage type Id");
 						model.addAttribute("types", carDamageTypeService.getAll());
 						model.addAttribute("errors", errors);
 						return "carDamageTypes";
 				}
 				model.addAttribute("type", type);
+				if(hasMessages()){
+						model.addAttribute("messages", messages);		
+				}
 				return "carDamageTypeUpdate";
 		}
 		@PostMapping("/carDamageType/update/{id}")
@@ -75,7 +77,7 @@ public class CarDamageTypeController {
 						type.setId(id);
 						return "carDamageTypeUpdate";
 				}
-				messages = "Updated Successfully";
+				addMessage("Updated Successfully");
 				carDamageTypeService.update(type);
 				model.addAttribute("types", carDamageTypeService.getAll());				
 				model.addAttribute("messages", messages);
@@ -88,15 +90,15 @@ public class CarDamageTypeController {
 				try{
 						CarDamageType type = carDamageTypeService.findById(id);
 						carDamageTypeService.delete(id);
-						messages = "Deleted Successfully";
+						addMessage("Deleted Successfully");
 				}catch(Exception ex){
-						errors += "Invalid car damage type ID "+id;
+						addError("Invalid damage type ID "+id);
 				}
 				model.addAttribute("types", carDamageTypeService.getAll());
-				if(!messages.equals("")){
+				if(hasMessages()){
 						model.addAttribute("messages", messages);
 				}
-				else if(!errors.equals("")){
+				else if(hasErrors()){
 						model.addAttribute("errors", errors);
 				}
 					 

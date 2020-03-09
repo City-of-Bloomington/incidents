@@ -24,6 +24,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.validation.ObjectError;
 import org.springframework.validation.FieldError;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.slf4j.Logger;
@@ -119,7 +120,6 @@ public class IncidentController extends TopController{
     public String incidentNext(@PathVariable("id") int id,
 															 @Valid Incident incident,
 															 BindingResult result, Model model,
-															 RedirectAttributes redirectAttributes,
 															 HttpServletRequest req
 															 ) {
         if (result.hasErrors()) {
@@ -128,9 +128,8 @@ public class IncidentController extends TopController{
 						model.addAttribute("allZipCodes", getAllZipCodes());
 						model.addAttribute("allStates", getAllStates());
 						model.addAttribute("allCities", getAllCities());
-						// flash attribute is pass data to other model
-						redirectAttributes.addFlashAttribute("errors",errors);
-						// model.addAttribute("errors", errors);
+						model.addAttribute("errors", getErrors());
+						resetAll();
             return "incidentAdd";
         }
 				if(!incident.verifyAll(defaultCity,
@@ -141,7 +140,7 @@ public class IncidentController extends TopController{
 						model.addAttribute("allZipCodes", getAllZipCodes());
 						model.addAttribute("allStates", getAllStates());
 						model.addAttribute("allCities", getAllCities());
-						redirectAttributes.addFlashAttribute("errors",errors);
+						model.addAttribute("errors", getErrors());
 						return "incidentAdd";
 				}
         incidentService.update(incident);
@@ -159,7 +158,8 @@ public class IncidentController extends TopController{
 		public String showIncident(@PathVariable("id") int id,
 															 Model model,
 															 HttpServletRequest req,
-															 RedirectAttributes redirectAttributes
+															 RedirectAttributes redirectAttributes,
+															 HttpSession session
 															 ) {
 				Incident incident = null;
 				if(!Helper.verifySession(req, ""+id)){
@@ -175,7 +175,14 @@ public class IncidentController extends TopController{
 						return "redirect:/error";
 				}
         model.addAttribute("incident", incident);
-				model.addAttribute("messages", messages);
+				getMessagesFromSession(session);
+				if(hasMessages()){
+						model.addAttribute("messages", getMessages());
+				}
+				if(hasErrors()){
+						model.addAttribute("errors",getErrors());
+				}
+				resetAll();
 				return "incident";
 		}
 		// view mode
@@ -201,6 +208,7 @@ public class IncidentController extends TopController{
 				addMessage("this is final page");
         model.addAttribute("incident", incident);
 				model.addAttribute("messages", messages);
+				resetAll();
 				return "finalSubmit";
 		}		
 		
@@ -211,7 +219,6 @@ public class IncidentController extends TopController{
 																 HttpServletRequest req
 																 ) {
 				if(!Helper.verifySession(req, ""+id)){
-						System.err.println(" not in session ");
 						addMessage("not in session ");						
 				}
 				Incident incident = null;
@@ -229,35 +236,42 @@ public class IncidentController extends TopController{
 						//
 						
 				}catch(Exception ex){
-						addError("Invalid incident Id"+id);
+						addError("Invalid incident Id "+id);
 						logger.error(errors+" "+ex);
 						model.addAttribute("errors", errors);
 						return "start"; 
 				}
         model.addAttribute("incident", incident);
 				model.addAttribute("messages", messages);
+				resetAll();
 				return "incident";
 		}		
 
     @PostMapping("/incident/add")
-    public String addIncident(@Valid Incident incident, BindingResult result, Model model) {
+    public String addIncident(@Valid Incident incident,
+															BindingResult result,
+															Model model,
+															HttpSession session
+															) {
         if (result.hasErrors()) {
 						String error = Helper.extractErrors(result);
 						addError(error);
-						logger.error("Error starting add new incident "+error);
+						logger.error("Error starting new incident "+error);
             return "incidentAdd";
         }
         incidentService.save(incident);
 				addMessage("Added Successfully");
+				addMessagesToSession(session);
+				resetAll();
 				return "redirect:/incident/"+incident.getId();
     }
 
 		@GetMapping("/incident/edit/{id}")
 		public String showEditForm(@PathVariable("id") int id,
 															 Model model,
-															 HttpServletRequest req
+															 HttpSession session
 															 ) {
-				if(!Helper.verifySession(req, ""+id)){
+				if(!Helper.verifySession(session, ""+id)){
 						System.err.println(" not in session ");
 						addMessage(" not in session ");
 				}
@@ -269,6 +283,7 @@ public class IncidentController extends TopController{
 						addError("Invalid incident Id "+id);
 						logger.error(""+ex);
 						model.addAttribute("errors", errors);
+						resetAll();
 						return "start";
 				}
 				model.addAttribute("incident", incident);
@@ -276,7 +291,10 @@ public class IncidentController extends TopController{
 				model.addAttribute("allZipCodes", getAllZipCodes());
 				model.addAttribute("allStates", getAllStates());
 				model.addAttribute("allCities", getAllCities());
-				model.addAttribute("messages", messages);
+				if(hasMessages()){
+						model.addAttribute("messages", messages);
+						resetAll();
+				}
 				return "incidentUpdate";
 		}
 		@PostMapping("/incident/update/{id}")
@@ -284,7 +302,7 @@ public class IncidentController extends TopController{
 																 @Valid Incident incident, 
 																 BindingResult result,
 																 Model model,
-																 HttpServletRequest req
+																 HttpSession session
 																 ) {
 				if (result.hasErrors()) {
 						String error = Helper.extractErrors(result);
@@ -293,12 +311,13 @@ public class IncidentController extends TopController{
 						incident.setId(id);
 						return "updateIncident";
 				}
-				if(!Helper.verifySession(req, ""+id)){
+				if(!Helper.verifySession(session, ""+id)){
 						System.err.println(" not in session ");
 				}				
 				incidentService.update(incident);
 				addMessage("Updated Successfully");				
 				model.addAttribute("messages", messages);
+				addMessagesToSession(session);
 				return "redirect:/incident/"+id;
 		}
 		

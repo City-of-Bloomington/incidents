@@ -11,8 +11,12 @@
 		<header th:insert="general::header">
 		</header>			
 		<h2>Person Info</h2>
-		<span th:if="${messages}" th:text="${messages}"></span>
-		<span th:if="${errors}" th:text="${errors}"></span>
+			<div th:if="${errors}">
+				<div th:insert="general::errors(${errors})"></div>			
+			</div>
+			<div th:if="${messages}">
+				<div th:insert="general::messages(${messages})"></div>			
+			</div>						
 			<fieldset>
 				<caption>View Person</caption>
 				<p>

@@ -26,14 +26,13 @@ import in.bloomington.incident.model.Action;
 
 
 @Controller
-public class RoleController {
+public class RoleController extends TopController{
 
 		@Autowired
 		RoleService roleService;
 		@Autowired
 		ActionService actionService;
 		
-		String errors="", messages="";
 		@GetMapping("/roles")
     public String getAll(Model model) {
         model.addAttribute("roles", roleService.getAll());
@@ -54,7 +53,7 @@ public class RoleController {
             return "roleAdd";
         }
         roleService.save(role);
-				messages = "Added Successfully";
+				addMessage("Added Successfully");
         model.addAttribute("roles", roleService.getAll());
 				model.addAttribute("messages", messages);				
         return "roles";
@@ -67,7 +66,7 @@ public class RoleController {
 						role = roleService.findById(id);
 						
 				}catch(Exception ex){
-						errors += "Invalid role Id";
+						addError("Invalid role Id");
 						model.addAttribute("roles", roleService.getAll());
 						model.addAttribute("errors", errors);
 						return "roles";
@@ -85,7 +84,7 @@ public class RoleController {
 						role.setId(id);
 						return "roleUpdate";
 				}
-				messages = "Updated Successfully";
+				addMessage("Updated Successfully");
 				roleService.save(role);
 				model.addAttribute("roles", roleService.getAll());				
 				model.addAttribute("messages", messages);
@@ -98,15 +97,15 @@ public class RoleController {
 				try{
 						Role role = roleService.findById(id);
 						roleService.delete(id);
-						messages = "Deleted Succefully";
+						addMessage("Deleted Succefully");
 				}catch(Exception ex){
-						errors += "Invalid role ID "+id;
+						addError("Invalid role ID "+id);
 				}
 				model.addAttribute("roles", roleService.getAll());
-				if(!messages.equals("")){
+				if(hasMessages()){
 						model.addAttribute("messages", messages);
 				}
-				else if(!errors.equals("")){
+				else if(hasErrors()){
 						model.addAttribute("errors", errors);
 				}
 					 

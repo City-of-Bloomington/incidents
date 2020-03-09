@@ -29,7 +29,12 @@
 			   return true;
 			}
 		</script>		
-		<span th:if="${errors}" th:text="${errors}"></span>
+		<div th:if="${errors}">
+			<div th:insert="general::errors(${errors})"></div>			
+		</div>
+		<div th:if="${messages}">
+			<div th:insert="general::messages(${messages})"></div>			
+		</div>		
 		<fieldset>
 			<div>
 				<div>

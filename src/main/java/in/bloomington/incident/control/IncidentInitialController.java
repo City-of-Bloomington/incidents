@@ -32,7 +32,7 @@ import in.bloomington.incident.model.Incident;
 import in.bloomington.incident.model.IncidentType;
 
 @Controller
-public class IncidentInitialController {
+public class IncidentInitialController extends TopController{
 
 		@Autowired
 		IncidentInitialService initialService;		
@@ -41,8 +41,6 @@ public class IncidentInitialController {
 		@Autowired
 		IncidentTypeService incidentTypeService;
 		
-		
-		String errors="", messages="";
 		@GetMapping("/start")		
 		public String startIncident() {
 				return "initialStart";
@@ -52,7 +50,7 @@ public class IncidentInitialController {
 																		@RequestParam(required = true) String email2,
 																		Model model){ 
 				if(!email.equals(email2)){
-						errors += "The two emails do not match";
+						addError("The two emails do not match");
 						model.addAttribute("errors", errors);
 						return "initialStart";						
 				}
@@ -77,7 +75,7 @@ public class IncidentInitialController {
 						initial.setId(id);
 						return "initialSelectType";
 				}
-				messages = "Updated Successfully";
+				addMessage("Updated Successfully");
 				initial.setId(id);
 				initialService.save(initial);
 				Incident incident = new Incident();

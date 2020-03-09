@@ -25,6 +25,8 @@ import org.springframework.validation.ObjectError;
 import org.springframework.validation.FieldError;
 import javax.validation.Valid;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import in.bloomington.incident.service.IncidentService;
@@ -38,7 +40,7 @@ import in.bloomington.incident.utils.Helper;
 
 
 @Controller
-public class PersonController {
+public class PersonController extends TopController{
 
 		final static Logger logger = LoggerFactory.getLogger(PersonController.class);
 		@Autowired
@@ -61,13 +63,6 @@ public class PersonController {
 				new ArrayList<>(Arrays.asList("Mr","Ms","Mrs"));
 		private List<String> sexTypes =
 				new ArrayList<>(Arrays.asList("Male","Female","Other"));		
-		String errors="", messages="";
-		public String getErrors(){
-				return errors;
-		}
-		public String getMessages(){
-				return messages;
-		}
 
 		@RequestMapping("/person/add/{incident_id}")
     public String addPerson(@PathVariable("incident_id") int incident_id, Model model) {
@@ -75,8 +70,8 @@ public class PersonController {
 				try{
 						incident = incidentService.findById(incident_id);
 				}catch(Exception ex){
-						errors += "Invalid incident Id: "+incident_id;
-						logger.error(errors+" "+ex);
+						addError("Invalid incident Id: "+incident_id);
+						logger.error(""+ex);
 						model.addAttribute("errors", errors);
 						return "redirect:/start";
 				}
@@ -94,13 +89,15 @@ public class PersonController {
 		@PostMapping("/person/save")
     public String personSave(@Valid Person person,
 														 BindingResult result,
-														 Model model
+														 Model model,
+														 HttpSession session
 														 ) {
         if (result.hasErrors()) {
-						errors = Helper.extractErrors(result);
-						System.err.println(" **** errors "+errors);
+						String error = Helper.extractErrors(result);
+						addError(error);
+						System.err.println(" **** errors "+error);
 						//
-						logger.error(errors);
+						logger.error(error);
 						List<PersonType> personTypes = personTypeService.getAll();
 						model.addAttribute("errors", errors);
 						model.addAttribute("person", person);
@@ -108,11 +105,13 @@ public class PersonController {
 						model.addAttribute("raceTypes", raceTypes);
 						model.addAttribute("phoneTypes", phoneTypes);
 						model.addAttribute("personTitles", personTitles);
-						model.addAttribute("personTypes", personTypes);						
+						model.addAttribute("personTypes", personTypes);
+						model.addAttribute("errors", errors);
 						return "personAdd";
         }
 				if(!person.verify()){
-						errors = person.getErrorInfo();
+						String error = person.getErrorInfo();
+						addError(error);
 						List<PersonType> personTypes = personTypeService.getAll();
 						model.addAttribute("sexTypes", sexTypes);
 						model.addAttribute("raceTypes", raceTypes);				
@@ -123,6 +122,8 @@ public class PersonController {
 						return "personAdd";
 				}
         personService.save(person);
+				addMessage("Saved Succefully");
+				addMessagesToSession(session);
         return "redirect:/incident/"+person.getIncident().getId(); 
     }
 		
@@ -132,8 +133,8 @@ public class PersonController {
 				try{
 						person = personService.findById(id);
 				}catch(Exception ex){
-						errors += "Invalid person Id "+id;
-						logger.error(errors+" "+ex);
+						addError("Invalid person Id "+id);
+						logger.error(" "+ex);
 						model.addAttribute("errors", errors);
 						return "index"; // need fix
 				}
@@ -148,10 +149,10 @@ public class PersonController {
 						person = personService.findById(id);
 						
 				}catch(Exception ex){
-						errors += "Invalid person Id";
+						addError("Invalid person Id "+id);
 						model.addAttribute("errors", errors);
-						logger.error(errors+" "+ex);
-						return " "; // need fix
+						logger.error(" "+ex);
+						return "index"; // need fix
 				}
 				List<PersonType> personTypes = personTypeService.getAll();
 				model.addAttribute("person", person);
@@ -159,23 +160,30 @@ public class PersonController {
 				model.addAttribute("raceTypes", raceTypes);				
 				model.addAttribute("phoneTypes", phoneTypes);
 				model.addAttribute("personTitles", personTitles);
-				model.addAttribute("personTypes", personTypes);				
+				model.addAttribute("personTypes", personTypes);
+				if(hasErrors()){
+						model.addAttribute("errors", errors);
+				}
 				return "personUpdate";
 		}
 		@PostMapping("/person/update/{id}")
 		public String updatePerson(@PathVariable("id") int id,
 															 @Valid Person person, 
 															 BindingResult result,
-															 Model model) {
+															 Model model,
+															 HttpSession session
+															 ) {
 				if (result.hasErrors()) {
-						errors = Helper.extractErrors(result);
-						logger.error("Error update person "+errors);
+						String error = Helper.extractErrors(result);
+						addError(error);
+						logger.error("Error update person "+error);
 						person.setId(id);
 						return "redirect:/person/edit/"+id;
 						
 				}
 				if(!person.verify()){
-						errors = person.getErrorInfo();
+						String error = person.getErrorInfo();
+						addError(error);
 						List<PersonType> personTypes = personTypeService.getAll();
 						model.addAttribute("sexTypes", sexTypes);
 						model.addAttribute("raceTypes", raceTypes);				
@@ -187,13 +195,15 @@ public class PersonController {
 				}
 				Incident incident = person.getIncident();
 				personService.update(person);
-				messages = "Updated Successfully";				
-				model.addAttribute("messages", messages);
+				addMessage("Updated Successfully");				
+				addMessagesToSession(session);
 				return "redirect:/incident/"+incident.getId();
 		}
 		
 		@GetMapping("/person/delete/{id}")
-		public String deletePerson(@PathVariable("id") int id, Model model) {
+		public String deletePerson(@PathVariable("id") int id,
+															 Model model
+															 ) {
 
 				Person person = null;
 				Incident incident = null;
@@ -201,10 +211,10 @@ public class PersonController {
 						person = personService.findById(id);
 						incident = person.getIncident();
 						personService.delete(id);
-						messages = "Deleted Succefully";
+						addMessage("Deleted Succefully");
 				}catch(Exception ex){
 						logger.error("Error delete person "+id+" "+ex);
-						errors += "Invalid person ID "+id;
+						addError("Invalid person ID "+id);
 				}
 				return "redirect:/incident/"+incident.getId();
 

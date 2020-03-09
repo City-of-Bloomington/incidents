@@ -24,12 +24,11 @@ import in.bloomington.incident.model.DamageType;
 
 
 @Controller
-public class DamageTypeController {
+public class DamageTypeController extends TopController{
 
 		@Autowired
 		DamageTypeService damageTypeService;
 		
-		String errors="", messages="";
 		@GetMapping("/damageTypes")
     public String getAll(Model model) {
         model.addAttribute("types", damageTypeService.getAll());
@@ -47,7 +46,7 @@ public class DamageTypeController {
             return "addDamageType";
         }
         damageTypeService.save(damageType);
-				messages = "Added Successfully";
+				addMessage("Added Successfully");
         model.addAttribute("types", damageTypeService.getAll());
 				model.addAttribute("messages", messages);				
         return "damageTypes";
@@ -60,12 +59,15 @@ public class DamageTypeController {
 						type = damageTypeService.findById(id);
 						
 				}catch(Exception ex){
-						errors += "Invalid damage type Id";
+						addError("Invalid damage type Id");
 						model.addAttribute("types", damageTypeService.getAll());
 						model.addAttribute("errors", errors);
 						return "damageTypes";
 				}
 				model.addAttribute("type", type);
+				if(hasErrors()){
+						model.addAttribute("errors", errors);
+				}
 				return "dDamageTypeUpdate";
 		}
 		@PostMapping("/damageType/update/{id}")
@@ -75,7 +77,7 @@ public class DamageTypeController {
 						type.setId(id);
 						return "damageTypeUpdate";
 				}
-				messages = "Updated Successfully";
+				addMessage("Updated Successfully");
 				damageTypeService.update(type);
 				model.addAttribute("types", damageTypeService.getAll());				
 				model.addAttribute("messages", messages);
@@ -88,15 +90,15 @@ public class DamageTypeController {
 				try{
 						DamageType type = damageTypeService.findById(id);
 						damageTypeService.delete(id);
-						messages = "Deleted Succefully";
+						addMessage("Deleted Succefully");
 				}catch(Exception ex){
-						errors += "Invalid damageType ID "+id;
+						addError("Invalid damageType ID "+id);
 				}
 				model.addAttribute("types", damageTypeService.getAll());
-				if(!messages.equals("")){
+				if(hasMessages()){
 						model.addAttribute("messages", messages);
 				}
-				else if(!errors.equals("")){
+				else if(hasErrors()){
 						model.addAttribute("errors", errors);
 				}
 					 

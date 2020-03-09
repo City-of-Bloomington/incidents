@@ -28,7 +28,7 @@ import in.bloomington.incident.model.CarDamageType;
 import in.bloomington.incident.utils.Helper;
 
 @Controller
-public class VehicleController {
+public class VehicleController extends TopController{
 
 		final static Logger logger = LoggerFactory.getLogger(VehicleController.class);		
 		@Autowired
@@ -38,15 +38,6 @@ public class VehicleController {
 		@Autowired
 		CarDamageTypeService damageTypeService;
 		
-		String errors="", messages="";
-		/**
-		@GetMapping("/vehicles")
-    public String getAll(Model model) {
-        model.addAttribute("vehicles", vehicleService.getAll());
-
-        return "vehicles";
-    }
-		*/
 		@GetMapping("/vehicle/add/{incident_id}")
     public String newVehicle(@PathVariable("incident_id") int incident_id, Model model) {
 				
@@ -55,8 +46,8 @@ public class VehicleController {
 						Incident incident = incidentService.findById(incident_id);
 						vehicle.setIncident(incident);
 				}catch(Exception ex){
-						errors += "Invalid incident "+incident_id;
-						logger.error(errors+" "+ex);
+						addError("Invalid incident "+incident_id);
+						logger.error(" "+ex);
 						model.addAttribute("errors", errors);
 						return "redirect:/start";
 				}				
@@ -69,13 +60,13 @@ public class VehicleController {
     @PostMapping("/vehicle/save")
     public String addVehicle(@Valid Vehicle vehicle, BindingResult result, Model model) {
         if (result.hasErrors()) {
-						errors = "Error new add vehicle";
-						errors += Helper.extractErrors(result);
-						logger.error(errors);
+						String error = Helper.extractErrors(result);						
+						addError("Error new add vehicle "+error);
+						logger.error(error);
             return "vehicleAdd";
         }
         vehicleService.save(vehicle);
-				messages = "Added Successfully";
+				addMessage("Added Successfully");
 				int incident_id = vehicle.getIncident().getId();
 				return "redirect:/incident/"+incident_id;
     }
@@ -87,8 +78,8 @@ public class VehicleController {
 						vehicle = vehicleService.findById(id);
 						
 				}catch(Exception ex){
-						errors += "Invalid vehicle Id "+id;
-						logger.error(errors+" "+ex);
+						addError("Invalid vehicle Id "+id);
+						logger.error(" "+ex);
 						model.addAttribute("errors", errors);
 						return "redirect:/index";
 				}
@@ -102,17 +93,16 @@ public class VehicleController {
 		public String updateVehicle(@Valid Vehicle vehicle, 
 														 BindingResult result, Model model) {
 				if (result.hasErrors()) {
-						errors = "Error update vehicle";
-						errors += Helper.extractErrors(result);
-						logger.error(errors);
-						return "reditect:/errors";
+						String error = Helper.extractErrors(result);
+						addError("Error update vehicle "+error);
+						logger.error(error);
+						return "reditect:/error";
 				}
-				messages = "Updated Successfully";
+				addMessage("Updated Successfully");
 				vehicleService.save(vehicle);
 				Incident incident = vehicle.getIncident();
 				int incident_id = incident.getId();
-				// need redirect to incident
-				model.addAttribute("messages", messages);
+				// model.addAttribute("messages", messages);
 				return "redirect:/incident/"+incident_id;
 		}
 		
@@ -124,17 +114,10 @@ public class VehicleController {
 						Vehicle vehicle = vehicleService.findById(id);
 						incident = vehicle.getIncident();
 						vehicleService.delete(id);
-						messages = "Deleted Succefully";
+						addMessage("Deleted Succefully");
 				}catch(Exception ex){
-						errors += "Error delete vehicle "+id;						
-						logger.error(errors+" "+ex);
-				}
-				model.addAttribute("properties", vehicleService.getAll());
-				if(!messages.equals("")){
-						model.addAttribute("messages", messages);
-				}
-				else if(!errors.equals("")){
-						model.addAttribute("errors", errors);
+						addError("Error delete vehicle "+id);						
+						logger.error(" "+ex);
 				}
 				return "redirect:/incident/"+incident.getId();
 
@@ -146,8 +129,8 @@ public class VehicleController {
 						Vehicle vehicle = vehicleService.findById(id);
 						model.addAttribute("vehicle", vehicle);						
 				}catch(Exception ex){
-						errors += "Invalid vehicle ID "+id;
-						logger.error(errors+" "+ex);
+						addError("Invalid vehicle ID "+id);
+						logger.error(" "+ex);
 				}
 				return "vehicle";
 

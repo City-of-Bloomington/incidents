@@ -25,7 +25,7 @@ public class ErrorControl implements ErrorController  {
 		@RequestMapping(value = "error", method = RequestMethod.GET)
     public ModelAndView renderErrorPage(HttpServletRequest
 																				httpRequest,
-																				@ModelAttribute("errors") List<String> errors
+																				@ModelAttribute("errors") Object errors
 																				) {
          
         ModelAndView errorPage = new ModelAndView("errorPage");
@@ -49,11 +49,10 @@ public class ErrorControl implements ErrorController  {
                 errorMsg = "Error Code: 500. Internal Server Error";
                 break;		
 						}
-				default:{
-						errorMsg = "Error Code: "+errorCode+" Internal Server Error";
-						break;		
-				}
-								
+				    default:{
+						    errorMsg = "Error Code: "+errorCode+" Internal Server Error";
+						    break;		
+				    }
         }
         errorPage.addObject("errorMsg", errorMsg);
 				if(errors != null)

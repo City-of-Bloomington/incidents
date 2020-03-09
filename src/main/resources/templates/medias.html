@@ -9,11 +9,15 @@
   <head th:insert="general::head('Images')"></head>
   <body>
 		<header th:insert="general::header">
-		</header>			
-		<span th:if="${messages}" th:text="${messages}"></span>
-		<span th:if="${errors}" th:text="${errors}"></span>
+		</header>
 		<div th:fragment="medias(medias)">
 			<h2>Uploaded Images</h2>
+			<div th:if="${errors}">
+				<div th:insert="general::errors(${errors})"></div>			
+			</div>
+			<div th:if="${messages}">
+				<div th:insert="general::messages(${messages})"></div>			
+			</div>				
 			<div th:switch="${medias}">
 				<h2 th:case="null">No files found</h2>
 				<div th:case="*">

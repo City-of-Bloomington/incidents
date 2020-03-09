@@ -21,15 +21,14 @@ import javax.validation.Valid;
 import org.springframework.web.bind.annotation.RequestParam;
 import in.bloomington.incident.service.PersonTypeService;
 import in.bloomington.incident.model.PersonType;
-
+import in.bloomington.incident.utils.Helper;
 
 @Controller
-public class PersonTypeController {
+public class PersonTypeController extends TopController{
 
 		@Autowired
 		PersonTypeService personTypeService;
 		
-		String errors="", messages="";
 		@GetMapping("/personTypes")
     public String getAll(Model model) {
         model.addAttribute("types", personTypeService.getAll());
@@ -47,7 +46,7 @@ public class PersonTypeController {
             return "addPersonType";
         }
         personTypeService.save(personType);
-				messages = "Added Successfully";
+				addMessage("Added Successfully");
         model.addAttribute("types", personTypeService.getAll());
 				model.addAttribute("messages", messages);				
         return "personTypes";
@@ -60,22 +59,27 @@ public class PersonTypeController {
 						type = personTypeService.findById(id);
 						
 				}catch(Exception ex){
-						errors += "Invalid person type Id";
+						addError("Invalid person type Id");
 						model.addAttribute("types", personTypeService.getAll());
 						model.addAttribute("errors", errors);
 						return "personTypes";
 				}
 				model.addAttribute("type", type);
+				if(hasMessages()){
+						model.addAttribute("messages", messages);				
+				}
 				return "personTypeUpdate";
 		}
 		@PostMapping("/personType/update/{id}")
 		public String updatePersonType(@PathVariable("id") int id, @Valid PersonType type, 
 														 BindingResult result, Model model) {
 				if (result.hasErrors()) {
+						String error = Helper.extractErrors(result);
+						addError(error);
 						type.setId(id);
 						return "personTypeUpdate";
 				}
-				messages = "Updated Successfully";
+				addMessage("Updated Successfully");
 				personTypeService.save(type);
 				model.addAttribute("types", personTypeService.getAll());				
 				model.addAttribute("messages", messages);
@@ -88,15 +92,15 @@ public class PersonTypeController {
 				try{
 						PersonType type = personTypeService.findById(id);
 						personTypeService.delete(id);
-						messages = "Deleted Succefully";
+						addMessage("Deleted Succefully");
 				}catch(Exception ex){
-						errors += "Invalid personType ID "+id;
+						addError("Invalid personType ID "+id);
 				}
 				model.addAttribute("types", personTypeService.getAll());
-				if(!messages.equals("")){
+				if(hasMessages()){
 						model.addAttribute("messages", messages);
 				}
-				else if(!errors.equals("")){
+				else if(hasErrors()){
 						model.addAttribute("errors", errors);
 				}
 					 

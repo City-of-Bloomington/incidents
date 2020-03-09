@@ -10,9 +10,13 @@
   <head th:insert="general::head('Incident')"></head>
   <body>
 		<header th:insert="general::header">
-		</header>		
-		<span th:if="${messages}" th:text="${messages}"></span>
-		<span th:if="${errors}" th:text="${errors}"></span>
+		</header>
+		<div th:if="${errors}">
+			<div th:insert="general::errors(${errors})"></div>			
+		</div>
+		<div th:if="${messages}">
+			<div th:insert="general::messages(${messages})"></div>			
+		</div>		
 		<h2>Incident Reporting Steps</h2>
 		
 		<h4> To add an incident you will go through the following steps </h4>
