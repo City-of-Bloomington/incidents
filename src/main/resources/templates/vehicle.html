@@ -6,9 +6,9 @@
  -
  -->
 <html xmlns="http://www.w3.org/1999/xhtml">
-  <head th:insert="general::head('Vehicle')"></head>
+  <head th:replace="general::head('Vehicle')"></head>
   <body>
-		<header th:insert="general::header">
+		<header th:replace="general::header">
 		</header>		
     <h2>Vehicle</h2>
 		<div th:if="${errors}">

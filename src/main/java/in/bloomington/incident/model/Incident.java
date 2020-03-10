@@ -77,7 +77,15 @@ public class Incident extends TopModel implements java.io.Serializable{
     private Character haveMedia;
 
     private String email;
-    
+
+		@Transient
+		private String dateStr=null;
+		@Transient
+		private String timeStr=null;
+		@Transient
+		private String endDateStr=null;
+		@Transient
+		private String endTimeStr=null;
     // private int status_id;
 		// @OneToMany(fetch=FetchType.LAZY, mappedBy="person")
 		@OneToMany
@@ -207,13 +215,25 @@ public class Incident extends TopModel implements java.io.Serializable{
 				String str="";
 				if(date != null){
 						try{
-								str = Helper.dft.format(date);
+								str = Helper.dfDate.format(date);
 						}catch(Exception ex){
 
 						}
 				}
 				return str;
 		}
+		@Transient
+		public String getTimeStr() {
+				String str="";
+				if(date != null){
+						try{
+								str = Helper.dfTime.format(date);
+						}catch(Exception ex){
+
+						}
+				}
+				return str;
+		}		
 
 		public void setDate(Date date) {
 				this.date = date;
@@ -221,14 +241,36 @@ public class Incident extends TopModel implements java.io.Serializable{
 		@Transient
 		public void setDateStr(String val) {
 				if(val != null && !val.equals("")){
-						try{
-								this.date = Helper.dft.parse(val);
-						}catch(Exception ex){
-								System.err.println(" invalid date format");
-								addError(" "+ex);
-						}
+						System.err.println(" date "+val);
+						dateStr = val;
+						date = setDateValue(dateStr, timeStr);
 				}
 		}
+		@Transient
+		public void setTimeStr(String val) {
+				if(val != null && !val.equals("")){
+						timeStr = val;
+						System.err.println(" time "+val);
+						date = setDateValue(dateStr, timeStr);
+				}
+		}
+		@Transient
+		private Date setDateValue(String ddate, String ttime){
+				Date ret = null;
+				if(ddate != null && !ddate.isEmpty() &&
+					 ttime != null && !ttime.isEmpty()){
+						String str = ddate+" "+ttime;
+						try{
+							 ret = Helper.dfDateTime.parse(str);
+						}catch(Exception ex){
+								System.err.println(" invalid time format");
+								addError(" "+ex);
+						}						
+						
+				}
+				return ret;
+		}
+				
 		public String getAddress() {
 				return address;
 		}
@@ -269,7 +311,7 @@ public class Incident extends TopModel implements java.io.Serializable{
 		}
 
 		public void setDetails(String val) {
-				if(val != null && !val.isEmpty())
+				if(val != null && !val.trim().isEmpty())
 						this.details = val.trim();
 				
 		}
@@ -305,12 +347,18 @@ public class Incident extends TopModel implements java.io.Serializable{
 		@Transient
 		public String getStartEndDate(){
 				String ret = "";
-				if(date != null){
-						ret = getDateStr();
-				}
-				if(endDate != null){
-						if(!ret.equals("")) ret += " - ";
-						ret += getEndDateStr();
+				try{
+						if(date != null){
+								if(date != null){
+										ret = "Started: "+Helper.dft.format(date);
+								}
+						}
+						if(endDate != null){
+								if(!ret.equals("")) ret += " - ";
+								ret += " Ended: "+Helper.dft.format(endDate);;
+						}
+				}catch(Exception ex){
+						System.err.println(ex);
 				}
 				return ret;
 		}
@@ -335,7 +383,7 @@ public class Incident extends TopModel implements java.io.Serializable{
 				String str = "";
 				if(endDate != null){
 						try{
-								str = Helper.dft.format(endDate);
+								str = Helper.dfDate.format(endDate);
 						}catch(Exception ex){
 
 						}
@@ -345,13 +393,29 @@ public class Incident extends TopModel implements java.io.Serializable{
 		@Transient
 		public void setEndDateStr(String val) {
 				if(val != null && !val.equals("")){
+						endDateStr = val;
+						endDate = setDateValue(endDateStr, endTimeStr);
+				}
+		}
+		@Transient
+		public String getEndTimeStr() {
+				String str = "";
+				if(endDate != null){
 						try{
-								this.endDate = Helper.dft.parse(val);
+								str = Helper.dfTime.format(endDate);
 						}catch(Exception ex){
-								System.err.println(ex);
+
 						}
 				}
-		}		
+				return str;
+		}
+		@Transient
+		public void setEndTimeStr(String val) {
+				if(val != null && !val.equals("")){
+						endTimeStr = val;
+						endDate = setDateValue(endDateStr, endTimeStr);						
+				}
+		}				
 
 		public String getEntryType() {
 				return entryType;
@@ -567,11 +631,18 @@ public class Incident extends TopModel implements java.io.Serializable{
 								return false;
 						}
 				}
+				if(endDate != null){
+						Date date2 = new Date();
+						if(date2.compareTo(endDate) < 0){
+								addError("Incident end date can not be in the future");
+								return false;
+						}
+				}
 				return true;
 		}
 		@Transient
 		public boolean verifyDetails(){
-				if(details == null || details.equals("")){
+				if(details == null || details.isEmpty()){
 						addError("Incident details are required");
 						return false;
 				}
@@ -579,14 +650,7 @@ public class Incident extends TopModel implements java.io.Serializable{
 		}
 		@Transient
 		public String getDateTimeInfo(){
-				String ret = "";
-				if(date != null){
-						ret = "Started: "+getDateStr();
-				}
-				if(endDate != null){
-						if(!ret.isEmpty()) ret +=", ";
-						ret += " Ended: "+getEndDateStr();
-				}
+				String ret = getStartEndDate();
 				if(dateDescription != null && !dateDescription.isEmpty()){
 						if(!ret.isEmpty()) ret += ", ";
 						ret += dateDescription;

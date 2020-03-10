@@ -6,9 +6,9 @@
  -
  -->
 <html xmlns="http://www.w3.org/1999/xhtml">
-  <head th:insert="general::head('Upload Image')"></head>
+  <head th:replace="general::head('Upload Image')"></head>
   <body>
-		<header th:insert="general::header">
+		<header th:replace="general::header">
 		</header>			
     <h2>Add Image File</h2>
 		<div th:if="${errors}">
@@ -19,8 +19,8 @@
 		</div>			
 		<fieldset>
 			<caption>Upload Images of the Incident</caption>
-			<div th:insert="general::uploadInstructions">
-			</div>
+			<ul th:replace="general::uploadInstructions">
+			</ul>
 			<div>
 				<form enctype="multipart/form-data"
 							th:action="@{/media/save}" method="post">
@@ -33,7 +33,7 @@
 							<input type="file" name="file" id="file_id" placeholder="Select file" />
 						</dd>
 						<dt>Notes (any explanation of the picture, optional)</dt>
-						<dd><textarea name="notes" rows="5" cols="60" placeHolder="Type your description"></textarea>
+						<dd><textarea name="notes" rows="5" cols="60" placeHolder="Image description"></textarea>
 						</dd>						
 						<dd>		
 							<input type="submit" value="Save" />

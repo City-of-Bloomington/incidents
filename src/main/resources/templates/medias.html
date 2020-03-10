@@ -6,18 +6,12 @@
  -
  -->
 <html xmlns="http://www.w3.org/1999/xhtml">
-  <head th:insert="general::head('Images')"></head>
+  <head th:replace="general::head('Images')"></head>
   <body>
-		<header th:insert="general::header">
+		<header th:replace="general::header">
 		</header>
 		<div th:fragment="medias(medias)">
 			<h2>Uploaded Images</h2>
-			<div th:if="${errors}">
-				<div th:insert="general::errors(${errors})"></div>			
-			</div>
-			<div th:if="${messages}">
-				<div th:insert="general::messages(${messages})"></div>			
-			</div>				
 			<div th:switch="${medias}">
 				<h2 th:case="null">No files found</h2>
 				<div th:case="*">

@@ -6,9 +6,9 @@
  -
  -->
 <html xmlns="http://www.w3.org/1999/xhtml">
-  <head th:insert="general::head('Incident')"></head>
+  <head th:replace="general::head('Incident')"></head>
   <body>
-		<header th:insert="general::header">
+		<header th:replace="general::header">
 		</header>	
 		<h2>Update Incident</h2>
 		<div th:if="${errors}">
@@ -29,35 +29,39 @@
 			<input type="hidden" th:field="${incident.receivedStr}" />
 			<input type="hidden" th:field="${incident.incidentType} "/>
 			<fieldset>
-				<legend>Incident Date and Time</legend>
+				<legend>Incident Date and Time: </legend>
 				<table summary="layout for form fields" width="90%">
 					<tr>
-						<td width="23%">
-							<label for="start_date" class="required">Date & Time Incident Occurred:</label>
-						</td>
-						<td>
-							<input type="text" th:field="${incident.dateStr}" id="start_date" size="20" />
-						</td>
-						<td>
+						<td colspan="2">
 							(For EXAMPLE: I went to bed at 11:00 pm Saturday night Aug 8 <br />
 							and when I woke up Sunday at 6:00 am mycar has a smashed window.<br />
 							You report 8/8/2015 23:00 - 8/9/2015 06:00.)						
 						</td>
 					</tr>
 					<tr>
-						<td><label for="end_date">End Incident Date & Time:</label>
+						<td width="23%">
+							<label for="start_date" class="required">Incident Occurred, Date:</label>
 						</td>
 						<td>
-							<input type="text" th:field="${incident.endDateStr}" id="end_date" value="" size="20" />
+							<input type="date" th:field="${incident.dateStr}" id="start_date" size="20" /> Time:
+							<input type="time" th:field="${incident.timeStr}" id="start_time" size="20" />							
 						</td>
 					</tr>
 					<tr>
-						<td colspan="3">
+						<td><label for="end_date">End Incident, Date:</label>
+						</td>
+						<td>
+							<input type="date" th:field="${incident.endDateStr}" id="end_date" value="" size="20" /> Time:
+							<input type="time" th:field="${incident.endTimeStr}" id="end_time" value="" size="20" />							
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2">
 							If unsure of the exact date and time, describe below when this took place.
 						</td>
 					</tr>
 					<tr>
-						<td colspan='3'>
+						<td colspan='2'>
 							<textarea th:field="${incident.dateDescription}" id="incident-dateDescription" rows="3" cols="60"></textarea>
 						</td>
 					</tr>

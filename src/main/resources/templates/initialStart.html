@@ -6,31 +6,11 @@
  -
  -->
 <html xmlns="http://www.w3.org/1999/xhtml">
-  <head th:insert="general::head('Incident')"></head>
+  <head th:replace="general::head('Incident')" ></head>
   <body>
-		<header th:insert="general::header">
-		</header>			
-		<script type="text/javascript">
-			function verifyConfirm(){
-			   var checked = document.getElementById("confirm").checked;
-			   if(!checked){
-			       alert("You need to confirm the reporting terms");
-			       return false;
-			   }
-			   var val = document.getElementById("email").value;
-			   var val2 = document.getElementById("email2").value;
-			   if(val.trim() == '' || val2.trim() == ''){
-			     alert("You need to provide valid email");
-			     return false;
-			   }
-			   if(val.trim() != val2.trim()){
-			     alert("The two emails do not match");
-			   }
-			   return true;
-			}
-		</script>		
+		<header th:replace="general::header"></header>
 		<div th:if="${errors}">
-			<div th:insert="general::errors(${errors})"></div>			
+			<div th:insert="general::errors(${errors})"></div>
 		</div>
 		<div th:if="${messages}">
 			<div th:insert="general::messages(${messages})"></div>			

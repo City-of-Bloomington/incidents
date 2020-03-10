@@ -7,6 +7,7 @@ package in.bloomington.incident.model;
  */
 
 import java.util.Date;
+import java.util.Calendar;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -497,13 +498,35 @@ public class Person extends TopModel implements java.io.Serializable{
 						addError("Address is required");
 						ret = false;
 				}
+				if(!isMoreThan18()){
+						ret = false;
+				}
 				String str = getContactInfo();
 				if(str.isEmpty()){
 						addError("A contact phone number or email is required");
 						ret = false;
 				}
+				
 				return ret;
 		}
+		@Transient
+		private boolean isMoreThan18(){
+				boolean ret = false;
+				if(dob != null){
+						Calendar calendar = Calendar.getInstance();
+						System.out.println("Current Date = " + calendar.getTime());
+						// Add -18 years to compare to 
+						calendar.add(Calendar.YEAR, -18);
+						Date date = calendar.getTime();
+						if(dob.compareTo(date) > 0){
+								addError("Person age can not be less than 18");
+								return ret;
+						}
+						ret = true;
+				}
+				return ret;
+		}
+				
 				
 		@Transient
 		public String getSexAndRace(){

@@ -6,9 +6,9 @@
  -
  -->
 <html xmlns="http://www.w3.org/1999/xhtml">
-  <head th:insert="general::head('Incident')"></head>
+  <head th:replace="general::head('Incident')"></head>
   <body>
-		<header th:insert="general::header">
+		<header th:replace="general::header">
 		</header>
 		<h2>Add Incident Details</h2>
 		<div th:if="${errors}">
@@ -37,7 +37,7 @@
 							<label for="start_date" class="required">Date & Time Incident Occurred:</label>
 						</td>
 						<td>
-							<input type="text" th:field="${incident.dateStr}" id="start_date" size="20" />
+							<input type="datetime-local" th:field="${incident.dateStr}" id="start_date" size="20" />
 						</td>
 						<td>
 							(For EXAMPLE: I went to bed at 11:00 pm Saturday night Aug 8 <br />
@@ -49,7 +49,7 @@
 						<td><label for="end_date">End Incident Date & Time:</label>
 						</td>
 						<td>
-							<input type="text" th:field="${incident.endDateStr}" id="end_date" value="" size="20" />
+							<input type="datetime-local" th:field="${incident.endDateStr}" id="end_date" value="" size="20" />
 						</td>
 					</tr>
 					<tr>

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import javax.validation.Valid;
+import javax.servlet.http.HttpSession;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,7 +59,10 @@ public class VehicleController extends TopController{
         return "vehicleAdd";
     }     
     @PostMapping("/vehicle/save")
-    public String addVehicle(@Valid Vehicle vehicle, BindingResult result, Model model) {
+    public String addVehicle(@Valid Vehicle vehicle, BindingResult result,
+														 Model model,
+														 HttpSession session
+														 ) {
         if (result.hasErrors()) {
 						String error = Helper.extractErrors(result);						
 						addError("Error new add vehicle "+error);
@@ -67,6 +71,8 @@ public class VehicleController extends TopController{
         }
         vehicleService.save(vehicle);
 				addMessage("Added Successfully");
+				addMessagesToSession(session);
+				resetAll();				
 				int incident_id = vehicle.getIncident().getId();
 				return "redirect:/incident/"+incident_id;
     }
@@ -91,7 +97,10 @@ public class VehicleController extends TopController{
 		}
 		@PostMapping("/vehicle/update")
 		public String updateVehicle(@Valid Vehicle vehicle, 
-														 BindingResult result, Model model) {
+																BindingResult result,
+																Model model,
+																HttpSession session
+																) {
 				if (result.hasErrors()) {
 						String error = Helper.extractErrors(result);
 						addError("Error update vehicle "+error);
@@ -102,12 +111,16 @@ public class VehicleController extends TopController{
 				vehicleService.save(vehicle);
 				Incident incident = vehicle.getIncident();
 				int incident_id = incident.getId();
-				// model.addAttribute("messages", messages);
+				addMessagesToSession(session);
+				resetAll();
 				return "redirect:/incident/"+incident_id;
 		}
 		
 		@GetMapping("/vehicle/delete/{id}")
-		public String deleteVehicle(@PathVariable("id") int id, Model model) {
+		public String deleteVehicle(@PathVariable("id") int id,
+																Model model,
+																HttpSession session
+																) {
 
 				Incident incident = null;
 				try{
@@ -115,6 +128,8 @@ public class VehicleController extends TopController{
 						incident = vehicle.getIncident();
 						vehicleService.delete(id);
 						addMessage("Deleted Succefully");
+						addMessagesToSession(session);
+						resetAll();
 				}catch(Exception ex){
 						addError("Error delete vehicle "+id);						
 						logger.error(" "+ex);
