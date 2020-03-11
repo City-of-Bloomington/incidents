@@ -348,5 +348,16 @@ public class IncidentController extends TopController{
 				return "redirect:/start";
 
 		}
+		/**
+			 sending email to user that can be used to confirm the request
+			 -get the first person and email
+			 -use lastname and incident id to hash using md5
+			 String subject = " Bloomington's Police Department Online Reporting Confirmation ";
+			 String message = "Please click on the link below to confirm your incident reporting request to Bloomington Police Department. Click on the link ";
+			 message += BASE_URL."/confirm?id={$id}&hash={$hash} to confirm.\n\n ";
+			 message += " Once your report is reviewed it will either be accepted or rejected, at which time you will receive another email explaining the reason for denial or a report reference number.\n\n
+			 message += "Please do not reply to this email as this is an automated system.";
+
+		 */
 		
 }

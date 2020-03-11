@@ -1,0 +1,30 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--
+ - @copyright Copyright (C) 2014-2015 City of Bloomington, Indiana. All rights reserved.
+ - @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
+ - @author W. Sibo <sibow@bloomington.in.gov>
+ -
+ -->
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head th:replace="general::head('User')"></head>
+  <body>
+		<header th:replace="general::header">
+		</header>		
+		<h2>Confirmation Completed</h2>
+		<div th:if="${errors}">
+			<div th:insert="general::errors(${errors})"></div>			
+		</div>
+		<div th:if="${messages}">
+			<div th:insert="general::messages(${messages})"></div>			
+		</div>			
+		<fieldset>
+			<legend>Success</legend>
+			<p>
+				Confirmation completed. Your report will be processed and you will receive the final decision by email. 
+			</p>
+			<p>
+				Thank you for using the Incident Reporting System.
+			</p>
+		</fieldset>
+	</body>
+</htmL>

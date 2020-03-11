@@ -176,7 +176,11 @@ public class Incident extends TopModel implements java.io.Serializable{
 				if(val != null && !val.isEmpty())						
 						this.cfsNumber = val.trim();
 		}
-
+		@Transient
+		public boolean hasCfsNumber(){
+				return cfsNumber != null && !cfsNumber.isEmpty();
+		}
+				
 		public Date getReceived() {
 				return received;
 		}
