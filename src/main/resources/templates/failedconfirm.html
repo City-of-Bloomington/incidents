@@ -6,19 +6,21 @@
  -
  -->
 <html xmlns="http://www.w3.org/1999/xhtml">
-  <head th:replace="general::head('User')"></head>
+  <head th:replace="general::head('Confirm')"></head>
   <body>
-		<header th:replace="general::header">
-		</header>		
+    <header th:replace="general::header">
+    </header>		
+    <div th:if="${errors}">
+      <div th:insert="general::errors(${errors})"></div>			
+    </div>
+    <div th:if="${messages}">
+      <div th:insert="general::messages(${messages})"></div>			
+    </div>
     <h2>Confirmation Failed</h2>
-		<div th:if="${errors}">
-			<div th:insert="general::errors(${errors})"></div>			
-		</div>
-		<div th:if="${messages}">
-			<div th:insert="general::messages(${messages})"></div>			
-		</div>			
-		<p>Your confirmation failed for the following reason:</p>
-		<p th:text="${failure_message}"</p>
-		</fieldset>
-	</body>
+    <fieldset>
+      <p>Your confirmation failed for the following reason:
+	<span th:text="${failure_message}"></span>
+      </p>
+    </fieldset>
+  </body>
 </htmL>

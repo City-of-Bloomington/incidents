@@ -1,0 +1,39 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--
+ - @copyright Copyright (C) 2014-2015 City of Bloomington, Indiana. All rights reserved.
+ - @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
+ - @author W. Sibo <sibow@bloomington.in.gov>
+ -
+ -->
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head th:replace="general::head('Confirmation')"></head>
+  <body>
+    <header th:replace="general::header">
+    </header>		
+    <h2>Successful Submission</h2>
+    <div th:if="${errors}">
+      <div th:insert="general::errors(${errors})"></div>			
+    </div>
+    <div th:if="${messages}">
+      <div th:insert="general::messages(${messages})"></div>			
+    </div>
+    <h2> Successful Submission </h2>    
+    <fieldset>
+      <legend></legend>
+      <p>
+	Your request has been submitted successfully.
+      </p>
+      <p>
+	An email has been sent to you. It may take couple minutes to appear in your email system. Your report will not be accepted until you log in to your email and use the link in your email to confirm your request. You have 24 hours to confirm your report otherwise it will be ignored.
+      </p>
+      <p>
+	Thank you for your using Bloomington Police Department's Incident Reporting System.
+      </p>
+      <ul>
+	<li><a th:href="@{/}">Report another incident</a></li>
+	<li><a href="https://bloomington.in.gov">Back to the City of Bloomington
+	    home page</a></li>
+      </ul>
+    </fieldset>
+  </body>
+</htmL>

@@ -62,6 +62,11 @@ incident.dbdatasource.max-active = 15
 incident.dbdatasource.max-idle = 10
 incident.dbdatasource.max-wait = 8000
 ;;
+;; incident email sending host
+incident.email.host=
+;; email sender (from)
+incident.email.sender=
+;;
 ;; saving sesion in the database
 ;;
 spring.session.store-type=jdbc

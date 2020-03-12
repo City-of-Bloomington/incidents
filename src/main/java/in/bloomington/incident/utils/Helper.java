@@ -22,6 +22,8 @@ import org.springframework.validation.ObjectError;
 import org.springframework.validation.FieldError;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.security.MessageDigest;
+import javax.xml.bind.DatatypeConverter;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
@@ -31,20 +33,19 @@ import java.util.regex.Pattern;
 import org.springframework.stereotype.Component;
 
 @Component
-public class Helper
-{
-		/*
-		public final static DateTimeFormatter df = DateTimeFormatter.ofPattern("MM/d/yyyy");
-		public final static DateTimeFormatter dft = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm");
-		*/
-		public final static SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
-		public final static SimpleDateFormat dft = new SimpleDateFormat("MM/dd/yyyy HH:mm");
-		public final static SimpleDateFormat dfDate = new SimpleDateFormat("yyyy-MM-dd");
-		public final static SimpleDateFormat dfTime = new SimpleDateFormat("HH:mm");
+public class Helper{
+    /*
+      public final static DateTimeFormatter df = DateTimeFormatter.ofPattern("MM/d/yyyy");
+      public final static DateTimeFormatter dft = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm");
+    */
+    public final static SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+    public final static SimpleDateFormat dft = new SimpleDateFormat("MM/dd/yyyy HH:mm");
+    public final static SimpleDateFormat dfDate = new SimpleDateFormat("yyyy-MM-dd");
+    public final static SimpleDateFormat dfTime = new SimpleDateFormat("HH:mm");
 
-		public final static SimpleDateFormat dfDateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm");		
-		public final static NumberFormat curFr = NumberFormat.getCurrencyInstance();
-		public final static DecimalFormat dblFr = new DecimalFormat("###.##");
+    public final static SimpleDateFormat dfDateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm");		
+    public final static NumberFormat curFr = NumberFormat.getCurrencyInstance();
+    public final static DecimalFormat dblFr = new DecimalFormat("###.##");
     final static Map<String, String>       mimeTypes = new HashMap<>();
     static {
         mimeTypes.put("image/gif",       "gif");
@@ -106,7 +107,7 @@ public class Helper
         return fileType;
     }
 
-//
+    //
     // check multiple emails separated by comma
     //
     public final static boolean isValidEmails(final String email)
@@ -276,7 +277,7 @@ public class Helper
     public final static String getToday()
     {
         // LocalDate date  = LocalDate.now();
-				Date date = new Date();
+	Date date = new Date();
         String today = df.format(date);
         return today;
     }
@@ -305,7 +306,7 @@ public class Helper
         return back;
     }
 
-		public final static String checkFilePath(final String filePath){
+    public final static String checkFilePath(final String filePath){
         String back = "";
         try {
             File file = new File(filePath);
@@ -329,47 +330,63 @@ public class Helper
     }		
     public final static String extractErrors(final BindingResult result)
     {
-				String errors = "";
-				if(result != null){
-						for (ObjectError error : result.getAllErrors()) {
-								if(!errors.equals("")) errors += " ";
-								errors += error.getObjectName() + " - " + error.getDefaultMessage();
-						}
-				}
+	String errors = "";
+	if(result != null){
+	    for (ObjectError error : result.getAllErrors()) {
+		if(!errors.equals("")) errors += " ";
+		errors += error.getObjectName() + " - " + error.getDefaultMessage();
+	    }
+	}
         return errors;
     }
-		/**
-		 * we are assuming that the incident Id is already in the session
-		 * after incident is saved
-		 */
-		@SuppressWarnings("unchecked")
-		public final static boolean verifySession(final HttpServletRequest req, final String id){
-				// no new session
-				HttpSession session = req.getSession();
-				if(session != null){
-						List<String> ids = (List<String>) session.getAttribute("incident_ids");
-						if(ids != null){
-								System.err.println(" ** ids ** "+ids);
-								if(ids.contains(id)){
-										return true;
-								}
-						}
-				}
-				return false;
+    /**
+     * we are assuming that the incident Id is already in the session
+     * after incident is saved
+     */
+    @SuppressWarnings("unchecked")
+    public final static boolean verifySession(final HttpServletRequest req, final String id){
+	// no new session
+	HttpSession session = req.getSession();
+	if(session != null){
+	    List<String> ids = (List<String>) session.getAttribute("incident_ids");
+	    if(ids != null){
+		System.err.println(" ** ids ** "+ids);
+		if(ids.contains(id)){
+		    return true;
 		}
-		@SuppressWarnings("unchecked")
-		public final static boolean verifySession(final HttpSession session, final String id){
-				// no new session
-				if(session != null){
-						List<String> ids = (List<String>) session.getAttribute("incident_ids");
-						if(ids != null){
-								System.err.println(" ** ids ** "+ids);
-								if(ids.contains(id)){
-										return true;
-								}
-						}
-				}
-				return false;
-		}		
-		
+	    }
+	}
+	return false;
+    }
+    @SuppressWarnings("unchecked")
+    public final static boolean verifySession(final HttpSession session, final String id){
+	// no new session
+	if(session != null){
+	    List<String> ids = (List<String>) session.getAttribute("incident_ids");
+	    if(ids != null){
+		System.err.println(" ** ids ** "+ids);
+		if(ids.contains(id)){
+		    return true;
+		}
+	    }
+	}
+	return false;
+    }
+    /**
+     * md5 hash function to create hashes for user request
+     */
+    public final static String createMD5Hash(final String val){
+	String hash = "";
+	if(val != null){
+	    try{
+		MessageDigest md = MessageDigest.getInstance("MD5");
+		md.update(val.getBytes());
+		byte[] digest = md.digest();
+		hash = DatatypeConverter.printHexBinary(digest);
+	    }catch(Exception ex){
+		System.err.println(" "+ex);
+	    }
+	}
+	return hash;
+    }
 }

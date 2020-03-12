@@ -17,67 +17,69 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import javax.validation.Valid;
-// import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestParam;
-import in.bloomington.incident.service.DamageTypeService;
-import in.bloomington.incident.model.DamageType;
+import in.bloomington.incident.service.IncidentService;
+import in.bloomington.incident.model.Incident;
+import in.bloomington.incident.model.Person;
 
 
 @Controller
 public class ProcessController extends TopController{
 
 		
-		@GetMapping("/rejectAction")
+    @GetMapping("/rejectAction")
     public String rejectAction(Model model) {
-				//
-				// will show reject form
+	//
+	// will show reject form
         return "rejectForm";
     }
-		@GetMapping("/rejectEmail")
+    @GetMapping("/rejectEmail")
     public String rejectEmail(Model model) {
-				//
-				// sending reject email
-				// going back to the incidents list for staff
-				//
+	//
+	// sending reject email
+	// going back to the incidents list for staff
+	//
         return "staff_menu";
     }		
-		@GetMapping("/approveAction")
+    @GetMapping("/approveAction")
     public String approveAction(Model model) {
-				//
-				// 
+	//
+	// 
         return "";
     }
-		@GetMapping("/processAction")
+    @GetMapping("/processAction")
     public String processAction(Model model) {
-				//
-				// here will send approve email with cfs #
+	//
+	// here will send approve email with cfs #
         return "";
     }		
-		private String sendApproveEmail(Incident Incident){
-				String ret = "";
-				if(!incident.hasCfsNumber()){
-						ret = "incident has no CSF number";
-						return ret;
-				}
-				if(!Incident.hasPersonList()){
-						ret = "incident has no person to send email to";
-						return ret;
-				}
-				List<Person> persons = incident.getPersons();
-				Person person = persons.get(0); // we need one
-				String email = person.getEmail();
-				String subject = "Incident Reporting Approval";
-				String from = "\"incident_reporting@bloomington.in.gov\",'-fwebmaster@bloomington.in.gov'";
-				String message = "Dear "+person.getFullname()+
-						"\n\n Your report has been approved. "+
-						"The CFS Number of your report is "+Incident.getCfsNumber()+
+    private String sendApproveEmail(Incident incident){
+	String ret = "";
+	
+	if(!incident.hasCfsNumber()){
+	    ret = "incident has no CSF number";
+	    return ret;
+	}
+	if(!incident.hasPersonList()){
+	    ret = "incident has no person to send email to";
+	    return ret;
+	}
+	List<Person> persons = incident.getPersons();
+	Person person = persons.get(0); // we need one
+	String email = person.getEmail();
+	String subject = "Incident Reporting Approval";
+	String from = "\"incident_reporting@bloomington.in.gov\",'-fwebmaster@bloomington.in.gov'";
+	String message = "Dear "+person.getFullname()+
+	    "\n\n Your report has been approved. "+
+	    "The CFS Number of your report is "+incident.getCfsNumber()+
+	    
+	    " You can use this number in your future contacts with the Bloomington Police Department. \n\n"+
+	    "Please do not reply to this email as this is an automated system.";
+	//
+	// send the email
 
-						" You can use this number in your future contacts with the Bloomington Police Department. \n\n"+
-						"Please do not reply to this email as this is an automated system.";
-				//
-				// send the email
-				
-		}
-		
+	return ret;
+    }
+    
 		
 }

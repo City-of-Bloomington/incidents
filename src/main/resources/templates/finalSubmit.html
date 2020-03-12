@@ -6,40 +6,40 @@
  -
  -->
 <html xmlns="http://www.w3.org/1999/xhtml">
-  <head th:replace="general::head('Upload Image')"></head>
+  <head th:replace="general::head('Final Submit')"></head>
   <body>
-		<header th:replace="general::header">
-		</header>
-		<div th:if="${errors}">
-			<div th:insert="general::errors(${errors})"></div>			
-		</div>
-		<div th:if="${messages}">
-			<div th:insert="general::messages(${messages})"></div>			
-		</div>					
+    <header th:replace="general::header">
+    </header>
+    <div th:if="${errors}">
+      <div th:insert="general::errors(${errors})"></div>			
+    </div>
+    <div th:if="${messages}">
+      <div th:insert="general::messages(${messages})"></div>			
+    </div>					
     <h2>Final Submission Page</h2>
-		<form action="#"
-					th:action="@{/incident/submit/{id}(id=${incident.id})}"
-					th:object="${incident}" method="get">
-			<fieldset>
-				<legend></legend>
-				<dl>
-					<dt><a th:href="@{/incident/{id}(id=${incident.id})}">Back to Incident Details</a></dt>							
-				</dl>
-				<p>
-					Your report is complete. After your request is submitted, you will receive an email with a link to verify your email address. Your report will be reviewed after this final step has occurred. Reports not validated within 24 hours will not be processed by the system.
-				</p>
-				<p>
-					If you want to review your data one more time before you submit your request, use the 'Related Incideent Link' above to review your data and edit your information. If you believe that the data is accurate click the 'Submit' button below to submit your request.
-				</p>
-				<p>
-					If necessary, you will be contacted via email in regard to this request. If the request is rejected you will be notified with an explanation of why your report was rejected. 
-				</p>
-				<dl>
-					<dd>
-						<input type="submit" value="Submit" />
-					</dd>
-				</dl>
-			</fieldset>
-		</form>
-	</body>
+    <form action="#"
+	  th:action="@{/incident/submit/{id}(id=${incident.id})}"
+	  th:object="${incident}" method="get">
+      <fieldset>
+	<legend></legend>
+	<dl>
+	  <dt><a th:href="@{/incident/{id}(id=${incident.id})}">Back to Incident Details</a></dt>							
+	</dl>
+	<p>
+	  Your report is complete. After your request is submitted, you will receive an email with a link to verify your email address. Your report will be reviewed after this final step has occurred. Reports not validated within 24 hours will not be processed by the system.
+	</p>
+	<p>
+	  If you want to review your data one more time before you submit your request, use the 'Related Incideent Link' above to review your data and edit your information. If you believe that the data is accurate click the 'Submit' button below to submit your request.
+	</p>
+	<p>
+	  If necessary, you will be contacted via email in regard to this request. If the request is rejected you will be notified with an explanation of why your report was rejected. 
+	</p>
+	<dl>
+	  <dd>
+	    <input type="submit" value="Submit" />
+	  </dd>
+	</dl>
+      </fieldset>
+    </form>
+  </body>
 </htmL>
