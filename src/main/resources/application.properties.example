@@ -37,6 +37,12 @@ spring.servlet.multipart.location=${java.io.tmpdir}
 incident.defaultcity=Bloomington
 incident.defaultstate=IN
 ;;
+;;
+;; application name that is part of the app url for 
+;; testing it is empty, in production e.g. incident_reporting
+;;
+incident.application.name=
+;;
 ;; we are using mysql database, you may use other ones as well
 ;; need to be configured below
 ;; 

@@ -63,6 +63,10 @@ public class Action implements java.io.Serializable{
 			this.id = id;
 		}
 
+		@Transient
+		public Integer getObjId(){
+				return new Integer(id);
+		}
 		public String getName() {
 			return name;
 		}

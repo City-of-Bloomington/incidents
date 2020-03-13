@@ -10,7 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
+import java.util.stream.Collectors;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -45,10 +45,9 @@ public class Incident extends TopModel implements java.io.Serializable{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 		
-		@Column(name ="cfsNumber")
     private String cfsNumber;
+		
 		@OneToOne
-
     private IncidentType incidentType;
 
     private Date received;
@@ -86,8 +85,8 @@ public class Incident extends TopModel implements java.io.Serializable{
 		private String endDateStr=null;
 		@Transient
 		private String endTimeStr=null;
-    // private int status_id;
-		// @OneToMany(fetch=FetchType.LAZY, mappedBy="person")
+		@Transient
+		private Action lastAction=null;
 		@OneToMany
 		@JoinColumn(name="incident_id",insertable=false, updatable=false)		
 		private List<Person> persons;		
@@ -155,7 +154,7 @@ public class Incident extends TopModel implements java.io.Serializable{
 				this.persons = persons;				
 				this.properties = properties;
 				this.vehicles = vehicles;
-				this.actionLogs = actionLogs;
+				setActionLogs(actionLogs);
 				this.medias = medias;
 		}
 
@@ -482,8 +481,48 @@ public class Incident extends TopModel implements java.io.Serializable{
 		public List<ActionLog> getActionLogs(){
 				return this.actionLogs;
 		}
-		public void setActionLogs(List<ActionLog> actionLogs){
-				this.actionLogs = actionLogs;
+		//sorted at the same time
+		public void setActionLogs(List<ActionLog> list){
+				if(list != null){
+						if(list.size() > 1){ 
+								actionLogs = list.stream().
+										sorted((o1, o2)->o1.getAction().getObjId().
+													 compareTo(o2.getAction().getObjId())).
+										collect(Collectors.toList());
+						}
+						else{
+								actionLogs = list;
+						}
+				}
+		}
+		@Transient
+		public void sortActionLogs(){
+				List<ActionLog> list = new ArrayList<>();
+				if(actionLogs != null){
+						for(ActionLog log:actionLogs){
+								list.add(log);
+						}
+						if(list.size() > 1){
+								// reverse order last first
+								actionLogs = list.stream().
+										sorted((o1, o2)->o2.getAction().getObjId().
+													 compareTo(o1.getAction().getObjId())).
+										collect(Collectors.toList());
+						}
+						System.err.println(" logs  "+actionLogs);						
+				}
+		}		
+		// status is the last action
+		@Transient
+		public String getStatus(){
+				sortActionLogs();
+				String status = "";
+				if(actionLogs != null && actionLogs.size() > 0){
+						ActionLog actionLog = actionLogs.get(0);
+						lastAction = actionLog.getAction();
+						status = lastAction.getDescription();
+				}
+				return status;
 		}
 		public List<Media> getMedias(){
 				return this.medias;
