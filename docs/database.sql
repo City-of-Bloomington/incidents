@@ -267,3 +267,18 @@ insert into actions select * from statuses;
 ;; drop table status_roles;
 ;; drop table statuses;
 ;;
+;;
+;;
+;; received or confirmed ready to be approved or reject
+;;
+		create or Replace view incident_pre_approve AS                                  select i.id from incidents i,action_logs l where l.incident_id=i.id and (l.action_id = 1 or l.action_id=2) and l.action_id in (select max(l2.action_id) from action_logs l2 where l2.incident_id=i.id);			 
+			 
+			;; approved
+     create or Replace view incident_approved AS                                     select i.id from incidents i,action_logs l where l.incident_id=i.id and l.action_id = 3 and l.action_id in (select max(l2.action_id) from action_logs l2 where l2.incident_id=i.id);				 
+			;;
+			;; rejected
+			;;
+			create or Replace view incident_rejected AS                                     select i.id from incidents i,action_logs l where l.incident_id=i.id and l.action_id = 4 and l.action_id in (select max(l2.action_id) from action_logs l2 where l2.incident_id=i.id);
+			;;
+			;; processed
+			create or Replace view incident_processed AS                                    select i.id from incidents i,action_logs l where l.incident_id=i.id and l.action_id = 5 and l.action_id in (select max(l2.action_id) from action_logs l2 where l2.incident_id=i.id);

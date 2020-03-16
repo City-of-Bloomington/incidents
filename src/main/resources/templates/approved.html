@@ -1,0 +1,51 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--
+ - @copyright Copyright (C) 2014-2015 City of Bloomington, Indiana. All rights reserved.
+ - @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
+ - @author W. Sibo <sibow@bloomington.in.gov>
+ -
+ -->
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head th:replace="general::head('Person')"></head>
+  <body>
+		<header th:replace="general::header">
+		</header>		
+		<div>		
+			<h2>Approved Incidents</h2>
+			<div th:if="${errors}">
+				<div th:insert="general::errors(${errors})"></div>			
+			</div>
+			<div th:if="${messages}">
+				<div th:insert="general::messages(${messages})"></div>			
+			</div>			
+			<div th:switch="${incidents}">
+				<h2 th:case="null">No incident found </h2>
+				<div th:case="*">
+					<table>
+						<thead>
+							<tr>
+								<th>ID</th>							
+								<th>Incident Type</th>
+								<th>Received Date & Time</th>
+								<th>Incident Date & Time</th>
+								<th>Address </th>
+								<th>Details </th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="incident : ${incidents}">
+								<td th:text="${incident.id}"></td>
+								<td th:text="${incident.incidentType}"></td>
+								<td th:text="${incident.receivedStr}"></td>
+								<td th:text="${incident.dateTimeInfo}"></td>								
+								<td th:text="${incident.addressInfo}"></td>
+								<td th:text="${incident.details}"></td>								
+							</tr>
+						</tbody>
+					</table>
+				</div>      
+			</div>
+		</div>
+	</body>
+</htmL>
+		

@@ -87,6 +87,9 @@ public class Incident extends TopModel implements java.io.Serializable{
 		private String endTimeStr=null;
 		@Transient
 		private Action lastAction=null;
+		@Transient
+		String status = "";
+
 		@OneToMany
 		@JoinColumn(name="incident_id",insertable=false, updatable=false)		
 		private List<Person> persons;		
@@ -244,7 +247,6 @@ public class Incident extends TopModel implements java.io.Serializable{
 		@Transient
 		public void setDateStr(String val) {
 				if(val != null && !val.equals("")){
-						System.err.println(" date "+val);
 						dateStr = val;
 						date = setDateValue(dateStr, timeStr);
 				}
@@ -253,7 +255,6 @@ public class Incident extends TopModel implements java.io.Serializable{
 		public void setTimeStr(String val) {
 				if(val != null && !val.equals("")){
 						timeStr = val;
-						System.err.println(" time "+val);
 						date = setDateValue(dateStr, timeStr);
 				}
 		}
@@ -347,6 +348,11 @@ public class Incident extends TopModel implements java.io.Serializable{
 		public void setEndDate(Date end_date) {
 				this.endDate = end_date;
 		}
+		@Transient
+		public boolean canEdit(){
+				return actionLogs == null;
+		}
+				
 		@Transient
 		public String getStartEndDate(){
 				String ret = "";
@@ -515,14 +521,27 @@ public class Incident extends TopModel implements java.io.Serializable{
 		// status is the last action
 		@Transient
 		public String getStatus(){
-				sortActionLogs();
-				String status = "";
-				if(actionLogs != null && actionLogs.size() > 0){
-						ActionLog actionLog = actionLogs.get(0);
-						lastAction = actionLog.getAction();
-						status = lastAction.getDescription();
+				if(status.isEmpty()){
+						sortActionLogs();
+						if(actionLogs != null && actionLogs.size() > 0){
+								ActionLog actionLog = actionLogs.get(0);
+								lastAction = actionLog.getAction();
+								status = lastAction.getDescription();
+						}
 				}
 				return status;
+		}
+		@Transient
+		public boolean hasNextAction(){
+				getStatus();
+				if(lastAction != null && !lastAction.isProcessed()){
+						return true;
+				}
+				return false;
+		}
+		@Transient
+		public Action getLastAction(){		
+				return lastAction;
 		}
 		public List<Media> getMedias(){
 				return this.medias;

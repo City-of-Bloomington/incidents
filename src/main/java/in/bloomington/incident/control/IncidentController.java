@@ -457,11 +457,12 @@ public class IncidentController extends TopController{
 						logger.error(error);
 						return error;
 				}
+				/**
 				System.err.println(" url "+url);
 				System.err.println(" host "+email_host);
 				System.err.println(" to "+to);
 				System.err.println(" from "+email_sender);
-	
+				*/
 				EmailHandle emailer = new EmailHandle(email_host,
 																							to,
 																							email_sender,
@@ -473,5 +474,24 @@ public class IncidentController extends TopController{
 				ret = emailer.send(); 
 				return ret;
     }
-		
+		/**
+		 * find next action in workflow steps compare to the last
+		 * action (if any)
+		 */
+		public List<Action> getNextActions(Incident incident){
+				List<Action> nextActions = null;
+				if(incident.hasNextAction()){
+						Action lastAction = incident.getLastAction();
+						// next workflow step is the last  workflow step + 1
+						int next_step = lastAction.getWorkflowStep()+1;
+						List<Action> actions = actionService.getAll();
+						nextActions = new ArrayList<>();
+						for(Action action:actions){
+								if(action.getWorkflowStep() == next_step){
+										nextActions.add(action);
+								}
+						}
+				}
+				return nextActions;
+		}
 }

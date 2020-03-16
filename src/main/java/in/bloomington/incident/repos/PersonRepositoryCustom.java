@@ -14,21 +14,10 @@ import in.bloomington.incident.model.Person;
 
 public interface PersonRepositoryCustom extends Repository<Person, Integer> {
 
-		/*
-		public <S extends Person> S save(S entity) {
-				
-				if (entityInformation.isNew(entity)) {
-						em.persist(entity);
-						return entity;
-				} else {
-						return em.merge(entity);
-				}
-		}
-		*/
 		// Enables the distinct flag for the query		
 		List<Person> findDistinctPeopleByLastnameOrFirstname(String lastname, String firstname);
 		List<Person> findPeopleDistinctByLastnameOrFirstname(String lastname, String firstname);
-		// List<Person> findByEmailAddressAndLastname(EmailAddress emailAddress, String lastname);
+		//
 		// Enabling ignoring case for an individual property
 		List<Person> findByLastnameIgnoreCase(String lastname);
 		// Enabling ignoring case for all suitable properties

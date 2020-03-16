@@ -97,7 +97,18 @@ public class Action implements java.io.Serializable{
 		private boolean hasRoles(){
 				return roles != null && roles.size() > 0;
 		}
-		
+		@Transient
+		public boolean isApproved(){
+				return name != null && name.equals("approved");
+		}		
+		@Transient
+		public boolean isRejected(){
+				return name != null && name.equals("rejected");
+		}
+		@Transient
+		public boolean isProcessed(){
+				return name != null && name.equals("processed");
+		}				
 		@Override
     public boolean equals(Object obj) { 
           
