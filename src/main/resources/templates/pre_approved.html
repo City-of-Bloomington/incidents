@@ -8,44 +8,46 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head th:replace="general::head('Person')"></head>
   <body>
-		<header th:replace="general::header">
-		</header>		
-		<div>		
-			<h2>Received/Confirmed Incidents</h2>
-			<div th:if="${errors}">
-				<div th:insert="general::errors(${errors})"></div>			
-			</div>
-			<div th:if="${messages}">
-				<div th:insert="general::messages(${messages})"></div>			
-			</div>			
-			<div th:switch="${incidents}">
-				<h2 th:case="null">No incident found </h2>
-				<div th:case="*">
-					<table>
-						<thead>
-							<tr>
-								<th>ID</th>							
-								<th>Incident Type</th>
-								<th>Received Date & Time</th>
-								<th>Incident Date & Time</th>
-								<th>Address </th>
-								<th>Details </th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr th:each="incident : ${incidents}">
-								<td th:text="${incident.id}"></td>
-								<td th:text="${incident.incidentType}"></td>
-								<td th:text="${incident.receivedStr}"></td>
-								<td th:text="${incident.dateTimeInfo}"></td>
-								<td th:text="${incident.addressInfo}"></td>
-								<td th:text="${incident.details}"></td>								
-							</tr>
-						</tbody>
-					</table>
-				</div>      
-			</div>
-		</div>
-	</body>
+    <header th:replace="general::header">
+    </header>		
+    <div>		
+      <h2>Received/Confirmed Incidents</h2>
+      <div th:if="${errors}">
+	<div th:insert="general::errors(${errors})"></div>			
+      </div>
+      <div th:if="${messages}">
+	<div th:insert="general::messages(${messages})"></div>			
+      </div>			
+      <div th:switch="${incidents}">
+	<h2 th:case="null">No incident found </h2>
+	<div th:case="*">
+	  <table>
+	    <thead>
+	      <tr>
+		<th>More Details</th>
+		<th>Incident Type</th>
+		<th>Received Date & Time</th>
+		<th>Incident Date & Time</th>
+		<th>Address </th>
+		<th>Details </th>
+	      </tr>
+	    </thead>
+	    <tbody>
+	      <tr th:each="incident : ${incidents}">
+		<td>
+		  <a th:href="@{/staff/{id}(id=${incident.id})}">More Details</a>
+		</td>
+		<td th:text="${incident.incidentType}"></td>
+		<td th:text="${incident.receivedStr}"></td>
+		<td th:text="${incident.dateTimeInfo}"></td>
+		<td th:text="${incident.addressInfo}"></td>
+		<td th:text="${incident.details}"></td>
+	      </tr>
+	    </tbody>
+	  </table>
+	</div>      
+      </div>
+    </div>
+  </body>
 </htmL>
 		

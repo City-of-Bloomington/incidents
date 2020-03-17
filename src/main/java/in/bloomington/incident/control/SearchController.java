@@ -24,62 +24,62 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 //
-import in.bloomington.incident.service.IncidentPreApproveService;
+import in.bloomington.incident.service.IncidentPreApprovedService;
 import in.bloomington.incident.service.IncidentApprovedService;
 import in.bloomington.incident.model.Incident;
-import in.bloomington.incident.model.IncidentPreApprove;
+import in.bloomington.incident.model.IncidentPreApproved;
 import in.bloomington.incident.model.IncidentApproved;
 
 
 @Controller
 public class SearchController extends TopController{
 
-		final static Logger logger = LoggerFactory.getLogger(SearchController.class);
-		@Autowired
-		IncidentPreApproveService preApproveService;
-		@Autowired
-		IncidentApprovedService approvedService;		
+    final static Logger logger = LoggerFactory.getLogger(SearchController.class);
+    @Autowired
+    IncidentPreApprovedService preApprovedService;
+    @Autowired
+    IncidentApprovedService approvedService;		
 		
-		@GetMapping("/search/preApproved")
+    @GetMapping("/search/preApproved")
     public String findPreApproved(Model model) {
-				List<Incident> all = null;
-				List<IncidentPreApprove> plist = preApproveService.getAll();
-				if(plist != null){
-						all = new ArrayList<>();
-						for(IncidentPreApprove one:plist){
-								Incident incident = one.getIncident();
-								if(incident != null)
-										all.add(incident);
-						}
-				}
-				if(all != null && all.size() > 0){
-						model.addAttribute("incidents", all);
-				}
-				else{
-						addMessage("No incident found");
-						model.addAttribute("messages", messages);
-				}
+	List<Incident> all = null;
+	List<IncidentPreApproved> plist = preApprovedService.getAll();
+	if(plist != null){
+	    all = new ArrayList<>();
+	    for(IncidentPreApproved one:plist){
+		Incident incident = one.getIncident();
+		if(incident != null)
+		    all.add(incident);
+	    }
+	}
+	if(all != null && all.size() > 0){
+	    model.addAttribute("incidents", all);
+	}
+	else{
+	    addMessage("No incident found");
+	    model.addAttribute("messages", messages);
+	}
         return "pre_approved";
     }
-		@GetMapping("/search/approved")
+    @GetMapping("/search/approved")
     public String findApproved(Model model) {
-				List<Incident> all = null;
-				List<IncidentApproved> plist = approvedService.getAll();
-				if(plist != null){
-						all = new ArrayList<>();
-						for(IncidentApproved one:plist){
-								Incident incident = one.getIncident();
-								if(incident != null)
-										all.add(incident);
-						}
-				}
-				if(all != null && all.size() > 0){
-						model.addAttribute("incidents", all);
-				}
-				else{
-						addMessage("No incident found");
-						model.addAttribute("messages", messages);
-				}
+	List<Incident> all = null;
+	List<IncidentApproved> plist = approvedService.getAll();
+	if(plist != null){
+	    all = new ArrayList<>();
+	    for(IncidentApproved one:plist){
+		Incident incident = one.getIncident();
+		if(incident != null)
+		    all.add(incident);
+	    }
+	}
+	if(all != null && all.size() > 0){
+	    model.addAttribute("incidents", all);
+	}
+	else{
+	    addMessage("No incident found");
+	    model.addAttribute("messages", messages);
+	}
         return "approved";
     }   		
 		

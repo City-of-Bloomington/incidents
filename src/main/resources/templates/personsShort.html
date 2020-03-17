@@ -8,42 +8,42 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head th:replace="general::head('Person')"></head>
   <body>
-		<header th:replace="general::header">
-		</header>
-		<h2>Incident Related People</h2>
-		<div th:if="${errors}">
-			<div th:insert="general::errors(${errors})"></div>			
-		</div>
-		<div th:if="${messages}">
-			<div th:insert="general::messages(${messages})"></div>			
-		</div>						
-		<div th:fragment="persons(persons)">		
-			<div th:switch="${persons}">
-				<h2 th:case="null">No person found </h2>
-				<div th:case="*">
-					<table>
-						<thead>
-							<tr>
-								<th>Person Category</th>
-								<th>Full Name </th>
-								<th>Address </th>
-								<th>Contact </th>
-								<th>More Details</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr th:each="person : ${persons}">
-								<td th:text="${person.personType}"></td>
-								<td th:text="${person.fullname}"></td>							
-								<td th:text="${person.fullAddress}"></td>
-								<td th:text="${person.contactInfo}"></td>
-								<td><a th:href="@{/person/{id}(id=${person.id})}">More Details</a></td>						
-							</tr>
-						</tbody>
-					</table>
-				</div>      
-			</div>
-		</div>
-	</body>
+    <header th:replace="general::header">
+    </header>
+    <h2>Incident Related People</h2>
+    <div th:if="${errors}">
+      <div th:insert="general::errors(${errors})"></div>			
+    </div>
+    <div th:if="${messages}">
+      <div th:insert="general::messages(${messages})"></div>			
+    </div>						
+    <div th:fragment="persons(persons)">		
+      <div th:switch="${persons}">
+	<h2 th:case="null">No person found </h2>
+	<div th:case="*">
+	  <table>
+	    <thead>
+	      <tr>
+		<th>Person Category</th>
+		<th>Full Name </th>
+		<th>Address </th>
+		<th>Contact </th>
+		<th>More Details</th>
+	      </tr>
+	    </thead>
+	    <tbody>
+	      <tr th:each="person : ${persons}">
+		<td th:text="${person.personType}"></td>
+		<td th:text="${person.fullname}"></td>							
+		<td th:text="${person.fullAddress}"></td>
+		<td th:text="${person.contactInfo}"></td>
+		<td><a th:href="@{/person/{id}(id=${person.id})}">More Details</a></td>						
+	      </tr>
+	    </tbody>
+	  </table>
+	</div>      
+      </div>
+    </div>
+  </body>
 </htmL>
 		

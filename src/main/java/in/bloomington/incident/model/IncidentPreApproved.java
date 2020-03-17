@@ -29,36 +29,36 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "incident_pre_approve") // view
-public class IncidentPreApprove implements java.io.Serializable{
+public class IncidentPreApproved implements java.io.Serializable{
 
-		@Id
+    @Id
     private int id;
 
-		@OneToOne
-		@JoinColumn(name="id",insertable=false, updatable=false)		
-		Incident incident;
+    @OneToOne
+    @JoinColumn(name="id",insertable=false, updatable=false)		
+    Incident incident;
 		
-		public IncidentPreApprove(){
+    public IncidentPreApproved(){
 
-		}
+    }
 
-		public IncidentPreApprove(int id, Incident val){
-			super();
-			this.id = id;
-			this.incident = val;
-		}
+    public IncidentPreApproved(int id, Incident val){
+	super();
+	this.id = id;
+	this.incident = val;
+    }
 
-		public int getId() {
-			return id;
-		}
+    public int getId() {
+	return id;
+    }
 
-		public void setId(int id) {
-			this.id = id;
-		}
-		public Incident getIncident(){
-				return incident;
-		}
-		public void setIncident(Incident val){
-				incident = val;
-		}
+    public void setId(int id) {
+	this.id = id;
+    }
+    public Incident getIncident(){
+	return incident;
+    }
+    public void setIncident(Incident val){
+	incident = val;
+    }
 }

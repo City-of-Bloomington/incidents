@@ -10,10 +10,10 @@ import java.util.List;
 import in.bloomington.incident.model.Action;
 
 public interface ActionService{
-		public abstract void save(Action action);
-		public abstract void update(Action action);
-		public abstract Action findById(int id);
-		public abstract void delete(int id);
-		public abstract List<Action> getAll();		
+    public abstract void save(Action action);
+    public abstract void update(Action action);
+    public abstract Action findById(int id);
+    public abstract void delete(int id);
+    public abstract List<Action> getAll();		
 
 }

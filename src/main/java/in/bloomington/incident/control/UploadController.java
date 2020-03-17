@@ -55,43 +55,43 @@ import in.bloomington.incident.utils.Helper;
 @Controller
 public class UploadController extends TopController{
 
-		final static Logger logger = LoggerFactory.getLogger(UploadController.class);		
-		@Autowired
-		MediaService mediaService;		
-		@Autowired
-		IncidentService incidentService;
-		private Environment env;
-		@Value( "${incident.upload.storage}" )
-		private String storagePath;		
+    final static Logger logger = LoggerFactory.getLogger(UploadController.class);		
+    @Autowired
+    MediaService mediaService;		
+    @Autowired
+    IncidentService incidentService;
+    private Environment env;
+    @Value( "${incident.upload.storage}" )
+    private String storagePath;		
 
 
-		/*
-		// get by id
+    /*
+    // get by id
     @GetMapping("/media/view/{id}")
     public String getAttachment(@PathVariable("id") int id, Model model)
     {
-				try{
-						Media media = mediaService.findById(id);
-						model.addAttribute("media", media);
-						return "mediaView";
-				}catch(Exception ex){
-						errors += ex;
-				}
-				return "redirect:/incident/"+id;
+    try{
+    Media media = mediaService.findById(id);
+    model.addAttribute("media", media);
+    return "mediaView";
+    }catch(Exception ex){
+    errors += ex;
     }
-		*/
+    return "redirect:/incident/"+id;
+    }
+    */
     @GetMapping("/media/add/{id}")
     public String mediaForm(@PathVariable("id") int id, Model model)
     {
-				try{
-						Incident incident = incidentService.findById(id);
-						model.addAttribute("incident_id", id);
-						return "mediaAdd";
-				}catch(Exception ex){
-						addError("invalid incident "+id);
-						System.err.println(""+ ex);
-				}
-				return "redirect:/start";
+	try{
+	    Incident incident = incidentService.findById(id);
+	    model.addAttribute("incident_id", id);
+	    return "mediaAdd";
+	}catch(Exception ex){
+	    addError("invalid incident "+id);
+	    System.err.println(""+ ex);
+	}
+	return "redirect:/start";
     }		
     // delete by id
     @GetMapping("/media/delete/{id}")
@@ -100,7 +100,7 @@ public class UploadController extends TopController{
         Media media  = mediaService.findById(id);
         Incident     incident       = media.getIncident();
         mediaService.delete(id);
-				addMessage("Attachment deleted successfully");
+	addMessage("Attachment deleted successfully");
         return 
             "redirect:/incident/" + incident.getId();
 
@@ -109,20 +109,20 @@ public class UploadController extends TopController{
 
     @PostMapping("/media/save")
     public String doUploadAndSave(@RequestParam("file" ) MultipartFile file,
-                           @RequestParam("incident_id"   ) int  incident_id,
-                           @RequestParam("notes") String  notes
-                           ){
+				  @RequestParam("incident_id"   ) int  incident_id,
+				  @RequestParam("notes") String  notes
+				  ){
         String fileName = null;
         if (file == null || file.isEmpty()) {
-						addMessage("Please select a file to upload");
+	    addMessage("Please select a file to upload");
             return "redirect:media/add" + incident_id;
         }
         String oldFileName  = file.getOriginalFilename();
-				if(oldFileName.contains("..")){
-						addError("file name should not have relative directory");
-						return "redirect:media/add/" + incident_id;
-				}
-				String mimeType = file.getContentType();
+	if(oldFileName.contains("..")){
+	    addError("file name should not have relative directory");
+	    return "redirect:media/add/" + incident_id;
+	}
+	String mimeType = file.getContentType();
         String ret_str   = "";
         int    year      = Helper.getCurrentYear();
         String file_ext  = Helper.getFileExtensionFromName(oldFileName);
@@ -138,20 +138,20 @@ public class UploadController extends TopController{
                 addError(back);
                 logger.error(back);
             }
-						else{
-								Path path = Paths.get(dirPath + newName);
-								Files.write(path, bytes);
-								Media one = new Media();
-								one.setFileName   (newName   );
-								one.setOldFileName(oldFileName  );
-								one.setNotes      (notes     );
-								one.setYear(year);
-								one.setMimeType(mimeType);
-								Incident incident = incidentService.findById(incident_id);
-								one.setIncident(incident);
-								mediaService.save(one);
-								addMessage("Uploaded Successfully");
-						}
+	    else{
+		Path path = Paths.get(dirPath + newName);
+		Files.write(path, bytes);
+		Media one = new Media();
+		one.setFileName   (newName   );
+		one.setOldFileName(oldFileName  );
+		one.setNotes      (notes     );
+		one.setYear(year);
+		one.setMimeType(mimeType);
+		Incident incident = incidentService.findById(incident_id);
+		one.setIncident(incident);
+		mediaService.save(one);
+		addMessage("Uploaded Successfully");
+	    }
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -184,7 +184,7 @@ public class UploadController extends TopController{
         return null;
     }
 		
-		String genNewFileName(String file_ext){
+    String genNewFileName(String file_ext){
         return UUID.randomUUID().toString() + '.' + file_ext;
     }
 		

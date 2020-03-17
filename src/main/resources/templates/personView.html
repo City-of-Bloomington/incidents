@@ -1,0 +1,127 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--
+ - @copyright Copyright (C) 2014-2015 City of Bloomington, Indiana. All rights reserved.
+ - @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
+ - @author W. Sibo <sibow@bloomington.in.gov>
+ -
+ -->
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head th:replace="general::head('Person')"></head>
+  <body>
+    <header th:replace="general::header">
+    </header>			
+    <h2>Person Info</h2>
+    <div th:if="${errors}">
+      <div th:insert="general::errors(${errors})"></div>			
+    </div>
+    <div th:if="${messages}">
+      <div th:insert="general::messages(${messages})"></div>			
+    </div>						
+    <fieldset>
+      <caption>View Person</caption>
+      <p>
+	The following are the details about this person.
+      </p>
+      <table>
+	<tr>
+	  <td>Related incident</td>
+	  <td><a th:href="@{/incidentView/{id}(id=${person.incident.id})}">Back to Incident</a>
+	  </td>
+	</tr>
+	<tr>
+	  <td>
+	    <label>Involvement of this person to this incident as: </label>
+	  </td>
+	  <td>
+	    <span th:text="${person.personType}"></span>
+	  </td>
+	</tr>
+	<tr>
+	  <td>
+	    Name: 
+	  </td>
+	  <td>
+	    <span th:text="${person.fullname}"></span>
+	  </td>
+	</tr>
+	<tr>
+	  <td>Address: </td>
+	  <td>
+	    <span th:text="${person.address}"></span>	
+	  </td>
+	</tr>
+	<tr>
+	  <td>*City, State Zipcode: </td>
+	  <td>
+	    <span th:text="${person.cityStateZip}">	</span>
+	  </td>
+	</tr>
+	<tr>
+	  <td>Phone(s): </td>
+	  <td>
+	    <span th:text="${person.phones}"></span>
+	  </td>
+	</tr>
+	<tr>
+	  <td>Email(s): </td>
+	  <td>
+	    <span th:text="${person.emails}"></span>
+	  </td>
+	</tr>
+	<tr>
+	  <td>Date of Birth: </td>
+	  <td>
+	    <span th:text="${person.dobStr}"></span>
+	  </td>
+	</tr>
+	<!-- some space -->
+	<tr><td colspan="2"> &nbsp;</td></tr>
+	<tr>
+	  <td colspan="2"> Note: the following fields are optional but helpful</td>
+	</tr>
+	<tr>
+	  <td>Driver License Number:
+	  </td>
+	  <td>
+	    <span th:text="${person.dln}"></span>
+	  </td>
+	</tr>
+	<tr>
+	  <td>Social Security Number:
+	  </td>
+	  <td>
+	    <span th:text="${person.ssnLastFour}"></span>
+	  </td>
+	</tr>
+	<tr>
+	  <td>Race:
+	  </td>
+	  <td>
+	    <span th:text="${person.race}"></span>
+	  </td>
+	</tr>
+	<tr>
+	  <td>Height & Weight:
+	  </td>
+	  <td>
+	    <span th:text="${person.heightAndWeight}"></span>
+	  </td>
+	</tr>
+	<tr>
+	  <td>Sex & Race:
+	  </td>
+	  <td>
+	    <span th:text="${person.sexAndRace}"></span>
+	  </td>
+	</tr>
+	<tr>
+	  <td>Occupation:
+	  </td>
+	  <td>
+	    <span th:text="${person.occupation}"></span>
+	  </td>
+	</tr>
+      </table>					
+    </fieldset>
+  </body>
+</htmL>

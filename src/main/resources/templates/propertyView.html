@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--
+ - @copyright Copyright (C) 2014-2015 City of Bloomington, Indiana. All rights reserved.
+ - @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
+ - @author W. Sibo <sibow@bloomington.in.gov>
+ -
+ -->
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head th:replace="general::head('Properties')"></head>
+  <body>
+    <header th:replace="general::header">
+    </header>		
+    <h2>Reported Item</h2>
+    <div th:if="${errors}">
+      <div th:insert="general::errors(${errors})"></div>			
+    </div>
+    <div th:if="${messages}">
+      <div th:insert="general::messages(${messages})"></div>			
+    </div>					
+    <p>
+      The following are the details about this item.
+    </p>
+    <table>
+      <tr>
+	<td>Related incident</td>
+	<td><a th:href="@{/incidentView/{id}(id=${property.incident.id})}">Back to Incident</a></td>							
+      </tr>				
+      <tr>
+	<td>
+	  <label>Brand Info</label>
+	</td>
+	<td>
+	  <span th:text="${property.brandInfo}"></span>
+	</td>
+      </tr>
+      <tr>
+	<td>
+	  <label>Damage Type</label>
+	</td>
+	<td>
+	  <span th:text="${property.damageType}"></span>
+	</td>
+      </tr>
+      <tr>
+	<td>
+	  <label>Value</label>
+	</td>
+	<td>$
+	  <span th:text="${property.value}"></span>
+	</td>
+      </tr>
+      <tr>
+	<td>
+	  <label for="owener">Owner</label>
+	</td>
+	<td>
+	  <span th:text="${property.owner}"></span>
+	</td>
+      </tr>					
+      <tr>
+	<td>
+	  <label for="description">Description</label>
+	</td>
+	<td>				
+	  <span th:text="${property.description}"></span>
+	</td>
+      </tr>
+    </table>
+  </body>
+</htmL>

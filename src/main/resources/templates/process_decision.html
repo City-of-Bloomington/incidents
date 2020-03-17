@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--
+ - @copyright Copyright (C) 2014-2015 City of Bloomington, Indiana. All rights reserved.
+ - @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
+ - @author W. Sibo <sibow@bloomington.in.gov>
+ -
+ -->
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head th:replace="general::head('Incident Details')"></head>
+  <body>
+    <header th:replace="general::header">
+    </header>
+    <h2>Incident</h2>
+    <div th:if="${errors}">
+      <div th:insert="general::errors(${errors})"></div>			
+    </div>
+    <div th:if="${messages}">
+      <div th:insert="general::messages(${messages})"></div>			
+    </div>		
+    <fieldset>
+      <legend>Incident General Info</legend>
+      <div th:replace="incidentView::incident(${incident})">
+      </div>	
+    </fieldset>
+    <div th:if="${incident.hasPersonList()}">
+      <div th:insert="personsView::persons(${incident.persons})"></div>
+    </div>
+    <div th:if="${incident.hasPropertyList()}">
+      <div th:insert="propertiesView::properties(${incident.properties},${incident.propertiesTotalValueFr})"></div>
+    </div>
+    <div th:if="${incident.hasVehicleList()}">
+      <div th:insert="vehiclesView::vehicles(${incident.vehicles})"></div>
+    </div>
+    <div th:if="${incident.hasMediaList()}">
+      <div th:insert="mediasView::medias(${incident.medias})"></div>
+    </div>
+    <div th:if="${incident.hasActionLogs()}">
+      <div th:insert="actionLogs::actionLogs(${incident.actionLogs})"></div>
+    </div>    
+    <h3>Update Incident Status</h3>
+    <form action="#"
+	  th:action="@{/process/decision}"
+	  th:object="${actionLog}" method="post">
+      <input type="hidden" th:field="${actionLog.incident}" />
+      <input type="hidden" th:field="${actionLog.user}" />      
+      <table>
+	<tr>
+	  <td>Set Status</td>
+	  <td>
+	    <select th:field="${actionLog.action}" id="ation_id">
+	      <option th:each="r : ${actions}"
+		      th:value="${r.id}"
+		      th:text="${r.description}">
+	      </option>											
+	    </select>
+	  </td>
+	</tr>
+	<tr>
+	  <td>CFS Number</td>
+	  <td>
+	    <input th:field="${actionLog.cfsNumber}" size="10" maxlength="10" />
+	  </td>
+	</tr>
+	<tr>
+	  <td>Comments</td>
+	  <td><textarea th:field="${actionLog.comments}" rows="5" cols="50"></textarea></td>
+	</tr>
+	<tr>
+	  <td></td>
+	  <td>
+	    <input type="submit" value="Submit" />
+	  </td>
+	</tr>`
+    </form>
+  </body>
+</html>

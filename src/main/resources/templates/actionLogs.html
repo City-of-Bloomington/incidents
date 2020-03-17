@@ -1,0 +1,50 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--
+ - @copyright Copyright (C) 2014-2015 City of Bloomington, Indiana. All rights reserved.
+ - @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
+ - @author W. Sibo <sibow@bloomington.in.gov>
+ -
+ -->
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head th:replace="general::head('Actions')"></head>
+  <body>
+    <header th:replace="general::header">
+    </header>
+    <div th:if="${errors}">
+      <div th:insert="general::errors(${errors})"></div>			
+    </div>
+    <div th:if="${messages}">
+      <div th:insert="general::messages(${messages})"></div>			
+    </div>				
+    <h2>Incident log history</h2>
+    <div th:fragment="actionLogs(actionLogs)">
+      <div th:switch="${actionLogs}">
+	<h2 th:case="null">No logs found</h2>
+	<div th:case="*">
+          <table>
+            <thead>
+              <tr>
+		<th>ID</th>							
+		<th>Action</th>
+		<th>Date & Time</th>
+		<th>User</th>
+		<th>Comments</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr th:each="one : ${actionLogs}">
+		<td th:text="${one.id}"></td>
+		<td th:text="${one.action}"></td>
+		<td th:text="${one.dateStr}"></td>
+		<td th:text="${one.user == null? '': one.user}"></td>		
+		<td th:text="${one.comments}"></td>
+	      </tr>
+            </tbody>
+          </table>
+	</div>      
+      </div>
+    </div>
+  </body>
+</htmL>
+		

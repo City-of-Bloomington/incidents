@@ -8,44 +8,44 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head th:replace="general::head('Properties')"></head>
   <body>
-		<header th:replace="general::header">
-		</header>		
-		<div th:if="${errors}">
-			<div th:insert="general::errors(${errors})"></div>			
-		</div>
-		<div th:if="${messages}">
-			<div th:insert="general::messages(${messages})"></div>			
-		</div>				
-		<div th:fragment="properties(properties,totalBalance)">
-			<h2>Reported Item(s)</h2>
-			<div th:switch="${properties}">
-				<h2 th:case="null">No properties found</h2>
-				<div th:case="*">
-					<table>
-						<thead>
-							<tr>
-								<th>Damage Type</th>
-								<th>Description</th>
-								<th>Value</th>
-								<th>More Details</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr th:each="one : ${properties}">
-								<td th:text="${one.damageType}"></td>
-								<td th:text="${one.info}"></td>
-								<td th:text="${one.valueFr}">&#36;</td>
-								<td><a th:href="@{/property/{id}(id=${one.id})}">Details</a></td>
-							</tr>
-							<tr>
-								<td colspan="2">Total</td><td th:text="${totalBalance}"></td>
-								<td>&nbsp;</td>
-							</tr>
-						</tbody>
-					</table>
-				</div>      
-			</div>
-		</div>
-		</body>
-	</htmL>
+    <header th:replace="general::header">
+    </header>		
+    <div th:if="${errors}">
+      <div th:insert="general::errors(${errors})"></div>			
+    </div>
+    <div th:if="${messages}">
+      <div th:insert="general::messages(${messages})"></div>			
+    </div>				
+    <div th:fragment="properties(properties,totalBalance)">
+      <h2>Reported Item(s)</h2>
+      <div th:switch="${properties}">
+	<h2 th:case="null">No properties found</h2>
+	<div th:case="*">
+	  <table>
+	    <thead>
+	      <tr>
+		<th>Damage Type</th>
+		<th>Description</th>
+		<th>Value</th>
+		<th>More Details</th>
+	      </tr>
+	    </thead>
+	    <tbody>
+	      <tr th:each="one : ${properties}">
+		<td th:text="${one.damageType}"></td>
+		<td th:text="${one.info}"></td>
+		<td th:text="${one.valueFr}">&#36;</td>
+		<td><a th:href="@{/property/{id}(id=${one.id})}">Details</a></td>
+	      </tr>
+	      <tr>
+		<td colspan="2">Total</td><td th:text="${totalBalance}"></td>
+		<td>&nbsp;</td>
+	      </tr>
+	    </tbody>
+	  </table>
+	</div>      
+      </div>
+    </div>
+  </body>
+</htmL>
 		

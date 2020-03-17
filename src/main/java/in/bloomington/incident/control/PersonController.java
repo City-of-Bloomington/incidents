@@ -42,182 +42,197 @@ import in.bloomington.incident.utils.Helper;
 @Controller
 public class PersonController extends TopController{
 
-		final static Logger logger = LoggerFactory.getLogger(PersonController.class);
-		@Autowired
-		IncidentService incidentService;
-		@Autowired
-		PersonService personService;		
-		@Autowired
-		PersonTypeService personTypeService;
-		//
-		private List<String> raceTypes = 
-				new ArrayList<>(Arrays.asList("Caucasion",
-																			"Hispanic",
-																			"African American",
-																			"Native American",
-																			"Asian",
-																			"Other"));
-		private List<String> phoneTypes = 
-				new ArrayList<>(Arrays.asList("Cell","Home","Work"));
-		private List<String> personTitles =
-				new ArrayList<>(Arrays.asList("Mr","Ms","Mrs"));
-		private List<String> sexTypes =
-				new ArrayList<>(Arrays.asList("Male","Female","Other"));		
-
-		@RequestMapping("/person/add/{incident_id}")
+    final static Logger logger = LoggerFactory.getLogger(PersonController.class);
+    @Autowired
+    IncidentService incidentService;
+    @Autowired
+    PersonService personService;		
+    @Autowired
+    PersonTypeService personTypeService;
+    //
+    private List<String> raceTypes = 
+	new ArrayList<>(Arrays.asList("Caucasion",
+				      "Hispanic",
+				      "African American",
+				      "Native American",
+				      "Asian",
+				      "Other"));
+    private List<String> phoneTypes = 
+	new ArrayList<>(Arrays.asList("Cell","Home","Work"));
+    private List<String> personTitles =
+	new ArrayList<>(Arrays.asList("Mr","Ms","Mrs"));
+    private List<String> sexTypes =
+	new ArrayList<>(Arrays.asList("Male","Female","Other"));		
+    
+    @RequestMapping("/person/add/{incident_id}")
     public String addPerson(@PathVariable("incident_id") int incident_id, Model model) {
-				Incident incident = null;
-				try{
-						incident = incidentService.findById(incident_id);
-				}catch(Exception ex){
-						addError("Invalid incident Id: "+incident_id);
-						logger.error(""+ex);
-						model.addAttribute("errors", errors);
-						return "redirect:/start";
-				}
-				Person person = new Person();				
-				List<PersonType> personTypes = personTypeService.getAll();
-				person.setIncident(incident);
-				model.addAttribute("person", person);
-				model.addAttribute("sexTypes", sexTypes);
-				model.addAttribute("raceTypes", raceTypes);
-				model.addAttribute("phoneTypes", phoneTypes);
-				model.addAttribute("personTitles", personTitles);
-				model.addAttribute("personTypes", personTypes);
+	Incident incident = null;
+	try{
+	    incident = incidentService.findById(incident_id);
+	}catch(Exception ex){
+	    addError("Invalid incident Id: "+incident_id);
+	    logger.error(""+ex);
+	    model.addAttribute("errors", errors);
+	    return "redirect:/start";
+	}
+	Person person = new Person();				
+	List<PersonType> personTypes = personTypeService.getAll();
+	person.setIncident(incident);
+	model.addAttribute("person", person);
+	model.addAttribute("sexTypes", sexTypes);
+	model.addAttribute("raceTypes", raceTypes);
+	model.addAttribute("phoneTypes", phoneTypes);
+	model.addAttribute("personTitles", personTitles);
+	model.addAttribute("personTypes", personTypes);
         return "personAdd";
     }
-		@PostMapping("/person/save")
+    @PostMapping("/person/save")
     public String personSave(@Valid Person person,
-														 BindingResult result,
-														 Model model,
-														 HttpSession session
-														 ) {
+			     BindingResult result,
+			     Model model,
+			     HttpSession session
+			     ) {
         if (result.hasErrors()) {
-						String error = Helper.extractErrors(result);
-						addError(error);
-						System.err.println(" **** errors "+error);
-						//
-						logger.error(error);
-						List<PersonType> personTypes = personTypeService.getAll();
-						model.addAttribute("errors", errors);
-						model.addAttribute("person", person);
-						model.addAttribute("sexTypes", sexTypes);
-						model.addAttribute("raceTypes", raceTypes);
-						model.addAttribute("phoneTypes", phoneTypes);
-						model.addAttribute("personTitles", personTitles);
-						model.addAttribute("personTypes", personTypes);
-						model.addAttribute("errors", errors);
-						return "personAdd";
+	    String error = Helper.extractErrors(result);
+	    addError(error);
+	    System.err.println(" **** errors "+error);
+	    //
+	    logger.error(error);
+	    List<PersonType> personTypes = personTypeService.getAll();
+	    model.addAttribute("errors", errors);
+	    model.addAttribute("person", person);
+	    model.addAttribute("sexTypes", sexTypes);
+	    model.addAttribute("raceTypes", raceTypes);
+	    model.addAttribute("phoneTypes", phoneTypes);
+	    model.addAttribute("personTitles", personTitles);
+	    model.addAttribute("personTypes", personTypes);
+	    model.addAttribute("errors", errors);
+	    return "personAdd";
         }
-				if(!person.verify()){
-						String error = person.getErrorInfo();
-						addError(error);
-						List<PersonType> personTypes = personTypeService.getAll();
-						model.addAttribute("sexTypes", sexTypes);
-						model.addAttribute("raceTypes", raceTypes);				
-						model.addAttribute("phoneTypes", phoneTypes);
-						model.addAttribute("personTitles", personTitles);
-						model.addAttribute("personTypes", personTypes);		
-						model.addAttribute("errors", errors);
-						return "personAdd";
-				}
+	if(!person.verify()){
+	    String error = person.getErrorInfo();
+	    addError(error);
+	    List<PersonType> personTypes = personTypeService.getAll();
+	    model.addAttribute("sexTypes", sexTypes);
+	    model.addAttribute("raceTypes", raceTypes);				
+	    model.addAttribute("phoneTypes", phoneTypes);
+	    model.addAttribute("personTitles", personTitles);
+	    model.addAttribute("personTypes", personTypes);		
+	    model.addAttribute("errors", errors);
+	    return "personAdd";
+	}
         personService.save(person);
-				addMessage("Saved Succefully");
-				addMessagesToSession(session);
-        return "redirect:/incident/"+person.getIncident().getId(); 
+	addMessage("Saved Succefully");
+	addMessagesToSession(session);
+	return "redirect:/incident/"+person.getIncident().getId(); 
     }
-		
-		@GetMapping("/person/{id}")
-		public String showPerson(@PathVariable("id") int id, Model model) {
-				Person person = null;
-				try{
-						person = personService.findById(id);
+    
+    @GetMapping("/person/{id}")
+    public String showPerson(@PathVariable("id") int id, Model model) {
+	Person person = null;
+	try{
+	    person = personService.findById(id);
 				}catch(Exception ex){
-						addError("Invalid person Id "+id);
-						logger.error(" "+ex);
-						model.addAttribute("errors", errors);
-						return "index"; // need fix
-				}
+	    addError("Invalid person Id "+id);
+	    logger.error(" "+ex);
+	    model.addAttribute("errors", errors);
+	    return "index"; // need fix
+	}
         model.addAttribute("person", person);				
-				return "person";
-		}
-		
-		@GetMapping("/person/edit/{id}")
-		public String showEditForm(@PathVariable("id") int id, Model model) {
-				Person person = null;
-				try{
-						person = personService.findById(id);
-						
-				}catch(Exception ex){
-						addError("Invalid person Id "+id);
-						model.addAttribute("errors", errors);
-						logger.error(" "+ex);
-						return "index"; // need fix
-				}
-				List<PersonType> personTypes = personTypeService.getAll();
-				model.addAttribute("person", person);
-				model.addAttribute("sexTypes", sexTypes);
-				model.addAttribute("raceTypes", raceTypes);				
-				model.addAttribute("phoneTypes", phoneTypes);
-				model.addAttribute("personTitles", personTitles);
-				model.addAttribute("personTypes", personTypes);
-				if(hasErrors()){
-						model.addAttribute("errors", errors);
-				}
-				return "personUpdate";
-		}
-		@PostMapping("/person/update/{id}")
-		public String updatePerson(@PathVariable("id") int id,
-															 @Valid Person person, 
-															 BindingResult result,
-															 Model model,
-															 HttpSession session
-															 ) {
-				if (result.hasErrors()) {
-						String error = Helper.extractErrors(result);
-						addError(error);
-						logger.error("Error update person "+error);
-						person.setId(id);
-						return "redirect:/person/edit/"+id;
-						
-				}
-				if(!person.verify()){
-						String error = person.getErrorInfo();
-						addError(error);
-						List<PersonType> personTypes = personTypeService.getAll();
-						model.addAttribute("sexTypes", sexTypes);
-						model.addAttribute("raceTypes", raceTypes);				
-						model.addAttribute("phoneTypes", phoneTypes);
-						model.addAttribute("personTitles", personTitles);
-						model.addAttribute("personTypes", personTypes);		
-						model.addAttribute("errors", errors);
-						return "personUpdate";						
-				}
-				Incident incident = person.getIncident();
-				personService.update(person);
-				addMessage("Updated Successfully");				
-				addMessagesToSession(session);
-				return "redirect:/incident/"+incident.getId();
-		}
-		
-		@GetMapping("/person/delete/{id}")
-		public String deletePerson(@PathVariable("id") int id,
-															 Model model
-															 ) {
-
-				Person person = null;
-				Incident incident = null;
-				try{
-						person = personService.findById(id);
-						incident = person.getIncident();
-						personService.delete(id);
-						addMessage("Deleted Succefully");
-				}catch(Exception ex){
-						logger.error("Error delete person "+id+" "+ex);
-						addError("Invalid person ID "+id);
-				}
-				return "redirect:/incident/"+incident.getId();
-
-		}
-		
+	return "person";
+    }
+    //login staff
+    @GetMapping("/personView/{id}")
+    public String viewPerson(@PathVariable("id") int id, Model model) {
+	Person person = null;
+	try{
+	    person = personService.findById(id);
+	}catch(Exception ex){
+	    addError("Invalid person Id "+id);
+	    logger.error(" "+ex);
+	    model.addAttribute("errors", errors);
+	    return "index"; // need fix
+	}
+        model.addAttribute("person", person);				
+	return "personView";
+    }    
+    
+    @GetMapping("/person/edit/{id}")
+    public String showEditForm(@PathVariable("id") int id, Model model) {
+	Person person = null;
+	try{
+	    person = personService.findById(id);
+	    
+	}catch(Exception ex){
+	    addError("Invalid person Id "+id);
+	    model.addAttribute("errors", errors);
+	    logger.error(" "+ex);
+	    return "index"; // need fix
+	}
+	List<PersonType> personTypes = personTypeService.getAll();
+	model.addAttribute("person", person);
+	model.addAttribute("sexTypes", sexTypes);
+	model.addAttribute("raceTypes", raceTypes);				
+	model.addAttribute("phoneTypes", phoneTypes);
+	model.addAttribute("personTitles", personTitles);
+	model.addAttribute("personTypes", personTypes);
+	if(hasErrors()){
+	    model.addAttribute("errors", errors);
+	}
+	return "personUpdate";
+    }
+    @PostMapping("/person/update/{id}")
+    public String updatePerson(@PathVariable("id") int id,
+			       @Valid Person person, 
+			       BindingResult result,
+			       Model model,
+			       HttpSession session
+			       ) {
+	if (result.hasErrors()) {
+	    String error = Helper.extractErrors(result);
+	    addError(error);
+	    logger.error("Error update person "+error);
+	    person.setId(id);
+	    return "redirect:/person/edit/"+id;
+	    
+	}
+	if(!person.verify()){
+	    String error = person.getErrorInfo();
+	    addError(error);
+	    List<PersonType> personTypes = personTypeService.getAll();
+	    model.addAttribute("sexTypes", sexTypes);
+	    model.addAttribute("raceTypes", raceTypes);				
+	    model.addAttribute("phoneTypes", phoneTypes);
+	    model.addAttribute("personTitles", personTitles);
+	    model.addAttribute("personTypes", personTypes);		
+	    model.addAttribute("errors", errors);
+	    return "personUpdate";						
+	}
+	Incident incident = person.getIncident();
+	personService.update(person);
+	addMessage("Updated Successfully");				
+	addMessagesToSession(session);
+	return "redirect:/incident/"+incident.getId();
+    }
+    
+    @GetMapping("/person/delete/{id}")
+    public String deletePerson(@PathVariable("id") int id,
+			       Model model
+			       ) {
+	
+	Person person = null;
+	Incident incident = null;
+	try{
+	    person = personService.findById(id);
+	    incident = person.getIncident();
+	    personService.delete(id);
+	    addMessage("Deleted Succefully");
+	}catch(Exception ex){
+	    logger.error("Error delete person "+id+" "+ex);
+	    addError("Invalid person ID "+id);
+	}
+	return "redirect:/incident/"+incident.getId();
+	
+    }
+    
 }

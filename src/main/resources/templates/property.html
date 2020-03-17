@@ -8,73 +8,73 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head th:replace="general::head('Properties')"></head>
   <body>
-		<header th:replace="general::header">
-		</header>		
+    <header th:replace="general::header">
+    </header>		
     <h2>Reported Item</h2>
-		<div th:if="${errors}">
-			<div th:insert="general::errors(${errors})"></div>			
-		</div>
-		<div th:if="${messages}">
-			<div th:insert="general::messages(${messages})"></div>			
-		</div>					
-		<p>
-			The following are the details about this item.
-		</p>
-		<ul>
-			<li>Check the info entered so far</li>
-			<li>if you want to change some of the data click on 'Edit' button below.				</li>
-			<li>You amy also delete this record if you think it is irrelevant, by clicking to 'Delete' button in the bottom of the page</li>
-			<li>If the data are correct, click on 'Back to incident' link below to continue </li>
-		</ul>
-		<table>
-			<tr>
-				<td>Related incident</td>
-				<td><a th:href="@{/incident/{id}(id=${property.incident.id})}">Back to Incident</a></td>							
-			</tr>				
-			<tr>
-				<td>
-					<label>Brand Info</label>
-				</td>
-				<td>
-					<span th:text="${property.brandInfo}"></span>
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<label>Damage Type</label>
-				</td>
-				<td>
-					<span th:text="${property.damageType}"></span>
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<label>Value</label>
-				</td>
-				<td>$
-					<span th:text="${property.value}"></span>
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<label for="owener">Owner</label>
-				</td>
-				<td>
-					<span th:text="${property.owner}"></span>
-				</td>
-			</tr>					
-			<tr>
-				<td>
-					<label for="description">Description</label>
-				</td>
-				<td>				
-					<span th:text="${property.description}"></span>
-				</td>
-			</tr>
-			<tr>
-				<td><a th:href="@{/property/edit/{id}(id=${property.id})}">Edit</a></td>
-				<td><a th:href="@{/property/delete/{id}(id=${property.id})}">Delete</a></td>
-			</tr>
-		</table>
-	</body>
+    <div th:if="${errors}">
+      <div th:insert="general::errors(${errors})"></div>			
+    </div>
+    <div th:if="${messages}">
+      <div th:insert="general::messages(${messages})"></div>			
+    </div>					
+    <p>
+      The following are the details about this item.
+    </p>
+    <ul>
+      <li>Check the info entered so far</li>
+      <li>if you want to change some of the data click on 'Edit' button below.	</li>
+      <li>You amy also delete this record if you think it is irrelevant, by clicking to 'Delete' button in the bottom of the page</li>
+      <li>If the data are correct, click on 'Back to incident' link below to continue </li>
+    </ul>
+    <table>
+      <tr>
+	<td>Related incident</td>
+	<td><a th:href="@{/incident/{id}(id=${property.incident.id})}">Back to Incident</a></td>							
+      </tr>				
+      <tr>
+	<td>
+	  <label>Brand Info</label>
+	</td>
+	<td>
+	  <span th:text="${property.brandInfo}"></span>
+	</td>
+      </tr>
+      <tr>
+	<td>
+	  <label>Damage Type</label>
+	</td>
+	<td>
+	  <span th:text="${property.damageType}"></span>
+	</td>
+      </tr>
+      <tr>
+	<td>
+	  <label>Value</label>
+	</td>
+	<td>$
+	  <span th:text="${property.value}"></span>
+	</td>
+      </tr>
+      <tr>
+	<td>
+	  <label for="owener">Owner</label>
+	</td>
+	<td>
+	  <span th:text="${property.owner}"></span>
+	</td>
+      </tr>					
+      <tr>
+	<td>
+	  <label for="description">Description</label>
+	</td>
+	<td>				
+	  <span th:text="${property.description}"></span>
+	</td>
+      </tr>
+      <tr>
+	<td><a th:href="@{/property/edit/{id}(id=${property.id})}">Edit</a></td>
+	<td><a th:href="@{/property/delete/{id}(id=${property.id})}">Delete</a></td>
+      </tr>
+    </table>
+  </body>
 </htmL>

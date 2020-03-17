@@ -9,19 +9,19 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head th:replace="general::head('Actions')"></head>
   <body>
-		<header th:replace="general::header">
-		</header>
-		<div th:if="${errors}">
-			<div th:insert="general::errors(${errors})"></div>			
-		</div>
-		<div th:if="${messages}">
-			<div th:insert="general::messages(${messages})"></div>			
-		</div>				
+    <header th:replace="general::header">
+    </header>
+    <div th:if="${errors}">
+      <div th:insert="general::errors(${errors})"></div>			
+    </div>
+    <div th:if="${messages}">
+      <div th:insert="general::messages(${messages})"></div>			
+    </div>				
     <h2>Workflow Actions</h2>
-		<p><a href="/action/new">Add a new action</a></p>
-		
-		<div th:switch="${actions}">
-			<h2 th:case="null">No actions found</h2>
+    <p><a href="/action/new">Add a new action</a></p>
+    
+    <div th:switch="${actions}">
+      <h2 th:case="null">No actions found</h2>
       <div th:case="*">
         <h2>Actions</h2>
         <table>
@@ -37,19 +37,19 @@
           </thead>
           <tbody>
             <tr th:each="action : ${actions}">
-							<td th:text="${action.id}"></td>
+	      <td th:text="${action.id}"></td>
               <td th:text="${action.name}"></td>
               <td th:text="${action.description}"></td>
-							<td th:text="${action.workflow_step}"></td>										
+	      <td th:text="${action.workflow_step}"></td>										
               <td><a th:href="@{/action/edit/{id}(id=${action.id})}">Edit</a></td>
               <td><a th:href="@{/action/delete/{id}(id=${action.id})}">Delete</a></td>
             </tr>
           </tbody>
         </table>
-			</div>      
-
-		</div>
-		<p><a href="/index"> Settings </a></p>
-		</body>
-	</htmL>
+      </div>      
+      
+    </div>
+    <p><a href="/index"> Settings </a></p>
+  </body>
+</htmL>
 		

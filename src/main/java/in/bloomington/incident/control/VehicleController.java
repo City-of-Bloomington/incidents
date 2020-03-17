@@ -31,124 +31,138 @@ import in.bloomington.incident.utils.Helper;
 @Controller
 public class VehicleController extends TopController{
 
-		final static Logger logger = LoggerFactory.getLogger(VehicleController.class);		
-		@Autowired
-		VehicleService vehicleService;
-		@Autowired
-		IncidentService incidentService;		
-		@Autowired
-		CarDamageTypeService damageTypeService;
+    final static Logger logger = LoggerFactory.getLogger(VehicleController.class);		
+    @Autowired
+    VehicleService vehicleService;
+    @Autowired
+    IncidentService incidentService;		
+    @Autowired
+    CarDamageTypeService damageTypeService;
 		
-		@GetMapping("/vehicle/add/{incident_id}")
+    @GetMapping("/vehicle/add/{incident_id}")
     public String newVehicle(@PathVariable("incident_id") int incident_id, Model model) {
 				
-				Vehicle vehicle = new Vehicle();
-				try{
-						Incident incident = incidentService.findById(incident_id);
-						vehicle.setIncident(incident);
-				}catch(Exception ex){
-						addError("Invalid incident "+incident_id);
-						logger.error(" "+ex);
-						model.addAttribute("errors", errors);
-						return "redirect:/start";
-				}				
+	Vehicle vehicle = new Vehicle();
+	try{
+	    Incident incident = incidentService.findById(incident_id);
+	    vehicle.setIncident(incident);
+	}catch(Exception ex){
+	    addError("Invalid incident "+incident_id);
+	    logger.error(" "+ex);
+	    model.addAttribute("errors", errors);
+	    return "redirect:/start";
+	}				
         model.addAttribute("vehicle", vehicle);
-				List<CarDamageType> types = damageTypeService.getAll();
-				if(types != null)
-		        model.addAttribute("damageTypes", types);					
+	List<CarDamageType> types = damageTypeService.getAll();
+	if(types != null)
+	    model.addAttribute("damageTypes", types);					
         return "vehicleAdd";
     }     
     @PostMapping("/vehicle/save")
     public String addVehicle(@Valid Vehicle vehicle, BindingResult result,
-														 Model model,
-														 HttpSession session
-														 ) {
+			     Model model,
+			     HttpSession session
+			     ) {
         if (result.hasErrors()) {
-						String error = Helper.extractErrors(result);						
-						addError("Error new add vehicle "+error);
-						logger.error(error);
+	    String error = Helper.extractErrors(result);						
+	    addError("Error new add vehicle "+error);
+	    logger.error(error);
             return "vehicleAdd";
         }
         vehicleService.save(vehicle);
-				addMessage("Added Successfully");
-				addMessagesToSession(session);
-				resetAll();				
-				int incident_id = vehicle.getIncident().getId();
-				return "redirect:/incident/"+incident_id;
+	addMessage("Added Successfully");
+	addMessagesToSession(session);
+	resetAll();				
+	int incident_id = vehicle.getIncident().getId();
+	return "redirect:/incident/"+incident_id;
     }
 
-		@GetMapping("/vehicle/edit/{id}")
-		public String showEditForm(@PathVariable("id") int id, Model model) {
-				Vehicle vehicle = null;
-				try{
-						vehicle = vehicleService.findById(id);
+    @GetMapping("/vehicle/edit/{id}")
+    public String showEditForm(@PathVariable("id") int id, Model model) {
+	Vehicle vehicle = null;
+	try{
+	    vehicle = vehicleService.findById(id);
 						
-				}catch(Exception ex){
-						addError("Invalid vehicle Id "+id);
-						logger.error(" "+ex);
-						model.addAttribute("errors", errors);
-						return "redirect:/index";
-				}
-				model.addAttribute("vehicle", vehicle);
-				List<CarDamageType> types = damageTypeService.getAll();
-				if(types != null)
-		        model.addAttribute("damageTypes", types);					
-				return "vehicleUpdate";
-		}
-		@PostMapping("/vehicle/update")
-		public String updateVehicle(@Valid Vehicle vehicle, 
-																BindingResult result,
-																Model model,
-																HttpSession session
-																) {
-				if (result.hasErrors()) {
-						String error = Helper.extractErrors(result);
-						addError("Error update vehicle "+error);
-						logger.error(error);
-						return "reditect:/error";
-				}
-				addMessage("Updated Successfully");
-				vehicleService.save(vehicle);
-				Incident incident = vehicle.getIncident();
-				int incident_id = incident.getId();
-				addMessagesToSession(session);
-				resetAll();
-				return "redirect:/incident/"+incident_id;
-		}
+	}catch(Exception ex){
+	    addError("Invalid vehicle Id "+id);
+	    logger.error(" "+ex);
+	    model.addAttribute("errors", errors);
+	    return "redirect:/index";
+	}
+	model.addAttribute("vehicle", vehicle);
+	List<CarDamageType> types = damageTypeService.getAll();
+	if(types != null)
+	    model.addAttribute("damageTypes", types);					
+	return "vehicleUpdate";
+    }
+    @PostMapping("/vehicle/update")
+    public String updateVehicle(@Valid Vehicle vehicle, 
+				BindingResult result,
+				Model model,
+				HttpSession session
+				) {
+	if (result.hasErrors()) {
+	    String error = Helper.extractErrors(result);
+	    addError("Error update vehicle "+error);
+	    logger.error(error);
+	    return "reditect:/error";
+	}
+	addMessage("Updated Successfully");
+	vehicleService.save(vehicle);
+	Incident incident = vehicle.getIncident();
+	int incident_id = incident.getId();
+	addMessagesToSession(session);
+	resetAll();
+	return "redirect:/incident/"+incident_id;
+    }
 		
-		@GetMapping("/vehicle/delete/{id}")
-		public String deleteVehicle(@PathVariable("id") int id,
-																Model model,
-																HttpSession session
-																) {
+    @GetMapping("/vehicle/delete/{id}")
+    public String deleteVehicle(@PathVariable("id") int id,
+				Model model,
+				HttpSession session
+				) {
 
-				Incident incident = null;
-				try{
-						Vehicle vehicle = vehicleService.findById(id);
-						incident = vehicle.getIncident();
-						vehicleService.delete(id);
-						addMessage("Deleted Succefully");
-						addMessagesToSession(session);
-						resetAll();
-				}catch(Exception ex){
-						addError("Error delete vehicle "+id);						
-						logger.error(" "+ex);
-				}
-				return "redirect:/incident/"+incident.getId();
+	Incident incident = null;
+	try{
+	    Vehicle vehicle = vehicleService.findById(id);
+	    incident = vehicle.getIncident();
+	    vehicleService.delete(id);
+	    addMessage("Deleted Succefully");
+	    addMessagesToSession(session);
+	    resetAll();
+	}catch(Exception ex){
+	    addError("Error delete vehicle "+id);						
+	    logger.error(" "+ex);
+	}
+	return "redirect:/incident/"+incident.getId();
 
-		}
-		@GetMapping("/vehicle/{id}")
-		public String viewVehicle(@PathVariable("id") int id, Model model) {
+    }
+    @GetMapping("/vehicle/{id}")
+    public String viewVehicle(@PathVariable("id") int id, Model model) {
 
-				try{
-						Vehicle vehicle = vehicleService.findById(id);
-						model.addAttribute("vehicle", vehicle);						
-				}catch(Exception ex){
-						addError("Invalid vehicle ID "+id);
-						logger.error(" "+ex);
-				}
-				return "vehicle";
+	try{
+	    Vehicle vehicle = vehicleService.findById(id);
+	    model.addAttribute("vehicle", vehicle);						
+	}catch(Exception ex){
+	    addError("Invalid vehicle ID "+id);
+	    logger.error(" "+ex);
+	}
+	return "vehicle";
 
-		}		
+    }
+    //login staff
+    @GetMapping("/vehicleView/{id}")
+    public String vehicleView(@PathVariable("id") int id, Model model) {
+
+	try{
+	    Vehicle vehicle = vehicleService.findById(id);
+	    model.addAttribute("vehicle", vehicle);						
+	}catch(Exception ex){
+	    addError("Invalid vehicle ID "+id);
+	    logger.error(" "+ex);
+	}
+	return "vehicleView";
+
+    }	    
 		
 }
