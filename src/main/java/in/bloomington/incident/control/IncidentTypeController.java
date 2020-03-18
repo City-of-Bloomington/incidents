@@ -26,17 +26,17 @@ import in.bloomington.incident.model.IncidentType;
 @Controller
 public class IncidentTypeController extends TopController{
 
-		@Autowired
-		IncidentTypeService incidentTypeService;
+    @Autowired
+    IncidentTypeService incidentTypeService;
 		
-		@GetMapping("/incidentTypes")
+    @GetMapping("/incidentTypes")
     public String getAll(Model model) {
         model.addAttribute("types", incidentTypeService.getAll());
         return "incidentTypes";
     }
-		@GetMapping("/incidentType/new")
+    @GetMapping("/incidentType/new")
     public String newIncidentType(Model model) {
-				IncidentType incidentType = new IncidentType();
+	IncidentType incidentType = new IncidentType();
         model.addAttribute("type", incidentType);
         return "incidentTypeAdd";
     }     
@@ -46,60 +46,60 @@ public class IncidentTypeController extends TopController{
             return "addIncidentType";
         }
         incidentTypeService.save(incidentType);
-				addMessage("Added Successfully");
+	addMessage("Added Successfully");
         model.addAttribute("types", incidentTypeService.getAll());
-				model.addAttribute("messages", messages);				
+	model.addAttribute("messages", messages);				
         return "incidentTypes";
     }
 
-		@GetMapping("/incidentType/edit/{id}")
-		public String showEditForm(@PathVariable("id") int id, Model model) {
-				IncidentType type = null;
-				try{
-						type = incidentTypeService.findById(id);
+    @GetMapping("/incidentType/edit/{id}")
+    public String showEditForm(@PathVariable("id") int id, Model model) {
+	IncidentType type = null;
+	try{
+	    type = incidentTypeService.findById(id);
 						
-				}catch(Exception ex){
-						addError("Invalid incident type Id");
-						model.addAttribute("types", incidentTypeService.getAll());
-						model.addAttribute("errors", errors);
-						return "incidentTypes";
-				}
-				model.addAttribute("type", type);
-				return "incidentTypeUpdate";
-		}
-		@PostMapping("/incidentType/update/{id}")
-		public String updateIncidentType(@PathVariable("id") int id, @Valid IncidentType type, 
-														 BindingResult result, Model model) {
-				if (result.hasErrors()) {
-						type.setId(id);
-						return "incidentTypeUpdate";
-				}
-				addMessage("Updated Successfully");
-				incidentTypeService.save(type);
-				model.addAttribute("types", incidentTypeService.getAll());				
-				model.addAttribute("messages", messages);
-				return "incidentTypes";
-		}
+	}catch(Exception ex){
+	    addError("Invalid incident type Id");
+	    model.addAttribute("types", incidentTypeService.getAll());
+	    model.addAttribute("errors", errors);
+	    return "incidentTypes";
+	}
+	model.addAttribute("type", type);
+	return "incidentTypeUpdate";
+    }
+    @PostMapping("/incidentType/update/{id}")
+    public String updateIncidentType(@PathVariable("id") int id, @Valid IncidentType type, 
+				     BindingResult result, Model model) {
+	if (result.hasErrors()) {
+	    type.setId(id);
+	    return "incidentTypeUpdate";
+	}
+	addMessage("Updated Successfully");
+	incidentTypeService.save(type);
+	model.addAttribute("types", incidentTypeService.getAll());				
+	model.addAttribute("messages", messages);
+	return "incidentTypes";
+    }
 		
-		@GetMapping("/incidentType/delete/{id}")
-		public String deleteIncidentType(@PathVariable("id") int id, Model model) {
+    @GetMapping("/incidentType/delete/{id}")
+    public String deleteIncidentType(@PathVariable("id") int id, Model model) {
 
-				try{
-						IncidentType type = incidentTypeService.findById(id);
-						incidentTypeService.delete(id);
-						addMessage("Deleted Succefully");
-				}catch(Exception ex){
-						addError("Invalid incidentType ID "+id);
-				}
-				model.addAttribute("types", incidentTypeService.getAll());
-				if(hasMessages()){
-						model.addAttribute("messages", messages);
-				}
-				else if(hasErrors()){
-						model.addAttribute("errors", errors);
-				}
+	try{
+	    IncidentType type = incidentTypeService.findById(id);
+	    incidentTypeService.delete(id);
+	    addMessage("Deleted Succefully");
+	}catch(Exception ex){
+	    addError("Invalid incidentType ID "+id);
+	}
+	model.addAttribute("types", incidentTypeService.getAll());
+	if(hasMessages()){
+	    model.addAttribute("messages", messages);
+	}
+	else if(hasErrors()){
+	    model.addAttribute("errors", errors);
+	}
 					 
-				return "incidentTypes";
-		}
+	return "incidentTypes";
+    }
 		
 }

@@ -26,10 +26,14 @@ import org.slf4j.LoggerFactory;
 //
 import in.bloomington.incident.service.IncidentPreApprovedService;
 import in.bloomington.incident.service.IncidentApprovedService;
+import in.bloomington.incident.service.IncidentTypeService;
+import in.bloomington.incident.service.SearchService;
+import in.bloomington.incident.service.ActionService;
 import in.bloomington.incident.model.Incident;
 import in.bloomington.incident.model.IncidentPreApproved;
 import in.bloomington.incident.model.IncidentApproved;
-
+import in.bloomington.incident.model.Search;
+import in.bloomington.incident.model.IncidentType;
 
 @Controller
 public class SearchController extends TopController{
@@ -39,7 +43,13 @@ public class SearchController extends TopController{
     IncidentPreApprovedService preApprovedService;
     @Autowired
     IncidentApprovedService approvedService;		
-		
+    @Autowired
+    IncidentTypeService incidentTypeService;
+    @Autowired
+    SearchService searchService;
+    @Autowired
+    ActionService actionService;
+    
     @GetMapping("/search/preApproved")
     public String findPreApproved(Model model) {
 	List<Incident> all = null;
@@ -81,6 +91,46 @@ public class SearchController extends TopController{
 	    model.addAttribute("messages", messages);
 	}
         return "approved";
-    }   		
+    }
+    @GetMapping("/search")
+    public String search(Model model) {
+	Search search = new Search();
+	List<IncidentType> types = incidentTypeService.getAll();
+        model.addAttribute("search", search);
+	model.addAttribute("types", types);
+	if(hasErrors())
+	    model.addAttribute("errors", getErrors());
+	if(hasMessages()){
+	    model.addAttribute("messages", getMessages());
+	}
+        return "search";
+    }
+    @PostMapping("/search/find")
+    public String addAction(@Valid Search search,
+			    BindingResult result,
+			    Model model) {
+        if (result.hasErrors()) {
+	    logger.error(" Error creating new action ");
+            return "redirect:/search";
+        }
+	if(!search.isValid()){
+	    addError("You have to fill some search fields");
+	    
+	    return "redirect:/search";
+	}
+        List<Incident> incidents = searchService.find(search);
+	if(incidents != null && incidents.size() > 0){
+	    addMessage(" found "+incidents.size()+" incidents");
+	}
+	else{
+	    addMessage(" no match found ");
+	    return "redirect:/search";
+	}
+        model.addAttribute("actions", actionService.getAll());
+	model.addAttribute("messages", getMessages());				
+        return "actions";
+    }    
+    
+    
 		
 }

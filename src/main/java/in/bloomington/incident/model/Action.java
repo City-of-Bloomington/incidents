@@ -31,105 +31,105 @@ import javax.validation.constraints.NotNull;
 @Table(name = "actions")
 public class Action implements java.io.Serializable{
 
-		@Id
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-		@NotNull
-		private String name;
-		private String description;
-		private Integer workflowStep;
-		@ManyToMany
-		@JoinTable(name = "role_actions")
-		List<Role> roles;
-		//
-		public Action(){
+    @NotNull
+    private String name;
+    private String description;
+    private Integer workflowStep;
+    @ManyToMany
+    @JoinTable(name = "role_actions")
+    List<Role> roles;
+    //
+    public Action(){
 
-		}
+    }
 
-		public Action(int id, @NotNull String name, String description, Integer workflow_step, List<Role> roles) {
-			super();
-			this.id = id;
-			this.name = name;
-			this.description = description;
-			this.workflowStep = workflow_step;
-			this.roles = roles;
-		}
+    public Action(int id, @NotNull String name, String description, Integer workflow_step, List<Role> roles) {
+	super();
+	this.id = id;
+	this.name = name;
+	this.description = description;
+	this.workflowStep = workflow_step;
+	this.roles = roles;
+    }
 
-		public int getId() {
-			return id;
-		}
+    public int getId() {
+	return id;
+    }
 
-		public void setId(int id) {
-			this.id = id;
-		}
+    public void setId(int id) {
+	this.id = id;
+    }
 
-		@Transient
-		public Integer getObjId(){
-				return new Integer(id);
-		}
-		public String getName() {
-			return name;
-		}
+    @Transient
+    public Integer getObjId(){
+	return new Integer(id);
+    }
+    public String getName() {
+	return name;
+    }
 
-		public void setName(String name) {
-			this.name = name;
-		}
+    public void setName(String name) {
+	this.name = name;
+    }
 
-		public String getDescription() {
-			return description;
-		}
+    public String getDescription() {
+	return description;
+    }
 
-		public void setDescription(String description) {
-			this.description = description;
-		}
+    public void setDescription(String description) {
+	this.description = description;
+    }
 
-		public Integer getWorkflowStep() {
-			return workflowStep;
-		}
+    public Integer getWorkflowStep() {
+	return workflowStep;
+    }
 
-		public void setWorkflowStep(Integer workflow_step) {
-			this.workflowStep = workflow_step;
-		}
-		public void setRoles(List<Role> roles) {
-				this.roles = roles;
-		}
-		@Transient
-		private boolean hasRoles(){
-				return roles != null && roles.size() > 0;
-		}
-		@Transient
-		public boolean isApproved(){
-				return name != null && name.equals("approved");
-		}		
-		@Transient
-		public boolean isRejected(){
-				return name != null && name.equals("rejected");
-		}
-		@Transient
-		public boolean isProcessed(){
-				return name != null && name.equals("processed");
-		}				
-		@Override
+    public void setWorkflowStep(Integer workflow_step) {
+	this.workflowStep = workflow_step;
+    }
+    public void setRoles(List<Role> roles) {
+	this.roles = roles;
+    }
+    @Transient
+    private boolean hasRoles(){
+	return roles != null && roles.size() > 0;
+    }
+    @Transient
+    public boolean isApproved(){
+	return name != null && name.equals("approved");
+    }		
+    @Transient
+    public boolean isRejected(){
+	return name != null && name.equals("rejected");
+    }
+    @Transient
+    public boolean isProcessed(){
+	return name != null && name.equals("processed");
+    }				
+    @Override
     public boolean equals(Object obj) { 
           
-				if(this == obj) 
-						return true; 
+	if(this == obj) 
+	    return true; 
 				
         if(obj == null || obj.getClass()!= this.getClass()) 
             return false; 
 				
         Action one = (Action) obj; 
         return one.getId() == this.getId();
-		}
-		@Override
-		public int hashCode(){ 
-				int ret = 29;
+    }
+    @Override
+    public int hashCode(){ 
+	int ret = 29;
         return ret += this.id; 
     }
 
-		@Override
-		public String toString() {
-			return name;
-		} 	
+    @Override
+    public String toString() {
+	return name;
+    } 	
 		
 }
