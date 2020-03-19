@@ -6,6 +6,7 @@ package in.bloomington.incident.repos;
  *
  */
 import java.util.List;
+import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -13,8 +14,11 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.Query;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import in.bloomington.incident.model.Search;
 import in.bloomington.incident.model.Incident;
+import in.bloomington.incident.utils.Helper;
 
 @Repository
 @Transactional(readOnly = true)
@@ -26,21 +30,108 @@ public class SearchRepositoryImpl implements SearchRepository {
 
     @Override
     public List<Incident> find(Search search){
-
-	return null;
-    }
-
-    /*
-        public List<Employee> getFirstNamesLike(String firstName) {
-
-        Query query = entityManager.createNativeQuery("SELECT em.* FROM spring_data_jpa_example.employee as em " +
-
-                "WHERE em.firstname LIKE ?", Employee.class);
-
-        query.setParameter(1, firstName + "%");
+	String id="",cfsNumber="",address="",zip="",city="",
+	    state="",dateFrom="",dateTo="",incidentTypeId="",
+	    name="", dln="", dob="";
+	String qw = "", qf="";
+	String qq = "SELECT em.* FROM incidents as em ";
+	id = search.getId(); // we handle this separately
+	cfsNumber = search.getCfsNumber();
+	address = search.getAddress();
+	zip = search.getZip();
+	dateFrom = search.getDateFrom();
+	dateTo = search.getDateTo();
+	incidentTypeId = search.getIncidentTypeId();
+	name = search.getName();
+	dln = search.getDln();
+	dob = search.getDob();
+	if(!cfsNumber.isEmpty()){
+	    qw = "em.cfsNumber = ? ";
+	}
+	if(!address.isEmpty()){
+	    if(!qw.isEmpty()) qw += " and ";
+	    qw += "em.address like ? ";
+	}
+	if(!zip.isEmpty()){
+	    if(!qw.isEmpty()) qw += " and ";
+	    qw += "em.zip like ? ";
+	}
+	if(!incidentTypeId.isEmpty()){
+	    if(!qw.isEmpty()) qw += " and ";
+	    qw += "em.incident_type_id = ? ";
+	}
+	if(!name.isEmpty()){
+	    qf = " join persons pr on pr.incident_id=em.id ";
+	    if(!qw.isEmpty()) qw += " and ";
+	    qw += "(pr.firstname like ? or pr.lastname like ?)";
+	}
+	if(!dln.isEmpty()){
+	    if(qf.isEmpty() || qf.indexOf("persons") == -1)
+		qf = " join persons pr on pr.incident_id=em.id ";
+	    if(!qw.isEmpty()) qw += " and ";
+	    qw += "pr.dln like ? ";
+	}
+	if(!dateFrom.isEmpty()){
+	    if(!qw.isEmpty()) qw += " and ";
+	    qw += "em.received >= ? ";
+	}
+	if(!dateTo.isEmpty()){
+	    if(!qw.isEmpty()) qw += " and ";
+	    qw += "em.received <= ? ";
+	}
+	if(!dob.isEmpty()){
+	    if(qf.isEmpty() || qf.indexOf("persons") == -1)
+		qf = " join persons pr on pr.incident_id=em.id ";
+	    if(!qw.isEmpty()) qw += " and ";
+	    qw += "pr.dob = ? ";
+	}	
+	if(!qf.isEmpty()){
+	    qq += qf;
+	}
+	if(!qw.isEmpty()){
+	    qq += " where "+qw;
+	}
+	
+	System.err.println(" *** qq "+qq);
+      
+        Query query = entityManager.createNativeQuery(qq, Incident.class);
+	int jj=1;
+	if(!cfsNumber.isEmpty()){
+	    query.setParameter(jj++, cfsNumber + "%");
+	}
+	if(!address.isEmpty()){
+	    query.setParameter(jj++, "%"+address + "%");
+	}
+	if(!zip.isEmpty()){
+	    query.setParameter(jj++, zip + "%");
+	}
+	if(!incidentTypeId.isEmpty()){
+	    query.setParameter(jj++, incidentTypeId);
+	}
+	if(!name.isEmpty()){
+	    query.setParameter(jj++, "%"+name + "%");
+	    query.setParameter(jj++, "%"+name + "%");
+	}
+	if(!dln.isEmpty()){
+	    query.setParameter(jj++, dln + "%");
+	}		
+	try{
+	    if(!dateFrom.isEmpty()){
+		query.setParameter(jj++, Helper.dfDate.parse(dateFrom), TemporalType.DATE);
+	    }
+	    if(!dateTo.isEmpty()){
+		query.setParameter(jj++, Helper.dfDate.parse(dateTo), TemporalType.DATE);
+	    }
+	    if(!dob.isEmpty()){
+		query.setParameter(jj++, Helper.dfDate.parse(dob), TemporalType.DATE);
+	    }	    
+	    
+	}catch(Exception ex){
+	    System.err.println(ex);
+	}
 
         return query.getResultList();
-
     }
-    */    
+
+
 }

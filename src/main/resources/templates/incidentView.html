@@ -75,6 +75,9 @@
     </div>
     <div th:if="${incident.hasMediaList()}">
       <div th:insert="mediasView::medias(${incident.medias})"></div>
-    </div>      
+    </div>
+    <div th:if="${incident.hasActionLogs()}">
+      <div th:insert="actionLogs::actionLogs(${incident.actionLogs})"></div>
+    </div>    
   </body>
 </html>

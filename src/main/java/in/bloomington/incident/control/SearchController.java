@@ -106,7 +106,7 @@ public class SearchController extends TopController{
         return "search";
     }
     @PostMapping("/search/find")
-    public String addAction(@Valid Search search,
+    public String searchFind(@Valid Search search,
 			    BindingResult result,
 			    Model model) {
         if (result.hasErrors()) {
@@ -118,17 +118,23 @@ public class SearchController extends TopController{
 	    
 	    return "redirect:/search";
 	}
+	if(!search.getId().isEmpty()){
+	    return "redirect:/incidentView/"+search.getId();
+	}
         List<Incident> incidents = searchService.find(search);
 	if(incidents != null && incidents.size() > 0){
 	    addMessage(" found "+incidents.size()+" incidents");
+	    if(incidents.size() == 1){
+		return "redirect:/incidentView/"+incidents.get(0).getId();
+	    }
 	}
 	else{
 	    addMessage(" no match found ");
 	    return "redirect:/search";
 	}
-        model.addAttribute("actions", actionService.getAll());
+        model.addAttribute("incidents", incidents);
 	model.addAttribute("messages", getMessages());				
-        return "actions";
+        return "incidents";
     }    
     
     

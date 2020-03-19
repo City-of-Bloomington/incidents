@@ -6,38 +6,44 @@
  -
  -->
 <html xmlns="http://www.w3.org/1999/xhtml">
-  <head th:replace="general::head('Person')"></head>
+  <head th:replace="general::head('Properties')"></head>
   <body>
     <header th:replace="general::header">
-    </header>
-    <h2>Incident Related People</h2>
+    </header>		
     <div th:if="${errors}">
       <div th:insert="general::errors(${errors})"></div>			
     </div>
     <div th:if="${messages}">
       <div th:insert="general::messages(${messages})"></div>			
     </div>						
-    <div th:fragment="persons(persons)">
-      <div th:switch="${persons}">
-	<h2 th:case="null">No person found </h2>
+    <div th:fragment="incidents(incidents)">
+      <h2>Incidents</h2>
+      <div th:switch="${incidents}">
+	<h2 th:case="null">No incidents found</h2>
 	<div th:case="*">
-	  <table><legend>Incident Related People</legend>
+	  <table>
 	    <thead>
 	      <tr>
-		<th>Person Category</th>
-		<th>Full Name </th>
+		<th>ID</th>
+		<th>Status</th>
+		<th>Incident Type</th>
+		<th>Received</th>
+		<th>Incident Date & Time</th>
 		<th>Address </th>
-		<th>Contact </th>
+		<th>Details </th>
 		<th>More Details</th>
 	      </tr>
 	    </thead>
 	    <tbody>
-	      <tr th:each="person : ${persons}">
-		<td th:text="${person.personType}"></td>
-		<td th:text="${person.fullname}"></td>							
-		<td th:text="${person.fullAddress}"></td>
-		<td th:text="${person.contactInfo}"></td>
-		<td><a th:href="@{/personView/{id}(id=${person.id})}">More Details</a></td>						
+	      <tr th:each="one : ${incidents}">
+		<td th:text="${one.id}"></td>
+		<td th:text="${one.status}"></td>		
+		<td th:text="${one.incidentType}"></td>		
+		<td th:text="${one.receivedStr}"></td>
+		<td th:text="${one.dateTimeInfo}"></td>
+		<td th:text="${one.address}"></td>
+		<td th:text="${one.details}"></td>
+		<td><a th:href="@{/incidentView/{id}(id=${one.id})}">More Details</a></td>
 	      </tr>
 	    </tbody>
 	  </table>

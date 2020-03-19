@@ -40,7 +40,7 @@
 	      <td th:text="${action.id}"></td>
               <td th:text="${action.name}"></td>
               <td th:text="${action.description}"></td>
-	      <td th:text="${action.workflow_step}"></td>										
+	      <td th:text="${action.workflowStep}"></td>
               <td><a th:href="@{/action/edit/{id}(id=${action.id})}">Edit</a></td>
               <td><a th:href="@{/action/delete/{id}(id=${action.id})}">Delete</a></td>
             </tr>

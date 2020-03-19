@@ -59,6 +59,14 @@ public class Search implements java.io.Serializable{
     public void setId(String id) {
 	this.id = id;
     }
+    public String getCfsNumber() {
+	return cfsNumber;
+    }
+
+    public void setCfsNumber(String val) {
+	if(val != null && !val.isEmpty())
+	    cfsNumber = val;
+    }    
 
     public String getAddress() {
 	return address;

@@ -46,12 +46,12 @@ public class Action implements java.io.Serializable{
 
     }
 
-    public Action(int id, @NotNull String name, String description, Integer workflow_step, List<Role> roles) {
+    public Action(int id, @NotNull String name, String description, Integer workflowStep, List<Role> roles) {
 	super();
 	this.id = id;
 	this.name = name;
 	this.description = description;
-	this.workflowStep = workflow_step;
+	this.workflowStep = workflowStep;
 	this.roles = roles;
     }
 
@@ -87,8 +87,8 @@ public class Action implements java.io.Serializable{
 	return workflowStep;
     }
 
-    public void setWorkflowStep(Integer workflow_step) {
-	this.workflowStep = workflow_step;
+    public void setWorkflowStep(Integer workflowStep) {
+	this.workflowStep = workflowStep;
     }
     public void setRoles(List<Role> roles) {
 	this.roles = roles;

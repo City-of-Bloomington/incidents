@@ -22,6 +22,7 @@
       <div th:switch="${actionLogs}">
 	<h2 th:case="null">No logs found</h2>
 	<div th:case="*">
+	  <h3>Related Actions</h3>
           <table>
             <thead>
               <tr>
