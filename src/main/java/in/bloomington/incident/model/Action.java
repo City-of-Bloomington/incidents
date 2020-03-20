@@ -25,7 +25,20 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
+import javax.persistence.SqlResultSetMapping;
+import javax.persistence.ConstructorResult;
+import javax.persistence.ColumnResult;
 
+@SqlResultSetMapping(name="ResultMapping", classes={
+	@ConstructorResult(
+			   targetClass=IncidentStats.class,
+			   columns={
+			       @ColumnResult(name="name", type=String.class),
+			       @ColumnResult(name="total", type=Integer.class),
+			   }
+			   )
+    }
+    )
 
 @Entity
 @Table(name = "actions")
