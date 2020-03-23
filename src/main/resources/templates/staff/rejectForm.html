@@ -8,66 +8,47 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head th:replace="general::head('Person Type')"></head>
   <body>
-		<header th:replace="general::header">
-		</header>
+    <header th:replace="general::header">
+    </header>
     <h2>Compose Rejection Email</h2>
-
-		<div th:if="${errors}">
-			<div th:insert="general::errors(${errors})"></div>			
-		</div>
-		<div th:if="${messages}">
-			<div th:insert="general::messages(${messages})"></div>			
-		</div>				
-		<form action="#"
-					th:action="@{/rejectEmail}"
-					th:object="${email}" method="post">
-			<input name="incident_id" type="hidden" value="<?php echo $this->incident->getId(); ?>" />
-			<fieldset>
-				<legend>Rejection Email</legend>
-				<p>
-					This is the email message that will be sent to the reporter of this incident.
-					Please read and edit this message as you find fit explaining the reasons why the report was rejected.
-				</p>
-				<table summary="layout for email message">
-					<tr><th>To</th>
-						<td><span th:text="${email.to}"></span></td>
-					</tr>
-					<tr>
-						<th><label for="subject">Subject:</label></th>
-						<td>
-							<input th:field="${email.subject}" id="subject" th:value="${'Incident Report Rejection Reasons'}" size="50" />
-						</td>
-					</tr>
-					<tr>
-						<td colspan="2">
-							<!--
-									$date = $this->incident->getDateDescription()
-									? $this->incident->getDateDescription()
-							: $this->incident->getDate('m/d/Y');
-							
-							$details = View::escape($this->incident->getDetails());
-							
-							# Include the comments from the latest states change
-							$history = $this->incident->getStatusHistory();
-							$status = $history[0];
-							$reason = View::escape($status->getComments());
-								-->
-							<textarea th:field="${email.message}" id="message" rows="12" cols="60">
-								We received an incident report from you on
-								<!--
-										received date here. Details:goes here
-									-->
-								
-								Your request was rejected for the reasons below:
-								<!--
-										reject reason goes here
-									-->
-							</textarea>
-						</td>
-					</tr>
-				</table>
-				<button type="submit" class="send">Send</button>
-			</fieldset>
-		</form>
-	</body>
+    <div th:if="${errors}">
+      <div th:insert="general::errors(${errors})"></div>			
+    </div>
+    <div th:if="${messages}">
+      <div th:insert="general::messages(${messages})"></div>			
+    </div>				
+    <form action="#"
+	  th:action="@{/rejectEmail}"
+	  th:object="${email}" method="post">
+      <input type="hidden" th:field="${incident.email}" />
+      <fieldset>
+	<legend>Rejection Email</legend>
+	<p>
+	  This is the email message that will be sent to the reporter of this incident.
+	  Please read and edit this message as you find fit explaining the reasons why the report was rejected.
+	</p>
+	<table summary="layout for email message">
+	  <tr><th>To</th>
+	    <td><span th:text="${incident.email}"></span></td>
+	  </tr>
+	  <tr>
+	    <th><label for="subject">Subject:</label></th>
+	    <td>
+	      <input th:field="${email.subject}" id="subject" th:value="${'Incident Report Rejection Reasons'}" size="50" />
+	    </td>
+	  </tr>
+	  <tr>
+	    <td colspan="2">
+	      <textarea th:field="${email.message}" id="message" rows="12" cols="60">
+		We received an incident report from you on <span th:text="${incident.receivedStr}"></span> <br />
+		<span th:text="${incident.details}"> </span>
+		Your request was rejected for the reasons below:
+	      </textarea>
+	    </td>
+	  </tr>
+	</table>
+	<button type="submit" class="send">Send</button>
+      </fieldset>
+    </form>
+  </body>
 </htmL>

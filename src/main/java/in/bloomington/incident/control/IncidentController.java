@@ -497,6 +497,9 @@ public class IncidentController extends TopController{
 	}
 	// check user
 	action.setDateNow();
+	// ToDo
+	// action.setUser(user);
+	actionLogService.save(action);
 	String cfsNumber = action.getCfsNumber();
 	if(cfsNumber != null){
 	    Incident incident = action.getIncident();
@@ -504,8 +507,18 @@ public class IncidentController extends TopController{
 		incident.setCfsNumber(cfsNumber);
 		incidentService.update(incident);
 	    }
+	    // we need to add another action log as processed
+	    // since cfsNumber is provided
+	    action = new ActionLog();
+	    action.setIncident(incident);
+	    action.setAction(actionService.findById(5)); // process action
+	    action.setDateNow();
+	    // ToDo
+	    // action.setUser(user);
+	    actionLogService.save(action);	    
+
 	}
-	actionLogService.save(action);
+
 	addMessage("Saved Successfully");				
 	model.addAttribute("messages", messages);
 	addMessagesToSession(session);
@@ -528,6 +541,9 @@ public class IncidentController extends TopController{
 	}
 	// check user
 	action.setDateNow();
+	// ToDo
+	// action.setUser(user);
+	actionLogService.save(action);
 	String cfsNumber = action.getCfsNumber();
 	if(cfsNumber != null){
 	    Incident incident = action.getIncident();
@@ -536,7 +552,6 @@ public class IncidentController extends TopController{
 		incidentService.update(incident);
 	    }
 	}
-	actionLogService.save(action);
 	addMessage("Saved Successfully");				
 	model.addAttribute("messages", messages);
 	addMessagesToSession(session);
@@ -649,4 +664,5 @@ public class IncidentController extends TopController{
 	}
 	return nextActions;
     }
+    
 }

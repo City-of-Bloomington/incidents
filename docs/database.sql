@@ -273,12 +273,51 @@ insert into actions select * from statuses;
 ;;
 		create or Replace view incident_pre_approve AS                                  select i.id from incidents i,action_logs l where l.incident_id=i.id and (l.action_id = 1 or l.action_id=2) and l.action_id in (select max(l2.action_id) from action_logs l2 where l2.incident_id=i.id);			 
 			 
-			;; approved
+;; approved
      create or Replace view incident_approved AS                                     select i.id from incidents i,action_logs l where l.incident_id=i.id and l.action_id = 3 and l.action_id in (select max(l2.action_id) from action_logs l2 where l2.incident_id=i.id);				 
-			;;
-			;; rejected
-			;;
-			create or Replace view incident_rejected AS                                     select i.id from incidents i,action_logs l where l.incident_id=i.id and l.action_id = 4 and l.action_id in (select max(l2.action_id) from action_logs l2 where l2.incident_id=i.id);
-			;;
-			;; processed
-			create or Replace view incident_processed AS                                    select i.id from incidents i,action_logs l where l.incident_id=i.id and l.action_id = 5 and l.action_id in (select max(l2.action_id) from action_logs l2 where l2.incident_id=i.id);
+;;
+;; rejected
+;;
+     create or Replace view incident_rejected AS                                     select i.id from incidents i,action_logs l where l.incident_id=i.id and l.action_id = 4 and l.action_id in (select max(l2.action_id) from action_logs l2 where l2.incident_id=i.id);
+;;
+;; processed
+     create or Replace view incident_processed AS                                    select i.id from incidents i,action_logs l where l.incident_id=i.id and l.action_id = 5 and l.action_id in (select max(l2.action_id) from action_logs l2 where l2.incident_id=i.id);
+
+;;
+;; for import, first we do clean up
+;;
+delete from action_logs;
+delete from vehicles;
+delete from properties;
+delete from media;
+delete from incident_initials;
+delete from persons;
+delete from incidents;
+;;
+;; now we do import
+;; going in reverse order
+;;
+  insert into incidents select * from incident_reporting.incidents;
+
+;;
+  insert into persons (id,incident_id,person_type_id,title,firstname,lastname,midname,suffix,address,city,state,zip,phone,phone2,phone_type,email,email2,dln,dob,ssn,race,height_feet,height_inch,weight,sex,occupation,reporter) select * from incident_reporting.persons;
+;;
+;;
+  insert into properties select * from incident_reporting.properties;
+  insert into vehicles select * from incident_reporting.vehicles;
+  insert into media select * from incident_reporting.media;
+;;
+;; find the orphan records in status_history
+;;
+ select id,incident_id from status_history where incident_id not in(select id from incidents);
+;;
+;; need to delete these orphan records from status_history;
+;;
+  delete from status_history where id in (12027,13522,13523,13524,13525,15305,15306,15339,15356,16375,18517,18520);
+;;
+;;
+ insert into action_logs select * from incident_reporting.status_history;
+ 
+
+
+
