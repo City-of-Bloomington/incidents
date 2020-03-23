@@ -483,7 +483,7 @@ public class IncidentController extends TopController{
     }    
     //login staff
     @PostMapping("/staff/decision")
-    public String staffDecision(@Valid ActionLog action, 
+    public String staffDecision(@Valid ActionLog actionLog, 
 				BindingResult result,
 				Model model,
 				HttpSession session
@@ -496,10 +496,9 @@ public class IncidentController extends TopController{
 	    return "redirect:/search/preApproved";
 	}
 	// check user
-	action.setDateNow();
-	// ToDo
-	// action.setUser(user);
-	actionLogService.save(action);
+	actionLog.setDateNow();
+	Action action = actionLog.getAction();
+	actionLogService.save(actionLog);
 	String cfsNumber = action.getCfsNumber();
 	if(cfsNumber != null){
 	    Incident incident = action.getIncident();
@@ -509,19 +508,32 @@ public class IncidentController extends TopController{
 	    }
 	    // we need to add another action log as processed
 	    // since cfsNumber is provided
-	    action = new ActionLog();
-	    action.setIncident(incident);
-	    action.setAction(actionService.findById(5)); // process action
-	    action.setDateNow();
+	    actionLog = new ActionLog();
+	    actionLog.setIncident(incident);
+	    actionLog.setAction(actionService.findById(5)); // process action
+	    actionLog.setDateNow();
 	    // ToDo
 	    // action.setUser(user);
-	    actionLogService.save(action);	    
-
+	    actionLogService.save(actionLog);	    
 	}
-
 	addMessage("Saved Successfully");				
 	model.addAttribute("messages", messages);
 	addMessagesToSession(session);
+	//
+	// check if the action is rejection
+	// redirect to rejection form
+	// if approved, send approve email
+	//
+	if(action != null){
+	    if(action.isApproved()){
+		// send approve email
+		
+	    }
+	    else if(action.isRejected()){
+		// redirect to rejection email
+		
+	    }
+	}
 	return "redirect:/search/preApproved";
 
     }
