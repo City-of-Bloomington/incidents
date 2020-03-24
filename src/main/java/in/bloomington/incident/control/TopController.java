@@ -6,7 +6,10 @@ package in.bloomington.incident.control;
  *
  */
 import javax.servlet.http.HttpSession;
-
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.validation.ObjectError;
+import org.springframework.validation.FieldError;
 import java.util.List;
 import java.util.ArrayList;
 import in.bloomington.incident.model.User;
@@ -95,7 +98,7 @@ public abstract class TopController {
 	}
     }
     @SuppressWarnings("unchecked")		
-    public void getMessagesFromSession(HttpSession session){
+    public void getMessagesFromSession(final HttpSession session){
 	if(session != null){
 	    Object obj = session.getAttribute("messages");
 	    if(obj != null && obj instanceof List){
@@ -108,7 +111,7 @@ public abstract class TopController {
 	}
     }
     @SuppressWarnings("unchecked")		
-    public User getUserFromSession(HttpSession session){
+    public User getUserFromSession(final HttpSession session){
 	User user = null;
 	if(session != null){
 	    Object obj = session.getAttribute("user");
@@ -125,5 +128,30 @@ public abstract class TopController {
 	    }
 	}
     }
-		
+    @SuppressWarnings("unchecked")
+    public final static boolean verifySession(final HttpSession session, final String id){
+	// no new session
+	if(session != null){
+	    List<String> ids = (List<String>) session.getAttribute("incident_ids");
+	    if(ids != null){
+		System.err.println(" ** ids ** "+ids);
+		if(ids.contains(id)){
+		    return true;
+		}
+	    }
+	}
+	return false;
+    }
+    public String extractErrors(final BindingResult result)
+    {
+	String errors = "";
+	if(result != null){
+	    for (ObjectError error : result.getAllErrors()) {
+		if(!errors.equals("")) errors += " ";
+		errors += error.getObjectName() + " - " + error.getDefaultMessage();
+	    }
+	}
+        return errors;
+    }
+    
 }

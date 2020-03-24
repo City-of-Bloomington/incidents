@@ -36,6 +36,7 @@ import in.bloomington.incident.service.PersonTypeService;
 import in.bloomington.incident.model.Incident;
 import in.bloomington.incident.model.Person;
 import in.bloomington.incident.model.PersonType;
+import in.bloomington.incident.model.User;
 import in.bloomington.incident.utils.Helper;
 
 
@@ -65,7 +66,9 @@ public class PersonController extends TopController{
 	new ArrayList<>(Arrays.asList("Male","Female","Other"));		
     
     @RequestMapping("/person/add/{incident_id}")
-    public String addPerson(@PathVariable("incident_id") int incident_id, Model model) {
+    public String addPerson(@PathVariable("incident_id") int incident_id,
+			    Model model,
+			    HttpSession session) {
 	Incident incident = null;
 	try{
 	    incident = incidentService.findById(incident_id);
@@ -74,6 +77,11 @@ public class PersonController extends TopController{
 	    logger.error(""+ex);
 	    model.addAttribute("errors", errors);
 	    return "redirect:/start";
+	}
+	if(incident == null || !incident.canBeChanged()){
+	    addMessage("No more changes can be made");
+	    addMessagesToSession(session);
+	    return "redirect:/incident/"+incident_id;
 	}
 	Person person = new Person();				
 	List<PersonType> personTypes = personTypeService.getAll();
@@ -95,8 +103,6 @@ public class PersonController extends TopController{
         if (result.hasErrors()) {
 	    String error = Helper.extractErrors(result);
 	    addError(error);
-	    System.err.println(" **** errors "+error);
-	    //
 	    logger.error(error);
 	    List<PersonType> personTypes = personTypeService.getAll();
 	    model.addAttribute("errors", errors);
@@ -109,6 +115,12 @@ public class PersonController extends TopController{
 	    model.addAttribute("errors", errors);
 	    return "personAdd";
         }
+	Incident incident = person.getIncident();
+	if(incident == null || !incident.canBeChanged()){
+	    addMessage("No more changes can be made");
+	    addMessagesToSession(session);
+	    return "redirect:/";
+	}	
 	if(!person.verify()){
 	    String error = person.getErrorInfo();
 	    addError(error);
@@ -124,7 +136,7 @@ public class PersonController extends TopController{
         personService.save(person);
 	addMessage("Saved Succefully");
 	addMessagesToSession(session);
-	return "redirect:/incident/"+person.getIncident().getId(); 
+	return "redirect:/incident/"+incident.getId(); 
     }
     
     @GetMapping("/person/{id}")
@@ -132,7 +144,7 @@ public class PersonController extends TopController{
 	Person person = null;
 	try{
 	    person = personService.findById(id);
-				}catch(Exception ex){
+	}catch(Exception ex){
 	    addError("Invalid person Id "+id);
 	    logger.error(" "+ex);
 	    model.addAttribute("errors", errors);
@@ -143,8 +155,14 @@ public class PersonController extends TopController{
     }
     //login staff
     @GetMapping("/personView/{id}")
-    public String viewPerson(@PathVariable("id") int id, Model model) {
+    public String viewPerson(@PathVariable("id") int id,
+			     Model model,
+			     HttpSession session) {
 	Person person = null;
+	User user = getUserFromSession(session);
+	if(user == null){
+	    return "redirect:/login";
+	}
 	try{
 	    person = personService.findById(id);
 	}catch(Exception ex){
@@ -158,7 +176,9 @@ public class PersonController extends TopController{
     }    
     
     @GetMapping("/person/edit/{id}")
-    public String showEditForm(@PathVariable("id") int id, Model model) {
+    public String showEditForm(@PathVariable("id") int id,
+			       Model model,
+			       HttpSession session) {
 	Person person = null;
 	try{
 	    person = personService.findById(id);
@@ -168,6 +188,12 @@ public class PersonController extends TopController{
 	    model.addAttribute("errors", errors);
 	    logger.error(" "+ex);
 	    return "index"; // need fix
+	}
+	Incident incident = person.getIncident();
+	if(incident == null || !incident.canBeChanged()){
+	    addMessage("no more changes can be made");
+	    addMessagesToSession(session);
+	    return "redirect:/";	    
 	}
 	List<PersonType> personTypes = personTypeService.getAll();
 	model.addAttribute("person", person);
@@ -196,6 +222,12 @@ public class PersonController extends TopController{
 	    return "redirect:/person/edit/"+id;
 	    
 	}
+	Incident incident = person.getIncident();
+	if(incident == null || !incident.canBeChanged()){
+	    addMessage("no more changes can be made");
+	    addMessagesToSession(session);
+	    return "redirect:/";	    
+	}	
 	if(!person.verify()){
 	    String error = person.getErrorInfo();
 	    addError(error);
@@ -208,7 +240,6 @@ public class PersonController extends TopController{
 	    model.addAttribute("errors", errors);
 	    return "personUpdate";						
 	}
-	Incident incident = person.getIncident();
 	personService.update(person);
 	addMessage("Updated Successfully");				
 	addMessagesToSession(session);
@@ -217,14 +248,21 @@ public class PersonController extends TopController{
     
     @GetMapping("/person/delete/{id}")
     public String deletePerson(@PathVariable("id") int id,
-			       Model model
+			       Model model,
+			       HttpSession session
 			       ) {
 	
 	Person person = null;
 	Incident incident = null;
+	incident = person.getIncident();
+	if(incident == null || !incident.canBeChanged()){
+	    addMessage("no more changes can be made");
+	    addMessagesToSession(session);
+	    return "redirect:/";	    
+	}		
 	try{
 	    person = personService.findById(id);
-	    incident = person.getIncident();
+
 	    personService.delete(id);
 	    addMessage("Deleted Succefully");
 	}catch(Exception ex){

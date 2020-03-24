@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--
+ - @copyright Copyright (C) 2014-2015 City of Bloomington, Indiana. All rights reserved.
+ - @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
+ - @author W. Sibo <sibow@bloomington.in.gov>
+ -
+ -->
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head th:replace="general::head('Incident')"></head>
+  <body>
+    <header th:replace="general::header">
+    </header>
+    <h2>Reports</h2>
+    <div th:if="${errors}">
+      <div th:insert="general::errors(${errors})"></div>			
+    </div>
+    <div th:if="${messages}">
+      <div th:insert="general::messages(${messages})"></div>			
+    </div>					
+    <form action="#"
+	  th:action="@{/report/find}"
+	  th:object="${report}"
+	  method="post">
+      <fieldset>
+	<table summary="layout for report" width="90%">
+	  <tr>
+	    <td> Report Type:</td>
+	    <td> Incident Actions' Stats</td>
+	  </tr>
+	  <tr>
+	    <td width="18%">
+	      <label for="id">Report Period:</label>
+	    </td>
+	    <td>
+	      <ul>
+		<li th:each="period : ${periods}">
+		  <input type="radio" name="period" th:value="${period}" />
+		  <label th:text="${period}"></label>
+		</li>
+	      </ul>	      
+	    </td>
+	  </tr>
+	  <tr>
+	    <td width="18%">
+	      <label for="date_from">Date From:</label>
+	    </td>
+	    <td>
+	      <input type="date" th:field="${report.dateFrom}" id="date_from" size="12" />
+	    </td>
+	  </tr>
+	  <tr>
+	    <td>
+	      <label for="date_to">Date To:</label>
+	    </td>
+	    <td>
+	      <input type="date" th:field="${report.dateTo}" id="date_to" size="12" />
+	    </td>
+	  </tr>	  
+	</table>
+      </fieldset>
+      <table>
+	<tr>
+	  <td> 
+	    <input type="submit" value="Submit" />
+	  </td>
+	</tr>
+      </table>
+    </form>
+  </body>
+</html>

@@ -13,34 +13,34 @@ import java.util.ArrayList;
 
 public abstract class TopModel{
 
-		@Transient
-		List<String> errors = null;
-		//
-		public TopModel(){
+    @Transient
+    List<String> errors = null;
+    //
+    public TopModel(){
 
-		}
-		void addError(String error){
-				if(errors == null)
-						errors = new ArrayList<>();
-				if(error != null)
-						errors.add(error);
-		}
-		public boolean hasErrors(){
-				return errors != null && errors.size() > 0;
-		}
-		public List<String> getErrors(){
-				return errors;
-		}
-		public String getErrorInfo(){
-				String ret = "";
-				if(hasErrors()){
-						for(String error:errors){
-								if(!ret.equals("")) ret +=", ";
-								ret += error;
-						}
-				}
-				return ret;
-		}
+    }
+    void addError(String error){
+	if(errors == null)
+	    errors = new ArrayList<>();
+	if(error != null)
+	    errors.add(error);
+    }
+    public boolean hasErrors(){
+	return errors != null && errors.size() > 0;
+    }
+    public List<String> getErrors(){
+	return errors;
+    }
+    public String getErrorInfo(){
+	String ret = "";
+	if(hasErrors()){
+	    for(String error:errors){
+		if(!ret.equals("")) ret +=", ";
+		ret += error;
+	    }
+	}
+	return ret;
+    }
 				
 
 }

@@ -558,15 +558,28 @@ public class Incident extends TopModel implements java.io.Serializable{
     */
     @Transient
     public boolean canBeSubmitted(){
-	boolean ret = false;
-	if(hasPropertyList() &&
-	   (hasPropertyList() ||
-	    hasVehicleList()) &&
-	   !hasActionLogs()){
-	    ret = true;
+	if(!hasPersonList()){
+	    addError("At least one person is required");
+	    return false;
 	}
-	return ret;
+	if( !hasPropertyList() &&
+	    !hasVehicleList()){
+	    addError("At one property or vehicle need to be added");
+	    return false;
+	}
+	if(hasActionLogs()){
+	    addError("The incident is already submitted");
+	    return false;
+	}
+	return true;
     }
+    //
+    // to check if the incident can be changed
+    // if the incident is submitted no more changes can be done
+    @Transient
+    public boolean canBeChanged(){
+	return !hasActionLogs();
+    }    
 				
     @Transient
     public boolean hasPersonList(){

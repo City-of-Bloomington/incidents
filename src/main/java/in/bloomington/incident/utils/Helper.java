@@ -27,17 +27,26 @@ import javax.xml.bind.DatatypeConverter;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Hashtable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.naming.Context;
+import javax.naming.NamingEnumeration;
+import javax.naming.NamingException;
+import javax.naming.directory.Attribute;
+import javax.naming.directory.Attributes;
+import javax.naming.directory.SearchControls;
+import javax.naming.directory.SearchResult;
+import javax.naming.ldap.InitialLdapContext;
+import javax.naming.ldap.LdapContext;
+
 
 import org.springframework.stereotype.Component;
+import org.springframework.core.env.Environment;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @Component
 public class Helper{
-    /*
-      public final static DateTimeFormatter df = DateTimeFormatter.ofPattern("MM/d/yyyy");
-      public final static DateTimeFormatter dft = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm");
-    */
     public final static SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
     public final static SimpleDateFormat dft = new SimpleDateFormat("MM/dd/yyyy HH:mm");
     public final static SimpleDateFormat dfDate = new SimpleDateFormat("yyyy-MM-dd");
@@ -71,15 +80,31 @@ public class Helper{
         mimeTypes.put("application/vnd.ms-excel",      "xls");
         mimeTypes.put("application/vnd.ms-powerpoint", "ppt");
         mimeTypes.put("application/vnd.openxmlformats-officedocument.wordprocessingml.document", "docx");
+	
     }
-
-    public Helper()
-    {
+    @Autowired
+    private Environment         env;
+    private String ldap_host = "";
+    private String address_check_url = "";
+    public Helper(){
 
     }
-
-    public final static int getCurrentYear()
-    {
+    public void populateHosts(){
+        if (env != null) {
+            String str = env.getProperty("incident.ldap.host");
+            if (str != null) {
+                ldap_host = str;
+            }
+            str = env.getProperty("incident.address.checkurl");
+            if (str != null) {
+                address_check_url = str;
+            }						
+        }
+    }
+    public final String getAddressCheckUrl(){
+	return address_check_url;
+    }
+    public final static int getCurrentYear(){
         Calendar cal  = Calendar.getInstance();
         int      year = cal.get(Calendar.YEAR);
         return year;
@@ -389,4 +414,50 @@ public class Helper{
 	}
 	return hash;
     }
+    public boolean checkUser(String username, String password){
+        String         returnedAtts[] = { "sn", "givenName", "mail" };
+        String         filter         = "(&(objectCategory=person)(objectClass=user))";
+        SearchControls ctls           = new SearchControls();
+        ctls.setReturningAttributes(returnedAtts);
+
+        // Specify the search scope
+        ctls.setSearchScope(SearchControls.SUBTREE_SCOPE);
+
+        Hashtable<String, String> env = new Hashtable<String, String>();
+        env.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory");
+        env.put(Context.PROVIDER_URL, ldap_host);
+        env.put(Context.SECURITY_AUTHENTICATION, "simple");
+        env.put(Context.SECURITY_PRINCIPAL, username + "@bloomington.in.gov");
+        env.put(Context.SECURITY_CREDENTIALS, password);
+
+        LdapContext ctx   = null;
+        boolean     found = false;
+        try {
+            ctx = new InitialLdapContext(env, null);
+            NamingEnumeration answer = ctx.search("", filter, ctls);
+            if (answer.hasMoreElements()) {
+                //
+                // one is good enough
+                //
+                SearchResult sr    = (SearchResult) answer.next();
+                Attributes   attrs = sr.getAttributes();
+                if (attrs != null) {
+                    NamingEnumeration ne = attrs.getAll();
+                    while (ne.hasMore()) {
+                        Attribute attr = (Attribute) ne.next();
+                        // System.err.println(attr.getID() + " " + attr.get());
+                        found = true;
+                    }
+                    ne.close();
+                }
+            }
+        }
+        catch (NamingException ex) {
+            System.err.println(ex);
+        }
+        return found;
+    }
+
+
+    
 }

@@ -132,7 +132,7 @@ public class IncidentController extends TopController{
     public String incidentNext(@PathVariable("id") int id,
 			       @Valid Incident incident,
 			       BindingResult result, Model model,
-			       HttpServletRequest req
+			       HttpSession session
 			       ) {
         if (result.hasErrors()) {
 	    addError(Helper.extractErrors(result));
@@ -155,14 +155,21 @@ public class IncidentController extends TopController{
 	    model.addAttribute("errors", getErrors());
 	    return "incidentAdd";
 	}
-        incidentService.update(incident);
-	// check if incident have persons
-	if(incident.hasPersonList()){
-	    model.addAttribute("incident", incident);		
-	    return "incident";		
+	if(incident.canBeChanged()){
+	    incidentService.update(incident);
+	    // check if incident have persons
+	    if(incident.hasPersonList()){
+		model.addAttribute("incident", incident);		
+		return "incident";		
+	    }
+	    else{
+		return "redirect:/person/add/"+id;
+	    }
 	}
-	else{
-	    return "redirect:/person/add/"+id;
+	else {
+	    addMessage("no more changes can be made");
+	    addMessagesToSession(session);
+	    return "redirect:/";	    
 	}
     }
     // view mode
@@ -201,11 +208,11 @@ public class IncidentController extends TopController{
     @GetMapping("/incident/finalPage/{id}")
     public String incidentFinalPage(@PathVariable("id") int id,
 				    Model model,
-				    HttpServletRequest req,
+				    HttpSession session,
 				    RedirectAttributes redirectAttributes
 				    ) {
 	Incident incident = null;
-	if(!Helper.verifySession(req, ""+id)){
+	if(!verifySession(session, ""+id)){
 	    System.err.println(" not in session ");
 	    addMessage("not in session ");
 	}
@@ -217,11 +224,19 @@ public class IncidentController extends TopController{
 	    redirectAttributes.addFlashAttribute("errors", errors);
 	    return "redirect:/error";
 	}
-	addMessage("this is final page");
-        model.addAttribute("incident", incident);
-	model.addAttribute("messages", messages);
-	resetAll();
-	return "finalSubmit";
+	if(incident.canBeSubmitted()){
+	    addMessage("this is final page");
+	    model.addAttribute("incident", incident);
+	    model.addAttribute("messages", messages);
+	    resetAll();
+	    return "finalSubmit";
+	}
+	else{
+	    addMessage("incident can be submitted ");
+	    addMessages(incident.getErrors());
+	    addMessagesToSession(session);
+	    return "redirect:/";
+	}
     }
     
 		
@@ -231,10 +246,18 @@ public class IncidentController extends TopController{
 				 RedirectAttributes redirectAttributes,
 				 HttpServletRequest req
 				 ) {
-	if(!Helper.verifySession(req, ""+id)){
-	    addMessage("not in session ");						
+	HttpSession session = req.getSession();
+	if(!verifySession(session, ""+id)){
+	    addMessage("not in session ");
 	}
 	Incident incident = null;
+	incident = incidentService.findById(id);
+	if(!incident.canBeSubmitted()){
+	    addMessage("Incident can not be submitted ");
+	    addMessages(incident.getErrors());
+	    addMessagesToSession(session);
+	    return "redirect:/incident/"+id;
+	}
 	try{
 	    String host = req.getServerName();
 	    String uri = req.getRequestURI();
@@ -246,7 +269,7 @@ public class IncidentController extends TopController{
 	    if(application_name != null)
 		url += application_name;
 	    url += "/incident/confirm/";
-	    incident = incidentService.findById(id);
+
 	    ActionLog actionLog = new ActionLog();
 	    actionLog.setIncident(incident);
 	    Action action = actionService.findById(1); // received action
@@ -428,6 +451,7 @@ public class IncidentController extends TopController{
 				 ) {
 	Incident incident = null;
 	User user = userService.findById(5); // need fix
+	// User user = getUserFromSession(session);
 	ActionLog actionLog = new ActionLog();
 	List<Action> actions = null;
 	try{
@@ -458,7 +482,13 @@ public class IncidentController extends TopController{
 				 HttpSession session
 				 ) {
 	Incident incident = null;
-	User user = userService.findById(5); // need fix
+	// User user = userService.findById(5); // need fix
+	User user = getUserFromSession(session);
+	if(user == null || !user.canProcess()){
+	    addMessage("You do not have enough privileges");
+	    addMessagesToSession(session);
+	    return "redirect:/index";
+	}
 	ActionLog actionLog = new ActionLog();
 	List<Action> actions = null;
 	try{
@@ -495,47 +525,53 @@ public class IncidentController extends TopController{
 	    logger.error("Error saving action "+error);
 	    return "redirect:/search/preApproved";
 	}
-	// check user
-	actionLog.setDateNow();
-	Action action = actionLog.getAction();
-	actionLogService.save(actionLog);
-	String cfsNumber = action.getCfsNumber();
-	if(cfsNumber != null){
-	    Incident incident = action.getIncident();
-	    if(incident != null){
-		incident.setCfsNumber(cfsNumber);
-		incidentService.update(incident);
-	    }
-	    // we need to add another action log as processed
-	    // since cfsNumber is provided
-	    actionLog = new ActionLog();
-	    actionLog.setIncident(incident);
-	    actionLog.setAction(actionService.findById(5)); // process action
+	user = getUserFromSession(session);
+	if(user != null && user.canApprove()){
 	    actionLog.setDateNow();
-	    // ToDo
-	    // action.setUser(user);
-	    actionLogService.save(actionLog);	    
-	}
-	addMessage("Saved Successfully");				
-	model.addAttribute("messages", messages);
-	addMessagesToSession(session);
-	//
-	// check if the action is rejection
-	// redirect to rejection form
-	// if approved, send approve email
-	//
-	if(action != null){
-	    if(action.isApproved()){
-		// send approve email
-		
+	    Action action = actionLog.getAction();
+	    actionLogService.save(actionLog);
+	    String cfsNumber = actionLog.getCfsNumber();
+	    if(cfsNumber != null){
+		Incident incident = actionLog.getIncident();
+		if(incident != null){
+		    incident.setCfsNumber(cfsNumber);
+		    incidentService.update(incident);
+		}
+		// we need to add another action log as processed
+		// since cfsNumber is provided
+		actionLog = new ActionLog();
+		actionLog.setIncident(incident);
+		// process action
+		actionLog.setAction(actionService.findById(5)); 
+		actionLog.setDateNow();
+		actionLog.setUser(user);
+		actionLogService.save(actionLog);	    
 	    }
-	    else if(action.isRejected()){
-		// redirect to rejection email
+	    addMessage("Saved Successfully");				
+	    model.addAttribute("messages", messages);
+	    addMessagesToSession(session);
+	    //
+	    // check if the action is rejection
+	    // redirect to rejection form
+	    // if approved, send approve email
+	    //
+	    if(action != null){
+		if(action.isApproved()){
+		    // send approve email
 		
+		}
+		else if(action.isRejected()){
+		    // redirect to rejection email
+		    
+		}
 	    }
 	}
-	return "redirect:/search/preApproved";
-
+	else {
+	    addMessage("You do not have enough privileges ");
+	    addMessagesToSession(session);
+	    return "redirect:/index";
+	}
+	return "redirect:/search/preApproved";	    
     }
     //login staff
     @PostMapping("/process/decision")
@@ -544,31 +580,36 @@ public class IncidentController extends TopController{
 				Model model,
 				HttpSession session
 				) {
-	User user = null;
 	if (result.hasErrors()) {
 	    String error = Helper.extractErrors(result);
 	    addError(error);
 	    logger.error("Error saving action "+error);
 	    return "redirect:/search/approved";
 	}
-	// check user
-	action.setDateNow();
-	// ToDo
-	// action.setUser(user);
-	actionLogService.save(action);
-	String cfsNumber = action.getCfsNumber();
-	if(cfsNumber != null){
-	    Incident incident = action.getIncident();
-	    if(incident != null){
-		incident.setCfsNumber(cfsNumber);
+	User user = getUserFromSession(session);
+	// check user role
+	if(user != null && user.canApprove()){
+	    action.setDateNow();
+	    action.setUser(user);
+	    actionLogService.save(action);
+	    String cfsNumber = action.getCfsNumber();
+	    if(cfsNumber != null){
+		Incident incident = action.getIncident();
+		if(incident != null){
+		    incident.setCfsNumber(cfsNumber);
 		incidentService.update(incident);
+		}
 	    }
+	    addMessage("Saved Successfully");				
+	    model.addAttribute("messages", messages);
+	    addMessagesToSession(session);
+	    return "redirect:/search/approved";
 	}
-	addMessage("Saved Successfully");				
-	model.addAttribute("messages", messages);
-	addMessagesToSession(session);
-	return "redirect:/search/approved";
-
+	else{
+	    addMessage("You do not have enough privileges ");
+	    addMessagesToSession(session);
+	    return "redirect:/index";
+	}
     }        
     
     // login users
@@ -578,7 +619,10 @@ public class IncidentController extends TopController{
 				 HttpSession session
 				 ) {
 	Incident incident = null;
-	User user = null;
+	User user = getUserFromSession(session);
+	if(user == null){
+	    return "redirect:/login";
+	}
 	try{
 	    incident = incidentService.findById(id);
 	    model.addAttribute("incident", incident);
