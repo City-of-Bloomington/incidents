@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.ui.Model;
+import org.springframework.core.env.Environment;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -36,6 +38,12 @@ public class LoginController extends TopController{
     final static Logger logger = LoggerFactory.getLogger(LoginController.class);
     @Autowired
     UserService userService;
+
+    @Autowired
+    private Environment env;
+
+    @Value("${incident.ldap.host}")    
+    private String ldap_host = "";
 		
     @GetMapping("/login")
     public String login(Model model) {
@@ -65,7 +73,7 @@ public class LoginController extends TopController{
 	   // uncomment later 
 	Helper helper = new Helper();
 	helper.populateHosts();
-	if(!helper.checkUser(username, password)){
+	if(!helper.checkUser(username, password, ldap_host)){
 	    addMessage("invalid username or password");
 	    addMessagesToSession(session);
 	    return "staff/loginForm";
@@ -80,7 +88,15 @@ public class LoginController extends TopController{
 	    return "staff/loginForm";
 	}
 	session.setAttribute("user", user);
-	return "index";
+	return "staff/staff_intro";
     }
+    @GetMapping("/settings")
+    public String showSettings(Model model,
+			       HttpSession session) {
+	// check for user and if he is an admin
+	User user = getUserFromSession(session);
+	System.err.println("settings: user from session "+user);
+        return "staff/settings";
+    }         
 		
 }

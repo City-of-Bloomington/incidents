@@ -8,8 +8,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head th:replace="general::head('Person')"></head>
   <body>
-    <header th:replace="general::header">
-    </header>		
+    <header>
+      <div th:replace="general::header-staff"></div>
+    </header>
+    <br />
     <div>		
       <h2>Approved Incidents</h2>
       <div th:if="${errors}">
@@ -19,13 +21,14 @@
 	<div th:insert="general::messages(${messages})"></div>			
       </div>			
       <div th:switch="${incidents}">
-	<h2 th:case="null">No incident found </h2>
+	<h4 th:case="null">No incident found </h4>
 	<div th:case="*">
 	  <table>
 	    <thead>
 	      <tr>
 		<th>ID</th>							
 		<th>Incident Type</th>
+		<th>Received Date & Time</th>
 		<th>Incident Date & Time</th>
 		<th>Address </th>
 		<th>Details </th>

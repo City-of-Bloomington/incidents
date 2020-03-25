@@ -8,19 +8,21 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head th:replace="general::head('User')"></head>
   <body>
-		<header th:replace="general::header">
-		</header>		
+    <header>
+      <div th:replace="general::header-staff"></div>
+    </header>
+    <br />
     <h2>Users</h2>
-		<div th:if="${errors}">
-			<div th:insert="general::errors(${errors})"></div>			
-		</div>
-		<div th:if="${messages}">
-			<div th:insert="general::messages(${messages})"></div>			
-		</div>	
-		<p><a href="/user/new">Add a new user</a></p>
-		
-		<div th:switch="${users}">
-			<h2 th:case="null">No users found</h2>
+    <div th:if="${errors}">
+      <div th:insert="general::errors(${errors})"></div>			
+    </div>
+    <div th:if="${messages}">
+      <div th:insert="general::messages(${messages})"></div>			
+    </div>	
+    <p><a href="/user/new">Add a new user</a></p>
+    
+    <div th:switch="${users}">
+      <h4 th:case="null">No users found</h4>
       <div th:case="*">
         <h2>Users</h2>
         <table>

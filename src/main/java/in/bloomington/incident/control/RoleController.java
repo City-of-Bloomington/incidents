@@ -28,23 +28,23 @@ import in.bloomington.incident.model.Action;
 @Controller
 public class RoleController extends TopController{
 
-		@Autowired
-		RoleService roleService;
-		@Autowired
-		ActionService actionService;
+    @Autowired
+    RoleService roleService;
+    @Autowired
+    ActionService actionService;
 		
-		@GetMapping("/roles")
+    @GetMapping("/roles")
     public String getAll(Model model) {
         model.addAttribute("roles", roleService.getAll());
         return "roles";
     }
-		@GetMapping("/role/new")
+    @GetMapping("/role/new")
     public String newRole(Model model) {
-				Role role = new Role();
+	Role role = new Role();
         model.addAttribute("role", role);
-				List<Action> actions = actionService.getAll();
-				if(actions != null)
-						model.addAttribute("actions", actions);
+	List<Action> actions = actionService.getAll();
+	if(actions != null)
+	    model.addAttribute("actions", actions);
         return "roleAdd";
     }     
     @PostMapping("/role/add")
@@ -53,63 +53,65 @@ public class RoleController extends TopController{
             return "roleAdd";
         }
         roleService.save(role);
-				addMessage("Added Successfully");
+	addMessage("Added Successfully");
         model.addAttribute("roles", roleService.getAll());
-				model.addAttribute("messages", messages);				
+	model.addAttribute("messages", messages);				
         return "roles";
     }
 
-		@GetMapping("/role/edit/{id}")
-		public String showEditForm(@PathVariable("id") int id, Model model) {
-				Role role = null;
-				try{
-						role = roleService.findById(id);
+    @GetMapping("/role/edit/{id}")
+    public String showEditForm(@PathVariable("id") int id, Model model) {
+	Role role = null;
+	try{
+	    role = roleService.findById(id);
 						
-				}catch(Exception ex){
-						addError("Invalid role Id");
-						model.addAttribute("roles", roleService.getAll());
-						model.addAttribute("errors", errors);
-						return "roles";
-				}
-				model.addAttribute("role", role);
-				List<Action> actions = actionService.getAll();
-				if(actions != null)
-						model.addAttribute("actions", actions);
-				return "roleUpdate";
-		}
-		@PostMapping("/role/update/{id}")
-		public String updateRole(@PathVariable("id") int id, @Valid Role role, 
-														 BindingResult result, Model model) {
-				if (result.hasErrors()) {
-						role.setId(id);
-						return "roleUpdate";
-				}
-				addMessage("Updated Successfully");
-				roleService.save(role);
-				model.addAttribute("roles", roleService.getAll());				
-				model.addAttribute("messages", messages);
-				return "roles";
-		}
+	}catch(Exception ex){
+	    addError("Invalid role Id");
+	    model.addAttribute("roles", roleService.getAll());
+	    model.addAttribute("errors", errors);
+	    return "roles";
+	}
+	model.addAttribute("role", role);
+	List<Action> actions = actionService.getAll();
+	if(actions != null)
+	    model.addAttribute("actions", actions);
+	return "roleUpdate";
+    }
+    @PostMapping("/role/update/{id}")
+    public String updateRole(@PathVariable("id") int id,
+			     @Valid Role role, 
+			     BindingResult result,
+			     Model model) {
+	if (result.hasErrors()) {
+	    role.setId(id);
+	    return "roleUpdate";
+	}
+	addMessage("Updated Successfully");
+	roleService.save(role);
+	model.addAttribute("roles", roleService.getAll());				
+	model.addAttribute("messages", messages);
+	return "roles";
+    }
 		
-		@GetMapping("/role/delete/{id}")
-		public String deleteRole(@PathVariable("id") int id, Model model) {
+    @GetMapping("/role/delete/{id}")
+    public String deleteRole(@PathVariable("id") int id, Model model) {
 
-				try{
-						Role role = roleService.findById(id);
-						roleService.delete(id);
-						addMessage("Deleted Succefully");
-				}catch(Exception ex){
-						addError("Invalid role ID "+id);
-				}
-				model.addAttribute("roles", roleService.getAll());
-				if(hasMessages()){
-						model.addAttribute("messages", messages);
-				}
-				else if(hasErrors()){
-						model.addAttribute("errors", errors);
-				}
+	try{
+	    Role role = roleService.findById(id);
+	    roleService.delete(id);
+	    addMessage("Deleted Succefully");
+	}catch(Exception ex){
+	    addError("Invalid role ID "+id);
+	}
+	model.addAttribute("roles", roleService.getAll());
+	if(hasMessages()){
+	    model.addAttribute("messages", messages);
+	}
+	else if(hasErrors()){
+	    model.addAttribute("errors", errors);
+	}
 					 
-				return "roles";
-		}
+	return "roles";
+    }
 		
 }

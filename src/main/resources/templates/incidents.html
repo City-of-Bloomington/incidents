@@ -17,9 +17,9 @@
       <div th:insert="general::messages(${messages})"></div>			
     </div>						
     <div th:fragment="incidents(incidents)">
-      <h2>Incidents</h2>
+      <h3>Incidents</h3>
       <div th:switch="${incidents}">
-	<h2 th:case="null">No incidents found</h2>
+	<h4 th:case="null">No incidents found</h4>
 	<div th:case="*">
 	  <table>
 	    <thead>

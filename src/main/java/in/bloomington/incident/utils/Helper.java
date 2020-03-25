@@ -82,28 +82,10 @@ public class Helper{
         mimeTypes.put("application/vnd.openxmlformats-officedocument.wordprocessingml.document", "docx");
 	
     }
-    @Autowired
-    private Environment         env;
-    private String ldap_host = "";
-    private String address_check_url = "";
     public Helper(){
 
     }
-    public void populateHosts(){
-        if (env != null) {
-            String str = env.getProperty("incident.ldap.host");
-            if (str != null) {
-                ldap_host = str;
-            }
-            str = env.getProperty("incident.address.checkurl");
-            if (str != null) {
-                address_check_url = str;
-            }						
-        }
-    }
-    public final String getAddressCheckUrl(){
-	return address_check_url;
-    }
+
     public final static int getCurrentYear(){
         Calendar cal  = Calendar.getInstance();
         int      year = cal.get(Calendar.YEAR);
@@ -383,6 +365,7 @@ public class Helper{
 	}
 	return false;
     }
+    /*
     @SuppressWarnings("unchecked")
     public final static boolean verifySession(final HttpSession session, final String id){
 	// no new session
@@ -397,6 +380,7 @@ public class Helper{
 	}
 	return false;
     }
+    */
     /**
      * md5 hash function to create hashes for user request
      */
@@ -414,7 +398,9 @@ public class Helper{
 	}
 	return hash;
     }
-    public boolean checkUser(String username, String password){
+    public boolean checkUser(String username,
+			     String password,
+			     String ldap_host){
         String         returnedAtts[] = { "sn", "givenName", "mail" };
         String         filter         = "(&(objectCategory=person)(objectClass=user))";
         SearchControls ctls           = new SearchControls();

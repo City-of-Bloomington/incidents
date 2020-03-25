@@ -163,6 +163,7 @@ public class User implements java.io.Serializable{
     }		
     @Transient
     public boolean canApprove(){
+	if(isAdmin()) return true;
 	if(hasActions()){
 	    for(Action one:actions){
 		if(one.getName().indexOf("approve") > -1){
@@ -174,6 +175,7 @@ public class User implements java.io.Serializable{
     }
     @Transient
     public boolean canProcess(){
+	if(isAdmin()) return true;
 	if(hasActions()){
 	    for(Action one:actions){
 		if(one.getName().indexOf("process") > -1){

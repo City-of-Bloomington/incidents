@@ -8,8 +8,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head th:replace="general::head('Confirmation')"></head>
   <body>
-    <header th:replace="general::header">
-    </header>		
+    <header>
+      <div th:replace="general::header-staff"></div>
+    </header>
+    <br />
     <h2>Confirmation Completed</h2>
     <div th:if="${errors}">
       <div th:insert="general::errors(${errors})"></div>			

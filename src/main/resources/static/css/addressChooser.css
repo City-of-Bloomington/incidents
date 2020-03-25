@@ -1,0 +1,15 @@
+<style type="text/css">
+#modal-container {
+    position: fixed; top:50%; left:50%;
+    transform: translate(-50%, -50%);
+    z-index:100;
+		
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: white;
+}
+#modal-container div { background-color: white; }
+#modal-container #searchResults ul { list-style-type: none; }
+#modal-container #searchResults li { cursor: pointer; }
+</style>

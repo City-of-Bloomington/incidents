@@ -17,20 +17,20 @@ function popwit(url, name) {
 		return false;		
  }
 function verifyConfirm(){
-		var val = document.getElementById("email").value;
-		var val2 = document.getElementById("email2").value;
-		if(val.trim() == '' || val2.trim() == ''){
-			  alert("You need to provide valid email");
-			     return false;
-		}
-		if(val.trim() != val2.trim()){
-			  alert("The two emails do not match");
-				return false;
-		}
-		var checked = document.getElementById("confirm").checked;
-		if(!checked){
-			  alert("You need to confirm the reporting terms");
-			  return false;
-		}
-		return true;
+    var val = document.getElementById("email").value;
+    var val2 = document.getElementById("email2").value;
+    if(val.trim() == '' || val2.trim() == ''){
+	alert("You need to provide valid email");
+	return false;
+    }
+    if(val.trim() != val2.trim()){
+	alert("The two emails do not match");
+	return false;
+    }
+    var checked = document.getElementById("confirm").checked;
+    if(!checked){
+	alert("You need to confirm the reporting terms");
+	return false;
+    }
+    return true;
 }

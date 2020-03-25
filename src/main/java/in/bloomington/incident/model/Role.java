@@ -35,100 +35,100 @@ import javax.validation.constraints.NotNull;
 @Table(name = "roles")
 public class Role implements java.io.Serializable{
 
-		@Id
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-		@NotNull(message = "Role name may not be null")
-		private String name;
+    @NotNull(message = "Role name may not be null")
+    private String name;
 
-		@ManyToMany
-		@JoinTable(name = "user_roles")		
-		List<User> users;
+    @ManyToMany
+    @JoinTable(name = "user_roles")		
+    List<User> users;
 		
-		@ManyToMany
-		@JoinTable(name = "action_roles", joinColumns = @JoinColumn(name = "role_id"), inverseJoinColumns = @JoinColumn(name = "action_id"))
-		List<Action> actions;		
-		public Role(){
+    @ManyToMany
+    @JoinTable(name = "action_roles", joinColumns = @JoinColumn(name = "role_id"), inverseJoinColumns = @JoinColumn(name = "action_id"))
+    List<Action> actions;		
+    public Role(){
 
-		}
+    }
 		
-		public Role(int id, @NotNull(message = "Role name may not be null") String name, List<User> users, List<Action> actions) {
-				super();
-				this.id = id;
-				this.name = name;
-				this.users = users;
-				this.actions = actions;
-		}
+    public Role(int id, @NotNull(message = "Role name may not be null") String name, List<User> users, List<Action> actions) {
+	super();
+	this.id = id;
+	this.name = name;
+	this.users = users;
+	this.actions = actions;
+    }
 
 
 
-		public int getId() {
-				return id;
-		}
+    public int getId() {
+	return id;
+    }
 
-		public void setId(int id) {
-				this.id = id;
-		}
+    public void setId(int id) {
+	this.id = id;
+    }
 
-		public String getName() {
-				return name;
-		}
+    public String getName() {
+	return name;
+    }
 
-		public void setName(String name) {
-				this.name = name;
-		}
-		public List<User> getUsers(){
-				return users;
-		}
-		public void setUsers(List<User> ones){
-				users = ones;
-		}
-		public List<Action> getActions(){
-				return actions;
-		}
-		public void setActions(List<Action> actions){
-				actions = actions;
-		}
-		@Transient
-		public boolean hasAssignedActions(){
-				return actions != null && actions.size() > 0;
-		}
-		@Transient
-		public String getActionsInfo(){
-				String ret = "";
-				if(hasAssignedActions()){
-						for(Action one:actions){
-								if(!ret.equals("")) ret += ", ";
-								ret += one;
-						}
-				}
-				return ret;
-		}
-		@Transient
-		public boolean isAdmin(){
-				return name.indexOf("Admin") > -1;
-		}				
-		@Override
+    public void setName(String name) {
+	this.name = name;
+    }
+    public List<User> getUsers(){
+	return users;
+    }
+    public void setUsers(List<User> ones){
+	users = ones;
+    }
+    public List<Action> getActions(){
+	return actions;
+    }
+    public void setActions(List<Action> actions){
+	actions = actions;
+    }
+    @Transient
+    public boolean hasAssignedActions(){
+	return actions != null && actions.size() > 0;
+    }
+    @Transient
+    public String getActionsInfo(){
+	String ret = "";
+	if(hasAssignedActions()){
+	    for(Action one:actions){
+		if(!ret.equals("")) ret += ", ";
+		ret += one;
+	    }
+	}
+	return ret;
+    }
+    @Transient
+    public boolean isAdmin(){
+	return name.indexOf("Admin") > -1;
+    }				
+    @Override
     public boolean equals(Object obj) { 
           
-				if(this == obj) 
-						return true; 
+	if(this == obj) 
+	    return true; 
 				
         if(obj == null || obj.getClass()!= this.getClass()) 
             return false; 
 				
         Role one = (Role) obj; 
         return one.getId() == this.getId();
-		}
-		@Override
-		public int hashCode(){ 
-				int ret = 29;
+    }
+    @Override
+    public int hashCode(){ 
+	int ret = 29;
         return ret += this.id; 
     }
 
-		@Override
-		public String toString() {
-			return name;
-		} 	
+    @Override
+    public String toString() {
+	return name;
+    } 	
 		
 }
