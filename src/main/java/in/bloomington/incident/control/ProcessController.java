@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.core.env.Environment;
+import org.springframework.beans.factory.annotation.Value;
 import javax.validation.Valid;
 import org.springframework.web.bind.annotation.RequestParam;
 import javax.servlet.http.HttpServletRequest;
@@ -39,6 +40,7 @@ import in.bloomington.incident.model.ActionLog;
 import in.bloomington.incident.model.Person;
 import in.bloomington.incident.model.Request;
 import in.bloomington.incident.model.User;
+import in.bloomington.incident.model.Email;
 import in.bloomington.incident.utils.Helper;
 import in.bloomington.incident.utils.EmailHandle;
 
@@ -61,12 +63,12 @@ public class ProcessController extends TopController{
     UserService userService;    
     @Autowired
     private Environment env;
+    @Value("${incident.email.host}")
+    private String email_host;
+    @Value("${incident.email.sender}")
+    private String email_sender;
 
-    // @Value("${incident.ldap.host}")    
-    // private String ldap_host = "";
-
-
-    //login staff
+    //
     @GetMapping("/staff/{id}")
     public String staffIncident(@PathVariable("id") int id,
 				 Model model,
@@ -80,7 +82,6 @@ public class ProcessController extends TopController{
 	try{
 	    incident = incidentService.findById(id);
 	    actionLog.setIncident(incident);
-	    actionLog.setUser(user);
 	    actions = getNextActions(incident);
 	    model.addAttribute("incident", incident);
 	    model.addAttribute("actionLog", actionLog);
@@ -95,22 +96,20 @@ public class ProcessController extends TopController{
 	else if(hasErrors()){
 	    model.addAttribute("errors", errors);
 	}
-	return "make_decision";
+	return "staff/make_decision";
 
     }
-    //login staff
+    //
     @GetMapping("/process/{id}")
     public String processIncident(@PathVariable("id") int id,
 				 Model model,
 				 HttpSession session
 				 ) {
 	Incident incident = null;
-	// User user = userService.findById(5); // need fix
-	User user2 = getUserFromSession(session);
-	if(user2 == null ){
+	User user = findUserFromSession(session);
+	if(user == null ){
 	    return "redirect:/login";
 	}
-	User user = userService.findById(user2.getId());
 	if(!user.canProcess()){
 	    addMessage("You do not have enough privileges");
 	    addMessagesToSession(session);
@@ -122,7 +121,6 @@ public class ProcessController extends TopController{
 	try{
 	    incident = incidentService.findById(id);
 	    actionLog.setIncident(incident);
-	    actionLog.setUser(user);
 	    actions = getNextActions(incident);
 	    model.addAttribute("incident", incident);
 	    model.addAttribute("actionLog", actionLog);
@@ -137,10 +135,10 @@ public class ProcessController extends TopController{
 	else if(hasErrors()){
 	    model.addAttribute("errors", errors);
 	}
-	return "process_decision";
+	return "staff/process_decision";
     }    
-    //login staff
-    @PostMapping("/staff/decision")
+    //
+    @PostMapping("/staff/decision") // approve or reject
     public String staffDecision(@Valid ActionLog actionLog, 
 				BindingResult result,
 				Model model,
@@ -153,14 +151,15 @@ public class ProcessController extends TopController{
 	    logger.error("Error saving action "+error);
 	    return "redirect:/search/preApproved";
 	}
-	user = getUserFromSession(session);
+	user = findUserFromSession(session);
 	if(user != null && user.canApprove()){
+	    actionLog.setUser(user);
 	    actionLog.setDateNow();
 	    Action action = actionLog.getAction();
 	    actionLogService.save(actionLog);
 	    String cfsNumber = actionLog.getCfsNumber();
-	    if(cfsNumber != null){
-		Incident incident = actionLog.getIncident();
+	    Incident incident = actionLog.getIncident();	    
+	    if(cfsNumber != null && !cfsNumber.isEmpty()){
 		if(incident != null){
 		    incident.setCfsNumber(cfsNumber);
 		    incidentService.update(incident);
@@ -184,12 +183,16 @@ public class ProcessController extends TopController{
 	    // if approved, send approve email
 	    //
 	    if(action != null){
-		if(action.isApproved()){
-		    // send approve email
-		
+		if(action.isApproved() && incident.hasCfsNumber()){
+		    Email email = new Email();
+		    email.populateEmail(incident, "approve");
+		    sendApproveEmail(email, user);
+		    addMessage("Email sent successfully ");
+		    addMessagesToSession(session);
+		    return "staff/staff_intro";
 		}
 		else if(action.isRejected()){
-		    // redirect to rejection email
+		    return "redirect:/rejectForm/"+incident.getId();
 		    
 		}
 	    }
@@ -197,13 +200,67 @@ public class ProcessController extends TopController{
 	else {
 	    addMessage("You do not have enough privileges ");
 	    addMessagesToSession(session);
-	    return "redirect:/index";
+	    return "redirect:/login";
 	}
 	return "redirect:/search/preApproved";	    
     }
+    //reject email form
+    @GetMapping("/rejectForm/{id}")
+    public String rejectForm(@PathVariable("id") int id,
+			     Model model,
+			     HttpSession session
+			     ) {
+	Incident incident = incidentService.findById(id);
+	User user = null;
+	user = findUserFromSession(session);
+	if(user == null){
+	    // send to login
+	    // return "redirect:login";
+	}
+	System.err.println(" **** sending reject email ");
+	Email email = new Email();
+	email.populateEmail(incident, "reject");
+	model.addAttribute("email", email);
+	return "staff/rejectForm";
+    }
     //login staff
-    @PostMapping("/process/decision")
-    public String processDecision(@Valid ActionLog action, 
+    @PostMapping("/rejectEmail")
+    public String sendRejectEmail(Email email, 
+				  BindingResult result,
+				  Model model,
+				  HttpSession session
+				  ) {
+	if (result.hasErrors()) {
+	    String error = Helper.extractErrors(result);
+	    addError(error);
+	    logger.error("Error reject email form "+error);
+	}
+	User user = findUserFromSession(session);
+	if(user == null){
+	    // send to login
+	    // return "redirect:login";
+	}
+	else{
+	    email.setUser_id(user.getId());
+	}
+	email.setSender(email_sender);// +",'-fwebmaster@bloomington.in.gov'");
+	//
+	// send the email
+	//
+	EmailHandle emailer = new EmailHandle(email, email_host);
+	String back = emailer.send();
+	//
+	// we may need add email to email logs
+	//
+	addMessage("Reject email sent");
+	addMessagesToSession(session);
+	// back to main staff page
+	return "staff/staff_intro";
+	
+    }
+    // process of adding cfs number to complete incident actions
+    @PostMapping("/process/final")
+    public String processDecision(@Valid ActionLog actionLog, 
 				BindingResult result,
 				Model model,
 				HttpSession session
@@ -212,21 +269,30 @@ public class ProcessController extends TopController{
 	    String error = Helper.extractErrors(result);
 	    addError(error);
 	    logger.error("Error saving action "+error);
+	    System.err.println(" *** errors *** "+error);
 	    return "redirect:/search/approved";
 	}
-	User user = getUserFromSession(session);
+	User user = findUserFromSession(session);
 	// check user role
-	if(user != null && user.canApprove()){
-	    action.setDateNow();
-	    action.setUser(user);
-	    actionLogService.save(action);
-	    String cfsNumber = action.getCfsNumber();
-	    if(cfsNumber != null){
-		Incident incident = action.getIncident();
+	if(user != null && user.canProcess()){
+	    actionLog.setDateNow();
+	    actionLog.setUser(user);
+	    actionLogService.save(actionLog);
+	    String cfsNumber = actionLog.getCfsNumber();
+	    if(cfsNumber != null && !cfsNumber.isEmpty()){
+		Incident incident = actionLog.getIncident();
 		if(incident != null){
 		    incident.setCfsNumber(cfsNumber);
-		incidentService.update(incident);
+		    incidentService.update(incident);
 		}
+		System.err.println(" **** sending approve email ");
+		Email email = new Email();
+		email.populateEmail(incident, "approve");
+		String back = sendApproveEmail(email, user);
+		if(back.isEmpty())
+		    addMessage("Email sent successfully ");
+		else
+		    addError(back);
 	    }
 	    addMessage("Saved Successfully");				
 	    model.addAttribute("messages", messages);
@@ -234,20 +300,21 @@ public class ProcessController extends TopController{
 	    return "redirect:/search/approved";
 	}
 	else{
+	    System.err.println(" *** not enough roles *** ");
 	    addMessage("You do not have enough privileges ");
 	    addMessagesToSession(session);
-	    return "redirect:/index";
+	    return "redirect:/login";
 	}
     }        
     
-    // login users
+    // 
     @GetMapping("/incidentView/{id}")
     public String viewIncident(@PathVariable("id") int id,
 				 Model model,
 				 HttpSession session
 				 ) {
 	Incident incident = null;
-	User user = getUserFromSession(session);
+	User user = findUserFromSession(session);
 	if(user == null){
 	    return "redirect:/login";
 	}
@@ -267,38 +334,21 @@ public class ProcessController extends TopController{
 	return "incidentView";
 
     }    
-    
-    @GetMapping("/processAction")
-    public String processAction(Model model) {
-	//
-	// here will send approve email with cfs #
-        return "";
-    }		
-    private String sendApproveEmail(Incident incident){
+    private User findUserFromSession(HttpSession session){
+	User user = null;
+    	User user2 = getUserFromSession(session);
+	if(user2 != null){
+	    user = userService.findById(user2.getId());
+	}
+	return user;
+    }
+    private String sendApproveEmail(Email email,
+				    User user
+				    ){
 	String ret = "";
-	
-	if(!incident.hasCfsNumber()){
-	    ret = "incident has no CSF number";
-	    return ret;
-	}
-	if(!incident.hasPersonList()){
-	    ret = "incident has no person to send email to";
-	    return ret;
-	}
-	List<Person> persons = incident.getPersons();
-	Person person = persons.get(0); // we need one
-	String email = person.getEmail();
-	String subject = "Incident Reporting Approval";
-	String from = "\"incident_reporting@bloomington.in.gov\",'-fwebmaster@bloomington.in.gov'";
-	String message = "Dear "+person.getFullname()+
-	    "\n\n Your report has been approved. "+
-	    "The CFS Number of your report is "+incident.getCfsNumber()+
-	    
-	    " You can use this number in your future contacts with the Bloomington Police Department. \n\n"+
-	    "Please do not reply to this email as this is an automated system.";
-	//
-	// send the email
-
+	EmailHandle emailer = new EmailHandle(email, email_host);
+	email.setSender(email_sender);
+	ret = emailer.send();
 	return ret;
     }
 

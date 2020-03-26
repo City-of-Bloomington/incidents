@@ -5,6 +5,7 @@ import javax.mail.*;
 import javax.mail.Address;
 import javax.mail.internet.*;
 import javax.activation.*;
+import in.bloomington.incident.model.Email;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -118,6 +119,16 @@ public class EmailHandle{
 	file_name = file_name2;
 	file_path = file_path2;
     }
+    public EmailHandle(Email email, String host){
+	if(host != null)
+	    this.host = host;
+	if(email != null){
+	    to = email.getReceiver();
+	    from = email.getSender();
+	    subject = email.getSubject();
+	    msgText = email.getMessage();
+	}
+    }	        
     //
     public String send(){
 		
@@ -129,6 +140,7 @@ public class EmailHandle{
 	    Properties props = new Properties();
 	    props.put("mail.smtp.host", host);
 	    props.put("mail.debug", "true");
+	    props.put("mail.smtp.auth","false");
 			
 	    Session session = Session.getDefaultInstance(props, null);
 	    session.setDebug(true);

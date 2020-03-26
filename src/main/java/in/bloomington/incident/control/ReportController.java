@@ -46,7 +46,7 @@ public class ReportController extends TopController{
 	if(hasMessages()){
 	    model.addAttribute("messages", getMessages());
 	}
-        return "report";
+        return "staff/report";
     }
     @PostMapping("/report/find")
     public String searchFind(@Valid StatsRequest report,
@@ -65,7 +65,7 @@ public class ReportController extends TopController{
         model.addAttribute("stats", stats);
 	if(hasMessages())
 	    model.addAttribute("messages", getMessages());
-        return "showStats";
+        return "staff/showStats";
     }    
     
     

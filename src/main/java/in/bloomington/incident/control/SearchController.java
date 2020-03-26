@@ -69,7 +69,7 @@ public class SearchController extends TopController{
 	    addMessage("No incident found");
 	    model.addAttribute("messages", messages);
 	}
-        return "pre_approved";
+        return "staff/pre_approved";
     }
     @GetMapping("/search/approved")
     public String findApproved(Model model) {
@@ -90,7 +90,7 @@ public class SearchController extends TopController{
 	    addMessage("No incident found");
 	    model.addAttribute("messages", messages);
 	}
-        return "approved";
+        return "staff/approved";
     }
     @GetMapping("/search")
     public String search(Model model) {
@@ -103,7 +103,7 @@ public class SearchController extends TopController{
 	if(hasMessages()){
 	    model.addAttribute("messages", getMessages());
 	}
-        return "search";
+        return "staff/search";
     }
     @PostMapping("/search/find")
     public String searchFind(@Valid Search search,

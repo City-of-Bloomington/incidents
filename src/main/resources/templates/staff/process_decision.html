@@ -41,10 +41,9 @@
     </div>    
     <h3>Update Incident Status</h3>
     <form action="#"
-	  th:action="@{/process/decision}"
+	  th:action="@{/process/final}"
 	  th:object="${actionLog}" method="post">
       <input type="hidden" th:field="${actionLog.incident}" />
-      <input type="hidden" th:field="${actionLog.user}" />      
       <table>
 	<tr>
 	  <td>Set Status</td>

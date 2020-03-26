@@ -44,7 +44,6 @@
 	  th:action="@{/staff/decision}"
 	  th:object="${actionLog}" method="post">
       <input type="hidden" th:field="${actionLog.incident}" />
-      <input type="hidden" th:field="${actionLog.user}" />      
       <table>
 	<tr>
 	  <td>Set Status</td>

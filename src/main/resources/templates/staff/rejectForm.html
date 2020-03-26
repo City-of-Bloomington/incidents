@@ -19,8 +19,11 @@
     </div>				
     <form action="#"
 	  th:action="@{/rejectEmail}"
-	  th:object="${email}" method="post">
-      <input type="hidden" th:field="${incident.email}" />
+	  th:object="${email}"
+	  method="post">
+      <input type="hidden" th:field="${email.receiver}" />
+      <input type="hidden" th:field="${email.type}" />
+      <input type="hidden" th:field="${email.incident_id}" />      
       <fieldset>
 	<legend>Rejection Email</legend>
 	<p>
@@ -29,20 +32,17 @@
 	</p>
 	<table summary="layout for email message">
 	  <tr><th>To</th>
-	    <td><span th:text="${incident.email}"></span></td>
+	    <td><span th:text="${email.receiver}"></span></td>
 	  </tr>
 	  <tr>
 	    <th><label for="subject">Subject:</label></th>
 	    <td>
-	      <input th:field="${email.subject}" id="subject" th:value="${'Incident Report Rejection Reasons'}" size="50" />
+	      <input th:field="${email.subject}" id="subject" size="50" />
 	    </td>
 	  </tr>
 	  <tr>
 	    <td colspan="2">
 	      <textarea th:field="${email.message}" id="message" rows="12" cols="60">
-		We received an incident report from you on <span th:text="${incident.receivedStr}"></span> <br />
-		<span th:text="${incident.details}"> </span>
-		Your request was rejected for the reasons below:
 	      </textarea>
 	    </td>
 	  </tr>
