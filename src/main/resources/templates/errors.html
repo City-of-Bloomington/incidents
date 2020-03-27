@@ -8,12 +8,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head th:insert="general::head('Errors')"></head>
   <body>
-		<header th:insert="general::header">
-		</header>
-    <h2>Errors</h2>		
-		<span th:if="${errors}" th:text="${errors}"></span>
-		
-		<p><a href="/index"> Settings </a></p>
-	</body>
+    <header th:insert="general::header">
+    </header>
+    <h2>Errors</h2>
+    <div th:if="${errors}">
+      <div th:insert="general::errors(${errors})"></div>			
+    </div>
+  </body>
 </htmL>
 

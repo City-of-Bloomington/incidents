@@ -19,7 +19,7 @@
     <div th:fragment="properties(properties,totalBalance)">
       <h2>Reported Item(s)</h2>
       <div th:switch="${properties}">
-	<h2 th:case="null">No properties found</h2>
+	<h4 th:case="null">No properties found</h4>
 	<div th:case="*">
 	  <table>
 	    <thead>

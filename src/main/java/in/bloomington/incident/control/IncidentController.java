@@ -127,7 +127,7 @@ public class IncidentController extends TopController{
 	model.addAttribute("allZipCodes", getAllZipCodes());
 	model.addAttribute("allStates", getAllStates());
 	model.addAttribute("allCities", getAllCities());
-	model.addAttribute("messages", messages);
+	handleErrorsAndMessages(model);
         return "incidentAdd";
     }
     @PostMapping("/incidentNext/{id}")
@@ -142,8 +142,7 @@ public class IncidentController extends TopController{
 	    model.addAttribute("allZipCodes", getAllZipCodes());
 	    model.addAttribute("allStates", getAllStates());
 	    model.addAttribute("allCities", getAllCities());
-	    model.addAttribute("errors", getErrors());
-	    resetAll();
+	    handleErrorsAndMessages(model);
             return "incidentAdd";
         }
 	if(!incident.verifyAll(defaultCity,
@@ -155,6 +154,7 @@ public class IncidentController extends TopController{
 	    model.addAttribute("allStates", getAllStates());
 	    model.addAttribute("allCities", getAllCities());
 	    model.addAttribute("errors", getErrors());
+	    handleErrorsAndMessages(model);
 	    return "incidentAdd";
 	}
 	if(incident.canBeChanged()){
@@ -170,7 +170,7 @@ public class IncidentController extends TopController{
 	}
 	else {
 	    addMessage("no more changes can be made");
-	    addMessagesToSession(session);
+	    addMessagesAndErrorsToSession(session);
 	    return "redirect:/";	    
 	}
     }
@@ -195,18 +195,19 @@ public class IncidentController extends TopController{
 	    redirectAttributes.addFlashAttribute("errors", errors);
 	    return "redirect:/error";
 	}
-        model.addAttribute("incident", incident);
-	getMessagesFromSession(session);
-	if(hasMessages()){
-	    model.addAttribute("messages", getMessages());
+	if(incident.canBeChanged()){
+	    model.addAttribute("incident", incident);
+	    getMessagesAndErrorsFromSession(session, model);
+	    return "incident";	    
 	}
-	if(hasErrors()){
-	    model.addAttribute("errors",getErrors());
+	else {
+	    addError("No more changes can be made to this incident");
+	    addMessagesAndErrorsToSession(session);
+	    return "redirect:/start";
 	}
-	resetAll();
-	return "incident";
+
     }
-    // view mode
+    //
     @GetMapping("/incident/finalPage/{id}")
     public String incidentFinalPage(@PathVariable("id") int id,
 				    Model model,
@@ -229,14 +230,13 @@ public class IncidentController extends TopController{
 	if(incident.canBeSubmitted()){
 	    addMessage("this is final page");
 	    model.addAttribute("incident", incident);
-	    model.addAttribute("messages", messages);
-	    resetAll();
+	    handleErrorsAndMessages(model);	
 	    return "finalSubmit";
 	}
 	else{
 	    addMessage("incident can be submitted ");
 	    addMessages(incident.getErrors());
-	    addMessagesToSession(session);
+	    addMessagesAndErrorsToSession(session);
 	    return "redirect:/";
 	}
     }
@@ -257,8 +257,8 @@ public class IncidentController extends TopController{
 	if(!incident.canBeSubmitted()){
 	    addMessage("Incident can not be submitted ");
 	    addMessages(incident.getErrors());
-	    addMessagesToSession(session);
-	    return "redirect:/incident/"+id;
+	    addMessagesAndErrorsToSession(session);
+	    return "redirect:/start";
 	}
 	try{
 	    String host = req.getServerName();
@@ -292,8 +292,7 @@ public class IncidentController extends TopController{
 	    model.addAttribute("errors", errors);
 	    return "start"; 
 	}
-	model.addAttribute("messages", messages);
-	resetAll();
+	handleErrorsAndMessages(model);
 	return "successSubmission";
     }		
     @GetMapping("/incident/confirm/{id}/{hash}")
@@ -319,9 +318,13 @@ public class IncidentController extends TopController{
 	else if(!request.getHash().equals(hash)){
 	    error = "The hash does not match ";
 	}
+	/*
 	else if(request.checkExpired()){ // with current time
+	    // we may ignore this condition and still
+	    // let the request to be confirmed
 	    error = "The confirmation is too late, the request expired";
 	}
+	*/
 	else{
 	    request.setConfirmed('y');
 	    requestService.update(request);
@@ -339,7 +342,6 @@ public class IncidentController extends TopController{
 	    return "confirm";
 	}
 	else{
-	    System.err.println(" *** failure message "+error);
 	    model.addAttribute("failure_message", error);
 	    return "failedconfirm";
 	}
@@ -358,7 +360,7 @@ public class IncidentController extends TopController{
         }
         incidentService.save(incident);
 	addMessage("Added Successfully");
-	addMessagesToSession(session);
+	addMessagesAndErrorsToSession(session);
 	resetAll();
 	return "redirect:/incident/"+incident.getId();
     }
@@ -379,20 +381,23 @@ public class IncidentController extends TopController{
 	}catch(Exception ex){
 	    addError("Invalid incident Id "+id);
 	    logger.error(""+ex);
-	    model.addAttribute("errors", errors);
-	    resetAll();
+
 	    return "start";
 	}
-	model.addAttribute("incident", incident);
-	model.addAttribute("entryTypes", entryTypes);
-	model.addAttribute("allZipCodes", getAllZipCodes());
-	model.addAttribute("allStates", getAllStates());
-	model.addAttribute("allCities", getAllCities());
-	if(hasMessages()){
-	    model.addAttribute("messages", messages);
-	    resetAll();
+	if(incident.canBeChanged()){
+	    model.addAttribute("incident", incident);
+	    model.addAttribute("entryTypes", entryTypes);
+	    model.addAttribute("allZipCodes", getAllZipCodes());
+	    model.addAttribute("allStates", getAllStates());
+	    model.addAttribute("allCities", getAllCities());
+	    handleErrorsAndMessages(model);
+	    return "incidentUpdate";
 	}
-	return "incidentUpdate";
+	else {
+	    addError("No more changes can be made to this incident");
+	    addMessagesAndErrorsToSession(session);
+	    return "redirect:/start";
+	}
     }
     @PostMapping("/incident/update/{id}")
     public String updateIncident(@PathVariable("id") int id,
@@ -405,17 +410,23 @@ public class IncidentController extends TopController{
 	    String error = Helper.extractErrors(result);
 	    addError(error);
 	    logger.error("Error update incident "+id+" "+error);
-	    incident.setId(id);
+	    handleErrorsAndMessages(model);
 	    return "updateIncident";
 	}
 	if(!verifySession(session, ""+id)){
 	    System.err.println(" not in session ");
-	}				
-	incidentService.update(incident);
-	addMessage("Updated Successfully");				
-	model.addAttribute("messages", messages);
-	addMessagesToSession(session);
-	return "redirect:/incident/"+id;
+	}
+	if(incident.canBeChanged()){
+	    incidentService.update(incident);
+	    addMessage("Updated Successfully");				
+	    addMessagesAndErrorsToSession(session);
+	    return "redirect:/incident/"+id;
+	}
+	else{
+	    addError("No more changes can be made to this incident");
+	    addMessagesAndErrorsToSession(session);
+	    return "redirect:/start";
+	}
     }
 		
     @GetMapping("/incident/delete/{id}")
@@ -429,19 +440,16 @@ public class IncidentController extends TopController{
 	Incident incident = null;
 	try{
 	    incident = incidentService.findById(id);
-	    incidentService.delete(id);
-	    addMessage("Deleted Succefully");
+	    if(incident.canBeChanged()){
+		incidentService.delete(id);
+		addMessage("Deleted Succefully");
+	    }
 	}catch(Exception ex){
 	    logger.error("Error delete incident "+id+" "+ex);
 	    addError("Invalid incident ID "+id);
 	}
-	model.addAttribute("incidents", incidentService.getAll());
-	if(hasMessages()){
-	    model.addAttribute("messages", messages);
-	}
-	else if(hasErrors()){
-	    model.addAttribute("errors", errors);
-	}
+	HttpSession session = req.getSession();
+	addMessagesAndErrorsToSession(session);
 	return "redirect:/start";
 
     }
@@ -507,26 +515,5 @@ public class IncidentController extends TopController{
 	ret = emailer.send(); 
 	return ret;
     }
-    /**
-     * find next action in workflow steps compare to the last
-     * action (if any)
-     */
-    /*
-    public List<Action> getNextActions(Incident incident){
-	List<Action> nextActions = null;
-	if(incident.hasNextAction()){
-	    Action lastAction = incident.getLastAction();
-	    // next workflow step is the last  workflow step + 1
-	    int next_step = lastAction.getWorkflowStep()+1;
-	    List<Action> actions = actionService.getAll();
-	    nextActions = new ArrayList<>();
-	    for(Action action:actions){
-		if(action.getWorkflowStep() == next_step){
-		    nextActions.add(action);
-		}
-	    }
-	}
-	return nextActions;
-    }
-    */    
+
 }

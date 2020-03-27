@@ -24,114 +24,95 @@
       </p>
       <ul>
 	<li>Check the info entered so far</li>
-	<li>if you want to change some of the data click on 'Edit' button below.				</li>
-	<li>You amy also delete this record if you think it is irrelevant, by clicking to 'Delete' button in the bottom of the page</li>
+	<li>if you want to change some of the data click on 'Edit' button below.</li>
+	<li>You amy also delete this record if you think it is irrelevant, by cl
 	<li>If the data are correct, click on 'Back to incident' link below to continue </li>
       </ul>
-      <table>
-	<tr>
-	  <td>Related incident</td>
-	  <td><a th:href="@{/incident/{id}(id=${person.incident.id})}">Back to Incident</a>
-	  </td>
-	</tr>
-	<tr>
-	  <td>
+      <dl>
+	  <dt>Related incident</dt>
+	  <dd><a th:href="@{/incident/{id}(id=${person.incident.id})}">Back to Incident</a>
+	  </dd>
+	  <dt>
 	    <label>Involvement of this person to this incident as: </label>
-	  </td>
-	  <td>
+	  </dt>
+	  <dd>
 	    <span th:text="${personType}"></span>
-	  </td>
-	</tr>
-	<tr>
-	  <td>
+	  </dd>
+
+	  <dt>
 	    Name: 
-	  </td>
-	  <td>
+	  </dt>
+	  <dd>
 	    <span th:text="${person.fullname}"></span>
-	  </td>
-	</tr>
-	<tr>
-	  <td>Address: </td>
-	  <td>
+	  </dd>
+
+	  <dt>Address: </dt>
+	  <dd>
 	    <span th:text="${person.address}"></span>	
-	  </td>
-	</tr>
-	<tr>
-	  <td>*City, State Zipcode: </td>
-	  <td>
+	  </dd>
+
+	  <dd>City, State Zipcode: </dd>
+	  <dt>
 	    <span th:text="${person.cityStateZip}">	</span>
-	  </td>
-	</tr>
-	<tr>
-	  <td>Phone(s): </td>
-	  <td>
+	  </dt>
+
+	  <dt>Phone(s): </dt>
+	  <dd>
 	    <span th:text="${person.phones}"></span>
-	  </td>
-	</tr>
-	<tr>
-	  <td>Email(s): </td>
-	  <td>
+	  </dd>
+
+	  <dt>Email(s): </dt>
+	  <dd>
 	    <span th:text="${person.emails}"></span>
-	  </td>
-	</tr>
-	<tr>
-	  <td>Date of Birth: </td>
-	  <td>
+	  </dd>
+	  <dt>Date of Birth: </dt>
+	  <dd>
 	    <span th:text="${person.dobStr}"></span>
-	  </td>
-	</tr>
+	  </dd>
+
 	<!-- some space -->
-	<tr><td colspan="2"> &nbsp;</td></tr>
-	<tr>
-	  <td colspan="2"> Note: the following fields are optional but helpful</td>
-	</tr>
-	<tr>
-	  <td>Driver License Number:
-	  </td>
-	  <td>
+
+	  <dd> Note: the following fields are optional but helpful</dd>
+
+	  <dt>Driver License Number:
+	  </dt>
+	  <dd>
 	    <span th:text="${person.dln}"></span>
-	  </td>
-	</tr>
-	<tr>
-	  <td>Social Security Number:
-	  </td>
-	  <td>
+	  </dd>
+
+	  <dt>Social Security Number:
+	  </dt>
+	  <dd>
 	    <span th:text="${person.ssnLastFour}"></span>
-	  </td>
-	</tr>
-	<tr>
-	  <td>Race:
-	  </td>
-	  <td>
+	  </dd>
+
+	  <dt>Race:
+	  </dt>
+	  <dd>
 	    <span th:text="${person.race}"></span>
-	  </td>
-	</tr>
-	<tr>
-	  <td>Height & Weight:
-	  </td>
-	  <td>
+	  </dd>
+
+	  <dt>Height & Weight:
+	  </dt>
+	  <dd>
 	    <span th:text="${person.heightAndWeight}"></span>
-	  </td>
-	</tr>
-	<tr>
-	  <td>Sex & Race:
-	  </td>
-	  <td>
+	  </dd>
+
+	  <dt>Sex & Race:
+	  </dt>
+	  <dd>
 	    <span th:text="${person.sexAndRace}"></span>
-	  </td>
-	</tr>
-	<tr>
-	  <td>Occupation:
-	  </td>
-	  <td>
+	  </dd>
+
+	  <dt>Occupation:
+	  </dt>
+	  <dd>
 	    <span th:text="${person.occupation}"></span>
-	  </td>
-	</tr>
-	<tr>
-	  <td><a th:href="@{/person/edit/{id}(id=${person.id})}">Edit</a></td>
-	  <td><a th:href="@{/person/delete/{id}(id=${person.id})}">Delete</a></td>
-	</tr>
-      </table>					
+	  </dd>
+
+	  <dt><a th:href="@{/person/edit/{id}(id=${person.id})}">Edit</a>
+	  <a th:href="@{/person/delete/{id}(id=${person.id})}">Delete</a></dt> 
+      </dl>					
     </fieldset>
   </body>
 </htmL>

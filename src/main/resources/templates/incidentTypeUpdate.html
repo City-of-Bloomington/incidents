@@ -8,8 +8,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head th:replace="general::head('Incident Type')"></head>
   <body>
-    <header th:replace="general::header">
-    </header>
+    <header>
+      <div th:replace="general::header-staff"></div>
+    </header>   
     <div th:if="${errors}">
       <div th:insert="general::errors(${errors})"></div>			
     </div>
@@ -27,16 +28,16 @@
 	    <label for="name">Type Name</label>
 	  </td>
 	  <td>
-	    <input type="text" th:field="${type.name}" id="name" placeholder="Damage Type Name">
-	      <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
-	    </td>
-	  </tr>
+	    <input type="text" th:field="${type.name}" id="name" placeholder="Damage Type Name" />
+	    <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+	  </td>
+	</tr>
 	<tr>
 	  <td>
 	    <input type="submit" value="Update" />
 	  </td>
 	</tr>
-	</table>
-      </form>
-    </body>
-  </html>
+      </table>
+    </form>
+  </body>
+</html>

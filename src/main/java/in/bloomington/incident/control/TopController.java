@@ -10,6 +10,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.validation.ObjectError;
 import org.springframework.validation.FieldError;
+import org.springframework.ui.Model;
 import java.util.List;
 import java.util.ArrayList;
 import in.bloomington.incident.model.User;
@@ -92,21 +93,41 @@ public abstract class TopController {
 	}
 	return ret;
     }
-    public void addMessagesToSession(HttpSession session){
-	if(session != null && messages != null){
-	    session.setAttribute("messages", messages);
+    public void addMessagesAndErrorsToSession(HttpSession session){
+	if(session != null){
+	    if(hasMessages()){
+		session.setAttribute("messages", messages);
+	    }
+	    if(hasErrors()){
+		session.setAttribute("errors", errors);
+	    }
+	    resetAll();
 	}
     }
     @SuppressWarnings("unchecked")		
-    public void getMessagesFromSession(final HttpSession session){
+    public void getMessagesAndErrorsFromSession(final HttpSession session,
+						Model model){
 	if(session != null){
 	    Object obj = session.getAttribute("messages");
 	    if(obj != null && obj instanceof List){
 		List<String> vals = (List<String>)  obj;
-		for(String val:vals){
-		    addMessage(val);
+		if(vals != null){
+		    addMessages(vals);
 		}
-		session.setAttribute("messages",null);
+		session.setAttribute("messages", null);
+		session.removeAttribute("messages");
+	    }
+	    obj = session.getAttribute("errors");
+	    if(obj != null && obj instanceof List){
+		List<String> vals = (List<String>)  obj;
+		if(vals != null){
+		    addErrors(vals);
+		}
+		session.setAttribute("errors", null);
+		session.removeAttribute("errors");
+	    }
+	    if(model != null){
+		handleErrorsAndMessages(model);
 	    }
 	}
     }
@@ -153,5 +174,13 @@ public abstract class TopController {
 	}
         return errors;
     }
-    
+    void handleErrorsAndMessages(Model model){
+	if(hasMessages()){
+	    model.addAttribute("messages", messages);
+	}
+	if(hasErrors()){
+	    model.addAttribute("errors",errors);
+	}
+	resetAll();    
+    }
 }

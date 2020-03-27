@@ -9,55 +9,55 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head th:replace="general::head('Incident')"></head>
   <body>
-		<header th:replace="general::header">
-		</header>
-		<div th:if="${errors}">
-			<div th:insert="general::errors(${errors})"></div>			
-		</div>
-		<div th:if="${messages}">
-			<div th:insert="general::messages(${messages})"></div>			
-		</div>		
-		<h2>Incident Reporting Steps</h2>
-		
-		<h4> To add an incident you will go through the following steps </h4>
-		<ul>
-			<li>Pick incident category (this page) </li>
-			<li>Add incident details (next page) </li>
-			<li> Optional, you can upload incident images </li>
-			<li> Add persons' info including witnesses (if any)</li>
-			<li> Add properties related to incident </li>
-			<li> Add vechile info if the incident include vehicle </li>
-			<li> Submit your request </li>
-		</ul>
-		<p> To start, please select one of incident categories below: </p>
-		
-		<form action="#"
-					th:action="@{/initialNext/{id}(id=${initial.id})}"
-					th:object="${initial}"
-					method="post">
-			<input type="hidden" th:field="${initial.email}" />
-			<input type="hidden" th:field="${initial.received}" />			
-			<table>
-				<tr>
-					<td>
-						<label for="type_id">Category of Incident you are reporting:</label>
-					</td>
-					<td>
-						<select id="type_id" th:field="${initial.incidentType}" >
-							<option value="-1">Pick Category</option>
-							<option th:each="r : ${types}"
-											th:value="${r.id}"
-											th:text="${r.name}">
-							</option>
-						</select>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<input type="submit" value="Next" />
-					</td>
-				</tr>
-			</table>
-		</form>
-	</body>
+    <header th:replace="general::header">
+    </header>
+    <div th:if="${errors}">
+      <div th:insert="general::errors(${errors})"></div>			
+    </div>
+    <div th:if="${messages}">
+      <div th:insert="general::messages(${messages})"></div>			
+    </div>		
+    <h2>Incident Reporting Steps</h2>
+    
+    <h4> To add an incident you will go through the following steps </h4>
+    <ul>
+      <li>Pick incident category (this page) </li>
+      <li>Add incident details (next page) </li>
+      <li> Optional, you can upload incident images </li>
+      <li> Add persons' info including witnesses (if any)</li>
+      <li> Add properties related to incident </li>
+      <li> Add vechile info if the incident include vehicle </li>
+      <li> Submit your request </li>
+    </ul>
+    <p> To start, please select one of incident categories below: </p>
+    
+    <form action="#"
+	  th:action="@{/initialNext/{id}(id=${initial.id})}"
+	  th:object="${initial}"
+	  method="post">
+      <input type="hidden" th:field="${initial.email}" />
+      <input type="hidden" th:field="${initial.received}" />			
+      <table>
+	<tr>
+	  <td>
+	    <label for="type_id">Category of Incident you are reporting:</label>
+	  </td>
+	  <td>
+	    <select id="type_id" th:field="${initial.incidentType}" >
+	      <option value="-1">Pick Category</option>
+	      <option th:each="r : ${types}"
+		      th:value="${r.id}"
+		      th:text="${r.name}">
+	      </option>
+	    </select>
+	  </td>
+	</tr>
+	<tr>
+	  <td>
+	    <input type="submit" value="Next" />
+	  </td>
+	</tr>
+      </table>
+    </form>
+  </body>
 </html>

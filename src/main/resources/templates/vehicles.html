@@ -8,48 +8,48 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head th:replace="general::head('Vehicle')"></head>
   <body>
-		<header th:replace="general::header">
-		</header>		
-		<div th:if="${errors}">
-			<div th:insert="general::errors(${errors})"></div>			
-		</div>
-		<div th:if="${messages}">
-			<div th:insert="general::messages(${messages})"></div>			
-		</div>				
-		<div th:fragment="vehicles(vehicles)">
-			<h2>Vehicles </h2>
-			<div th:switch="${vehicles}">
-				<h2 th:case="null">No vehicle found</h2>
-				<div th:case="*">
-					<table>
-						<thead>
-							<tr>
-								<td>ID</td>							
-								<td>Damage Type</td>
-								<td>Make Model Year</td>
-								<td>Plate State, Number & Year</td>
-								<td>Owner </td>
-								<td>Description</td>
-								<td>Edit</td>
-								<td>Delete</td>
-							</tr>
-						</thead>
-						<tbody>
-							<tr th:each="one : ${verhicles}">
-								<td th:text="${one.id}"></td>
-								<td th:text="${one.carDamageType}"></td>
-								<td th:text="${one.makeInfo}"></td>
-								<td th:text="${one.plateInfo}"></td>
-								<td th:text="${one.owner}"></td>
-								<td th:text="${one.description}"></td>
-								<td><a th:href="@{/vehicle/edit/{id}(id=${one.id})}">Edit</a></td>
-								<td><a th:href="@{/vehicle/delete/{id}(id=${one.id})}">Delete</a></td>
-							</tr>
-						</tbody>
-					</table>
-				</div>      
-			</div>
-		</div>
-		</body>
-	</htmL>
+    <header th:replace="general::header">
+    </header>		
+    <div th:if="${errors}">
+      <div th:insert="general::errors(${errors})"></div>			
+    </div>
+    <div th:if="${messages}">
+      <div th:insert="general::messages(${messages})"></div>			
+    </div>				
+    <div th:fragment="vehicles(vehicles)">
+      <h4>Vehicles </h4>
+      <div th:switch="${vehicles}">
+	<h4 th:case="null">No vehicle found</h4>
+	<div th:case="*">
+	  <table>
+	    <thead>
+	      <tr>
+		<td>ID</td>							
+		<td>Damage Type</td>
+		<td>Make Model Year</td>
+		<td>Plate State, Number & Year</td>
+		<td>Owner </td>
+		<td>Description</td>
+		<td>Edit</td>
+		<td>Delete</td>
+	      </tr>
+	    </thead>
+	    <tbody>
+	      <tr th:each="one : ${verhicles}">
+		<td th:text="${one.id}"></td>
+		<td th:text="${one.carDamageType}"></td>
+		<td th:text="${one.makeInfo}"></td>
+		<td th:text="${one.plateInfo}"></td>
+		<td th:text="${one.owner}"></td>
+		<td th:text="${one.description}"></td>
+		<td><a th:href="@{/vehicle/edit/{id}(id=${one.id})}">Edit</a></td>
+		<td><a th:href="@{/vehicle/delete/{id}(id=${one.id})}">Delete</a></td>
+	      </tr>
+	    </tbody>
+	  </table>
+	</div>      
+      </div>
+    </div>
+  </body>
+</htmL>
 		

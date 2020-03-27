@@ -34,73 +34,82 @@ import in.bloomington.incident.model.IncidentType;
 @Controller
 public class IncidentInitialController extends TopController{
 
-		@Autowired
-		IncidentInitialService initialService;		
-		@Autowired
-		IncidentService incidentService;		
-		@Autowired
-		IncidentTypeService incidentTypeService;
+    @Autowired
+    IncidentInitialService initialService;		
+    @Autowired
+    IncidentService incidentService;		
+    @Autowired
+    IncidentTypeService incidentTypeService;
 		
-		@GetMapping("/start")		
-		public String startIncident() {
-				return "initialStart";
-		}
-		@RequestMapping("/initialStart")
-		public String incidentStartNext(@RequestParam(required = true) String email,
-																		@RequestParam(required = true) String email2,
-																		Model model){ 
-				if(!email.equals(email2)){
-						addError("The two emails do not match");
-						model.addAttribute("errors", errors);
-						return "initialStart";						
-				}
-				IncidentInitial initial = new IncidentInitial();
-				initial.setEmail(email);
-				initial.setReceivedNow();
-				initialService.save(initial);
-				model.addAttribute("initial", initial);
-				List<IncidentType> types = incidentTypeService.getAll();
-				model.addAttribute("types", types);				
-				return "initialSelectType";
-		}
-		@SuppressWarnings("unchecked")
-		@PostMapping("/initialNext/{id}")
-		public String initialNext(@PathVariable("id") int id,
-															IncidentInitial initial, 
-															BindingResult result,
-															Model model,
-															HttpServletRequest req
-															) {
-				if (result.hasErrors()) {
-						initial.setId(id);
-						return "initialSelectType";
-				}
-				addMessage("Updated Successfully");
-				initial.setId(id);
-				initialService.save(initial);
-				Incident incident = new Incident();
-				incident.setEmail(initial.getEmail());
-				incident.setReceived(initial.getReceived());
-				incident.setIncidentType(initial.getIncidentType());
-				incidentService.save(incident);
-				//
-				// this is the only place we are adding
-				// incident ID in the session
-				//
-				HttpSession session = req.getSession(true);
-				List<String> ids = null;
-				try{
-						 ids = (List<String>) session.getAttribute("incident_ids");
-				}catch(Exception ex){
-						System.err.println(ex);
-				}
-				if(ids == null){
-						ids = new ArrayList<>();
-				}
-				ids.add(""+incident.getId());
-				session.setAttribute("incident_ids", ids);
-				return "redirect:/incidentStart/"+incident.getId();
-		}
+    @GetMapping("/start")		
+    public String startIncident(Model model,
+				HttpSession session) {
+	getMessagesAndErrorsFromSession(session, model);
+	return "initialStart";
+    }
+    @RequestMapping("/initialStart")
+    public String incidentStartNext(@RequestParam(required = true) String email,
+				    @RequestParam(required = true) String email2,
+				    Model model,
+				    HttpSession session){
+	if(email == null || email.isEmpty() ||
+	   email2 == null || email2.isEmpty()){
+	    addError("Both emails are required");
+	    model.addAttribute("errors", errors);
+	    return "initialStart";
+	}
+	if(!email.equals(email2)){
+	    addError("The two emails do not match");
+	    model.addAttribute("errors", errors);
+	    return "initialStart";						
+	}
+	IncidentInitial initial = new IncidentInitial();
+	initial.setEmail(email);
+	initial.setReceivedNow();
+	initialService.save(initial);
+	model.addAttribute("initial", initial);
+	List<IncidentType> types = incidentTypeService.getAll();
+	model.addAttribute("types", types);				
+	return "initialSelectType";
+    }
+    @SuppressWarnings("unchecked")
+    @PostMapping("/initialNext/{id}")
+    public String initialNext(@PathVariable("id") int id,
+			      IncidentInitial initial, 
+			      BindingResult result,
+			      Model model,
+			      HttpServletRequest req
+			      ) {
+	if (result.hasErrors()) {
+	    initial.setId(id);
+	    return "initialSelectType";
+	}
+	addMessage("Updated Successfully");
+	initial.setId(id);
+	initialService.save(initial);
+	Incident incident = new Incident();
+	incident.setEmail(initial.getEmail());
+	incident.setReceived(initial.getReceived());
+	incident.setIncidentType(initial.getIncidentType());
+	incidentService.save(incident);
+	//
+	// this is the only place we are adding
+	// incident ID in the session
+	//
+	HttpSession session = req.getSession(true);
+	List<String> ids = null;
+	try{
+	    ids = (List<String>) session.getAttribute("incident_ids");
+	}catch(Exception ex){
+	    System.err.println(ex);
+	}
+	if(ids == null){
+	    ids = new ArrayList<>();
+	}
+	ids.add(""+incident.getId());
+	session.setAttribute("incident_ids", ids);
+	return "redirect:/incidentStart/"+incident.getId();
+    }
 
 		
 }

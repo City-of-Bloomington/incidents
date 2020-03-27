@@ -75,7 +75,7 @@ public class LoginController extends TopController{
 	helper.populateHosts();
 	if(!helper.checkUser(username, password, ldap_host)){
 	    addMessage("invalid username or password");
-	    addMessagesToSession(session);
+	    addMessagesAndErrorsToSession(session);
 	    return "staff/loginForm";
 	}
 	*/
@@ -84,7 +84,7 @@ public class LoginController extends TopController{
 	System.err.println(" **** user "+user);
 	if(user == null){
 	    addMessage("user not found "+username);
-	    addMessagesToSession(session);
+	    addMessagesAndErrorsToSession(session);
 	    return "staff/loginForm";
 	}
 	session.setAttribute("user", user);

@@ -8,19 +8,19 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head th:replace="general::head('Damage Types')"></head>
   <body>
-		<header th:replace="general::header">
-		</header>
-		<div th:if="${errors}">
-			<div th:insert="general::errors(${errors})"></div>			
-		</div>
-		<div th:if="${messages}">
-			<div th:insert="general::messages(${messages})"></div>			
-		</div>			
+    <header>
+      <div th:replace="general::header-staff"></div>
+    </header>   
+    <div th:if="${errors}">
+      <div th:insert="general::errors(${errors})"></div>			
+    </div>
+    <div th:if="${messages}">
+      <div th:insert="general::messages(${messages})"></div>			
+    </div>			
     <h2>Damage Types</h2>
-		<p><a href="/damageType/new">Add a new damage type</a></p>
-		
-		<div th:switch="${types}">
-			<h2 th:case="null">No types found </h2>
+    <p><a th:href="@{/damageType/new}">Add a new damage type</a></p>
+    <div th:switch="${types}">
+      <h4 th:case="null">No types found </h4>
       <div th:case="*">
         <h2>Types </h2>
         <table>
@@ -34,16 +34,15 @@
           </thead>
           <tbody>
             <tr th:each="type : ${types}">
-							<td th:text="${type.id}"></td>
+	      <td th:text="${type.id}"></td>
               <td th:text="${type.name}"></td>
               <td><a th:href="@{/damageType/edit/{id}(id=${type.id})}">Edit</a></td>
               <td><a th:href="@{/damageType/delete/{id}(id=${type.id})}">Delete</a></td>
             </tr>
           </tbody>
         </table>
-			</div>      
-		</div>
-		<p><a href="/index"> Settings </a></p>
-		</body>
-	</htmL>
+      </div>      
+    </div>
+  </body>
+</htmL>
 		

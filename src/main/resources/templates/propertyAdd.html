@@ -8,104 +8,88 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head th:replace="general::head('Properties')"></head>
   <body>
-		<header th:replace="general::header">
-		</header>		
+    <header th:replace="general::header">
+    </header>		
     <h2>Add Property/Item</h2>
-		<div th:if="${errors}">
-			<div th:insert="general::errors(${errors})"></div>			
-		</div>
-		<div th:if="${messages}">
-			<div th:insert="general::messages(${messages})"></div>			
-		</div>				
-		<p>*Indicate required fields</p>
-		<div th:insert="general::propertyInstructions">
-		</div>
-		<form action="#"
-					th:action="@{/property/save}"
-					th:object="${property}" method="post">
-			<input type="hidden" th:field="${property.incident}" />
-			<input type="hidden" id="old_value_id" th:field="${property.oldValue}" />
-			<input type="hidden" id="balance_id" th:field="${property.balance}" />
-			<input type="hidden" id="max_total_id" th:field="${property.maxTotalValue}" />			
-			<table>
-				<tr>
-					<td>Related incident</td>
-					<td><a th:href="@{/incident/{id}(id=${property.incident.id})}">Back to Incident</a></td>							
-				</tr>		
-				<tr>
-					<td>
-						<label for="brand">Brand</label>
-					</td>
-					<td>
-						<input type="text" th:field="${property.brand}" id="brand" placeholder="Brand" />
-						<span th:if="${#fields.hasErrors('brand')}" th:errors="*{brand}"></span>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<label for="model">Model</label>
-					</td>
-					<td>
-						<input type="text" th:field="${property.model}" id="model" placeholder="Model" />
-						<span th:if="${#fields.hasErrors('model')}" th:errors="*{model}"></span>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<label for="serialNum">Serial Number</label>
-					</td>
-					<td>
-						<input type="text" th:field="${property.serialNum}" id="serialNum" placeholder="Serial Number" />
-						<span th:if="${#fields.hasErrors('serialNum')}" th:errors="*{serialNum}"></span>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<label for="damageType">Broblem Type</label>
-					</td>
-					<td>
-						<select id="damageType_id" th:field="${property.damageType}" >
-							<option th:each="r : ${damageTypes}"
-											th:value="${r.id}"
-											th:text="${r.name}">
-							</option>
-						</select>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<label for="value_id">Value</label>
-					</td>
-					<td>$
-						<input type="text" th:field="${property.value}" id="value_id" placeholder="Value" required="required" />
-						<span th:if="${#fields.hasErrors('value')}" th:errors="*{value}"></span>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<label for="owener">Owner</label>
-					</td>
-					<td>
-						<input type="text" th:field="${property.owner}" id="owner" placeholder="property owner if not yourself" size="30" maxlength="70" />
-						<span th:if="${#fields.hasErrors('owner')}" th:errors="*{owner}"></span>
-					</td>
-				</tr>					
-				<tr>
-					<td>
-						<label for="description">Item Description</label>
-					</td>
-					<td>				
-						<textarea th:field="${property.description}" id="description" placeholder="Description" rows="5" columns="50">
-							<span th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></span>
-							</textarea>
-					</td>
-				</tr>
-				<tr>
-					<td>		
-						<input type="submit" value="Add Property">
-					</td>
-				</tr>
-			</table>
-		</form>
-	</body>
+    <div th:if="${errors}">
+      <div th:insert="general::errors(${errors})"></div>			
+    </div>
+    <div th:if="${messages}">
+      <div th:insert="general::messages(${messages})"></div>			
+    </div>				
+    <p>*Indicate required fields</p>
+    <div th:insert="general::propertyInstructions">
+    </div>
+    <form action="#"
+	  th:action="@{/property/save}"
+	  th:object="${property}" method="post">
+      <input type="hidden" th:field="${property.incident}" />
+      <input type="hidden" id="old_value_id" th:field="${property.oldValue}" />
+      <input type="hidden" id="balance_id" th:field="${property.balance}" />
+      <input type="hidden" id="max_total_id" th:field="${property.maxTotalValue}" />			
+      <dl>
+	<dt>Related incident</dt>
+	<dd><a th:href="@{/incident/{id}(id=${property.incident.id})}">Back to Incident</a></dd>							
+	<td>
+	  <label for="brand">Brand</label>
+	</td>
+	<dd>
+	  <input type="text" th:field="${property.brand}" id="brand" placeholder="Brand" />
+	  <span th:if="${#fields.hasErrors('brand')}" th:errors="*{brand}"></span>
+	</dd>
+	<dt>
+	  <label for="model">Model</label>
+	</dt>
+	<dd>
+	  <input type="text" th:field="${property.model}" id="model" placeholder="Model" />
+	  <span th:if="${#fields.hasErrors('model')}" th:errors="*{model}"></span>
+	</dd>
+	
+	<dt>
+	  <label for="serialNum">Serial Number</label>
+	</dt>
+	<dd>
+	  <input type="text" th:field="${property.serialNum}" id="serialNum" placeholder="Serial Number" />
+	  <span th:if="${#fields.hasErrors('serialNum')}" th:errors="*{serialNum}"></span>
+	</dd>
+	
+	<dt>
+	  <label for="damageType">Broblem Type</label>
+	</dt>
+	<dd>
+	  <select id="damageType_id" th:field="${property.damageType}" >
+	    <option th:each="r : ${damageTypes}"
+		    th:value="${r.id}"
+		    th:text="${r.name}">
+	    </option>
+	  </select>
+	</dd>
+	<dt>
+	  <label for="value_id">Value</label>
+	</dt>
+	<dd>$
+	  <input type="text" th:field="${property.value}" id="value_id" placeholder="Value" required="required" />
+	  <span th:if="${#fields.hasErrors('value')}" th:errors="*{value}"></span>
+	</dd>
+	<dt>
+	  <label for="owener">Owner</label>
+	</dt>
+	<dd>
+	  <input type="text" th:field="${property.owner}" id="owner" placeholder="property owner if not yourself" size="30" maxlength="70" />
+	  <span th:if="${#fields.hasErrors('owner')}" th:errors="*{owner}"></span>
+	</dd>
+	<dt>
+	  <label for="description">Item Description</label>
+	</dt>
+	<dd>				
+	  <textarea th:field="${property.description}" id="description" placeholder="Description" rows="5" columns="50">
+	    <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></span>
+	  </textarea>
+	</dd>
+	<dt>		
+	  <input type="submit" value="Add Property" />
+	</dt> 
+      </dl>
+    </form>
+  </body>
 </htmL>

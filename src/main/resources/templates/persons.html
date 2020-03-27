@@ -19,7 +19,7 @@
 	<div th:insert="general::messages(${messages})"></div>			
       </div>			
       <div th:switch="${persons}">
-	<h2 th:case="null">No person found </h2>
+	<h4 th:case="null">No person found </h4>
 	<div th:case="*">
 	  <table>
 	    <legend>People related to incident</legend>

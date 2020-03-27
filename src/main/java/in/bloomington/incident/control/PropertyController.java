@@ -49,7 +49,8 @@ public class PropertyController extends TopController{
     private Double maxTotalValue;				
 
     @GetMapping("/property/add/{incident_id}")
-    public String newProperty(@PathVariable("incident_id") int incident_id, Model model) {
+    public String newProperty(@PathVariable("incident_id") int incident_id,
+			      Model model) {
 				
 	Property property = new Property();
 	try{
@@ -80,6 +81,7 @@ public class PropertyController extends TopController{
 	    String error = Helper.extractErrors(result);
 	    addError(error);
 	    logger.error(error);
+	    handleErrorsAndMessages(model);
             return "propertyAdd";
         }
 	if(!property.verify()){
@@ -89,19 +91,20 @@ public class PropertyController extends TopController{
 	    List<DamageType> types = damageTypeService.getAll();
 	    if(types != null)
 		model.addAttribute("damageTypes", types);
-	    model.addAttribute("errors", errors);
+	    handleErrorsAndMessages(model);
 	    return "propertyAdd";						
 	}				
         propertyService.save(property);
 	addMessage("Added Successfully");
-	addMessagesToSession(session);
-	resetAll();
+	addMessagesAndErrorsToSession(session);
 	int incident_id = property.getIncident().getId();
 	return "redirect:/incident/"+incident_id;
     }
 
     @GetMapping("/property/edit/{id}")
-    public String showEditForm(@PathVariable("id") int id, Model model) {
+    public String showEditForm(@PathVariable("id") int id,
+			       Model model,
+			       HttpSession session) {
 	Property property = null;
 	try{
 	    property = propertyService.findById(id);
@@ -113,14 +116,14 @@ public class PropertyController extends TopController{
 	}catch(Exception ex){
 	    addError("Invalid property "+id);
 	    logger.error(" "+ex);
-	    model.addAttribute("properties", propertyService.getAll());
-	    model.addAttribute("errors", errors);
+	    addMessagesAndErrorsToSession(session);
 	    return "redirect:/index";
 	}
 	model.addAttribute("property", property);
 	List<DamageType> types = damageTypeService.getAll();
 	if(types != null)
-	    model.addAttribute("damageTypes", types);					
+	    model.addAttribute("damageTypes", types);
+	handleErrorsAndMessages(model);
 	return "propertyUpdate";
     }
     @PostMapping("/property/update/{id}")
@@ -134,6 +137,7 @@ public class PropertyController extends TopController{
 	    addError(error);
 	    logger.error(error);
 	    property.setId(id);
+	    addMessagesAndErrorsToSession(session);
 	    return "redirect:/property/edit/"+id;
 	}
 	if(!property.verify()){
@@ -141,15 +145,14 @@ public class PropertyController extends TopController{
 	    addError(error);
 	    logger.error(error);
 	    model.addAttribute("properties", propertyService.getAll());
-	    model.addAttribute("errors", errors);						
+	    handleErrorsAndMessages(model);
 	    return "propertyUpdate";						
 	}
 	propertyService.save(property);
 	addMessage("Updated Successfully");
 	Incident incident = property.getIncident();
 	int incident_id = incident.getId();
-	addMessagesToSession(session);
-	resetAll();
+	addMessagesAndErrorsToSession(session);
 	// need redirect to incident
 	return "redirect:/incident/"+incident_id;
     }
@@ -169,7 +172,7 @@ public class PropertyController extends TopController{
 	    addError("Error delete property "+id);
 	    logger.error(" "+ex);
 	}
-	addMessagesToSession(session);
+	addMessagesAndErrorsToSession(session);
 	resetAll();
 	return "redirect:/incident/"+incident.getId();
 
@@ -184,9 +187,7 @@ public class PropertyController extends TopController{
 	    addError("Invalid property "+id);
 	    logger.error(" "+ex);
 	}
-	if(hasErrors()){
-	    model.addAttribute("errors", errors);
-	}				
+	handleErrorsAndMessages(model);
 	return "property";
     }
     @GetMapping("/propertyView/{id}")
@@ -199,9 +200,7 @@ public class PropertyController extends TopController{
 	    addError("Invalid property "+id);
 	    logger.error(" "+ex);
 	}
-	if(hasErrors()){
-	    model.addAttribute("errors", errors);
-	}				
+	handleErrorsAndMessages(model);
 	return "propertyView";
     }	    
 		

@@ -8,8 +8,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head th:replace="general::head('Vehicle')"></head>
   <body>
-    <header th:replace="general::header">
-    </header>		
+    <header>
+      <div th:replace="general::header-staff"></div>
+    </header>
     <h2>Vehicle</h2>
     <div th:if="${errors}">
       <div th:insert="general::errors(${errors})"></div>			

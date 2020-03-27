@@ -26,55 +26,46 @@
       <li>You amy also delete this record if you think it is irrelevant, by clicking to 'Delete' button in the bottom of the page</li>
       <li>If the data are correct, click on 'Back to incident' link below to continue </li>
     </ul>
-    <table>
-      <tr>
-	<td>Related incident</td>
-	<td><a th:href="@{/incident/{id}(id=${property.incident.id})}">Back to Incident</a></td>							
-      </tr>				
-      <tr>
-	<td>
+    <dl>
+	<dt>Related incident</dt>
+	<dd><a th:href="@{/incident/{id}(id=${property.incident.id})}">Back to Incident</a></dt>							
+	<dd>
 	  <label>Brand Info</label>
-	</td>
-	<td>
+	</dt>
+	<dd>
 	  <span th:text="${property.brandInfo}"></span>
-	</td>
-      </tr>
-      <tr>
-	<td>
+	</dd>
+
+	<dt>
 	  <label>Damage Type</label>
-	</td>
-	<td>
+	</dt>
+	<dd>
 	  <span th:text="${property.damageType}"></span>
-	</td>
-      </tr>
-      <tr>
-	<td>
+	</dd>
+
+	<dt>
 	  <label>Value</label>
-	</td>
-	<td>$
+	</dt>
+	<dd>$
 	  <span th:text="${property.value}"></span>
-	</td>
-      </tr>
-      <tr>
-	<td>
+	</dd>
+
+	<dt>
 	  <label for="owener">Owner</label>
-	</td>
-	<td>
+	</dt>
+	<dd>
 	  <span th:text="${property.owner}"></span>
-	</td>
-      </tr>					
-      <tr>
-	<td>
+	</dd>
+
+	<dt>
 	  <label for="description">Description</label>
-	</td>
-	<td>				
+	</dt>
+	<dd>				
 	  <span th:text="${property.description}"></span>
-	</td>
-      </tr>
-      <tr>
-	<td><a th:href="@{/property/edit/{id}(id=${property.id})}">Edit</a></td>
-	<td><a th:href="@{/property/delete/{id}(id=${property.id})}">Delete</a></td>
-      </tr>
-    </table>
+	</dd>
+	<dt><a th:href="@{/property/edit/{id}(id=${property.id})}">Edit</a>
+	<a th:href="@{/property/delete/{id}(id=${property.id})}">Delete</a></dt> 
+
+    </dl>
   </body>
 </htmL>

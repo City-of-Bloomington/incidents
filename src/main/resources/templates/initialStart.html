@@ -8,132 +8,132 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head th:replace="general::head('Incident')" ></head>
   <body>
-		<header th:replace="general::header"></header>
-		<div th:if="${errors}">
-			<div th:insert="general::errors(${errors})"></div>
-		</div>
-		<div th:if="${messages}">
-			<div th:insert="general::messages(${messages})"></div>			
-		</div>		
-		<fieldset>
-			<div>
-				<div>
-					<h2>Welcome to Incident Reporting</h2>
-					<h3> Guidelines for Using the Bloomington Police Department Online Reporting System </h3>
-					<h4>ff this is an emergency or a crime is in progress, call 911</h4>
-					<hr width="100%" />
-					<p>
-						Please read the following guidelines carefully before you create
-						your report.
-					</p>
-					<h3>The following conditions apply to the online reporting of an incident.</h3>
-					<ul>
-						<li>You must be 18 years or older to use this form</li>
-						<li>The incident occurred within Bloomington City limits.</li>
-						<li>There are NO KNOWN suspects, witnesses, suspect's vehicles
-							or evidence that could lead to identification of a suspect.
-						</li>
-						<li>Incident is non-violent.</li>
-						<li>There was NO injury to a person.</li>
-						<li>It is required that you provide an email address to be used to
-							notify you of your report's progress.
-						</li>
-						<li>It is important to know that
-							<strong>
-								filing a false police report is a crime and is
-								punishable by up to 180 days in jail and a fine of up to $1000.
-							</strong>
-						</li>
-					</ul>
-					 
-					<h3>Only use this system if you are reporting one of the following crimes:</h3>
-					<ul>
-						<li><strong>Thefts</strong>, minor thefts with the following guidelines:
-							<ul>
-								<li>Less than $2000.00 in value</li>
-								<li>No illegal entry to a building or dwelling was made during the act.</li>
-								<li>Not the theft of a vehicle</li>
-								<li>Not the theft of a firearm</li>
-								<li>Lost or stolen license plates may not be reported using this system.</li>
-							</ul>
-						</li>
-						<li><strong>Vandalism</strong>
-							<ul>
-								<li>No illegal entry to a building or dwelling was made during the act.</li>
-								<li>Damage value less than $2000.00 </li>
-								<li>Do not report hate crimes or graffiti using this system - please call 339-4477</li>
-							</ul>
-						</li>
-						<li><strong>Lost Property</strong>
-							<ul><li>To report lost pets, call the Animal Shelter at 349-3492</li>
-								<li>Not a lost vehicle</li>
-								<li>Not a lost firearm</li>
-								<li>Lost or stolen license plates may not be reported using this system.</li>
-							</ul>
-						</li>
-					</ul>
-					<p>To report a crime that does not fit the specifications of this system,
-						please call (812) 339-4477 or report it in person at the police station.
-					</p>
-					<p>If the incident did not occur withing city limits, you may contact one of the following nearby Police Departmensts:
-					</p>
-					<ul>
-						<li>indiana University Police Department, 1469 E 17th St, Bloomington, phone # 812-855-4111</li>
-						<li>
-							Monroe County Sheriff's Office, 301 N College Ave, Bloomington, phone # 812-349-2780
-						</li>
-						<li>
-							Indiana State Police, 1500 N Packinghouse Rd, Bloomington, phone # 812-332-4411
-						</li>
-						<li>
-							Ellettsville Police Department, Ellettsville, Phone # 812-876-2272
-						</li>
-						<li>
-							Stinesville Police Department, Stinesville, Phone # 812-876-5515
-						</li>
-					</ul>
-					<p>
-							<form action="#"
-										th:action="@{/initialStart}"
-										onsubmit="return verifyConfirm();"
-										method="post">							
-							<div>
-								<input type="checkbox" id="confirm" name="confirm" value="yes" />
-								<label for="confirm" class="required">
-									Yes I believe that these guidelines apply to reporting my incident:
-								</label>
-							</div>
-							<p>A valid email address is required to confirm your report.
-								If no email is provided, you can not continue submitting this report.
-								In the following fields enter a valid email:
-							</p>
-							
-							<table summary="form fields">
-								<tr>
-									<td>
-										<label for="email" class="required">Email</label>
-									</td>
-									<td>
-										<input id="email" name="email" value="" size="70" />
-									</td>
-								</tr>
-								<tr>
-									<td>
-										<label for="email2" class="required">Reenter Email</label>
-									</td>
-									<td>
-										<input id="email2" name="email2" value="" size="70" />
-									</td>
-								</tr>
-							</table>
-							<button type="submit"> Next </button>
-						</form>
-						</p>
-				</div>
-			</div>
-			<div id="footer">
-
-			</div>
-		</fieldset>
-	</body>
+    <header th:replace="general::header"></header>
+    <div th:if="${errors}">
+      <div th:replace="general::errors(${errors})"></div>
+    </div>
+    <div th:if="${messages}">
+      <div th:replace="general::messages(${messages})"></div>			
+    </div>		
+    <fieldset>
+      <div>
+	<div>
+	  <h2>Welcome to Incident Reporting</h2>
+	  <h3> Guidelines for Using the Bloomington Police Department Online Reporting System </h3>
+	  <h4>If this is an emergency or a crime is in progress, call 911</h4>
+	  <hr width="100%" />
+	  <p>
+	    Please read the following guidelines carefully before you create
+	    your report.
+	  </p>
+	  <h3>The following conditions apply to the online reporting of an incident.</h3>
+	  <ul>
+	    <li>You must be 18 years or older to use this form</li>
+	    <li>The incident occurred within Bloomington City limits.</li>
+	    <li>There are NO KNOWN suspects, witnesses, suspect's vehicles
+	      or evidence that could lead to identification of a suspect.
+	    </li>
+	    <li>Incident is non-violent.</li>
+	    <li>There was NO injury to a person.</li>
+	    <li>It is required that you provide an email address to be used to
+	      notify you of your report's progress.
+	    </li>
+	    <li>It is important to know that
+	      <strong>
+		filing a false police report is a crime and is
+		punishable by up to 180 days in jail and a fine of up to $1000.
+	      </strong>
+	    </li>
+	  </ul>
+	  
+	  <h3>Only use this system if you are reporting one of the following crimes:</h3>
+	  <ul>
+	    <li><strong>Thefts</strong>, minor thefts with the following guidelines:
+	      <ul>
+		<li>Less than $2000.00 in value</li>
+		<li>No illegal entry to a building or dwelling was made during the act.</li>
+		<li>Not the theft of a vehicle</li>
+		<li>Not the theft of a firearm</li>
+		<li>Lost or stolen license plates may not be reported using this system.</li>
+	      </ul>
+	    </li>
+	    <li><strong>Vandalism</strong>
+	      <ul>
+		<li>No illegal entry to a building or dwelling was made during the act.</li>
+		<li>Damage value less than $2000.00 </li>
+		<li>Do not report hate crimes or graffiti using this system - please call 339-4477</li>
+	      </ul>
+	    </li>
+	    <li><strong>Lost Property</strong>
+	      <ul><li>To report lost pets, call the Animal Shelter at 349-3492</li>
+		<li>Not a lost vehicle</li>
+		<li>Not a lost firearm</li>
+		<li>Lost or stolen license plates may not be reported using this system.</li>
+	      </ul>
+	    </li>
+	  </ul>
+	  <p>To report a crime that does not fit the specifications of this system,
+	    please call (812) 339-4477 or report it in person at the police station.
+	  </p>
+	  <p>If the incident did not occur withing city limits, you may contact one of the following nearby Police Departmensts:
+	  </p>
+	  <ul>
+	    <li>indiana University Police Department, 1469 E 17th St, Bloomington, phone # 812-855-4111</li>
+	    <li>
+	      Monroe County Sheriff's Office, 301 N College Ave, Bloomington, phone # 812-349-2780
+	    </li>
+	    <li>
+	      Indiana State Police, 1500 N Packinghouse Rd, Bloomington, phone # 812-332-4411
+	    </li>
+	    <li>
+	      Ellettsville Police Department, Ellettsville, Phone # 812-876-2272
+	    </li>
+	    <li>
+	      Stinesville Police Department, Stinesville, Phone # 812-876-5515
+	    </li>
+	  </ul>
+	  <p>
+	    <form action="#"
+		  th:action="@{/initialStart}"
+		  onsubmit="return verifyConfirm();"
+		  method="post">							
+	      <div>
+		<input type="checkbox" id="confirm" name="confirm" value="yes" />
+		<label for="confirm" class="required">
+		  Yes I believe that these guidelines apply to reporting my incident:
+		</label>
+	      </div>
+	      <p>A valid email address is required to confirm your report.
+		If no email is provided, you can not continue submitting this report.
+		In the following fields enter a valid email:
+	      </p>
+	      
+	      <table summary="form fields">
+		<tr>
+		  <td>
+		    <label for="email" class="required">Email</label>
+		  </td>
+		  <td>
+		    <input id="email" name="email" value="" size="70" />
+		  </td>
+		</tr>
+		<tr>
+		  <td>
+		    <label for="email2" class="required">Reenter Email</label>
+		  </td>
+		  <td>
+		    <input id="email2" name="email2" value="" size="70" />
+		  </td>
+		</tr>
+	      </table>
+	      <button type="submit"> Next </button>
+	    </form>
+	  </p>
+	</div>
+      </div>
+      <div id="footer">
+	
+      </div>
+    </fieldset>
+  </body>
 </html>

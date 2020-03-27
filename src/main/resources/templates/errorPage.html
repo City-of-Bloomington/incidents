@@ -8,18 +8,17 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head th:replace="general::head('Error')"></head>
   <body>
-		<header th:replace="general::header">
-		</header>
-    <h2>Incident Reproting Error </h2>		
+    <header th:replace="general::header">
+    </header>
+    <h2>Incident Error </h2>		
     <h1><span th:text="${errorMsg}"></span></h1>
-		<div th:if="${errors}">
-			<div th:switch="${errors}">
-				<ul th:each="error : ${errors}">
-					<li th:text="${error}"></li>
-				</ul>
-			</div>
-		</div>
-		<p><a href="/index"> Settings </a></p>
-		</body>
-	</htmL>
+    <div th:if="${errors}">
+      <div th:switch="${errors}">
+	<ul th:each="error : ${errors}">
+	  <li th:text="${error}"></li>
+	</ul>
+      </div>
+    </div>
+  </body>
+</htmL>
 		

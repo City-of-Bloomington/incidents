@@ -8,190 +8,190 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head th:replace="general::head('Incident')"></head>
   <body>
-		<header th:replace="general::header">
-		</header>	
-		<h2>Update Incident</h2>
-		<div th:if="${errors}">
-			<div th:insert="general::errors(${errors})"></div>			
-		</div>
-		<div th:if="${messages}">
-			<div th:insert="general::messages(${messages})"></div>			
-		</div>						
-		<p th:insert="general::incidentInstructions">
-		</p>
-		<p> *indicated required fields</p>
-		<p>Incident Type <span th:text="${incident.incidentType}"> </span> </p>
-		<form action="#"
-					th:action="@{/incident/update/{id}(id=${incident.id})}"
-					th:object="${incident}"
-					method="post">
-			<input type="hidden" th:field="${incident.email}" />
-			<input type="hidden" th:field="${incident.receivedStr}" />
-			<input type="hidden" th:field="${incident.incidentType} "/>
-			<fieldset>
-				<legend>Incident Date and Time: </legend>
-				<table summary="layout for form fields" width="90%">
-					<tr>
-						<td colspan="2">
-							(For EXAMPLE: I went to bed at 11:00 pm Saturday night Aug 8 <br />
-							and when I woke up Sunday at 6:00 am mycar has a smashed window.<br />
-							You report 8/8/2015 21:00 PM - 8/9/2015 06:00 AM.)						
-						</td>
-					</tr>
-					<tr>
-						<td width="23%">
-							<label for="start_date" class="required">Incident Occurred, Date:</label>
-						</td>
-						<td>
-							<input type="date" th:field="${incident.dateStr}" id="start_date" size="20" /> Time:
-							<input type="time" th:field="${incident.timeStr}" id="start_time" size="20" />							
-						</td>
-					</tr>
-					<tr>
-						<td><label for="end_date">End Incident, Date:</label>
-						</td>
-						<td>
-							<input type="date" th:field="${incident.endDateStr}" id="end_date" value="" size="20" /> Time:
-							<input type="time" th:field="${incident.endTimeStr}" id="end_time" value="" size="20" />							
-						</td>
-					</tr>
-					<tr>
-						<td colspan="2">
-							If unsure of the exact date and time, describe below when this took place.
-						</td>
-					</tr>
-					<tr>
-						<td colspan='2'>
-							<textarea th:field="${incident.dateDescription}" id="incident-dateDescription" rows="3" cols="60"></textarea>
-						</td>
-					</tr>
-				</table>
-			</fieldset>
-			<fieldset><legend>Location of Incident</legend>
-				<img src="/images/citylimits.jpg" alt="city limits" width="900"/>
-				<table summary="layout for form fields" width="90%">
-					<tr>
-						<td colspan="2">
-							<ul>
-								<li>
-									If unsure of location, please report your home address or closest intersection of the incident and explain in the Incident Details.
-								</li>
-								<li>
-									If you are in the blue area, you can make a report using this system.
-								</li>
-								<li>
-									If you are within the green area, you can not file a report using this system, contact Indiana University Police Department.
-								</li>
-								<li>
-									If you are within the white area, contact Monroe County Sheriff's Office.
-								</li>
-							</ul>
-						</td>
-					</tr>
-					<tr>
-						<td width="28%">
-							<label for="addr_id" class="required">Address where the incident occured</label>
-						</td>
-						<td><input type="text" th:field="${incident.address}" onchange="replaceMarker()" id="addr_id" value="" size="60" />
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<label for="city" class="required">City</label>
-						</td>
-						<td>
-							<select th:field="${incident.city}" id="city">
-								<option value="">City</option>
-								<option th:each="r : ${allCities}"
-											th:value="${r}"
-											th:text="${r}">
-								</option>											
-							</select>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<label for="state" class="required">State</label>
-						</td>
-						<td>
-							<select th:field="${incident.state}" id="state">
-								<option value="">State</option>
-								<option th:each="r : ${allStates}"
-											th:value="${r}"
-											th:text="${r}">
-								</option>											
-							</select>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<label for="incident-zip" class="required">Zip Code</label>
-						</td>
-						<td>
-							<select th:field="${incident.zip}" id="zip">
-								<option value="">Zip</option>
-								<option th:each="r : ${allZipCodes}"
-											th:value="${r}"
-											th:text="${r}">
-								</option>								
-							</select>
-						</td>
-					</tr>
-				</table>
-			</fieldset>
-			<fieldset>
-				<legend>Incident Details</legend>
-				<table width="90%" summary="Incident details layout">
-					<tr>
-						<td width="28%"><label>Incident Type:</label></td>
-						<td><span th:text="${incident.incidentType}" ></span></td>
-					</tr>
-					<tr>
-						<td>
-							<label for="entry_type">Identify how entry was gained to commit the theft.</label>
-							</td>
-						<td>
-							<select th:field="${incident.entryType}" id="entry_type">
-								<option value="">Does not apply</option>
-								<option th:each="r : ${entryTypes}"
-												th:value="${r}"
-												th:text="${r}">
-									</option>	
-							</select>					
-						</td>
-					</tr>
-					<tr>
-						<td colspan="2">
-							<label for="other_entry">Other entry gained details</label>
-						</td>
-					</tr>
-					<tr>
-						<td colspan="2">
-							<textarea th:field="${incident.otherEntry}" id="other_entry" rows="3" cols="60"></textarea>
-						</td>
-					</tr>
-					<tr>
-						<td colspan="2">
-							<label for="incident-details" class="required">Incident Details</label>
-						</td>
-					</tr>
-					<tr>
-						<td colspan="2">
-							<textarea th:field="${incident.details}" id="incident-details" rows="3" cols="60"></textarea>
-						</td>
-					</tr>
-					<tr>
-						<td colspan="2">Optional, if you have incident images available you will be able to upload them.</td>
-					</tr>
-					<tr>
-						<td colspan="2"><input type="checkbox" th:field="${incident.haveMedia}" th:checked="${incident.haveMedia}?'checked'" value="y"  />Yes, I have incident images I would like to upload.</td>
-					</tr>
-				</table>
-			</fieldset>				
-			<dl>
-				<dt>If you made any changes click on <input type="submit" value="Save Changes" />
-				</dt>
-			</dl>
-		</form>
-	</body>
+    <header th:replace="general::header">
+    </header>	
+    <h2>Update Incident</h2>
+    <div th:if="${errors}">
+      <div th:insert="general::errors(${errors})"></div>			
+    </div>
+    <div th:if="${messages}">
+      <div th:insert="general::messages(${messages})"></div>			
+    </div>						
+    <p th:insert="general::incidentInstructions">
+    </p>
+    <p> *indicated required fields</p>
+    <p>Incident Type <span th:text="${incident.incidentType}"> </span> </p>
+    <form action="#"
+	  th:action="@{/incident/update/{id}(id=${incident.id})}"
+	  th:object="${incident}"
+	  method="post">
+      <input type="hidden" th:field="${incident.email}" />
+      <input type="hidden" th:field="${incident.receivedStr}" />
+      <input type="hidden" th:field="${incident.incidentType} "/>
+      <fieldset>
+	<legend>Incident Date and Time: </legend>
+	<table summary="layout for form fields" width="90%">
+	  <tr>
+	    <td colspan="2">
+	      (For EXAMPLE: I went to bed at 11:00 pm Saturday night Aug 8 <br />
+	      and when I woke up Sunday at 6:00 am mycar has a smashed window.<br />
+	      You report 8/8/2015 21:00 PM - 8/9/2015 06:00 AM.)						
+	    </td>
+	  </tr>
+	  <tr>
+	    <td width="23%">
+	      <label for="start_date" class="required">Incident Occurred, Date:</label>
+	    </td>
+	    <td>
+	      <input type="date" th:field="${incident.dateStr}" id="start_date" size="20" /> Time:
+	      <input type="time" th:field="${incident.timeStr}" id="start_time" size="20" />							
+	    </td>
+	  </tr>
+	  <tr>
+	    <td><label for="end_date">End Incident, Date:</label>
+	    </td>
+	    <td>
+	      <input type="date" th:field="${incident.endDateStr}" id="end_date" value="" size="20" /> Time:
+	      <input type="time" th:field="${incident.endTimeStr}" id="end_time" value="" size="20" />							
+	    </td>
+	  </tr>
+	  <tr>
+	    <td colspan="2">
+	      If unsure of the exact date and time, describe below when this took place.
+	    </td>
+	  </tr>
+	  <tr>
+	    <td colspan='2'>
+	      <textarea th:field="${incident.dateDescription}" id="incident-dateDescription" rows="3" cols="60"></textarea>
+	    </td>
+	  </tr>
+	</table>
+      </fieldset>
+      <fieldset><legend>Location of Incident</legend>
+	<img src="/images/citylimits.jpg" alt="city limits" width="900"/>
+	<table summary="layout for form fields" width="90%">
+	  <tr>
+	    <td colspan="2">
+	      <ul>
+		<li>
+		  If unsure of location, please report your home address or closest intersection of the incident and explain in the Incident Details.
+		</li>
+		<li>
+		  If you are in the blue area, you can make a report using this system.
+		</li>
+		<li>
+		  If you are within the green area, you can not file a report using this system, contact Indiana University Police Department.
+		</li>
+		<li>
+		  If you are within the white area, contact Monroe County Sheriff's Office.
+		</li>
+	      </ul>
+	    </td>
+	  </tr>
+	  <tr>
+	    <td width="28%">
+	      <label for="addr_id" class="required">Address where the incident occured</label>
+	    </td>
+	    <td><input type="text" th:field="${incident.address}" onchange="replaceMarker()" id="addr_id" value="" size="60" />
+	    </td>
+	  </tr>
+	  <tr>
+	    <td>
+	      <label for="city" class="required">City</label>
+	    </td>
+	    <td>
+	      <select th:field="${incident.city}" id="city">
+		<option value="">City</option>
+		<option th:each="r : ${allCities}"
+			th:value="${r}"
+			th:text="${r}">
+		</option>											
+	      </select>
+	    </td>
+	  </tr>
+	  <tr>
+	    <td>
+	      <label for="state" class="required">State</label>
+	    </td>
+	    <td>
+	      <select th:field="${incident.state}" id="state">
+		<option value="">State</option>
+		<option th:each="r : ${allStates}"
+			th:value="${r}"
+			th:text="${r}">
+		</option>											
+	      </select>
+	    </td>
+	  </tr>
+	  <tr>
+	    <td>
+	      <label for="incident-zip" class="required">Zip Code</label>
+	    </td>
+	    <td>
+	      <select th:field="${incident.zip}" id="zip">
+		<option value="">Zip</option>
+		<option th:each="r : ${allZipCodes}"
+			th:value="${r}"
+			th:text="${r}">
+		</option>								
+	      </select>
+	    </td>
+	  </tr>
+	</table>
+      </fieldset>
+      <fieldset>
+	<legend>Incident Details</legend>
+	<table width="90%" summary="Incident details layout">
+	  <tr>
+	    <td width="28%"><label>Incident Type:</label></td>
+	    <td><span th:text="${incident.incidentType}" ></span></td>
+	  </tr>
+	  <tr>
+	    <td>
+	      <label for="entry_type">Identify how entry was gained to commit the theft.</label>
+	    </td>
+	    <td>
+	      <select th:field="${incident.entryType}" id="entry_type">
+		<option value="">Does not apply</option>
+		<option th:each="r : ${entryTypes}"
+			th:value="${r}"
+			th:text="${r}">
+		</option>	
+	      </select>					
+	    </td>
+	  </tr>
+	  <tr>
+	    <td colspan="2">
+	      <label for="other_entry">Other entry gained details</label>
+	    </td>
+	  </tr>
+	  <tr>
+	    <td colspan="2">
+	      <textarea th:field="${incident.otherEntry}" id="other_entry" rows="3" cols="60"></textarea>
+	    </td>
+	  </tr>
+	  <tr>
+	    <td colspan="2">
+	      <label for="incident-details" class="required">Incident Details</label>
+	    </td>
+	  </tr>
+	  <tr>
+	    <td colspan="2">
+	      <textarea th:field="${incident.details}" id="incident-details" rows="3" cols="60"></textarea>
+	    </td>
+	  </tr>
+	  <tr>
+	    <td colspan="2">Optional, if you have incident images available you will be able to upload them.</td>
+	  </tr>
+	  <tr>
+	    <td colspan="2"><input type="checkbox" th:field="${incident.haveMedia}" th:checked="${incident.haveMedia}?'checked'" value="y"  />Yes, I have incident images I would like to upload.</td>
+	  </tr>
+	</table>
+      </fieldset>				
+      <dl>
+	<dt>If you made any changes click on <input type="submit" value="Save Changes" />
+	</dt>
+      </dl>
+    </form>
+  </body>
 </html>

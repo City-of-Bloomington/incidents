@@ -10,14 +10,13 @@
   <body>
     <header th:replace="general::header">
     </header>		
-    <h2>Successful Submission</h2>
     <div th:if="${errors}">
       <div th:insert="general::errors(${errors})"></div>			
     </div>
     <div th:if="${messages}">
       <div th:insert="general::messages(${messages})"></div>			
     </div>
-    <h2> Successful Submission </h2>    
+    <h4>Successful Submission</h4>
     <fieldset>
       <legend></legend>
       <p>

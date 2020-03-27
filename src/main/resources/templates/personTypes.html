@@ -8,19 +8,19 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head th:replace="general::head('Person Type')"></head>
   <body>
-		<header th:replace="general::header">
-		</header>		
+    <header>
+      <div th:replace="general::header-staff"></div>
+    </header>  
     <h2>Person Types</h2>
-		<div th:if="${errors}">
-			<div th:insert="general::errors(${errors})"></div>			
-		</div>
-		<div th:if="${messages}">
-			<div th:insert="general::messages(${messages})"></div>			
-		</div>						
-		<p><a href="/personType/new">Add New Type</a></p>
-		
-		<div th:switch="${types}">
-			<h2 th:case="null">No types found </h2>
+    <div th:if="${errors}">
+      <div th:insert="general::errors(${errors})"></div>			
+    </div>
+    <div th:if="${messages}">
+      <div th:insert="general::messages(${messages})"></div>			
+    </div>						
+    <p><a href="/personType/new">Add New Type</a></p>
+    <div th:switch="${types}">
+      <h4 th:case="null">No types found </h4>
       <div th:case="*">
         <h2>Types </h2>
         <table>
@@ -34,16 +34,15 @@
           </thead>
           <tbody>
             <tr th:each="type : ${types}">
-							<td th:text="${type.id}"></td>
+	      <td th:text="${type.id}"></td>
               <td th:text="${type.name}"></td>
               <td><a th:href="@{/personType/edit/{id}(id=${type.id})}">Edit</a></td>
               <td><a th:href="@{/personType/delete/{id}(id=${type.id})}">Delete</a></td>
             </tr>
           </tbody>
         </table>
-			</div>      
-		</div>
-		<p><a href="/index"> Settings </a></p>
-		</body>
-	</htmL>
+      </div>      
+    </div>
+  </body>
+</htmL>
 		

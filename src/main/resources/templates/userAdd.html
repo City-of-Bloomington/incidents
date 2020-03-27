@@ -8,66 +8,67 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head th:replace="general::head('User')"></head>
   <body>
-		<header th:replace="general::header">
-		</header>		
+    <header>
+      <div th:replace="general::header-staff"></div>
+    </header>
     <h2>New User</h2>
-		<div th:if="${errors}">
-			<div th:insert="general::errors(${errors})"></div>			
-		</div>
-		<div th:if="${messages}">
-			<div th:insert="general::messages(${messages})"></div>			
-		</div>			
-		<form action="#"
-					th:action="@{/user/add}"
-					th:object="${user}" method="post">
-			<table>
-				<tr>
-					<td>
-						<label for="username">Username</label>
-					</td>
-					<td>
-						<input type="text" th:field="${user.username}" id="username" placeholder="Username">
-						<span th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></span>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<label for="firstname">First Name</label>
-					</td>
-					<td>				
-						<input type="text" th:field="${user.firstname}" id="firstname" placeholder="First Name">
-						<span th:if="${#fields.hasErrors('firstname')}" th:errors="*{firstname}"></span>
-			</td>
-				</tr>
-				<tr>
-					<td>		
-						<label for="lastname">Last Name</label>
-					</td>
-					<td>
-						<input type="text" th:field="${user.lastname}" id="lastname" placeholder="Last Name">
-						<span th:if="${#fields.hasErrors('lastname')}" th:errors="*{lastname}"></span>
-					</td>
-				</tr>
-				<tr>
-					<td>		
-						<label for="role_id">User Roles</label>
-					</td>
-					<td>
-						<select id="role_id" multiple th:field="*{{roles}}" >
-            <option th:each="r : ${roles}"
-                    th:value="${r.id}"
-                    th:text="${r.name}">
-            </option>
-						</select>
-					</td>
-				</tr>							
-				<tr>
-					<td></td>
-					<td>		
-						<input type="submit" value="Save">
-					</td>
-				</tr>
-			</table>
-		</form>
-	</body>
+    <div th:if="${errors}">
+      <div th:insert="general::errors(${errors})"></div>			
+    </div>
+    <div th:if="${messages}">
+      <div th:insert="general::messages(${messages})"></div>			
+    </div>			
+    <form action="#"
+	  th:action="@{/user/add}"
+	  th:object="${user}" method="post">
+      <table>
+	<tr>
+	  <td>
+	    <label for="username">Username</label>
+	  </td>
+	  <td>
+	    <input type="text" th:field="${user.username}" id="username" placeholder="Username" required="required" />
+	      <span th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></span>
+	    </td>
+	  </tr>
+	<tr>
+	  <td>
+	    <label for="firstname">First Name</label>
+	  </td>
+	  <td>				
+	    <input type="text" th:field="${user.firstname}" id="firstname" placeholder="First Name" required="required" />
+	    <span th:if="${#fields.hasErrors('firstname')}" th:errors="*{firstname}"></span>
+	  </td>
+	</tr>
+	<tr>
+	  <td>		
+	    <label for="lastname">Last Name</label>
+	  </td>
+	  <td>
+	    <input type="text" th:field="${user.lastname}" id="lastname" placeholder="Last Name" required="required" />
+	      <span th:if="${#fields.hasErrors('lastname')}" th:errors="*{lastname}"></span>
+	  </td>
+	</tr>
+	<tr>
+	  <td>		
+	    <label for="role_id">User Roles</label>
+	  </td>
+	  <td>
+	    <select id="role_id" multiple th:field="*{{roles}}" >
+              <option th:each="r : ${roles}"
+                      th:value="${r.id}"
+                      th:text="${r.name}">
+              </option>
+	    </select>
+	  </td>
+	</tr>							
+	<tr>
+	  <td></td>
+	  <td>		
+	    <input type="submit" value="Save" />
+	  </td>
+	</tr>
+      </table>
+    </form>
+  </body>
 </htmL>

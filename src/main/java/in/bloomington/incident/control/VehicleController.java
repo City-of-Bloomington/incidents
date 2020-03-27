@@ -71,8 +71,7 @@ public class VehicleController extends TopController{
         }
         vehicleService.save(vehicle);
 	addMessage("Added Successfully");
-	addMessagesToSession(session);
-	resetAll();				
+	addMessagesAndErrorsToSession(session);
 	int incident_id = vehicle.getIncident().getId();
 	return "redirect:/incident/"+incident_id;
     }
@@ -111,8 +110,7 @@ public class VehicleController extends TopController{
 	vehicleService.save(vehicle);
 	Incident incident = vehicle.getIncident();
 	int incident_id = incident.getId();
-	addMessagesToSession(session);
-	resetAll();
+	addMessagesAndErrorsToSession(session);
 	return "redirect:/incident/"+incident_id;
     }
 		
@@ -128,8 +126,7 @@ public class VehicleController extends TopController{
 	    incident = vehicle.getIncident();
 	    vehicleService.delete(id);
 	    addMessage("Deleted Succefully");
-	    addMessagesToSession(session);
-	    resetAll();
+	    addMessagesAndErrorsToSession(session);
 	}catch(Exception ex){
 	    addError("Error delete vehicle "+id);						
 	    logger.error(" "+ex);

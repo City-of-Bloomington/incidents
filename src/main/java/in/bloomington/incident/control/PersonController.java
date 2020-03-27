@@ -76,11 +76,12 @@ public class PersonController extends TopController{
 	    addError("Invalid incident Id: "+incident_id);
 	    logger.error(""+ex);
 	    model.addAttribute("errors", errors);
+	    addMessagesAndErrorsToSession(session);
 	    return "redirect:/start";
 	}
 	if(incident == null || !incident.canBeChanged()){
 	    addMessage("No more changes can be made");
-	    addMessagesToSession(session);
+	    addMessagesAndErrorsToSession(session);
 	    return "redirect:/incident/"+incident_id;
 	}
 	Person person = new Person();				
@@ -113,12 +114,13 @@ public class PersonController extends TopController{
 	    model.addAttribute("personTitles", personTitles);
 	    model.addAttribute("personTypes", personTypes);
 	    model.addAttribute("errors", errors);
+	    handleErrorsAndMessages(model);
 	    return "personAdd";
         }
 	Incident incident = person.getIncident();
 	if(incident == null || !incident.canBeChanged()){
 	    addMessage("No more changes can be made");
-	    addMessagesToSession(session);
+	    addMessagesAndErrorsToSession(session);
 	    return "redirect:/";
 	}	
 	if(!person.verify()){
@@ -130,12 +132,12 @@ public class PersonController extends TopController{
 	    model.addAttribute("phoneTypes", phoneTypes);
 	    model.addAttribute("personTitles", personTitles);
 	    model.addAttribute("personTypes", personTypes);		
-	    model.addAttribute("errors", errors);
+	    handleErrorsAndMessages(model);
 	    return "personAdd";
 	}
         personService.save(person);
 	addMessage("Saved Succefully");
-	addMessagesToSession(session);
+	addMessagesAndErrorsToSession(session);
 	return "redirect:/incident/"+incident.getId(); 
     }
     
@@ -153,7 +155,7 @@ public class PersonController extends TopController{
         model.addAttribute("person", person);				
 	return "person";
     }
-    //login staff
+    //staff
     @GetMapping("/personView/{id}")
     public String viewPerson(@PathVariable("id") int id,
 			     Model model,
@@ -169,7 +171,7 @@ public class PersonController extends TopController{
 	    addError("Invalid person Id "+id);
 	    logger.error(" "+ex);
 	    model.addAttribute("errors", errors);
-	    return "index"; // need fix
+	    return "staff/staff_intro"; 
 	}
         model.addAttribute("person", person);				
 	return "personView";
@@ -185,14 +187,14 @@ public class PersonController extends TopController{
 	    
 	}catch(Exception ex){
 	    addError("Invalid person Id "+id);
-	    model.addAttribute("errors", errors);
 	    logger.error(" "+ex);
-	    return "index"; // need fix
+	    addMessagesAndErrorsToSession(session);	    
+	    return "redirect:/"; 
 	}
 	Incident incident = person.getIncident();
 	if(incident == null || !incident.canBeChanged()){
 	    addMessage("no more changes can be made");
-	    addMessagesToSession(session);
+	    addMessagesAndErrorsToSession(session);
 	    return "redirect:/";	    
 	}
 	List<PersonType> personTypes = personTypeService.getAll();
@@ -202,9 +204,7 @@ public class PersonController extends TopController{
 	model.addAttribute("phoneTypes", phoneTypes);
 	model.addAttribute("personTitles", personTitles);
 	model.addAttribute("personTypes", personTypes);
-	if(hasErrors()){
-	    model.addAttribute("errors", errors);
-	}
+	handleErrorsAndMessages(model);
 	return "personUpdate";
     }
     @PostMapping("/person/update/{id}")
@@ -225,7 +225,7 @@ public class PersonController extends TopController{
 	Incident incident = person.getIncident();
 	if(incident == null || !incident.canBeChanged()){
 	    addMessage("no more changes can be made");
-	    addMessagesToSession(session);
+	    addMessagesAndErrorsToSession(session);
 	    return "redirect:/";	    
 	}	
 	if(!person.verify()){
@@ -237,12 +237,12 @@ public class PersonController extends TopController{
 	    model.addAttribute("phoneTypes", phoneTypes);
 	    model.addAttribute("personTitles", personTitles);
 	    model.addAttribute("personTypes", personTypes);		
-	    model.addAttribute("errors", errors);
+	    handleErrorsAndMessages(model);
 	    return "personUpdate";						
 	}
 	personService.update(person);
 	addMessage("Updated Successfully");				
-	addMessagesToSession(session);
+	addMessagesAndErrorsToSession(session);
 	return "redirect:/incident/"+incident.getId();
     }
     
@@ -254,21 +254,22 @@ public class PersonController extends TopController{
 	
 	Person person = null;
 	Incident incident = null;
-	incident = person.getIncident();
-	if(incident == null || !incident.canBeChanged()){
-	    addMessage("no more changes can be made");
-	    addMessagesToSession(session);
-	    return "redirect:/";	    
-	}		
 	try{
 	    person = personService.findById(id);
-
+	    if(person != null)
+		incident = person.getIncident();
+	    if(incident == null || !incident.canBeChanged()){
+		addMessage("no more changes can be made");
+		addMessagesAndErrorsToSession(session);
+		return "redirect:/";	    
+	    }		
 	    personService.delete(id);
 	    addMessage("Deleted Succefully");
 	}catch(Exception ex){
 	    logger.error("Error delete person "+id+" "+ex);
 	    addError("Invalid person ID "+id);
 	}
+	addMessagesAndErrorsToSession(session);
 	return "redirect:/incident/"+incident.getId();
 	
     }

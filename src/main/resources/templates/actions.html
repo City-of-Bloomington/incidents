@@ -9,8 +9,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head th:replace="general::head('Actions')"></head>
   <body>
-    <header th:replace="general::header">
-    </header>
+    <header>
+      <div th:replace="general::header-staff"></div>
+    </header>        
     <div th:if="${errors}">
       <div th:insert="general::errors(${errors})"></div>			
     </div>
@@ -47,9 +48,7 @@
           </tbody>
         </table>
       </div>      
-      
     </div>
-    <p><a href="/index"> Settings </a></p>
   </body>
 </htmL>
 		

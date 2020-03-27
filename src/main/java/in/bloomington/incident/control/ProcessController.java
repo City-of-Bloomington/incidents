@@ -90,12 +90,7 @@ public class ProcessController extends TopController{
 	    logger.error("Error no incident "+id+" not found "+ex);
 	    addError("Invalid incident ID "+id);
 	}
-	if(hasMessages()){
-	    model.addAttribute("messages", messages);
-	}
-	else if(hasErrors()){
-	    model.addAttribute("errors", errors);
-	}
+	handleErrorsAndMessages(model);
 	return "staff/make_decision";
 
     }
@@ -112,7 +107,7 @@ public class ProcessController extends TopController{
 	}
 	if(!user.canProcess()){
 	    addMessage("You do not have enough privileges");
-	    addMessagesToSession(session);
+	    addMessagesAndErrorsToSession(session);
 	    return "redirect:/index";
 	}
 
@@ -129,12 +124,7 @@ public class ProcessController extends TopController{
 	    logger.error("Error no incident "+id+" not found "+ex);
 	    addError("Invalid incident ID "+id);
 	}
-	if(hasMessages()){
-	    model.addAttribute("messages", messages);
-	}
-	else if(hasErrors()){
-	    model.addAttribute("errors", errors);
-	}
+	handleErrorsAndMessages(model);	
 	return "staff/process_decision";
     }    
     //
@@ -149,6 +139,7 @@ public class ProcessController extends TopController{
 	    String error = Helper.extractErrors(result);
 	    addError(error);
 	    logger.error("Error saving action "+error);
+	    addMessagesAndErrorsToSession(session);
 	    return "redirect:/search/preApproved";
 	}
 	user = findUserFromSession(session);
@@ -176,7 +167,6 @@ public class ProcessController extends TopController{
 	    }
 	    addMessage("Saved Successfully");				
 	    model.addAttribute("messages", messages);
-	    addMessagesToSession(session);
 	    //
 	    // check if the action is rejection
 	    // redirect to rejection form
@@ -188,20 +178,21 @@ public class ProcessController extends TopController{
 		    email.populateEmail(incident, "approve");
 		    sendApproveEmail(email, user);
 		    addMessage("Email sent successfully ");
-		    addMessagesToSession(session);
+		    handleErrorsAndMessages(model);	
 		    return "staff/staff_intro";
 		}
 		else if(action.isRejected()){
+		    addMessagesAndErrorsToSession(session);
 		    return "redirect:/rejectForm/"+incident.getId();
-		    
 		}
 	    }
 	}
 	else {
 	    addMessage("You do not have enough privileges ");
-	    addMessagesToSession(session);
+	    addMessagesAndErrorsToSession(session);
 	    return "redirect:/login";
 	}
+	addMessagesAndErrorsToSession(session);
 	return "redirect:/search/preApproved";	    
     }
     //reject email form
@@ -217,7 +208,6 @@ public class ProcessController extends TopController{
 	    // send to login
 	    // return "redirect:login";
 	}
-	System.err.println(" **** sending reject email ");
 	Email email = new Email();
 	email.populateEmail(incident, "reject");
 	model.addAttribute("email", email);
@@ -252,8 +242,6 @@ public class ProcessController extends TopController{
 	//
 	// we may need add email to email logs
 	//
-	addMessage("Reject email sent");
-	addMessagesToSession(session);
 	// back to main staff page
 	return "staff/staff_intro";
 	
@@ -266,10 +254,10 @@ public class ProcessController extends TopController{
 				HttpSession session
 				) {
 	if (result.hasErrors()) {
-	    String error = Helper.extractErrors(result);
+	    String error = extractErrors(result);
 	    addError(error);
 	    logger.error("Error saving action "+error);
-	    System.err.println(" *** errors *** "+error);
+	    addMessagesAndErrorsToSession(session);
 	    return "redirect:/search/approved";
 	}
 	User user = findUserFromSession(session);
@@ -296,13 +284,13 @@ public class ProcessController extends TopController{
 	    }
 	    addMessage("Saved Successfully");				
 	    model.addAttribute("messages", messages);
-	    addMessagesToSession(session);
+	    addMessagesAndErrorsToSession(session);
 	    return "redirect:/search/approved";
 	}
 	else{
 	    System.err.println(" *** not enough roles *** ");
 	    addMessage("You do not have enough privileges ");
-	    addMessagesToSession(session);
+	    addMessagesAndErrorsToSession(session);
 	    return "redirect:/login";
 	}
     }        
@@ -325,12 +313,7 @@ public class ProcessController extends TopController{
 	    logger.error("Error no incident "+id+" not found "+ex);
 	    addError("Invalid incident ID "+id);
 	}
-	if(hasMessages()){
-	    model.addAttribute("messages", messages);
-	}
-	else if(hasErrors()){
-	    model.addAttribute("errors", errors);
-	}
+	handleErrorsAndMessages(model);
 	return "incidentView";
 
     }    
