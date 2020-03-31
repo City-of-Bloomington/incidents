@@ -41,7 +41,7 @@ public class IncidentInitialController extends TopController{
     @Autowired
     IncidentTypeService incidentTypeService;
 		
-    @GetMapping("/start")		
+    @GetMapping("/index")		
     public String startIncident(Model model,
 				HttpSession session) {
 	getMessagesAndErrorsFromSession(session, model);

@@ -10,8 +10,9 @@
   <body>
     <header>
       <div th:replace="general::header-staff"></div>
-    </header>   
-    <h2>Person Info</h2>
+    </header>
+    <br />
+    <h3>Person Info</h3>
     <div th:if="${errors}">
       <div th:insert="general::errors(${errors})"></div>			
     </div>
@@ -31,7 +32,7 @@
 	</tr>
 	<tr>
 	  <td>
-	    <label>Involvement of this person to this incident as: </label>
+	    <label>Involvement Category: </label>
 	  </td>
 	  <td>
 	    <span th:text="${person.personType}"></span>

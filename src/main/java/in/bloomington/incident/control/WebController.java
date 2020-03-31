@@ -7,12 +7,35 @@ package in.bloomington.incident.control;
  */
 
 import org.springframework.stereotype.Controller;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import javax.servlet.http.HttpSession;
+import in.bloomington.incident.model.User;
+import in.bloomington.incident.service.UserService;
 
 @Controller
-public class WebController {
-   @RequestMapping(value = "/index")
-   public String index() {
-      return "index";
-   }
+public class WebController extends TopController{
+
+    @Autowired
+    UserService userService;       
+    @RequestMapping(value = "/staff")
+    public String staff(HttpSession session) {
+	User user = findUserFromSession(session);
+	if(user == null ){
+	    return "redirect:/login";
+	}       
+	return "staff";
+    }
+    @RequestMapping(value = "/")
+    public String index() {
+	return "redirect:/staff";
+    }    
+    private User findUserFromSession(HttpSession session){
+	User user = null;
+    	User user2 = getUserFromSession(session);
+	if(user2 != null){
+	    user = userService.findById(user2.getId());
+	}
+	return user;
+    }    
 }

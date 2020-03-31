@@ -75,8 +75,10 @@ public class ProcessController extends TopController{
 				 HttpSession session
 				 ) {
 	Incident incident = null;
-	User user = userService.findById(5); // need fix
-	// User user = getUserFromSession(session);
+	User user = findUserFromSession(session);
+	if(user == null ){
+	    return "redirect:/login";
+	}	
 	ActionLog actionLog = new ActionLog();
 	List<Action> actions = null;
 	try{
@@ -108,7 +110,7 @@ public class ProcessController extends TopController{
 	if(!user.canProcess()){
 	    addMessage("You do not have enough privileges");
 	    addMessagesAndErrorsToSession(session);
-	    return "redirect:/index";
+	    return "redirect:/staff/staff_intro";
 	}
 
 	ActionLog actionLog = new ActionLog();
@@ -143,7 +145,10 @@ public class ProcessController extends TopController{
 	    return "redirect:/search/preApproved";
 	}
 	user = findUserFromSession(session);
-	if(user != null && user.canApprove()){
+	if(user == null ){
+	    return "redirect:/login";
+	}	
+	if(user.canApprove()){
 	    actionLog.setUser(user);
 	    actionLog.setDateNow();
 	    Action action = actionLog.getAction();
@@ -190,7 +195,7 @@ public class ProcessController extends TopController{
 	else {
 	    addMessage("You do not have enough privileges ");
 	    addMessagesAndErrorsToSession(session);
-	    return "redirect:/login";
+	    return "redirect:/staff/staff_intro";
 	}
 	addMessagesAndErrorsToSession(session);
 	return "redirect:/search/preApproved";	    
@@ -205,8 +210,7 @@ public class ProcessController extends TopController{
 	User user = null;
 	user = findUserFromSession(session);
 	if(user == null){
-	    // send to login
-	    // return "redirect:login";
+	    return "redirect:login";
 	}
 	Email email = new Email();
 	email.populateEmail(incident, "reject");
@@ -227,8 +231,7 @@ public class ProcessController extends TopController{
 	}
 	User user = findUserFromSession(session);
 	if(user == null){
-	    // send to login
-	    // return "redirect:login";
+	    return "redirect:login";
 	}
 	else{
 	    email.setUser_id(user.getId());
@@ -261,8 +264,10 @@ public class ProcessController extends TopController{
 	    return "redirect:/search/approved";
 	}
 	User user = findUserFromSession(session);
-	// check user role
-	if(user != null && user.canProcess()){
+	if(user == null){
+	    return "redirect:/login";
+	}
+	else if(user.canProcess()){
 	    actionLog.setDateNow();
 	    actionLog.setUser(user);
 	    actionLogService.save(actionLog);
@@ -288,10 +293,9 @@ public class ProcessController extends TopController{
 	    return "redirect:/search/approved";
 	}
 	else{
-	    System.err.println(" *** not enough roles *** ");
 	    addMessage("You do not have enough privileges ");
 	    addMessagesAndErrorsToSession(session);
-	    return "redirect:/login";
+	    return "redirect:/staff/staff_intro";
 	}
     }        
     

@@ -50,7 +50,14 @@ public class LoginController extends TopController{
 	User user = new User();
 	// model.addAttribute("user", user);
         return "staff/loginForm";
-    }     
+    }
+    @GetMapping("/logout")
+    public String logout(HttpServletRequest req) {
+	HttpSession session = req.getSession();
+	session.invalidate();
+        return "staff/logout";
+    }    
+    
     @PostMapping("/loginUser")
     public String tryLogin(@RequestParam("username") String username,
 			   @RequestParam("password") String password,

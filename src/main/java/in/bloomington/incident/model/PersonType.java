@@ -29,62 +29,62 @@ import javax.validation.constraints.NotNull;
 @Table(name = "person_types")
 public class PersonType implements java.io.Serializable{
 
-		@Id
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-		@NotNull(message = "Person type may not be null")
-		private String name;
+    @NotNull(message = "Person type may not be null")
+    private String name;
 		
-		//
+    //
 		
-		public PersonType(){
+    public PersonType(){
 
-		}
+    }
 		
-		public PersonType(int id, @NotNull(message = "Person type may not be null") String name) {
-				super();
-				this.id = id;
-				this.name = name;
-		}
+    public PersonType(int id, @NotNull(message = "Person type may not be null") String name) {
+	super();
+	this.id = id;
+	this.name = name;
+    }
 
 
 
-		public int getId() {
-				return id;
-		}
+    public int getId() {
+	return id;
+    }
 
-		public void setId(int id) {
-				this.id = id;
-		}
+    public void setId(int id) {
+	this.id = id;
+    }
 
-		public String getName() {
-				return name;
-		}
+    public String getName() {
+	return name;
+    }
 
-		public void setName(String name) {
-				this.name = name;
-		}
-		@Override
+    public void setName(String name) {
+	this.name = name;
+    }
+    @Override
     public boolean equals(Object obj) { 
           
-				if(this == obj) 
-						return true; 
+	if(this == obj) 
+	    return true; 
 				
         if(obj == null || obj.getClass()!= this.getClass()) 
             return false; 
 				
         PersonType one = (PersonType) obj; 
         return one.getId() == this.getId();
-		}
-		@Override
-		public int hashCode(){ 
-				int ret = 29;
+    }
+    @Override
+    public int hashCode(){ 
+	int ret = 29;
         return ret += this.id; 
     }
 
-		@Override
-		public String toString() {
-			return name;
-		} 	
+    @Override
+    public String toString() {
+	return name;
+    } 	
 		
 }

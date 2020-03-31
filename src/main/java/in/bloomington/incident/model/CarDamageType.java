@@ -33,62 +33,62 @@ import javax.validation.constraints.NotNull;
 @Table(name = "car_damage_types")
 public class CarDamageType implements java.io.Serializable{
 		
-		@Id
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-		@NotNull(message = "Car damage type may not be null")
-		private String name;
+    @NotNull(message = "Car damage type may not be null")
+    private String name;
 		
-		public CarDamageType(){
+    public CarDamageType(){
 
-		}
+    }
 		
-		public CarDamageType(int id, @NotNull(message = "Car damage type may not be null") String name) {
-				super();
-				this.id = id;
-				this.name = name;
-		}
+    public CarDamageType(int id, @NotNull(message = "Car damage type may not be null") String name) {
+	super();
+	this.id = id;
+	this.name = name;
+    }
 
-		//
+    //
 		
 
 
-		public int getId() {
-				return id;
-		}
+    public int getId() {
+	return id;
+    }
 
-		public void setId(int id) {
-				this.id = id;
-		}
+    public void setId(int id) {
+	this.id = id;
+    }
 
-		public String getName() {
-				return name;
-		}
+    public String getName() {
+	return name;
+    }
 
-		public void setName(String name) {
-				this.name = name;
-		}
-		@Override
+    public void setName(String name) {
+	this.name = name;
+    }
+    @Override
     public boolean equals(Object obj) { 
           
-				if(this == obj) 
-						return true; 
+	if(this == obj) 
+	    return true; 
 				
         if(obj == null || obj.getClass()!= this.getClass()) 
             return false; 
 				
         CarDamageType one = (CarDamageType) obj; 
         return one.getId() == this.getId();
-		}
-		@Override
-		public int hashCode(){ 
-				int ret = 29;
+    }
+    @Override
+    public int hashCode(){ 
+	int ret = 29;
         return ret += this.id; 
     }
 
-		@Override
-		public String toString() {
-			return name;
-		} 	
+    @Override
+    public String toString() {
+	return name;
+    } 	
 		
 }

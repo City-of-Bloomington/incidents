@@ -203,7 +203,7 @@ public class IncidentController extends TopController{
 	else {
 	    addError("No more changes can be made to this incident");
 	    addMessagesAndErrorsToSession(session);
-	    return "redirect:/start";
+	    return "redirect:/index";
 	}
 
     }
@@ -258,7 +258,7 @@ public class IncidentController extends TopController{
 	    addMessage("Incident can not be submitted ");
 	    addMessages(incident.getErrors());
 	    addMessagesAndErrorsToSession(session);
-	    return "redirect:/start";
+	    return "redirect:/index";
 	}
 	try{
 	    String host = req.getServerName();
@@ -290,7 +290,7 @@ public class IncidentController extends TopController{
 	    addError("Invalid incident Id "+id);
 	    logger.error(errors+" "+ex);
 	    model.addAttribute("errors", errors);
-	    return "start"; 
+	    return "redirect:/index"; 
 	}
 	handleErrorsAndMessages(model);
 	return "successSubmission";
@@ -396,7 +396,7 @@ public class IncidentController extends TopController{
 	else {
 	    addError("No more changes can be made to this incident");
 	    addMessagesAndErrorsToSession(session);
-	    return "redirect:/start";
+	    return "redirect:/index";
 	}
     }
     @PostMapping("/incident/update/{id}")
@@ -425,7 +425,7 @@ public class IncidentController extends TopController{
 	else{
 	    addError("No more changes can be made to this incident");
 	    addMessagesAndErrorsToSession(session);
-	    return "redirect:/start";
+	    return "redirect:/index";
 	}
     }
 		
@@ -450,7 +450,7 @@ public class IncidentController extends TopController{
 	}
 	HttpSession session = req.getSession();
 	addMessagesAndErrorsToSession(session);
-	return "redirect:/start";
+	return "redirect:/index";
 
     }
     

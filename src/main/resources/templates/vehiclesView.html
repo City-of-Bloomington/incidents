@@ -18,7 +18,7 @@
       <div th:insert="general::messages(${messages})"></div>			
     </div>			
       <div th:fragment="vehicles(vehicles)">
-      <h2>Incident Vehicles </h2>
+      <h3>Incident Vehicles </h3>
       <div th:switch="${vehicles}">
 	<h2 th:case="null">No vehicle found</h2>
 	<div th:case="*">

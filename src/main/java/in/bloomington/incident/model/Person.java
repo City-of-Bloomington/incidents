@@ -41,8 +41,8 @@ public class Person extends TopModel implements java.io.Serializable{
     @JoinColumn(name = "incident_id")
     Incident incident;
     @OneToOne
-
     PersonType personType;
+    
     String title; // emum ('Mr','Ms','Mrs')
     @NotNull(message = "First name is required")		
     String firstname;

@@ -10,8 +10,9 @@
   <body>
     <header>
       <div th:replace="general::header-staff"></div>
-    </header>  
-    <h2>Incident Related People</h2>
+    </header>
+    <br />
+    <h3>Incident Related People</h3>
     <div th:if="${errors}">
       <div th:insert="general::errors(${errors})"></div>			
     </div>
@@ -25,7 +26,7 @@
 	  <table><legend>Incident Related People</legend>
 	    <thead>
 	      <tr>
-		<th>Person Category</th>
+		<th>Category</th>
 		<th>Full Name </th>
 		<th>Address </th>
 		<th>Contact </th>
