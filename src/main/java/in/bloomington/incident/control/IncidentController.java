@@ -83,6 +83,8 @@ public class IncidentController extends TopController{
     private String application_name;
     @Value("${incident.address.checkurl}")    
     private String address_check_url;
+    @Value("${server.servlet.context-path}")
+    private String host_path; // incidents
 
     public List<String> getAllZipCodes(){
 	return zipCodes;
@@ -266,10 +268,8 @@ public class IncidentController extends TopController{
 	    String scheme = req.getScheme();
 	    int port = req.getServerPort();
 	    String url = scheme+"://"+host;
-	    if(port > 0)
-		url += ":"+port;
-	    if(application_name != null)
-		url += application_name;
+	    if(host_path != null)
+		url += host_path;
 	    url += "/incident/confirm/";
 
 	    ActionLog actionLog = new ActionLog();

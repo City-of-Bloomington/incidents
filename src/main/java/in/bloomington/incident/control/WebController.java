@@ -28,7 +28,7 @@ public class WebController extends TopController{
     }
     @RequestMapping(value = "/")
     public String index() {
-	return "redirect:/staff";
+	return "redirect:/index";
     }    
     private User findUserFromSession(HttpSession session){
 	User user = null;

@@ -36,50 +36,50 @@
       <ul class="menu">
 	<li class="menu" th:if="${incident.hasPersonList()}">
 	  <input type="button"
-		 th:attr="onclick=|window.location.href='/person/add/${incident.id}'|"
+		 th:attr="onclick=|window.location.href='/incidents/person/add/${incident.id}'|"
 		 value="Add Another Person" />
 	</li>
 	<li class="menu" th:unless="${incident.hasPersonList()}">
 	  <input type="button"
-		 th:attr="onclick=|window.location.href='/person/add/${incident.id}'|"
+		 th:attr="onclick=|window.location.href='/incidents/person/add/${incident.id}'|"
 		 value="Add person" /> 
 	</li>
 	<li class="menu" th:if="${incident.hasPropertyList()}">
 	  <input type="button"
-		 th:attr="onclick=|window.location.href='/property/add/${incident.id}'|"
+		 th:attr="onclick=|window.location.href='/incidents/property/add/${incident.id}'|"
 		 value="Add another property" /> 							
 	</li>
 	<li class="menu" th:unless="${incident.hasPropertyList()}">
 	  <input type="button"
-		 th:attr="onclick=|window.location.href='/property/add/${incident.id}'|"
+		 th:attr="onclick=|window.location.href='/incidents/property/add/${incident.id}'|"
 		 value="Add property" /> 	
 	  
 	</li>
 	<li class="menu" th:if="${incident.hasVehicleList()}">
 	  <input type="button"
-		 th:attr="onclick=|window.location.href='/vehicle/add/${incident.id}'|"
+		 th:attr="onclick=|window.location.href='/incidents/vehicle/add/${incident.id}'|"
 		 value="Add another vehicle" /> 	
 					
 	</li>
 	<li class="menu" th:unless="${incident.hasVehicleList()}">					
 	  <input type="button"
-		 th:attr="onclick=|window.location.href='/vehicle/add/${incident.id}'|"
+		 th:attr="onclick=|window.location.href='/incidents/vehicle/add/${incident.id}'|"
 										 value="Add vehicle" /> 	
 	</li>
 	<li class="menu" th:if="${incident.hasMediaList()}">
 	  <input type="button"
-		 th:attr="onclick=|window.location.href='/media/add/${incident.id}'|"
+		 th:attr="onclick=|window.location.href='/incidents/media/add/${incident.id}'|"
 		 value="Upload anther image" /> 								
 	</li>
 	<li class="menu" th:unless="${incident.hasMediaList()}">
 	  <input type="button"							
-		 th:attr="onclick=|window.location.href='/media/add/${incident.id}'|"
+		 th:attr="onclick=|window.location.href='/incidents/media/add/${incident.id}'|"
 		 value="Upload image" /> 	
 	</li>						
 	
 	<li class="menu" th:if="${incident.canBeSubmitted()}">
 	  <input type="button"							
-		 th:attr="onclick=|window.location.href='/incident/finalPage/${incident.id}'|"
+		 th:attr="onclick=|window.location.href='/incidents/incident/finalPage/${incident.id}'|"
 		 value="Final Submit Page" /> 								
 	</li>
       </ul>
