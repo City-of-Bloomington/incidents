@@ -71,24 +71,17 @@ public class LoginController extends TopController{
 	}
 	*/
 	HttpSession session = req.getSession(true);
-	System.err.println(" *** username "+username);
-	System.err.println(" *** pass "+password);	
 	if(username == null || username.isEmpty()){
 	    return "staff/loginForm";
 	}
-	/**
-	   // uncomment later 
+
 	Helper helper = new Helper();
-	helper.populateHosts();
 	if(!helper.checkUser(username, password, ldap_host)){
 	    addMessage("invalid username or password");
 	    addMessagesAndErrorsToSession(session);
 	    return "staff/loginForm";
 	}
-	*/
-	System.err.println(" **** finding user ");
 	User user = userService.findUserByUsername(username);
-	System.err.println(" **** user "+user);
 	if(user == null){
 	    addMessage("user not found "+username);
 	    addMessagesAndErrorsToSession(session);

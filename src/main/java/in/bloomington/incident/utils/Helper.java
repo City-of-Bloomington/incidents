@@ -365,22 +365,6 @@ public class Helper{
 	}
 	return false;
     }
-    /*
-    @SuppressWarnings("unchecked")
-    public final static boolean verifySession(final HttpSession session, final String id){
-	// no new session
-	if(session != null){
-	    List<String> ids = (List<String>) session.getAttribute("incident_ids");
-	    if(ids != null){
-		System.err.println(" ** ids ** "+ids);
-		if(ids.contains(id)){
-		    return true;
-		}
-	    }
-	}
-	return false;
-    }
-    */
     /**
      * md5 hash function to create hashes for user request
      */
