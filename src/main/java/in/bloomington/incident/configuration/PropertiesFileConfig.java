@@ -23,15 +23,14 @@ import org.springframework.core.io.Resource;
 class PropertiesFileConfig{
     // dev mode
 
-    //    final static String fileLocation = "c:/data/incidents/conf/application.properties";
+    final static String fileLocation = "c:/data/incidents/conf/application.properties";
 
     //
     // production mode
     // uncomment for production
-    final static String fileLocation = "/srv/data/incidents/conf/application.properties";
+    // final static String fileLocation = "/srv/data/incidents/conf/application.properties";
     @Bean(name = "propertiesfile")		
     public PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
-	System.err.println(" **** in cofig ");
 	PropertySourcesPlaceholderConfigurer properties = new PropertySourcesPlaceholderConfigurer();
 	properties.setLocation(new FileSystemResource(fileLocation));
 	properties.setIgnoreResourceNotFound(false);

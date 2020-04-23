@@ -1,0 +1,101 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--
+ - @copyright Copyright (C) 2014-2015 City of Bloomington, Indiana. All rights reserved.
+ - @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
+ - @author W. Sibo <sibow@bloomington.in.gov>
+ -
+ -->
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head th:replace="general::introHead">
+  </head>
+  <body>
+    <header th:replace="general::header">
+    </header>
+    <br />    
+    <div>
+      <h3> Incident Reporting </h3>
+      Please answer the following minor theft guidelines questions carefully before you create your report.
+    </div>
+    <div id="questions">
+      <!-- Minor Theft related questions -->
+      <div class="questions">
+	<p>1. Is the stolen value more than $2000?
+	</p>
+	<form>
+	  <ul>
+            <li><input class="option" type="radio" name="question1" value="Stop, you can not use this system" />Yes
+	    </li>
+            <li><input class="option" type="radio" name="question1" value="Next" />No
+	    </li>
+	  </ul>
+	</form>
+      </div>
+      <div class="questions" style="display:none">
+	<p>2. Was illegal entry to a building or dwelling made during the act?
+	</p>
+	<form>
+	  <ul>
+            <li><input class="option" type="radio" name="question2" value="Stop, you can not use this system" />Yes
+	    </li>
+            <li> <input class="option" type="radio" name="question2" value="Next" />No
+	    </li>
+	  </ul>
+	</form>
+      </div>
+      <div class="questions" style="display:none">
+	<p>3. A vehicle was stolen?
+	</p>
+	<form>
+	  <ul>
+            <li> <input class="option" type="radio" name="question3" value="Stop, you can not use this system" />Yes
+	    </li>
+            <li> <input class="option" type="radio" name="question3" value="Next" />No
+	    </li>
+	  </ul>
+	</form>
+      </div>
+      <div class="questions" style="display:none">
+	<p>4. A firearm was stolen ?
+	</p>
+	<form>
+	  <ul>
+            <li> <input class="option" type="radio" name="question4" value="Stop, you can not use this system" />Yes
+	    </li>
+            <li> <input class="option" type="radio" name="question4" value="Next" />No
+	    </li>
+	  </ul>
+	</form>
+      </div>
+      <div class="questions" style="display:none" id="lastQuestion">
+	<p>5. Is the incident for a lost or stolen license plate(s) ?
+	</p>
+	<form>
+	  <ul>
+            <li> <input class="option" type="radio" name="question5" value="Stop, you can not use this system" />Yes
+	    </li>
+            <li> <input class="option" type="radio" name="question5" value="finalStep" />No
+	    </li>
+	  </ul>
+	</form>
+      </div>        
+      <div id="next_div">
+	Click on <input type="button" id='next' value="Next" /> to continue.
+      </div>
+      <div id="moreInfo">
+	<div th:replace="general::introMoreInfo"></div>
+      </div>
+      <br />
+      <div id="finalStep" class="questions" style="display:none">
+	<form action="#"
+	      th:action="@{/initialStart}"
+	      onsubmit="return verifyConfirm();"
+	      method="post">	
+	  <input type="hidden" name="type_id" value="1" />
+	  <div th:replace="general::reportSteps"></div>
+	  <div th:replace="general::emailFields"></div>
+	  <button type="submit"> Next </button>
+	</form>
+      </div>          
+    </div>
+  </body>
+</html>

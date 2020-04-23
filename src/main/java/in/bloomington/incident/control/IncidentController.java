@@ -84,7 +84,7 @@ public class IncidentController extends TopController{
     @Value("${incident.address.checkurl}")    
     private String address_check_url;
     @Value("${server.servlet.context-path}")
-    private String host_path; // incidents
+    private String host_path; // incidents in production
 
     public List<String> getAllZipCodes(){
 	return zipCodes;
@@ -163,7 +163,8 @@ public class IncidentController extends TopController{
 	    incidentService.update(incident);
 	    // check if incident have persons
 	    if(incident.hasPersonList()){
-		model.addAttribute("incident", incident);		
+		model.addAttribute("incident", incident);
+		model.addAttribute("hostPath", host_path);
 		return "incident";		
 	    }
 	    else{
@@ -199,6 +200,7 @@ public class IncidentController extends TopController{
 	}
 	if(incident.canBeChanged()){
 	    model.addAttribute("incident", incident);
+	    model.addAttribute("hostPath", host_path);	    
 	    getMessagesAndErrorsFromSession(session, model);
 	    return "incident";	    
 	}
@@ -453,7 +455,9 @@ public class IncidentController extends TopController{
 	return "redirect:/index";
 
     }
-    
+    public String getHostPath(){
+	return host_path;
+    }
     private String createRequestAndEmail(String url,
 					 Incident incident){
 	String ret = "";

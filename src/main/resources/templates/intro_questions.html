@@ -1,0 +1,131 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--
+ - @copyright Copyright (C) 2014-2015 City of Bloomington, Indiana. All rights reserved.
+ - @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
+ - @author W. Sibo <sibow@bloomington.in.gov>
+ -
+ -->
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head th:replace="general::introHead">
+  </head>
+  <body>
+    <header th:replace="general::header">
+    </header>
+    <br />    
+    <div>
+      <h3> Welcome to Incident Reporting </h3>
+      Guidelines for Using the Bloomington Police Department Online Reporting System 
+
+      Please answer the following guidelines questions carefully before you create your report.
+    </div>
+    <div id="questions">
+      <div class="questions">
+	<p>1. Is this an emergency or a crime is in progress?</p>
+	<ul>
+	  <li> <input class="option" type="radio" name="question1" value="Stop, call 911" /> Yes </li>
+	  <li><input class="option" type="radio" name="question1" value="Next" /> No </li>
+	</ul>
+	</form>
+      </div>
+      <div class="questions" style="display:none">
+	<p>2. Are you 18 years or older? </p>
+	<form class="options">
+	  <ul>
+	    <li> <input class="option" type="radio" name="question2" value="Next" />Yes </li> 
+	    <li> <input class="option" type="radio" name="question2" value="Stop, you can not use this system" /> No </li>
+	  </ul>
+	</form>
+      </div>
+      <div class="questions" style="display:none">
+	<p>3. Did the incident occur outside Bloomington City limits?</p>
+	<form class="options">
+	  <ul>
+	    <li><input class="option" type="radio" name="question3" value="Stop, you can not use this system" />Yes </li>
+	    <li><input class="option" type="radio" name="question3" value="Next" />No </li>
+	  </ul>
+	<!- 
+	 Yes: Stop, you can not use this system, we may want to show the IUPD map, county or neighboring counties 
+	 No: Next
+	 ->	 	  
+	</form>
+      </div>
+      <div class="questions" style="display:none">
+	<p>4. Are there known suspects, witnesses, suspect's vehicles
+	  or evidence that could lead to identification of a suspect?
+	</p>
+	<form>
+	  <ul>
+            <li> <input class="option" type="radio" name="question4" value="Stop, you can not use this system" />Yes
+	    </li>
+            <li> <input class="option" type="radio" name="question4" value="Next" />No
+	    </li>
+	  </ul>
+	</form>
+      </div>
+      <div class="questions" style="display:none">
+	<p>5. Is the incident violent?</p>
+	<form>
+	  <ul>
+            <li> <input class="option" type="radio" name="question5" value="Stop, you can not use this system" />Yes
+	    </li>
+            <li> <input class="option" type="radio" name="question5" value="Next" />No
+	    </li>
+	  </ul>
+	</form>
+      </div>
+      <div class="questions" style="display:none">
+	<p>6. Was there injury to a person?</p>
+	<form>
+	  <ul>
+            <li> <input class="option" type="radio" name="question6" value="Stop, you can not use this system" />Yes
+	    </li>
+            <li> <input class="option" type="radio" name="question6" value="Next" />No
+	    </li>
+	  </ul>
+	</form>
+      </div>
+      <div class="questions" style="display:none">
+	<p>7. Do you have an email address to be used to notify you of your reports's progress? </p>
+	<form>
+	  <ul>
+            <li> <input class="option" type="radio" name="question7" value="Next" />Yes
+	    </li>
+            <li> <input class="option" type="radio" name="question7" value="Stop, you can not use this system" />No
+	    </li>
+	  </ul>
+	</form>
+      </div>
+      <div class="questions" style="display:none" id="lastQuestion">
+	<p>8. Do you know that filing a false police report is a crime and is
+	  punishable by up to 180 days in jail and a fine of up to $1000?
+	</p>
+	<form>
+	  <ul>
+            <li> <input class="option" type="radio" name="question8" value="finalStep" />Yes
+	    </li>
+            <li> <input class="option" type="radio" name="question8" value="Stop, you can not use this system" />No
+	    </li>
+	  </ul>
+	</form>
+      </div>
+
+      <div id="finalStep" class="questions" style="display:none">
+	<p> Select the incident category:
+	</p>
+	<ul>
+	  <li><a th:href="@{/introTheft}">Minor Theft </a></li>      
+	  <li><a th:href="@{/introVandal}">Vandalism </a></li>
+	  <li><a th:href="@{/introLost}">Lost Property </a></li>
+	</ul>
+      </div>      
+      <!-- if the user can proceed to next step then we will show the following -->
+      <div id="moreInfo">
+	<div th:replace="general::introMoreInfo"></div>
+      </div>
+      <br />
+      <div id="next_div">
+	Click on <input type="button" id='next' value="Next" /> to continue.
+      </div>
+    </div>
+  </body>
+</html>

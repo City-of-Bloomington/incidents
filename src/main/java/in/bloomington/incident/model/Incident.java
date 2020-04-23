@@ -186,7 +186,6 @@ public class Incident extends TopModel implements java.io.Serializable{
     public Date getReceived() {
 	return received;
     }
-
     public void setReceived(Date received) {
 	this.received = received;
     }

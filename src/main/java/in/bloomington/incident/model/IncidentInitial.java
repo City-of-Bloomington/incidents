@@ -34,12 +34,12 @@ import javax.validation.constraints.NotNull;
 @Table(name = "incident_initials")
 public class IncidentInitial implements java.io.Serializable{
 
-		@Id
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-		@OneToOne
-		// @JoinTable(name = "incident_types", joinColumns = @JoinColumn(name = "incident_type_id"), inverseJoinColumns = @JoinColumn(name = "id"))		
+    @OneToOne
+    // @JoinTable(name = "incident_types", joinColumns = @JoinColumn(name = "incident_type_id"), inverseJoinColumns = @JoinColumn(name = "id"))		
     private IncidentType incidentType;
 
     private Date received;
@@ -50,76 +50,76 @@ public class IncidentInitial implements java.io.Serializable{
 
     }
     public IncidentInitial(int id,
-													 IncidentType incidentType,
-													 Date received,
-													 String email
-										) {
-				super();
-				this.id = id;
-				this.incidentType = incidentType;
-				this.received = received;
-				this.email = email;
-		}
+			   IncidentType incidentType,
+			   Date received,
+			   String email
+			   ) {
+	super();
+	this.id = id;
+	this.incidentType = incidentType;
+	this.received = received;
+	this.email = email;
+    }
 
 
 
-		public int getId() {
-				return id;
-		}
+    public int getId() {
+	return id;
+    }
 
-		public void setId(int id) {
-				this.id = id;
-		}
-
-
-		public Date getReceived() {
-				return received;
-		}
-
-		public void setReceived(Date received) {
-				this.received = received;
-		}
+    public void setId(int id) {
+	this.id = id;
+    }
 
 
-		public IncidentType getIncidentType() {
-				return incidentType;
-		}
+    public Date getReceived() {
+	return received;
+    }
 
-		public void setIncidentType(IncidentType type) {
-				this.incidentType = type;
-		}
+    public void setReceived(Date received) {
+	this.received = received;
+    }
 
-		public String getEmail() {
-				return email;
-		}
 
-		public void setEmail(String email) {
-				this.email = email;
-		}
-		@Transient
-		public void setReceivedNow(){
-				received = new Date();
-		}
-		@Override
+    public IncidentType getIncidentType() {
+	return incidentType;
+    }
+
+    public void setIncidentType(IncidentType type) {
+	this.incidentType = type;
+    }
+
+    public String getEmail() {
+	return email;
+    }
+
+    public void setEmail(String email) {
+	this.email = email;
+    }
+    @Transient
+    public void setReceivedNow(){
+	received = new Date();
+    }
+    @Override
     public boolean equals(Object obj) { 
           
-				if(this == obj) 
-						return true; 
+	if(this == obj) 
+	    return true; 
 				
         if(obj == null || obj.getClass()!= this.getClass()) 
             return false; 
 				
         IncidentInitial one = (IncidentInitial) obj; 
         return one.getId() == this.getId();
-		}
-		@Override
-		public int hashCode(){ 
-				int ret = 37;
+    }
+    @Override
+    public int hashCode(){ 
+	int ret = 37;
         return ret += this.id; 
     }
-		@Override
-		public String toString() {
-			return "Incident initial " + id;
-		} 
+    @Override
+    public String toString() {
+	return "Incident initial " + id;
+    } 
 						
 }

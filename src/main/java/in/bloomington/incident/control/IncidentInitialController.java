@@ -9,6 +9,8 @@ package in.bloomington.incident.control;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,57 +42,40 @@ public class IncidentInitialController extends TopController{
     IncidentService incidentService;		
     @Autowired
     IncidentTypeService incidentTypeService;
-		
+    @Autowired
+    private Environment env;
+    @Value("${server.servlet.context-path}")
+    private String host_path; // incidents in production
+    
     @GetMapping("/index")		
     public String startIncident(Model model,
 				HttpSession session) {
 	getMessagesAndErrorsFromSession(session, model);
-	return "initialStart";
+	return "introStart"; // initialStart 
     }
     @RequestMapping("/initialStart")
     public String incidentStartNext(@RequestParam(required = true) String email,
 				    @RequestParam(required = true) String email2,
+				    @RequestParam(required = true) int type_id,				    
 				    Model model,
-				    HttpSession session){
+				    HttpServletRequest req
+				    ){
 	if(email == null || email.isEmpty() ||
 	   email2 == null || email2.isEmpty()){
 	    addError("Both emails are required");
 	    model.addAttribute("errors", errors);
-	    return "initialStart";
+	    return "introStart";
 	}
 	if(!email.equals(email2)){
 	    addError("The two emails do not match");
 	    model.addAttribute("errors", errors);
-	    return "initialStart";						
+	    return "introStart";						
 	}
-	IncidentInitial initial = new IncidentInitial();
-	initial.setEmail(email);
-	initial.setReceivedNow();
-	initialService.save(initial);
-	model.addAttribute("initial", initial);
-	List<IncidentType> types = incidentTypeService.getAll();
-	model.addAttribute("types", types);				
-	return "initialSelectType";
-    }
-    @SuppressWarnings("unchecked")
-    @PostMapping("/initialNext/{id}")
-    public String initialNext(@PathVariable("id") int id,
-			      IncidentInitial initial, 
-			      BindingResult result,
-			      Model model,
-			      HttpServletRequest req
-			      ) {
-	if (result.hasErrors()) {
-	    initial.setId(id);
-	    return "initialSelectType";
-	}
-	addMessage("Updated Successfully");
-	initial.setId(id);
-	initialService.save(initial);
+	IncidentType type = incidentTypeService.findById(type_id);
 	Incident incident = new Incident();
-	incident.setEmail(initial.getEmail());
-	incident.setReceived(initial.getReceived());
-	incident.setIncidentType(initial.getIncidentType());
+	incident.setEmail(email);
+	incident.setReceivedNow();
+	incident.setIncidentType(type);
 	incidentService.save(incident);
 	//
 	// this is the only place we are adding
@@ -109,7 +94,7 @@ public class IncidentInitialController extends TopController{
 	ids.add(""+incident.getId());
 	session.setAttribute("incident_ids", ids);
 	return "redirect:/incidentStart/"+incident.getId();
-    }
 
+    }
 		
 }

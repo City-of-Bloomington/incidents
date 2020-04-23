@@ -29,7 +29,23 @@ public class WebController extends TopController{
     @RequestMapping(value = "/")
     public String index() {
 	return "redirect:/index";
-    }    
+    }
+    @RequestMapping(value = "/introStart")
+    public String introStart() {
+	return "intro_questions";
+    }
+    @RequestMapping(value = "/introTheft")
+    public String introTheft() {
+	return "theft_questions";
+    }
+    @RequestMapping(value = "/introVandal")
+    public String introVandal() {
+	return "vandal_questions";
+    }       
+    @RequestMapping(value = "/introLost")
+    public String introLost() {
+	return "lost_questions";
+    }       
     private User findUserFromSession(HttpSession session){
 	User user = null;
     	User user2 = getUserFromSession(session);
