@@ -84,7 +84,7 @@
 	  <label for="plateState">Plate State</label>
 	</dt>
 	<dd>
-	  <input type="text" th:field="${vehicle.state}" id="plateState" placeholder="Plate State" size="2" maxlength="2" required="required" />
+	  <input type="text" th:field="${vehicle.state}" id="plateState" placeholder="State" size="2" maxlength="2" required="required" />
 	  <span th:if="${#fields.hasErrors('state')}" th:errors="*{state}"></span>
 	</dd>
 	<dt>

@@ -103,6 +103,50 @@ public class IncidentController extends TopController{
 	}
 	return allStates;
     }
+    @RequestMapping("/initialStart")
+    public String initialNext(@RequestParam(required = true) String email,
+				    @RequestParam(required = true) String email2,
+				    @RequestParam(required = true) int type_id,				    
+				    Model model,
+				    HttpServletRequest req
+				    ){
+	if(email == null || email.isEmpty() ||
+	   email2 == null || email2.isEmpty()){
+	    addError("Both emails are required");
+	    model.addAttribute("errors", errors);
+	    return "introStart";
+	}
+	if(!email.equals(email2)){
+	    addError("The two emails do not match");
+	    model.addAttribute("errors", errors);
+	    return "introStart";						
+	}
+	IncidentType type = incidentTypeService.findById(type_id);
+	Incident incident = new Incident();
+	incident.setEmail(email);
+	incident.setReceivedNow();
+	incident.setIncidentType(type);
+	incidentService.save(incident);
+	//
+	// this is the only place we are adding
+	// incident ID in the session
+	//
+	HttpSession session = req.getSession(true);
+	List<String> ids = null;
+	try{
+	    ids = (List<String>) session.getAttribute("incident_ids");
+	}catch(Exception ex){
+	    System.err.println(ex);
+	}
+	if(ids == null){
+	    ids = new ArrayList<>();
+	}
+	ids.add(""+incident.getId());
+	session.setAttribute("incident_ids", ids);
+	return "redirect:/incidentStart/"+incident.getId();
+
+    }
+    
     @GetMapping("/incidentStart/{id}")
     public String startIncident(@PathVariable("id") int id,
 				Model model,

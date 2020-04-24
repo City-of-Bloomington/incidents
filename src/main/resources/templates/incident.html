@@ -17,16 +17,21 @@
     <div th:if="${messages}">
       <div th:replace="general::messages(${messages})"></div>			
     </div>		
-    <p>Incident details, if you notice any incident items need to be changed
+    <p>Incident details, if you notice any incident information need to be changed
       click on <a th:href="@{/incident/edit/{id}(id=${incident.id})}">Edit</a>
       link and do your changes.
     </p>
     <div th:if="${incident.canBeSubmitted()}">
+      <p>
+      Now you can add other persons, property(ies), vahicle(s) and incident images by clicking the corresponding button below.
+      </p>
+    </div>
+    <div th:if="${incident.canBeSubmitted()}">
       <ul>
 	<li>The incident is ready to be submitted.</li>
-	<li>If submitted no more changes can be done</li>
+	<li>If submitted no more changes can be made</li>
 	<li>Review your request again to make sure everything is correct</li>
-	<li>If no further changes are needed click on the 'Final Submit Page'</li>
+	<li>If no further changes are needed click on the 'Final Submit Page' button</li>
       </ul>
     </div>
     <fieldset>

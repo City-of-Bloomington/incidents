@@ -10,6 +10,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import javax.servlet.http.HttpSession;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import in.bloomington.incident.model.User;
 import in.bloomington.incident.service.UserService;
 
@@ -28,8 +30,15 @@ public class WebController extends TopController{
     }
     @RequestMapping(value = "/")
     public String index() {
-	return "redirect:/index";
+	return "redirect:/introStart";
     }
+    @GetMapping("/index")		
+    public String indexStart(Model model,
+			     HttpSession session) {
+	getMessagesAndErrorsFromSession(session, model);
+	return "redirect:/introStart"; 
+    }
+    
     @RequestMapping(value = "/introStart")
     public String introStart() {
 	return "intro_questions";
