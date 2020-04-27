@@ -45,7 +45,7 @@ public class Incident extends TopModel implements java.io.Serializable{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 		
-    private String cfsNumber;
+    private String caseNumber;
 		
     @OneToOne
     private IncidentType incidentType;
@@ -114,7 +114,7 @@ public class Incident extends TopModel implements java.io.Serializable{
 	super();
     }
     public Incident(int id,
-		    String cfsNumber,
+		    String caseNumber,
 		    IncidentType incidentType,
 		    Date received,
 		    Date date,
@@ -138,7 +138,7 @@ public class Incident extends TopModel implements java.io.Serializable{
 		    ) {
 	super();
 	this.id = id;
-	this.cfsNumber = cfsNumber;
+	this.caseNumber = caseNumber;
 	this.incidentType = incidentType;
 	this.received = received;
 	this.date = date;
@@ -169,18 +169,18 @@ public class Incident extends TopModel implements java.io.Serializable{
 	this.id = id;
     }
 
-    public String getCfsNumber() {
-	return cfsNumber;
+    public String getCaseNumber() {
+	return caseNumber;
     }
 
-    public void setCfsNumber(String val) {
+    public void setCaseNumber(String val) {
 				
 	if(val != null && !val.isEmpty())						
-	    this.cfsNumber = val.trim();
+	    this.caseNumber = val.trim();
     }
     @Transient
-    public boolean hasCfsNumber(){
-	return cfsNumber != null && !cfsNumber.isEmpty();
+    public boolean hasCaseNumber(){
+	return caseNumber != null && !caseNumber.isEmpty();
     }
 				
     public Date getReceived() {

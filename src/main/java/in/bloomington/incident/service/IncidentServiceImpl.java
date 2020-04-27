@@ -17,37 +17,37 @@ import in.bloomington.incident.model.Incident;
 @Service
 public class IncidentServiceImpl implements IncidentService {
 
-		@Autowired
-		IncidentRepository repository;
+    @Autowired
+    IncidentRepository repository;
 
-		@Override
-		public void save(Incident val){
-				repository.save(val);
-		}
-		@Override
-		public Incident findById(int id){
-				Incident val = repository.findById(id)
-						.orElseThrow(() -> new IllegalArgumentException("Invalid incident Id:" + id));
-				return val;
-		}				
+    @Override
+    public void save(Incident val){
+	repository.save(val);
+    }
+    @Override
+    public Incident findById(int id){
+	Incident val = repository.findById(id)
+	    .orElseThrow(() -> new IllegalArgumentException("Invalid incident Id:" + id));
+	return val;
+    }				
 		
-		@Override
-		public void update(Incident val){
-				repository.save(val);
-		}
-		@Override
-		public void delete(int id){
-				repository.deleteById(id);
-		}
-		@Override
-		public List<Incident> getAll(){
-				List<Incident> all = null;
-				Iterable<Incident> it = repository.findAll();
-				all = new ArrayList<>();
-				for(Incident one:it){
-						all.add(one);
-				}
-				return all;
-		}
+    @Override
+    public void update(Incident val){
+	repository.save(val);
+    }
+    @Override
+    public void delete(int id){
+	repository.deleteById(id);
+    }
+    @Override
+    public List<Incident> getAll(){
+	List<Incident> all = null;
+	Iterable<Incident> it = repository.findAll();
+	all = new ArrayList<>();
+	for(Incident one:it){
+	    all.add(one);
+	}
+	return all;
+    }
 
 }

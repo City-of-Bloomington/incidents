@@ -8,9 +8,8 @@ package in.bloomington.incident.repos;
 
 import org.springframework.data.repository.CrudRepository;
 
-import in.bloomington.incident.model.IncidentPreApproved;
+import in.bloomington.incident.model.IncidentConfirmed;
 
-
-public interface IncidentPreApprovedRepo extends CrudRepository<IncidentPreApproved, Integer> {
+public interface IncidentConfirmedRepo extends CrudRepository<IncidentConfirmed, Integer> {
 
 }

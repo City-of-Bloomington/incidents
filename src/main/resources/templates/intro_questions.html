@@ -16,13 +16,13 @@
       <h3> Welcome to Incident Reporting </h3>
       Guidelines for Using the Bloomington Police Department Online Reporting System 
 
-      Please answer the following guidelines questions carefully before you create your report.
+      Please answer the following questions carefully before you create your report.
     </div>
     <div id="questions">
       <div class="questions">
-	<p>1. Is this an emergency or a crime is in progress?</p>
+	<p>1. Is this an emergency or a crime in progress?</p>
 	<ul>
-	  <li> <input class="option" type="radio" name="question1" value="Stop, call 911" /> Yes </li>
+	  <li> <input class="option" type="radio" name="question1" value="Stop, please do not use this system, call 911" /> Yes </li>
 	  <li><input class="option" type="radio" name="question1" value="Next" /> No </li>
 	</ul>
 	</form>
@@ -32,7 +32,7 @@
 	<form class="options">
 	  <ul>
 	    <li> <input class="option" type="radio" name="question2" value="Next" />Yes </li> 
-	    <li> <input class="option" type="radio" name="question2" value="Stop, you can not use this system" /> No </li>
+	    <li> <input class="option" type="radio" name="question2" value="Stop, you must ask a parent or guardian to accompany you in using this system" /> No </li>
 	  </ul>
 	</form>
       </div>
@@ -40,7 +40,7 @@
 	<p>3. Did the incident occur outside Bloomington City limits?</p>
 	<form class="options">
 	  <ul>
-	    <li><input class="option" type="radio" name="question3" value="Stop, you can not use this system" />Yes </li>
+	    <li><input class="option" type="radio" name="question3" value="If the incident did not occur in the jurisdiction of the Bloomington, IN Police Department, this report can not be made on this system. See instruction below" />Yes </li>
 	    <li><input class="option" type="radio" name="question3" value="Next" />No </li>
 	  </ul>
 	<!- 
@@ -50,12 +50,12 @@
 	</form>
       </div>
       <div class="questions" style="display:none">
-	<p>4. Are there known suspects, witnesses, suspect's vehicles
-	  or evidence that could lead to identification of a suspect?
+	<p>4. Are there known suspects or evidence 
+	  that could lead to identification of a suspect (including surveillance video)?
 	</p>
 	<form>
 	  <ul>
-            <li> <input class="option" type="radio" name="question4" value="Stop, you can not use this system" />Yes
+            <li> <input class="option" type="radio" name="question4" value="Stop. This system is designed to be used for thefts/vandalisms with no suspect information. To make this report, please contact us at 812-339-4477." />Yes  
 	    </li>
             <li> <input class="option" type="radio" name="question4" value="Next" />No
 	    </li>
@@ -66,7 +66,7 @@
 	<p>5. Is the incident violent?</p>
 	<form>
 	  <ul>
-            <li> <input class="option" type="radio" name="question5" value="Stop, you can not use this system" />Yes
+            <li> <input class="option" type="radio" name="question5" value="Stop. If you are currently experiencing violence, please contact 911. If you would like to report a violent crime that is not currently happening, please contact us at 812-399-4477" />Yes
 	    </li>
             <li> <input class="option" type="radio" name="question5" value="Next" />No
 	    </li>
@@ -74,10 +74,10 @@
 	</form>
       </div>
       <div class="questions" style="display:none">
-	<p>6. Was there injury to a person?</p>
+	<p>6. Are you reporting injury to a being?</p>
 	<form>
 	  <ul>
-            <li> <input class="option" type="radio" name="question6" value="Stop, you can not use this system" />Yes
+            <li> <input class="option" type="radio" name="question6" value="Stop. If you would like to report injury to a being, please contact us at 812-399-4477" />Yes
 	    </li>
             <li> <input class="option" type="radio" name="question6" value="Next" />No
 	    </li>
@@ -90,7 +90,7 @@
 	  <ul>
             <li> <input class="option" type="radio" name="question7" value="Next" />Yes
 	    </li>
-            <li> <input class="option" type="radio" name="question7" value="Stop, you can not use this system" />No
+            <li> <input class="option" type="radio" name="question7" value="Stop. You can not use this system, ask a relative to do it for you" />No
 	    </li>
 	  </ul>
 	</form>
@@ -108,6 +108,18 @@
 	  </ul>
 	</form>
       </div>
+      <div class="questions" style="display:none">
+	<p>9. Are you reporting a Hate Crime?
+	</p>
+	<form>
+	  <ul>
+            <li> <input class="option" type="radio" name="question9" value="Stop. Please contact us at 812-339-4477." />Yes
+	    </li>
+            <li> <input class="option" type="radio" name="question9" value="Next" />No
+	    </li>
+	  </ul>
+	</form>
+      </div>      
 
       <div id="finalStep" class="questions" style="display:none">
 	<p> Select the incident category:
@@ -118,7 +130,6 @@
 	  <li><a th:href="@{/introLost}">Lost Property </a></li>
 	</ul>
       </div>      
-      <!-- if the user can proceed to next step then we will show the following -->
       <div id="moreInfo">
 	<div th:replace="general::introMoreInfo"></div>
       </div>

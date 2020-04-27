@@ -7,9 +7,11 @@ package in.bloomington.incident.service;
  */
 
 import java.util.List;
-import in.bloomington.incident.model.IncidentPreApproved;
+import in.bloomington.incident.model.IncidentConfirmed;
 
-public interface IncidentPreApprovedService{
-    public abstract List<IncidentPreApproved> getAll();		
+// check database incident_pre_approve view script
+    
+public interface IncidentConfirmedService{
+    public abstract List<IncidentConfirmed> getAll();		
 
 }

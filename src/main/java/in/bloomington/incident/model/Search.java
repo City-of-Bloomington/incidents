@@ -30,7 +30,7 @@ import javax.validation.constraints.NotNull;
 public class Search implements java.io.Serializable{
 
     private String id="";
-    private String cfsNumber="";
+    private String caseNumber="";
     private String address="";
     private String zip="";
     // these two not used
@@ -59,13 +59,13 @@ public class Search implements java.io.Serializable{
     public void setId(String id) {
 	this.id = id;
     }
-    public String getCfsNumber() {
-	return cfsNumber;
+    public String getCaseNumber() {
+	return caseNumber;
     }
 
-    public void setCfsNumber(String val) {
+    public void setCaseNumber(String val) {
 	if(val != null && !val.isEmpty())
-	    cfsNumber = val;
+	    caseNumber = val;
     }    
 
     public String getAddress() {
@@ -161,7 +161,7 @@ public class Search implements java.io.Serializable{
     // make sure we have at leas one thing to search for
     public boolean isValid(){
 	if(id.isEmpty() &&
-	   cfsNumber.isEmpty() &&
+	   caseNumber.isEmpty() &&
 	   address.isEmpty() &&
 	   zip.isEmpty() &&
 	   city.isEmpty() &&

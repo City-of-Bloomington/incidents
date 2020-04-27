@@ -173,12 +173,11 @@ insert into actions select * from statuses;
 ;; we needed this table for the first two steps in reporting process
 ;; and before the complete form is presented to reporter
 ;;
-	create table incident_initials(                                                     id int unsigned auto_increment primary key,                                     email varchar(70) not null,                                                     received datetime not null,			                                                incident_type_id int(10) unsigned,                                               foreign key(incident_type_id) references incident_types(id)                     )engine=InnoDB;
 
 			 
 	create table incidents(
-			 id int unsigned auto_increment primary key,
-  		 cfs_number varchar(20) DEFAULT NULL,
+		 id int unsigned auto_increment primary key,
+  		 case_number varchar(20) DEFAULT NULL,
   		 incident_type_id int(10) unsigned DEFAULT NULL,
   		 status_id int(10) unsigned DEFAULT NULL,
 			 received timestamp NOT NULL,
@@ -270,15 +269,26 @@ insert into actions select * from statuses;
 ;;
 ;;
 ;; received or confirmed ready to be approved or reject
+;; not needed any more since we are separating received and confirmed
 ;;
-		create or Replace view incident_pre_approve AS                                  select i.id from incidents i,action_logs l where l.incident_id=i.id and (l.action_id = 1 or l.action_id=2) and l.action_id in (select max(l2.action_id) from action_logs l2 where l2.incident_id=i.id);			 
-			 
+   create or Replace view incident_pre_approve AS                                  select i.id from incidents i,action_logs l where l.incident_id=i.id and (l.action_id = 1 or l.action_id=2) and l.action_id in (select max(l2.action_id) from action_logs l2 where l2.incident_id=i.id);			 
+
+;;
+;; received but not confirmed
+;;
+  create or Replace view incident_received AS                                  select i.id from incidents i,action_logs l where l.incident_id=i.id and l.action_id = 1 and l.action_id in (select max(l2.action_id) from action_logs l2 where l2.incident_id=i.id);
+
+;;
+;; confirmed
+;;
+  create or Replace view incident_confirmed AS                                  select i.id from incidents i,action_logs l where l.incident_id=i.id and l.action_id = 2 and l.action_id in (select max(l2.action_id) from action_logs l2 where l2.incident_id=i.id);
+
 ;; approved
      create or Replace view incident_approved AS                                     select i.id from incidents i,action_logs l where l.incident_id=i.id and l.action_id = 3 and l.action_id in (select max(l2.action_id) from action_logs l2 where l2.incident_id=i.id);				 
 ;;
 ;; rejected
 ;;
-     create or Replace view incident_rejected AS                                     select i.id from incidents i,action_logs l where l.incident_id=i.id and l.action_id = 4 and l.action_id in (select max(l2.action_id) from action_logs l2 where l2.incident_id=i.id);
+    create or Replace view incident_rejected AS                                   select i.id from incidents i,action_logs l where l.incident_id=i.id and l.action_id = 4 and l.action_id in (select max(l2.action_id) from action_logs l2 where l2.incident_id=i.id);
 ;;
 ;; processed
      create or Replace view incident_processed AS                                    select i.id from incidents i,action_logs l where l.incident_id=i.id and l.action_id = 5 and l.action_id in (select max(l2.action_id) from action_logs l2 where l2.incident_id=i.id);
@@ -317,7 +327,9 @@ delete from incidents;
 ;;
 ;;
  insert into action_logs select * from incident_reporting.status_history;
- 
 
+
+drop table incident_initials;
+alter table incidents change cfs_number case_number varchar(20);
 
 

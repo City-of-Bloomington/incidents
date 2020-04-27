@@ -153,15 +153,15 @@ public class ProcessController extends TopController{
 	    actionLog.setDateNow();
 	    Action action = actionLog.getAction();
 	    actionLogService.save(actionLog);
-	    String cfsNumber = actionLog.getCfsNumber();
+	    String caseNumber = actionLog.getCaseNumber();
 	    Incident incident = actionLog.getIncident();	    
-	    if(cfsNumber != null && !cfsNumber.isEmpty()){
+	    if(caseNumber != null && !caseNumber.isEmpty()){
 		if(incident != null){
-		    incident.setCfsNumber(cfsNumber);
+		    incident.setCaseNumber(caseNumber);
 		    incidentService.update(incident);
 		}
 		// we need to add another action log as processed
-		// since cfsNumber is provided
+		// since caseNumber is provided
 		actionLog = new ActionLog();
 		actionLog.setIncident(incident);
 		// process action
@@ -178,7 +178,7 @@ public class ProcessController extends TopController{
 	    // if approved, send approve email
 	    //
 	    if(action != null){
-		if(action.isApproved() && incident.hasCfsNumber()){
+		if(action.isApproved() && incident.hasCaseNumber()){
 		    Email email = new Email();
 		    email.populateEmail(incident, "approve");
 		    sendApproveEmail(email, user);
@@ -249,7 +249,7 @@ public class ProcessController extends TopController{
 	return "staff/staff_intro";
 	
     }
-    // process of adding cfs number to complete incident actions
+    // process of adding case number to complete incident actions
     @PostMapping("/process/final")
     public String processDecision(@Valid ActionLog actionLog, 
 				BindingResult result,
@@ -271,11 +271,11 @@ public class ProcessController extends TopController{
 	    actionLog.setDateNow();
 	    actionLog.setUser(user);
 	    actionLogService.save(actionLog);
-	    String cfsNumber = actionLog.getCfsNumber();
-	    if(cfsNumber != null && !cfsNumber.isEmpty()){
+	    String caseNumber = actionLog.getCaseNumber();
+	    if(caseNumber != null && !caseNumber.isEmpty()){
 		Incident incident = actionLog.getIncident();
 		if(incident != null){
-		    incident.setCfsNumber(cfsNumber);
+		    incident.setCaseNumber(caseNumber);
 		    incidentService.update(incident);
 		}
 		System.err.println(" **** sending approve email ");

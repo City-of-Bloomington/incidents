@@ -10,10 +10,10 @@ import java.util.List;
 import in.bloomington.incident.model.Incident;
 
 public interface IncidentService{
-		public abstract void save(Incident val);
-		public abstract Incident findById(int id);		
-		public abstract void update(Incident val);
-		public abstract void delete(int id);
-		public abstract List<Incident> getAll();		
+    public abstract void save(Incident val);
+    public abstract Incident findById(int id);		
+    public abstract void update(Incident val);
+    public abstract void delete(int id);
+    public abstract List<Incident> getAll();		
 
 }

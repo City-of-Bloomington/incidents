@@ -24,13 +24,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 //
-import in.bloomington.incident.service.IncidentPreApprovedService;
+import in.bloomington.incident.service.IncidentReceivedService;
+import in.bloomington.incident.service.IncidentConfirmedService;
 import in.bloomington.incident.service.IncidentApprovedService;
 import in.bloomington.incident.service.IncidentTypeService;
 import in.bloomington.incident.service.SearchService;
 import in.bloomington.incident.service.ActionService;
 import in.bloomington.incident.model.Incident;
-import in.bloomington.incident.model.IncidentPreApproved;
+import in.bloomington.incident.model.IncidentReceived;
+import in.bloomington.incident.model.IncidentConfirmed;
 import in.bloomington.incident.model.IncidentApproved;
 import in.bloomington.incident.model.Search;
 import in.bloomington.incident.model.IncidentType;
@@ -40,7 +42,9 @@ public class SearchController extends TopController{
 
     final static Logger logger = LoggerFactory.getLogger(SearchController.class);
     @Autowired
-    IncidentPreApprovedService preApprovedService;
+    IncidentReceivedService receivedService;
+    @Autowired
+    IncidentConfirmedService confirmedService;    
     @Autowired
     IncidentApprovedService approvedService;		
     @Autowired
@@ -50,13 +54,13 @@ public class SearchController extends TopController{
     @Autowired
     ActionService actionService;
     
-    @GetMapping("/search/preApproved")
-    public String findPreApproved(Model model) {
+    @GetMapping("/search/received")
+    public String findReceieved(Model model) {
 	List<Incident> all = null;
-	List<IncidentPreApproved> plist = preApprovedService.getAll();
+	List<IncidentReceived> plist = receivedService.getAll();
 	if(plist != null){
 	    all = new ArrayList<>();
-	    for(IncidentPreApproved one:plist){
+	    for(IncidentReceived one:plist){
 		Incident incident = one.getIncident();
 		if(incident != null)
 		    all.add(incident);
@@ -69,8 +73,30 @@ public class SearchController extends TopController{
 	    addMessage("No incident found");
 	    model.addAttribute("messages", messages);
 	}
-        return "staff/pre_approved";
+        return "staff/received";
     }
+    @GetMapping("/search/confirmed")
+    public String findConfirmed(Model model) {
+	List<Incident> all = null;
+	List<IncidentConfirmed> plist = confirmedService.getAll();
+	if(plist != null){
+	    all = new ArrayList<>();
+	    for(IncidentConfirmed one:plist){
+		Incident incident = one.getIncident();
+		if(incident != null)
+		    all.add(incident);
+	    }
+	}
+	if(all != null && all.size() > 0){
+	    model.addAttribute("incidents", all);
+	}
+	else{
+	    addMessage("No incident found");
+	    model.addAttribute("messages", messages);
+	}
+        return "staff/confirmed";
+    }    
+    
     @GetMapping("/search/approved")
     public String findApproved(Model model) {
 	List<Incident> all = null;

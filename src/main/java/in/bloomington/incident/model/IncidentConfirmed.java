@@ -28,8 +28,8 @@ import javax.validation.constraints.NotNull;
 
 
 @Entity
-@Table(name = "incident_pre_approve") // view
-public class IncidentPreApproved implements java.io.Serializable{
+@Table(name = "incident_confirmed") // view
+public class IncidentConfirmed implements java.io.Serializable{
 
     @Id
     private int id;
@@ -38,11 +38,11 @@ public class IncidentPreApproved implements java.io.Serializable{
     @JoinColumn(name="id",insertable=false, updatable=false)		
     Incident incident;
 		
-    public IncidentPreApproved(){
+    public IncidentConfirmed(){
 
     }
 
-    public IncidentPreApproved(int id, Incident val){
+    public IncidentConfirmed(int id, Incident val){
 	super();
 	this.id = id;
 	this.incident = val;

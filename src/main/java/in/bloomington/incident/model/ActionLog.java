@@ -48,7 +48,7 @@ public class ActionLog implements java.io.Serializable{
 
     // temporary place holder for adding new action logs
     @Transient
-    String cfsNumber;
+    String caseNumber;
 
     //
     public ActionLog(){
@@ -120,13 +120,13 @@ public class ActionLog implements java.io.Serializable{
 	date = new Date();
     }
     @Transient
-    public void setCfsNumber(String val){    
+    public void setCaseNumber(String val){    
 	if(val != null)
-	    cfsNumber = val;
+	    caseNumber = val;
     }
     @Transient
-    public String getCfsNumber(){    
-	return cfsNumber;
+    public String getCaseNumber(){    
+	return caseNumber;
     }    
     @Override
     public boolean equals(Object obj) { 

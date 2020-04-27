@@ -314,8 +314,12 @@ public class IncidentController extends TopController{
 	    String scheme = req.getScheme();
 	    int port = req.getServerPort();
 	    String url = scheme+"://"+host;
+	    if(port == 8080){ // for localhost
+		url += ":"+port;
+	    }	    
 	    if(host_path != null)
 		url += host_path;
+
 	    url += "/incident/confirm/";
 
 	    ActionLog actionLog = new ActionLog();

@@ -31,32 +31,32 @@ import javax.validation.constraints.NotNull;
 @Table(name = "incident_rejected") // view
 public class IncidentRejected implements java.io.Serializable{
 
-		@Id
+    @Id
     private int id;
-		@OneToOne
-		Incident incident;
-		public IncidentRejected(){
+    @OneToOne
+    Incident incident;
+    public IncidentRejected(){
 
-		}
+    }
 
-		public IncidentRejected(int id, Incident val){
-			super();
-			this.id = id;
-			this.incident = val;
-		}
+    public IncidentRejected(int id, Incident val){
+	super();
+	this.id = id;
+	this.incident = val;
+    }
 
-		public int getId() {
-			return id;
-		}
+    public int getId() {
+	return id;
+    }
 
-		public void setId(int id) {
-			this.id = id;
-		}
-		public Incident getIncident(){
-				return incident;
-		}
-		public void setIncident(Incident val){
-				incident = val;
-		}
+    public void setId(int id) {
+	this.id = id;
+    }
+    public Incident getIncident(){
+	return incident;
+    }
+    public void setIncident(Incident val){
+	incident = val;
+    }
 		
 }

@@ -119,7 +119,7 @@ public class Email{
 		if(person != null)
 		    message = "Dear "+person.getFullname()+"\n\n ";
 		message += " Your report has been approved. "+
-		    "The CFS Number of your report is "+incident.getCfsNumber()+
+		    "The Case Number of your report is "+incident.getCaseNumber()+
 	    
 		    " You can use this number in your future contacts with the Bloomington Police Department. \n\n"+
 		    "Please do not reply to this email as this is an automated system.";

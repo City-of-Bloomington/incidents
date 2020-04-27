@@ -30,13 +30,13 @@ public class SearchRepositoryImpl implements SearchRepository {
 
     @Override
     public List<Incident> find(Search search){
-	String id="",cfsNumber="",address="",zip="",city="",
+	String id="",caseNumber="",address="",zip="",city="",
 	    state="",dateFrom="",dateTo="",incidentTypeId="",
 	    name="", dln="", dob="";
 	String qw = "", qf="";
 	String qq = "SELECT em.* FROM incidents as em ";
 	id = search.getId(); // we handle this separately
-	cfsNumber = search.getCfsNumber();
+	caseNumber = search.getCaseNumber();
 	address = search.getAddress();
 	zip = search.getZip();
 	dateFrom = search.getDateFrom();
@@ -45,8 +45,8 @@ public class SearchRepositoryImpl implements SearchRepository {
 	name = search.getName();
 	dln = search.getDln();
 	dob = search.getDob();
-	if(!cfsNumber.isEmpty()){
-	    qw = "em.cfsNumber = ? ";
+	if(!caseNumber.isEmpty()){
+	    qw = "em.caseNumber = ? ";
 	}
 	if(!address.isEmpty()){
 	    if(!qw.isEmpty()) qw += " and ";
@@ -96,8 +96,8 @@ public class SearchRepositoryImpl implements SearchRepository {
       
         Query query = entityManager.createNativeQuery(qq, Incident.class);
 	int jj=1;
-	if(!cfsNumber.isEmpty()){
-	    query.setParameter(jj++, cfsNumber + "%");
+	if(!caseNumber.isEmpty()){
+	    query.setParameter(jj++, caseNumber + "%");
 	}
 	if(!address.isEmpty()){
 	    query.setParameter(jj++, "%"+address + "%");

@@ -17,36 +17,36 @@ import in.bloomington.incident.model.Action;
 @Service
 public class ActionServiceImpl implements ActionService {
 
-		@Autowired
-		ActionRepository repository;
+    @Autowired
+    ActionRepository repository;
 
-		@Override
-		public void save(Action action){
-				repository.save(action);
-		}
-		@Override
-		public Action findById(int id){
-				Action action = repository.findById(id)
-						.orElseThrow(() -> new IllegalArgumentException("Invalid action Id:" + id));
-				return action;
-		}
-		@Override
-		public void update(Action action){
-				repository.save(action);
-		}
-		@Override
-		public void delete(int id){
-				repository.deleteById(id);
-		}
-		@Override
-		public List<Action> getAll(){
-				List<Action> all = null;
-				Iterable<Action> it = repository.findAll();
-				all = new ArrayList<>();
-				for(Action one:it){
-						all.add(one);
-				}
-				return all;
-		}
+    @Override
+    public void save(Action action){
+	repository.save(action);
+    }
+    @Override
+    public Action findById(int id){
+	Action action = repository.findById(id)
+	    .orElseThrow(() -> new IllegalArgumentException("Invalid action Id:" + id));
+	return action;
+    }
+    @Override
+    public void update(Action action){
+	repository.save(action);
+    }
+    @Override
+    public void delete(int id){
+	repository.deleteById(id);
+    }
+    @Override
+    public List<Action> getAll(){
+	List<Action> all = null;
+	Iterable<Action> it = repository.findAll();
+	all = new ArrayList<>();
+	for(Action one:it){
+	    all.add(one);
+	}
+	return all;
+    }
 
 }

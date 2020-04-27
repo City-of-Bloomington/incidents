@@ -11,21 +11,21 @@ import java.util.List;
 import java.util.ArrayList;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
-import in.bloomington.incident.repos.IncidentPreApprovedRepo;
-import in.bloomington.incident.model.IncidentPreApproved;
+import in.bloomington.incident.repos.IncidentConfirmedRepo;
+import in.bloomington.incident.model.IncidentConfirmed;
 
 @Service
-public class IncidentPreApprovedServiceImpl implements IncidentPreApprovedService {
+public class IncidentConfirmedServiceImpl implements IncidentConfirmedService {
 
     @Autowired
-    IncidentPreApprovedRepo repository;
+    IncidentConfirmedRepo repository;
     
     @Override
-    public List<IncidentPreApproved> getAll(){
-	List<IncidentPreApproved> all = null;
-	Iterable<IncidentPreApproved> it = repository.findAll();
+    public List<IncidentConfirmed> getAll(){
+	List<IncidentConfirmed> all = null;
+	Iterable<IncidentConfirmed> it = repository.findAll();
 	all = new ArrayList<>();
-	for(IncidentPreApproved one:it){
+	for(IncidentConfirmed one:it){
 	    all.add(one);
 	}
 	return all;
