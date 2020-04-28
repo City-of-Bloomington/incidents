@@ -9,6 +9,7 @@ package in.bloomington.incident.control;
 import org.springframework.stereotype.Controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import javax.servlet.http.HttpSession;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,21 +41,37 @@ public class WebController extends TopController{
     }
     
     @RequestMapping(value = "/introStart")
-    public String introStart() {
+    public String introStart(Model model,
+			     HttpSession session){
+	getMessagesAndErrorsFromSession(session, model);
 	return "intro_questions";
     }
     @RequestMapping(value = "/introTheft")
-    public String introTheft() {
+    public String introTheft(Model model,
+			     HttpSession session) {
+	getMessagesAndErrorsFromSession(session, model);
 	return "theft_questions";
     }
     @RequestMapping(value = "/introVandal")
-    public String introVandal() {
+    public String introVandal(Model model,
+			      HttpSession session) {
+	getMessagesAndErrorsFromSession(session, model);
 	return "vandal_questions";
     }       
     @RequestMapping(value = "/introLost")
-    public String introLost() {
+    public String introLost(Model model,
+			    HttpSession session) {
+	getMessagesAndErrorsFromSession(session, model);
 	return "lost_questions";
-    }       
+    }
+    @RequestMapping(value = "/introEmail")
+    public String introEmails(@RequestParam(required = true) int type_id,
+			      Model model,
+			      HttpSession session) {
+	getMessagesAndErrorsFromSession(session, model);
+	model.addAttribute("type_id", type_id);
+	return "email_questions";
+    }    
     private User findUserFromSession(HttpSession session){
 	User user = null;
     	User user2 = getUserFromSession(session);

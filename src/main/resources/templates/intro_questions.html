@@ -11,18 +11,24 @@
   <body>
     <header th:replace="general::header">
     </header>
-    <br />    
+    <br />
+    <div th:if="${errors}">
+      <div th:replace="general::errors(${errors})"></div>			
+    </div>
+    <div th:if="${messages}">
+      <div th:replace="general::messages(${messages})"></div>			
+    </div>    
     <div>
       <h3> Welcome to Incident Reporting </h3>
       Guidelines for Using the Bloomington Police Department Online Reporting System 
 
-      Please answer the following questions carefully before you create your report.
+      Please answer the following questions carefully to create your report.
     </div>
     <div id="questions">
       <div class="questions">
 	<p>1. Is this an emergency or a crime in progress?</p>
 	<ul>
-	  <li> <input class="option" type="radio" name="question1" value="Stop, please do not use this system, call 911" /> Yes </li>
+	  <li> <input class="option" type="radio" name="question1" value="Stop. Please do not use this system, call 911" /> Yes </li>
 	  <li><input class="option" type="radio" name="question1" value="Next" /> No </li>
 	</ul>
 	</form>
@@ -37,16 +43,13 @@
 	</form>
       </div>
       <div class="questions" style="display:none">
-	<p>3. Did the incident occur outside Bloomington City limits?</p>
+	<p>3. Did the incident occur inside Bloomington City limits?</p>
 	<form class="options">
 	  <ul>
-	    <li><input class="option" type="radio" name="question3" value="If the incident did not occur in the jurisdiction of the Bloomington, IN Police Department, this report can not be made on this system. See instruction below" />Yes </li>
-	    <li><input class="option" type="radio" name="question3" value="Next" />No </li>
+	    <li><input class="option" type="radio" name="question3" value="Next" />Yes </li>	    
+	    <li><input class="option" type="radio" name="question3" value="If the incident did not occur in the jurisdiction of the Bloomington, IN Police Department, this report can not be made on this system. See instruction below" />No</li>
+
 	  </ul>
-	<!- 
-	 Yes: Stop, you can not use this system, we may want to show the IUPD map, county or neighboring counties 
-	 No: Next
-	 ->	 	  
 	</form>
       </div>
       <div class="questions" style="display:none">
@@ -85,7 +88,7 @@
 	</form>
       </div>
       <div class="questions" style="display:none">
-	<p>7. Do you have an email address to be used to notify you of your reports's progress? </p>
+	<p>7. Do you have a valid email address to be used to notify you of your report's progress? </p>
 	<form>
 	  <ul>
             <li> <input class="option" type="radio" name="question7" value="Next" />Yes
@@ -122,7 +125,7 @@
       </div>      
 
       <div id="finalStep" class="questions" style="display:none">
-	<p> Select the incident category:
+	<p> There will be a few additional questions depending on incident's category. Please, select the incident category:
 	</p>
 	<ul>
 	  <li><a th:href="@{/introTheft}">Minor Theft </a></li>      

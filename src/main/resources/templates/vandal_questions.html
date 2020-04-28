@@ -11,13 +11,18 @@
   <body>
     <header th:replace="general::header">
     </header>
-    <br />    
+    <br />
+    <div th:if="${errors}">
+      <div th:replace="general::errors(${errors})"></div>			
+    </div>
+    <div th:if="${messages}">
+      <div th:replace="general::messages(${messages})"></div>			
+    </div>
     <div>
-      <h3> Incident Reporting </h3>
-      Please answer the following vandalism guidelines questions carefully before you create your report.
+      <h3> Incident Reporting (continue)</h3>
+      Please answer the following vandalism questions carefully to create your report.
     </div>
     <div id="questions">
-      <!-- questions related to vandalism -->
       <div class="questions">
 	<p>1. Was there unlawful entry to a building or dwelling made during this incident?
 	</p>

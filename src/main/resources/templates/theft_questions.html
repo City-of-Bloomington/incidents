@@ -11,15 +11,20 @@
   <body>
     <header th:replace="general::header">
     </header>
-    <br />    
+    <br />
+    <div th:if="${errors}">
+      <div th:replace="general::errors(${errors})"></div>			
+    </div>
+    <div th:if="${messages}">
+      <div th:replace="general::messages(${messages})"></div>			
+    </div>
     <div>
       <h3> Incident Reporting (continue)</h3>
-      Please answer the following minor theft questions carefully before you create your report.
+      Please answer the following minor theft questions carefully to create your report.
     </div>
     <div id="questions">
-      <!-- Minor Theft related questions -->
       <div class="questions">
-	<p>1. Is the value of stolen property more than $2000?
+	<p>1. Is the value of stolen property more than $2000.00?
 	</p>
 	<form>
 	  <ul>
@@ -55,7 +60,7 @@
 	</form>
       </div>
       <div class="questions" style="display:none">
-	<p>4. Was a firearm stolen ?
+	<p>4. Was a firearm stolen?
 	</p>
 	<form>
 	  <ul>
@@ -67,7 +72,7 @@
 	</form>
       </div>
       <div class="questions" style="display:none" id="lastQuestion">
-	<p>5. Are you reporting a Lost or stolen license plate ?
+	<p>5. Are you reporting a Lost or stolen license plates?
 	</p>
 	<form>
 	  <ul>

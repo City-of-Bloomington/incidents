@@ -11,10 +11,16 @@
   <body>
     <header th:replace="general::header">
     </header>
-    <br />    
+    <br />
+    <div th:if="${errors}">
+      <div th:replace="general::errors(${errors})"></div>			
+    </div>
+    <div th:if="${messages}">
+      <div th:replace="general::messages(${messages})"></div>			
+    </div>
     <div>
       <h3> Incident Reporting </h3>
-      Please answer the following lost property guidelines questions carefully before you create your report.
+      Please answer the following lost property questions carefully to create your report.
     </div>
     <div id="questions">
       <!-- Lost property questions -->
@@ -29,7 +35,7 @@
 	</form>
       </div>
       <div class="questions" style="display:none">
-	<p>2. Was a vehicle stolen ?
+	<p>2. Is the lost a vehicle?
 	</p>
 	<form>
 	  <ul>	  
@@ -41,7 +47,7 @@
 	</form>
       </div>
       <div class="questions" style="display:none">
-	<p>3. Was a firearm stolen?
+	<p>3. Is the lost a firearm?
 	</p>
 	<form>
 	  <ul>
@@ -53,7 +59,7 @@
 	</form>
       </div>
       <div class="questions" style="display:none" id="lastQuestion">
-	<p>4. Are you reporting a Lost or stolen license plate?
+	<p>4. Is the Lost a license plate(s)?
 	</p>
 	<form>
 	  <ul>
