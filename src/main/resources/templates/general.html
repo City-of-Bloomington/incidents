@@ -84,10 +84,11 @@
        </div>
      </div>
      <div th:fragment="emailFields">
-       <p> Please provide a valid email address that will be used to contact you and notify you of your report progress </p>
+       <p> Please provide a valid email address that will be used to contact you and notify you of your report progress. If you do not have a valid email address, please ask a relative to do the report for you.
+       </p>
        <dl>
 	 <dt>
-	   <label for="email" class="required">Email</label>
+	   <label for="email" class="required">*Email</label>
 	 </dt>
 	 <dd>
 	   <input id="email" name="email" value="" size="70" />
@@ -96,7 +97,7 @@
        <p> Please reenter the same email to confirm </p>
        <dl>
 	 <dt>
-	   <label for="email2" class="required">Confirm Email</label>
+	   <label for="email2" class="required">*Confirm Email</label>
 	 </dt>
 	 <dd>
 	   <input id="email2" name="email2" value="" size="70" />
@@ -159,7 +160,7 @@
 	If the incident did not occur in the jurisdiction of the Bloomington, IN Police Department, this report can not be made on this system.
 	You may contact one of the following nearby Police Departments:
 	<ol>
-	  <li> -Indiana University Police Department; 812-855-4111; 1469 E 17th St, Bloomington, IN 47408 </li>
+	  <li> - Indiana University Police Department; 812-855-4111; 1469 E 17th St, Bloomington, IN 47408 </li>
 	  <li> - Monroe County Sheriff's Office; 812-349-2780; 301 N College Ave, Bloomington, IN 47404</li>
 	  <li> - Indiana State Police; 812-332-4411; 1500 N Packinghouse Road, Bloomington, IN 47404 </li>
 	  <li> - Ellettsville Police Department; 812-876-2272; 1406 W Guy McCown Drive, Ellettsville, IN 47429 </li>

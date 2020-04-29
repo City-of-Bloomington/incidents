@@ -13,7 +13,7 @@
   <groupId>in.bloomington</groupId>
   <artifactId>incidents</artifactId>
   <version>1</version>
-  <packaging>jar</packaging>
+  <packaging>war</packaging>
   <name>incidents</name>
   <description>incident reporting system</description>
    
@@ -78,13 +78,12 @@
     </dependency>    
     <!-- comment the following dependency when package as jar -->
     <!-- uncomment for war -->
-    <!--
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-tomcat</artifactId>
       <scope>provided</scope>
     </dependency>
-    -->
+
   </dependencies>
 	
   <build>

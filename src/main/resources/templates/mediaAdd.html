@@ -16,7 +16,8 @@
     </div>
     <div th:if="${messages}">
       <div th:insert="general::messages(${messages})"></div>			
-    </div>			
+    </div>
+    <p>Image size should not exceed 2M (or 2000K) , if more than 2M please downsize the file using one of the image apps such as MS paint </p>
     <fieldset>
       <caption>Upload Images of the Incident</caption>
       <ul th:replace="general::uploadInstructions">

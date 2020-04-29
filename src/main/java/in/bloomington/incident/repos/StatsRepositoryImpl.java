@@ -93,26 +93,27 @@ public class StatsRepositoryImpl implements StatsRepository {
 	System.err.println(" *** to "+endDate);
 
 	String qw = "", qf="";
-	String qq = "SELECT a.name as name,count(al.incident_id) as total FROM action_logs as al JOIN actions a on a.id=al.action_id ";
+	// String qq = "SELECT a.name as name,count(al.incident_id) as total FROM action_logs as al JOIN actions a on a.id=al.action_id ";
+	/*
+       SELECT a.name as name,count(l.incident_id) as total FROM action_logs as l, actions as a where a.id=l.action_id and l.action_id = (select max(l2.action_id) from action_logs l2 where l2.incident_id=l.incident_id) and l.date > '2020-04-01' group by a.name;
+
+	 */
+	String qq = "SELECT a.name as name,count(l.incident_id) as total FROM action_logs as l, actions as a where a.id=l.action_id and l.action_id = (select max(l2.action_id) from action_logs l2 where l2.incident_id=l.incident_id) ";
 	if(startDate != null){
-	    if(!qw.isEmpty()) qw += " and ";
-	    qw += "al.date >= ? ";
+	    qw += " and ";
+	    qw += "l.date >= ? ";
 	}
 	if(endDate != null){
-	    if(!qw.isEmpty()) qw += " and ";
-	    qw += "al.date <= ? ";
-	}
-	if(!qf.isEmpty()){
-	    qq += qf;
+	    qw += " and ";
+	    qw += "l.date <= ? ";
 	}
 	if(!qw.isEmpty()){
-	    qq += " where "+qw;
+	    qq += qw;
 	}
 	qq += " group by a.name "; 
-	System.err.println(" *** qq "+qq);
+	// System.err.println(" *** qq "+qq);
         Query query = entityManager.createNativeQuery(qq,
 						      "ResultMapping");
-	// IncidentStats.class);
 	int jj=1;
 	try{
 	    if(startDate != null){
@@ -128,8 +129,9 @@ public class StatsRepositoryImpl implements StatsRepository {
         return query.getResultList();
     }
     /**
-       SELECT a.name as name,count(al.incident_id) as total FROM action_logs as al JOIN actions a on a.id=al.action_id where al.date > '2019-01-01' 
+       // test
 
+       SELECT a.name as name,count(l.incident_id) as total FROM action_logs as l, actions as a where a.id=l.action_id and l.action_id = (select max(l2.action_id) from action_logs l2 where l2.incident_id=l.incident_id) and l.date > '2020-04-01' group by a.name;       
 
      */
 
