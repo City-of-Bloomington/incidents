@@ -45,6 +45,7 @@
 	  </dt>
 	  <dd>Title (Mr, Ms, Mrs)
 	    <select id="title_id" th:field="${person.title}" >
+	      <option value=""></option>
 	      <option th:each="r : ${personTitles}"
 		      th:value="${r}"
 		      th:text="${r}">
@@ -56,16 +57,8 @@
 	    <input type="text" th:field="${person.midname}" id="midname" size="2" maxlength="2" placeholder="MI" />
 	    *Last Name
 	    <input type="text" th:field="${person.lastname}" id="lastname" size="30" required="required" placeholder="Last Name" />
-	    Suffix (Jr, Sr)
-	    <span th:with="strList=${#lists.toList({'Jr', 'Sr'})}">
-	      <select id="suffix_id" th:field="${person.suffix}" >
-		<option value="">Suffix</option>
-		<option th:each="r : ${strList}"
-			th:value="${r}"
-			th:text="${r}">
-		</option>
-	      </select>	      
-	    </span>
+	    Suffix
+	    <input type="text" th:field="${person.suffix}" id="suffix_id" size="6" placeholder="Suffix" />(Jr, Sr)	    
 	  </dd>
 	  <dt>*Address: </dt>
 	  <dd>

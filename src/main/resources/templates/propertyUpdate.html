@@ -57,17 +57,17 @@
 	</dd>
 	
 	<dt>
-	  <label for="damageType">Damage Type</label>
+	  <label for="damageType">Problem Type</label>
 	</dt>
 	<dd>
-	  <select id="damageType_id" th:field="${property.damageType}" >
-	    <option th:each="r : ${damageTypes}"
-		    th:value="${r.id}"
-		    th:text="${r.name}">
-	    </option>
-	    </select>
+	  <ul class="menu">
+            <li class="menu" th:each="r : ${damageTypes}">
+              <input type="radio" th:field="${property.damageType}" th:value="${r.id}" />
+              <label th:text="${r.name}"></label>
+            </li>	    
+	  </ul>
 	</dd>
-	
+	<br />	
 	<dt>
 	  <label for="value_id">Value</label>
 	</dt>
@@ -80,7 +80,7 @@
 	  <label for="owener">Owner</label>
 	</dt>
 	<dd>
-	  <input type="text" th:field="${property.owner}" id="owner" placeholder="property owner if not yourself" />
+	  <input type="text" th:field="${property.owner}" id="owner" placeholder="property owner" />
 	  <span th:if="${#fields.hasErrors('owner')}" th:errors="*{owner}"></span>
 	</dd>
 	

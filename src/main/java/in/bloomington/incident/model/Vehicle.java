@@ -27,7 +27,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
-
+import in.bloomington.incident.utils.Helper;
 
 @Entity
 @Table(name = "vehicles")
@@ -52,6 +52,7 @@ public class Vehicle implements java.io.Serializable{
     private Integer plateYear;
     private String owner;
     private String description;
+    private Double value;
 		
     public Vehicle(int id,
 		   in.bloomington.incident.model.@NotNull(message = "Incident is required") Incident incident,
@@ -64,7 +65,8 @@ public class Vehicle implements java.io.Serializable{
 		   String state,
 		   Integer plateYear,
 		   String owner,
-		   String description) {
+		   String description,
+		   Double value) {
 	super();
 	this.id = id;
 	Incident = incident;
@@ -78,6 +80,7 @@ public class Vehicle implements java.io.Serializable{
 	this.plateYear = plateYear;
 	this.owner = owner;
 	this.description = description;
+	this.value = value;
     }
 
 
@@ -241,7 +244,27 @@ public class Vehicle implements java.io.Serializable{
     public String getDescription() {
 	return description;
     }
+    
+    public Double getValue() {
+	return value;
+    }
+    @Transient
+    public String getValueFr() {
+	String str = "";
+	if(value != null){
+	    try{
+		str = Helper.curFr.format(value);
+	    }catch(Exception ex){
+		System.err.println(value+" "+ex);
+	    }
+	}
+	return str;
+    }		
 
+    public void setValue(Double value) {
+	if(value != null)
+	    this.value = value;
+    }
 
     public void setDescription(String val) {
 	if(val != null && !val.isEmpty())

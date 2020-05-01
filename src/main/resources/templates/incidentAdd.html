@@ -32,26 +32,25 @@
 	<legend>Incident Date and Time</legend>
 	<dl>
 	  <dd>
-	      (For EXAMPLE: I went to bed at 11:00 pm Saturday night Aug 8 <br />
-	      and when I woke up Sunday at 6:00 am mycar has a smashed window.<br />
+	      (For EXAMPLE: I went to bed at 11:00 PM Saturday night Aug 8 <br />
+	      and when I woke up Sunday at 6:00 AM my car has a smashed window.<br />
 	      You report 8/8/2015 21:00 PM - 8/9/2015 06:00 AM.)						
 	  </dd>
 	  <dt>
-	    <label for="start_date" class="required">Incident Occurred, Date:</label>
+	    <label for="start_date" class="required">*Incident Occurred, Date:</label>
 	  </dt>
 	  <dd>
-	    <input type="date" th:field="${incident.dateStr}" id="start_date" size="20" /> Time:
-	    <input type="time" th:field="${incident.timeStr}" id="start_time" size="20" />							
+	    <input type="date" th:field="${incident.dateStr}" id="start_date" size="15" placeholder="mm/dd/yyyy" /> Time:
+	    <input type="text" th:field="${incident.timeStr}" id="start_time" size="15" class="timepicker" placeholder="hh:mm am/pm" />(for example 10:30 PM)
 	  </dd>
-	  
 	  <dt><label for="end_date">End Incident, Date:</label>
 	  </dt>
 	  <dd>
-	    <input type="date" th:field="${incident.endDateStr}" id="end_date" value="" size="20" /> Time:
-	    <input type="time" th:field="${incident.endTimeStr}" id="end_time" value="" size="20" />							
+	    <input type="date" th:field="${incident.endDateStr}" id="end_date" value="" size="15" placeholder="mm/dd/yyyy" /> Time:
+	    <input type="text" th:field="${incident.endTimeStr}" id="end_time" value="" size="15" class="timepicker" placeholder="hh:mm am/pm" /> (for example 11:30 PM)
 	  </dd>
 	  <dd>
-	    If unsure of the exact date and time, describe below when this took place.
+	   Or, if unsure of the exact date and time, describe below when this took place.
 	  </dd>
 	  <dd>
 	    <textarea th:field="${incident.dateDescription}" id="incident-dateDescription" rows="3" cols="60"></textarea>
@@ -76,13 +75,13 @@
 	</ul>
 	<dl>
 	  <dt>
-	    <label for="addr_id" class="required">Address where the incident occured</label>
+	    <label for="addr_id" class="required">*Address where the incident occured</label>
 	  </dt>
 	  <dd>
 	      <input type="text" th:field="${incident.address}" onchange="replaceMarker()" id="addr_id" value="" size="60" placeholder="Address" required="required" />
 	  </dd>
 	  <dt>
-	    <label for="city" class="required">City</label>
+	    <label for="city" class="required">*City</label>
 	  </dt>
 	  <dd>
 	    <select th:field="${incident.city}" id="city">
@@ -94,10 +93,10 @@
 	    </select>
 	  </dd>
 	  <dt>
-	    <label for="state" class="required">State</label>
+	    <label for="state" class="required">*State</label>
 	  </dt>
 	  <dd>
-	    <select th:field="${incident.state}" id="state">
+	    <select th:field="${incident.state}" id="state" required="required">
 	      <option value="">State</option>
 	      <option th:each="r : ${allStates}"
 		      th:value="${r}"
@@ -106,10 +105,10 @@
 	    </select>
 	  </dd>
 	  <dt>
-	    <label for="incident-zip" class="required">Zip Code</label>
+	    <label for="incident-zip" class="required">*Zip Code</label>
 	  </dt>
 	  <dd>
-	    <select th:field="${incident.zip}" id="zip">
+	    <select th:field="${incident.zip}" id="zip" required="required">
 	      <option value="">Zip</option>
 	      <option th:each="r : ${allZipCodes}"
 		      th:value="${r}"

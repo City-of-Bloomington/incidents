@@ -27,8 +27,8 @@
       <input type="hidden" th:field="${person.incident}" />
       <input type="hidden" name="email" th:value="${person.incident.email}" />
       <fieldset>
-	<label for="person_type_id">Involvement of this person to this incident as: </label>
-	<select id="person_type_id" th:field="${person.personType}" required >
+	<label for="person_type_id">*Involvement of this person to this incident as: </label>
+	<select id="person_type_id" th:field="${person.personType}" required="required" >
 	  <option th:each="r : ${personTypes}"
 		  th:value="${r.id}"
 		  th:text="${r.name}">
@@ -42,6 +42,7 @@
 	  </dt>
 	  <dd>Title (Mr, Ms, Mrs)
 	    <select id="title_id" th:field="${person.title}" >
+	      <option value=""></option>
 	      <option th:each="r : ${personTitles}"
 		      th:value="${r}"
 		      th:text="${r}">
@@ -55,7 +56,9 @@
 	  <dd>
 	    *Last Name
 	    <input type="text" th:field="${person.lastname}" id="lastname" size="30" required="required" placeholder="Last Name" />
-	    Suffix (Jr, Sr)
+	    Suffix
+	    <input type="text" th:field="${person.suffix}" id="suffix_id" size="6" placeholder="Suffix" />(Jr, Sr)
+	    <!--
 	    <span th:with="strList=${#lists.toList({'Jr', 'Sr'})}">
 	      <select id="suffix_id" th:field="${person.suffix}" >
 		<option value="">Suffix</option>
@@ -65,6 +68,7 @@
 		</option>
 	      </select>	      
 	    </span>
+	    -->
 	  </dd>
 	  <dt>*Address: </dt>
 	  <dd>

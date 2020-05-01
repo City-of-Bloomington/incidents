@@ -13,8 +13,8 @@ function popwit(url, name) {
     else{ 
         popupWin.location.href = url; 
     }
-		if (window.focus) {popupWin.focus()}
-		return false;		
+    if (window.focus) {popupWin.focus()}
+        return false;		
  }
 function verifyConfirm(){
     var email = document.getElementById("email");
@@ -30,4 +30,17 @@ function verifyConfirm(){
     }
 
 }
+$(document).ready(function(){
+    $('input.timepicker').timepicker({
+	timeFormat: 'hh:mm p',
+	interval: 15,
+	// minTime: '1',
+	// maxTime: '12:00pm',
+	// defaultTime: '11:00 PM',
+	startTime: '10:00 PM',
+	dynamic: false,
+	dropdown: true,
+	scrollbar: true
+    });
+});
 

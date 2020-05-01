@@ -77,11 +77,13 @@ public class LoginController extends TopController{
 
 	Helper helper = new Helper();
 	   // for test purpose commented out
+	/**
 	if(!helper.checkUser(username, password, ldap_host)){
 	    addMessage("invalid username or password");
 	    addMessagesAndErrorsToSession(session);
 	    return "staff/loginForm";
 	}
+	*/
 	User user = userService.findUserByUsername(username);
 	if(user == null){
 	    addMessage("user not found "+username);

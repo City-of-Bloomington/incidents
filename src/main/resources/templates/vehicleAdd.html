@@ -27,10 +27,10 @@
 	<dt>Related incident</dt>
 	<dd><a th:href="@{/incident/{id}(id=${vehicle.incident.id})}">Back to Incident</a></dd>							
 	<dt>
-	  <label for="damageType">Damage Type</label>
+	  <label for="damageType">*Damage Type</label>
 	</dt>
 	<dd>
-	  <select id="damageType_id" th:field="${vehicle.carDamageType}" >
+	  <select id="damageType_id" th:field="${vehicle.carDamageType}" required="required">
 	    <option value="">Damage Type</option>
 	    <option th:each="r : ${damageTypes}"
 		    th:value="${r.id}"
@@ -84,9 +84,16 @@
 	  <label for="plateState">Plate State</label>
 	</dt>
 	<dd>
-	  <input type="text" th:field="${vehicle.state}" id="plateState" placeholder="State" size="2" maxlength="2" required="required" />
+	  <input type="text" th:field="${vehicle.state}" id="plateState" size="2" maxlength="2" required="required" />
 	  <span th:if="${#fields.hasErrors('state')}" th:errors="*{state}"></span>
 	</dd>
+	<dt>
+	  <label for="value_id">Damage Value</label>
+	</dt>
+	<dd>$
+	  <input type="text" th:field="${vehicle.value}" id="value_id" placeholder="Value" />(damage value related to this incident only)
+	  <span th:if="${#fields.hasErrors('value')}" th:errors="*{value}"></span>
+	</dd>	
 	<dt>
 	  <label for="owener">Owner</label>
 	</dt>
@@ -95,10 +102,10 @@
 	  <span th:if="${#fields.hasErrors('owner')}" th:errors="*{owner}"></span>
 	</dd>
 	<dt>
-	  <label for="description">Description</label>
+	  <label for="description">*Description</label>
 	</dt>
 	<dd>				
-	  <textarea th:field="${vehicle.description}" id="description" placeholder="Description" rows="5" columns="50">
+	  <textarea th:field="${vehicle.description}" id="description" placeholder="Description" rows="5" columns="50" required="required">
 	    <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></span>
 	  </textarea>
 	</dd>

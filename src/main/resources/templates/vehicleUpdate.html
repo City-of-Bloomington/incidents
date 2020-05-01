@@ -89,6 +89,13 @@
 	  <span th:if="${#fields.hasErrors('state')}" th:errors="*{state}"></span>
 	</dd>
 	<dt>
+	  <label for="value_id">Damage Value</label>
+	</dt>
+	<dd>$
+	  <input type="text" th:field="${vehicle.value}" id="value_id" placeholder="Value" />
+	  <span th:if="${#fields.hasErrors('value')}" th:errors="*{value}"></span>
+	</dd>	
+	<dt>
 	  <label for="owener">Owner</label>
 	</dt>
 	<dd>

@@ -52,6 +52,12 @@ public class WebController extends TopController{
 	getMessagesAndErrorsFromSession(session, model);
 	return "theft_questions";
     }
+    @RequestMapping(value = "/introTheftFromVehicle")
+    public String introTheftFromVehicle(Model model,
+			     HttpSession session) {
+	getMessagesAndErrorsFromSession(session, model);
+	return "theftFromVehicle_questions";
+    }    
     @RequestMapping(value = "/introVandal")
     public String introVandal(Model model,
 			      HttpSession session) {

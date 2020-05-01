@@ -329,7 +329,10 @@ delete from incidents;
  insert into action_logs select * from incident_reporting.status_history;
 
 
-drop table incident_initials;
-alter table incidents change cfs_number case_number varchar(20);
+ drop table incident_initials;
+ alter table incidents change cfs_number case_number varchar(20);
 
-
+ update incident_types set name='Theft - All Other' where id=1;
+ insert into incident_types values(4,'Theft - From Vehicle');
+ alter table vehicles add value decimal(10,2);
+ 

@@ -232,7 +232,7 @@ public class Incident extends TopModel implements java.io.Serializable{
 	String str="";
 	if(date != null){
 	    try{
-		str = Helper.dfTime.format(date);
+		str = Helper.dfTimeAmPm.format(date);
 	    }catch(Exception ex){
 
 	    }
@@ -252,6 +252,7 @@ public class Incident extends TopModel implements java.io.Serializable{
     }
     @Transient
     public void setTimeStr(String val) {
+	System.err.println(" time "+val);
 	if(val != null && !val.equals("")){
 	    timeStr = val;
 	    date = setDateValue(dateStr, timeStr);
@@ -264,7 +265,7 @@ public class Incident extends TopModel implements java.io.Serializable{
 	   ttime != null && !ttime.isEmpty()){
 	    String str = ddate+" "+ttime;
 	    try{
-		ret = Helper.dfDateTime.parse(str);
+		ret = Helper.dfDateTimeAmPm.parse(str);
 	    }catch(Exception ex){
 		System.err.println(" invalid time format");
 		addError(" "+ex);
@@ -410,7 +411,7 @@ public class Incident extends TopModel implements java.io.Serializable{
 	String str = "";
 	if(endDate != null){
 	    try{
-		str = Helper.dfTime.format(endDate);
+		str = Helper.dfTimeAmPm.format(endDate);
 	    }catch(Exception ex){
 
 	    }
