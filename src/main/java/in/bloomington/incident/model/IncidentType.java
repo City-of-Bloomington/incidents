@@ -32,59 +32,63 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Table(name = "incident_types")
 public class IncidentType implements java.io.Serializable{
-		@Id
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-		@NotNull(message = "Incident type may not be null")
-		private String name;
-		//
+    @NotNull(message = "Incident type may not be null")
+    private String name;
+    //
 		
-		public IncidentType(){
+    public IncidentType(){
 
-		}
+    }
 		
-		public IncidentType(int id, @NotNull(message = "Incident type may not be null") String name) {
-				super();
-				this.id = id;
-				this.name = name;
-		}
+    public IncidentType(int id, @NotNull(message = "Incident type may not be null") String name) {
+	super();
+	this.id = id;
+	this.name = name;
+    }
 
-		public int getId() {
-				return id;
-		}
+    public int getId() {
+	return id;
+    }
 
-		public void setId(int id) {
-				this.id = id;
-		}
+    public void setId(int id) {
+	this.id = id;
+    }
 
-		public String getName() {
-				return name;
-		}
+    public String getName() {
+	return name;
+    }
 
-		public void setName(String name) {
-				this.name = name;
-		}
-		@Override
+    public void setName(String name) {
+	this.name = name;
+    }
+    @Transient
+    public boolean isVehicleRequired(){
+	return name != null && name.indexOf("Vehicle") > 0;
+    }
+    @Override
     public boolean equals(Object obj) { 
           
-				if(this == obj) 
-						return true; 
+	if(this == obj) 
+	    return true; 
 				
         if(obj == null || obj.getClass()!= this.getClass()) 
             return false; 
 				
         IncidentType one = (IncidentType) obj; 
         return one.getId() == this.getId();
-		}
-		@Override
-		public int hashCode(){ 
-				int ret = 29;
+    }
+    @Override
+    public int hashCode(){ 
+	int ret = 29;
         return ret += this.id; 
     }
 
-		@Override
-		public String toString() {
-			return name;
-		} 	
+    @Override
+    public String toString() {
+	return name;
+    } 	
 		
 }

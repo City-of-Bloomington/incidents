@@ -23,6 +23,7 @@
     <form action="#"
 	  th:action="@{/property/update/{id}(id=${property.id})}"
 	  th:object="${property}"
+	  onsubmit="return verifyTotalValue()"
 	  method="post">
       <input type="hidden" th:field="${property.incident}" />
       <input type="hidden" id="old_value_id" th:field="${property.oldValue}" />

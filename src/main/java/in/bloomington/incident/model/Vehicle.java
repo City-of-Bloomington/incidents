@@ -31,7 +31,7 @@ import in.bloomington.incident.utils.Helper;
 
 @Entity
 @Table(name = "vehicles")
-public class Vehicle implements java.io.Serializable{
+public class Vehicle extends TopModel implements java.io.Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -53,7 +53,14 @@ public class Vehicle implements java.io.Serializable{
     private String owner;
     private String description;
     private Double value;
-		
+
+    @Transient
+    double balance = 0; // needed when we add multiple items
+    @Transient
+    double oldValue = 0;
+    @Transient
+    double maxTotalValue = 0;
+    
     public Vehicle(int id,
 		   in.bloomington.incident.model.@NotNull(message = "Incident is required") Incident incident,
 		   CarDamageType carDamageType,
@@ -152,6 +159,54 @@ public class Vehicle implements java.io.Serializable{
 	if(val != null)
 	    this.year = val;
     }
+    public double getBalance() {
+	return balance;
+    }
+
+    public void setBalance(Double val) {
+	if(val != null)
+	    this.balance = val;
+    }
+    public double getOldValue() {
+	return oldValue;
+    }
+
+    public void setOldValue(Double val) {
+	if(val != null)
+	    this.oldValue = val;
+    }
+    public double getMaxTotalValue() {
+	return maxTotalValue;
+    }
+    public void setMaxTotalValue(Double val) {
+	if(val != null)
+	    this.maxTotalValue = val;
+    }
+    @Transient
+    public boolean verifyMaxTotal(){
+	boolean ret = true;
+	if(value != null){
+	    double total = balance+value-oldValue;
+	    if(total > maxTotalValue){
+		addError(total +" total value exceeds max total of  "+maxTotalValue);
+		ret = false;
+	    }
+	}
+	return ret;
+    }
+    @Transient
+    public boolean verify(){
+	boolean ret = true;
+	String str = getCarInfo();
+	if(str.isEmpty()){
+	    addError("No identification of the vehicle is provided");
+	    ret = false;
+	}
+	if(!verifyMaxTotal()){
+	    ret = false;
+	}
+	return ret;
+    }    
     @Transient
     public String getMakeInfo(){
 	String ret = "";
@@ -279,20 +334,23 @@ public class Vehicle implements java.io.Serializable{
 	}
 	str = getPlateInfo();
 	if(!str.isEmpty()){
-	    if(ret.isEmpty()) ret += ", ";
+	    if(!ret.isEmpty()) ret += ", ";
 	    ret += "Plate: "+str;
 	}
 	if(color != null && !color.isEmpty()){
-	    if(ret.isEmpty()) ret += ", ";
+	    if(!ret.isEmpty()) ret += ", ";
 	    ret += "Color: "+color;
 	}				
 	if(owner != null && !owner.isEmpty()){
-	    if(ret.isEmpty()) ret += ", ";
+	    if(!ret.isEmpty()) ret += ", ";
 	    ret += "Owner: "+owner;
 	}
-				
+	if(value != null && value > 0){
+	    if(!ret.isEmpty()) ret += ", ";
+	    ret += "Value: $"+value;
+	}
 	if(description != null && !description.isEmpty()){
-	    if(ret.isEmpty()) ret += ", ";
+	    if(!ret.isEmpty()) ret += ", ";
 	    ret += description;
 	}
 	return ret;

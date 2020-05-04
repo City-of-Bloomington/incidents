@@ -237,10 +237,18 @@ public class Property extends TopModel implements java.io.Serializable{
 	    addError("No identification of the item is provided");
 	    ret = false;
 	}
+	if(!hasValidValue()){
+	    addError("No value of the item is provided");
+	    ret = false;
+	}
 	if(!verifyMaxTotal()){
 	    ret = false;
 	}
 	return ret;
+    }
+    @Transient
+    public boolean hasValidValue(){
+	return value != null && value > 0;
     }
     @Transient
     public boolean verifyMaxTotal(){

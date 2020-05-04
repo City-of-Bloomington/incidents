@@ -58,17 +58,6 @@
 	    <input type="text" th:field="${person.lastname}" id="lastname" size="30" required="required" placeholder="Last Name" />
 	    Suffix
 	    <input type="text" th:field="${person.suffix}" id="suffix_id" size="6" placeholder="Suffix" />(Jr, Sr)
-	    <!--
-	    <span th:with="strList=${#lists.toList({'Jr', 'Sr'})}">
-	      <select id="suffix_id" th:field="${person.suffix}" >
-		<option value="">Suffix</option>
-		<option th:each="r : ${strList}"
-			th:value="${r}"
-			th:text="${r}">
-		</option>
-	      </select>	      
-	    </span>
-	    -->
 	  </dd>
 	  <dt>*Address: </dt>
 	  <dd>
@@ -180,7 +169,7 @@
 	  <dt>Occupation:</dt>
 	  <dd><input type="text" th:field="${person.occupation}" id="occupation" size="70" placeholder="Occupation" /></dd>
 	  <dd>All required fields must be filled in to Save and move on
-	    <input type="submit" value="Save" />
+	    <input type="submit" value="Next, Add Property" />
 	  </dd>
 	</dl>
       </fieldset>

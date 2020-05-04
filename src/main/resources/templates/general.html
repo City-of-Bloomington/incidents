@@ -29,26 +29,11 @@
      <script type="text/javascript"
 	     th:src="@{/js/incidents.js}">
      </script>
-
-     <title th:text="${title}"></title>
-   </head>
-   <head th:fragment="introHead">
-       <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-       <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
-       <link th:href = "@{/css/styles.css}" rel = "stylesheet"/>
-       <link th:href = "@{/css/main.css}" rel = "stylesheet"/>
-       <link th:href = "@{/css/jquery.timepicker.min.css}" rel = "stylesheet"/>
-       <script type="text/javascript"
-	       th:src="@{/js/jquery-3.5.0.min.js}">
-       </script>
-       <script type="text/javascript"
-	     th:src="@{/js/jquery.timepicker.min.js}">
-     </script>     
        <script type="text/javascript"
 	       th:src="@{/js/incidents_intro.js}">
        </script>
-       <title>Incidents</title>
-   </head>   
+     <title th:text="${title}"></title>
+   </head>
    <body>
      <header th:fragment="header">
        <div class="container">
@@ -132,7 +117,7 @@
      </p>
      <ul th:fragment="personInstructions">
        <li>Information about the Person Reporting this Incident </li>
-       <li>You can add one person at a time</li>
+       <li>Optional, you can add other people to incident after you add the first main person</li>
        <li>Person involved in the incident could be the property owner, victim and/or witness</li>
      </ul>
      <div th:fragment="propertyInstructions">

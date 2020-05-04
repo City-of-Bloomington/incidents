@@ -138,7 +138,7 @@ public class PersonController extends TopController{
         personService.save(person);
 	addMessage("Saved Succefully");
 	addMessagesAndErrorsToSession(session);
-	return "redirect:/incident/"+incident.getId(); 
+	return "redirect:/property/add/"+incident.getId(); 
     }
     
     @GetMapping("/person/{id}")

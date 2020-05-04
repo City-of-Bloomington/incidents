@@ -22,7 +22,9 @@
     </div>
     <form action="#"
 	  th:action="@{/property/save}"
-	  th:object="${property}" method="post">
+	  th:object="${property}"
+	  onsubmit="return verifyTotalValue()"
+	  method="post">
       <input type="hidden" th:field="${property.incident}" />
       <input type="hidden" id="old_value_id" th:field="${property.oldValue}" />
       <input type="hidden" id="balance_id" th:field="${property.balance}" />
@@ -74,8 +76,7 @@
 	</dd>
 	<dt>
 	  <label for="owener">Owner</label>
-	</dt>
-	<dd>
+	<dt>
 	  <input type="text" th:field="${property.owner}" id="owner" placeholder="property owner" size="30" maxlength="70" />
 	  <span th:if="${#fields.hasErrors('owner')}" th:errors="*{owner}"></span>
 	</dd>
@@ -87,9 +88,12 @@
 	    <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></span>
 	  </textarea>
 	</dd>
-	<dt>		
-	  <input type="submit" value="Add Property" />
-	</dt> 
+	<dd th:if="${vehicleRequired != null}">
+	  <input type="submit" value="Next, Add Vehicle" />
+	</dd>
+	<dd th:if="${vehicleRequired == null}">
+	  <input type="submit" value="Save" />
+	</dd>	
       </dl>
     </form>
   </body>

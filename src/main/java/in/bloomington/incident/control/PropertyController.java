@@ -44,8 +44,8 @@ public class PropertyController extends TopController{
     @Autowired
     private Environment env;		
     // max total value of damaged properties claim allowed
-    // default $750.0 if not set in properties file
-    @Value( "${incident.property.maxtotalvalue:750.0}")		
+    // default $2000.0 if not set in properties file
+    @Value( "${incident.property.maxtotalvalue:2000.0}")		
     private Double maxTotalValue;				
 
     @GetMapping("/property/add/{incident_id}")
@@ -53,10 +53,11 @@ public class PropertyController extends TopController{
 			      Model model) {
 				
 	Property property = new Property();
+	Incident incident = null;
 	try{
-	    Incident incident = incidentService.findById(incident_id);
+	    incident = incidentService.findById(incident_id);
 	    property.setIncident(incident);
-	    property.setBalance(incident.getPropertiesTotalValue());
+	    property.setBalance(incident.getTotalValue());
 	    property.setMaxTotalValue(maxTotalValue);
 	}catch(Exception ex){
 	    addError("Invalid incident "+incident_id);
@@ -66,6 +67,9 @@ public class PropertyController extends TopController{
 	List<DamageType> types = damageTypeService.getAll();
 	if(types != null)
 	    model.addAttribute("damageTypes", types);
+	if(incident.isVehicleRequired() && !incident.hasVehicleList()){
+	    model.addAttribute("vehicleRequired","true");
+	}
 	if(hasErrors()){
 	    model.addAttribute("errors",errors);
 	}
@@ -98,6 +102,12 @@ public class PropertyController extends TopController{
 	addMessage("Added Successfully");
 	addMessagesAndErrorsToSession(session);
 	int incident_id = property.getIncident().getId();
+	Incident incident = incidentService.findById(incident_id);
+	//
+	// next add vehicle if required
+	if(incident.isVehicleRequired() && !incident.hasVehicleList()){
+	    return "redirect:/vehicle/add/"+incident_id;
+	}
 	return "redirect:/incident/"+incident_id;
     }
 
@@ -110,7 +120,7 @@ public class PropertyController extends TopController{
 	    property = propertyService.findById(id);
 	    Incident incident = property.getIncident();
 	    if(incident != null){
-		property.setBalance(incident.getPropertiesTotalValue());
+		property.setBalance(incident.getTotalValue());
 	    }
 	    property.setMaxTotalValue(maxTotalValue);
 	}catch(Exception ex){

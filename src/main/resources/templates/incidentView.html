@@ -70,7 +70,7 @@
       <div th:insert="personsView::persons(${incident.persons})"></div>
     </div>
     <div th:if="${incident.hasPropertyList()}">
-      <div th:insert="propertiesView::properties(${incident.properties},${incident.propertiesTotalValueFr})"></div>
+      <div th:insert="propertiesView::properties(${incident.properties},${incident.totalValueFr})"></div>
     </div>
     <div th:if="${incident.hasVehicleList()}">
       <div th:insert="vehiclesView::vehicles(${incident.vehicles})"></div>

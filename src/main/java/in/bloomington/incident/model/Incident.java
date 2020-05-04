@@ -332,6 +332,14 @@ public class Incident extends TopModel implements java.io.Serializable{
     public boolean hasValidAddress(){
 	return this.invalidAddress == null;
     }
+    @Transient
+    public boolean isVehicleRequired(){
+	boolean ret = false;
+	if(incidentType != null && incidentType.isVehicleRequired()){
+	    ret = true;
+	}
+	return ret;
+    }
     public String getDateDescription() {
 	return dateDescription;
     }
@@ -559,12 +567,15 @@ public class Incident extends TopModel implements java.io.Serializable{
     @Transient
     public boolean canBeSubmitted(){
 	if(!hasPersonList()){
-	    addError("At least one person is required");
+	    addError("Person information are required");
 	    return false;
 	}
-	if( !hasPropertyList() &&
-	    !hasVehicleList()){
-	    addError("At one property or vehicle need to be added");
+	if(!hasPropertyList()){
+	    addError("You need to add property information");
+	    return false;
+	}
+	if(isVehicleRequired() && !hasVehicleList()){
+	    addError("You need to add vehicle information");
 	    return false;
 	}
 	if(hasActionLogs()){
@@ -607,7 +618,7 @@ public class Incident extends TopModel implements java.io.Serializable{
 	received = new Date();
     }
     @Transient
-    public double getPropertiesTotalValue(){
+    public double getTotalValue(){
 	double total = 0;
 	if(hasPropertyList()){
 	    if(properties  != null){
@@ -618,12 +629,21 @@ public class Incident extends TopModel implements java.io.Serializable{
 		}
 	    }
 	}
+	if(hasVehicleList()){
+	    if(vehicles  != null){
+		for(Vehicle one:vehicles){
+		    if(one.getValue() != null){
+			total += one.getValue();
+		    }
+		}
+	    }
+	}
 	return total;
     }
     @Transient
-    public String getPropertiesTotalValueFr(){
+    public String getTotalValueFr(){
 	String str="";
-	double total = getPropertiesTotalValue();
+	double total = getTotalValue();
 	if(total > 0){
 	    str = Helper.curFr.format(total);
 	}

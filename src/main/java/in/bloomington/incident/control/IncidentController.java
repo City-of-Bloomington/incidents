@@ -252,6 +252,16 @@ public class IncidentController extends TopController{
 	    redirectAttributes.addFlashAttribute("errors", errors);
 	    return "redirect:/error";
 	}
+	if(!incident.hasPropertyList()){
+	    addMessage("You need to add a property");
+	    addMessagesAndErrorsToSession(session);	    
+	    return "redirect:/property/add/"+id;
+	}
+	if(incident.isVehicleRequired() && !incident.hasVehicleList()){
+	    addMessage("You need to add a vehicle");
+	    addMessagesAndErrorsToSession(session);
+	    return "redirect:/vehicle/add/"+id;
+	}
 	if(incident.canBeChanged()){
 	    model.addAttribute("incident", incident);
 	    model.addAttribute("hostPath", host_path);	    

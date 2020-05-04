@@ -23,7 +23,10 @@
 	  th:action="@{/vehicle/update}"
 	  th:object="${vehicle}" method="post">
       <input type="hidden" th:field="${vehicle.incident}" />
-      <input type="hidden" th:field="${vehicle.id}" />			
+      <input type="hidden" th:field="${vehicle.id}" />
+      <input type="hidden" id="old_value_id" th:field="${vehicle.oldValue}" />
+      <input type="hidden" id="balance_id" th:field="${vehicle.balance}" />
+      <input type="hidden" id="max_total_id" th:field="${vehicle.maxTotalValue}" />	
       <dl>
 	<dt>Related incident</dt>
 	<dd><a th:href="@{/incident/{id}(id=${vehicle.incident.id})}">Back to Incident</a></dd>							

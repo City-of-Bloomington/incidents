@@ -6,7 +6,7 @@ var icons = {
 };
 
 function popwit(url, name) {
-		var args = "top=200,left=200,height=300,width=350,toolbar=0,menubar=0,location=0";
+    var args = "top=200,left=200,height=300,width=350,toolbar=0,menubar=0,location=0";
     if(typeof(popupWin) != "object" || popupWin.closed)  { 
         popupWin =  window.open(url, name, args); 
     } 
@@ -14,7 +14,7 @@ function popwit(url, name) {
         popupWin.location.href = url; 
     }
     if (window.focus) {popupWin.focus()}
-        return false;		
+    return false;		
  }
 function verifyConfirm(){
     var email = document.getElementById("email");
@@ -43,4 +43,30 @@ $(document).ready(function(){
 	scrollbar: true
     });
 });
+$('#value_id').change(function(){
+    var old_val = $('#old_value_id').val();
+    var $val_obj = $('#value_id');
+    var val = val_obj.val();
+    var balance = $('#balance_id').val();    
+    var max_val = $('#max_total_id').val();
+    if(!$val_obj.prop('required')){
+	// nothing
+	alert (" not required ");
+    }
+    else{
+	alert("checking value ");
+	if(!$.isNumeric(val)){
+	    alert("You need to provide a value ");
+	    $val_obj.focus();
+	    return;
+	}
+	var new_total = parseFloat(balance)+parseFloat(val) - parseFloat(old_val);
+	if(parseFloat(new_total) > parseFlaot(max_val) ){
+	    alert("Current balance of  $"+new_total+" is greater than the max allowed of  $"+max_val);
+	    $('#value_id').focus();
+	    return;
+	}
+    }
+});
+
 

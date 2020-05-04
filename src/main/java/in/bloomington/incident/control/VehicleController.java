@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import javax.validation.Valid;
 import javax.servlet.http.HttpSession;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.core.env.Environment;
+import org.springframework.beans.factory.annotation.Value;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import in.bloomington.incident.service.VehicleService;
@@ -38,13 +40,21 @@ public class VehicleController extends TopController{
     IncidentService incidentService;		
     @Autowired
     CarDamageTypeService damageTypeService;
+    private Environment env;		
+    // max total value of damaged properties claim allowed
+    // default $2000.0 if not set in properties file
+    @Value( "${incident.property.maxtotalvalue:2000.0}")		
+    private Double maxTotalValue;
 		
     @GetMapping("/vehicle/add/{incident_id}")
     public String newVehicle(@PathVariable("incident_id") int incident_id, Model model) {
 				
 	Vehicle vehicle = new Vehicle();
+	Incident incident = null;
 	try{
-	    Incident incident = incidentService.findById(incident_id);
+	    incident = incidentService.findById(incident_id);
+	    vehicle.setBalance(incident.getTotalValue());
+	    vehicle.setMaxTotalValue(maxTotalValue);	    
 	    vehicle.setIncident(incident);
 	}catch(Exception ex){
 	    addError("Invalid incident "+incident_id);
@@ -69,6 +79,17 @@ public class VehicleController extends TopController{
 	    logger.error(error);
             return "vehicleAdd";
         }
+	if(!vehicle.verify()){
+	    String error = vehicle.getErrorInfo();
+	    addError(error);
+	    logger.error(error);
+	    List<CarDamageType> types = damageTypeService.getAll();
+	    if(types != null)
+		model.addAttribute("damageTypes", types);
+	    model.addAttribute("vehicle", vehicle);
+	    handleErrorsAndMessages(model);
+	    return "vehicleAdd";						
+	}		
         vehicleService.save(vehicle);
 	addMessage("Added Successfully");
 	addMessagesAndErrorsToSession(session);
@@ -81,7 +102,11 @@ public class VehicleController extends TopController{
 	Vehicle vehicle = null;
 	try{
 	    vehicle = vehicleService.findById(id);
-						
+	    Incident incident = vehicle.getIncident();
+	    if(incident != null){
+		vehicle.setBalance(incident.getTotalValue());
+	    }
+	    vehicle.setMaxTotalValue(maxTotalValue);
 	}catch(Exception ex){
 	    addError("Invalid vehicle Id "+id);
 	    logger.error(" "+ex);
@@ -89,6 +114,7 @@ public class VehicleController extends TopController{
 	    return "redirect:/index";
 	}
 	model.addAttribute("vehicle", vehicle);
+	
 	List<CarDamageType> types = damageTypeService.getAll();
 	if(types != null)
 	    model.addAttribute("damageTypes", types);					
@@ -106,8 +132,19 @@ public class VehicleController extends TopController{
 	    logger.error(error);
 	    return "reditect:/error";
 	}
+	if(!vehicle.verify()){
+	    String error = vehicle.getErrorInfo();
+	    addError(error);
+	    logger.error(error);
+	    List<CarDamageType> types = damageTypeService.getAll();
+	    if(types != null)
+		model.addAttribute("damageTypes", types);
+	    model.addAttribute("vehicle", vehicle);
+	    handleErrorsAndMessages(model);
+	    return "vehicleUpdate";						
+	}
+	vehicleService.save(vehicle);	
 	addMessage("Updated Successfully");
-	vehicleService.save(vehicle);
 	Incident incident = vehicle.getIncident();
 	int incident_id = incident.getId();
 	addMessagesAndErrorsToSession(session);

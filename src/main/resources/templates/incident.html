@@ -93,7 +93,7 @@
       <div th:insert="personsShort::persons(${incident.persons})"></div>
     </div>
     <div th:if="${incident.hasPropertyList()}">
-      <div th:insert="propertiesShort::properties(${incident.properties},${incident.propertiesTotalValueFr})"></div>
+      <div th:insert="propertiesShort::properties(${incident.properties},${incident.totalValueFr})"></div>
     </div>
     <div th:if="${incident.hasVehicleList()}">
       <div th:insert="vehiclesShort::vehicles(${incident.vehicles})"></div>
