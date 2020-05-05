@@ -26,7 +26,7 @@
 	  onsubmit="return verifyTotalValue()"
 	  method="post">
       <input type="hidden" th:field="${property.incident}" />
-      <input type="hidden" id="old_value_id" th:field="${property.oldValue}" />
+      <input type="hidden" id="old_value_id" name="oldValue" th:value="${property.value}" />
       <input type="hidden" id="balance_id" th:field="${property.balance}" />
       <input type="hidden" id="max_total_id" th:field="${property.maxTotalValue}" />			
       <dl>
@@ -73,7 +73,7 @@
 	  <label for="value_id">Value</label>
 	</dt>
 	<dd>$
-	  <input type="text" th:field="${property.value}" id="value_id" placeholder="Value" />
+	  <input type="text" th:field="${property.value}" id="value_id" placeholder="Value" required="required" />
 	  <span th:if="${#fields.hasErrors('value')}" th:errors="*{value}"></span>
 	</dd>
 	

@@ -34,39 +34,51 @@ $(document).ready(function(){
     $('input.timepicker').timepicker({
 	timeFormat: 'hh:mm p',
 	interval: 15,
-	// minTime: '1',
-	// maxTime: '12:00pm',
-	// defaultTime: '11:00 PM',
 	startTime: '10:00 PM',
 	dynamic: false,
 	dropdown: true,
 	scrollbar: true
     });
 });
-$('#value_id').change(function(){
-    var old_val = $('#old_value_id').val();
-    var $val_obj = $('#value_id');
-    var val = val_obj.val();
-    var balance = $('#balance_id').val();    
-    var max_val = $('#max_total_id').val();
-    if(!$val_obj.prop('required')){
-	// nothing
-	alert (" not required ");
-    }
-    else{
-	alert("checking value ");
-	if(!$.isNumeric(val)){
-	    alert("You need to provide a value ");
-	    $val_obj.focus();
-	    return;
-	}
-	var new_total = parseFloat(balance)+parseFloat(val) - parseFloat(old_val);
-	if(parseFloat(new_total) > parseFlaot(max_val) ){
-	    alert("Current balance of  $"+new_total+" is greater than the max allowed of  $"+max_val);
-	    $('#value_id').focus();
-	    return;
-	}
-    }
+$(document).ready(function(){
+    $('#value_id').change(verifyTotalValue);
 });
 
+function verifyTotalValue(){
+    var old_val = $('#old_value_id').val();
+    var val = $('#value_id').val();
+    var balance = $('#balance_id').val();
+    var max_val = $('#max_total_id').val();
+    if(!$.isNumeric(val)){
+	alert("You need to provide a valid value ");
+	$('#value_id').focus();
+	return false;
+    }
+    if(!$(this).prop('required')){
+	// not required but what if the user enter a value
+	// still we need to check for the total allowed
+	if(val*1 > 0){
+	    var new_total = parseFloat(balance)+parseFloat(val) - parseFloat(old_val);
+	    if((new_total*1) > (max_val*1)){
+		alert("Current balance of  $"+new_total+" is greater than the max allowed of  $"+max_val);
+		$('#value_id').focus();
+		return false;
+	    }
+	}
+    }
+    else{
+	if(val.trim() == '' || val*1 == 0){
+	    alert("You need to provide a value for the damage ");
+	    $('#value_id').focus();
+	    return false;
+	}
+	var new_total = parseFloat(balance)+parseFloat(val) - parseFloat(old_val);
+	if((new_total*1) > (max_val*1)){
+	    alert("Current balance of  $"+new_total+" is greater than the max allowed of  $"+max_val);
+	    $('#value_id').focus();
+	    return false;
+	}
+    }
+    return true;
+}
 
