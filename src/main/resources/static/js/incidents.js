@@ -81,4 +81,67 @@ function verifyTotalValue(){
     }
     return true;
 }
+function verifyIncidentInput(){
+    var start_date = $('#start_date').val();
+    var start_time = $('#start_time').val();
+    var date_description = $('#date_description').val().trim();
+    var end_date = $('#end_date').val();
+    var end_time = $('#end_time').val();    
+    if(start_date === '' && start_time === '' && date_description === ''){
+	alert ('Please provide incident date and time');
+	$('#start_date').focus();
+	return false;
+    }
+    if(start_date != '' && start_time === ''){
+	alert ('Please provide incident start time');
+	$('#start_time').focus();
+	return false;
+    }
+    if(end_date != '' && end_time === ''){
+	alert ('Please provide incident end time');
+	$('#end_time').focus();
+	return false;
+    }    
+    var addr = $('#addr_id').val();
+    if(addr === ''){
+	alert ('Please provide incident address');
+	$('#addr_id').focus();
+	return false;
+    }
+    var city = $('#city_id').val();
+    if(city === ''){
+	alert ('Please provide city');
+	$('#city_id').focus();
+	return false;
+    }    
+    var state = $('#state_id').val();
+    if(state === ''){
+	alert ('Please provide state');
+	$('#state_id').focus();
+	return false;
+    }    
+    var zip = $('#zip_id').val();
+    if(zip === ''){
+	alert ('Please provide zip code');
+	$('#zip_id').focus();
+	return false;
+    }
+    var details = $('#details_id').val();
+    if(details === ''){
+	alert ('Please provide incident details');
+	$('#detail_id').focus();
+	return false;
+    }    
+    return true;
+}
+function popup(mylink, windowTitle) { 
+    if (! window.focus)return true;
+    var href;
+    if (typeof(mylink) == 'string') href=mylink;
+    else href=mylink.href; 
+    window.open(href, windowTitle, 'width=500,height=400,scrollbars=yes'); 
+    return false; 
+}
+
+
 

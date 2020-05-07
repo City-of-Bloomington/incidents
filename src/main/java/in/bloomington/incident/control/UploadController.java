@@ -9,9 +9,12 @@ package in.bloomington.incident.control;
 import java.util.List;
 import java.util.UUID;
 import java.io.File;
+import java.io.InputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.stream.Collectors;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.io.FileUtils;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -39,6 +42,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import javax.servlet.http.HttpServletResponse;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -91,7 +95,7 @@ public class UploadController extends TopController{
 	    addError("invalid incident "+id);
 	    System.err.println(""+ ex);
 	}
-	return "redirect:/start";
+	return "redirect:/incident/"+id;
     }		
     // delete by id
     @GetMapping("/media/delete/{id}")
@@ -183,6 +187,23 @@ public class UploadController extends TopController{
         }
         return null;
     }
+
+    @RequestMapping(value = "/media/image/{id}")
+    public void picture(HttpServletResponse response, @PathVariable int id) {
+	Media media = mediaService.findById(id);
+	int year = media.getYear();
+	String fullPath    = storagePath + "/"+year + "/" + media.getFileName();
+	File  imageFile        = new File(fullPath);
+        response.setContentType(media.getMimeType());
+	int size = (int)FileUtils.sizeOf(imageFile);
+        response.setContentLength(size);
+        try {
+            InputStream is = new FileInputStream(imageFile);
+            IOUtils.copy(is, response.getOutputStream());
+        } catch(IOException e) {
+            System.err.println("Could not show picture "+e);
+        }
+     }
 		
     String genNewFileName(String file_ext){
         return UUID.randomUUID().toString() + '.' + file_ext;

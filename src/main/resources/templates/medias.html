@@ -20,6 +20,7 @@
 	      <tr>
 		<th>File Name</th>
 		<th>Description</th>
+		<th>Show Image</th>
 		<th>Delete</th>
 	      </tr>
 	    </thead>
@@ -27,6 +28,7 @@
 	      <tr th:each="one : ${medias}">
 		<td><a th:href="@{/media/download/{id}(id=${one.id})}"><span th:text="${one.oldFileName}"></span></a></td>
 		<td th:text="${one.notes}"></td>
+		<td><a th:href="@{/media/image/{id}(id=${one.id})}" onclick="return popup(this, 'image')">Show Image</a></td>
 		<td><a th:href="@{/media/delete/{id}(id=${one.id})}">Delete</a></td>
 	      </tr>
 	    </tbody>

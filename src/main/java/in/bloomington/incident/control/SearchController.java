@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 //
+import in.bloomington.incident.service.IncidentIncompleteService;
 import in.bloomington.incident.service.IncidentReceivedService;
 import in.bloomington.incident.service.IncidentConfirmedService;
 import in.bloomington.incident.service.IncidentApprovedService;
@@ -31,6 +32,7 @@ import in.bloomington.incident.service.IncidentTypeService;
 import in.bloomington.incident.service.SearchService;
 import in.bloomington.incident.service.ActionService;
 import in.bloomington.incident.model.Incident;
+import in.bloomington.incident.model.IncidentIncomplete;
 import in.bloomington.incident.model.IncidentReceived;
 import in.bloomington.incident.model.IncidentConfirmed;
 import in.bloomington.incident.model.IncidentApproved;
@@ -41,6 +43,8 @@ import in.bloomington.incident.model.IncidentType;
 public class SearchController extends TopController{
 
     final static Logger logger = LoggerFactory.getLogger(SearchController.class);
+    @Autowired
+    IncidentIncompleteService incompleteService;
     @Autowired
     IncidentReceivedService receivedService;
     @Autowired
@@ -75,6 +79,28 @@ public class SearchController extends TopController{
 	}
         return "staff/received";
     }
+    @GetMapping("/search/incomplete")
+    public String findIncomplete(Model model) {
+	List<Incident> all = null;
+	List<IncidentIncomplete> plist = incompleteService.getAll();
+	if(plist != null){
+	    all = new ArrayList<>();
+	    for(IncidentIncomplete one:plist){
+		Incident incident = one.getIncident();
+		if(incident != null)
+		    all.add(incident);
+	    }
+	}
+	if(all != null && all.size() > 0){
+	    model.addAttribute("incidents", all);
+	}
+	else{
+	    addMessage("No incident found");
+	    model.addAttribute("messages", messages);
+	}
+        return "staff/incomplete";
+    }
+    
     @GetMapping("/search/confirmed")
     public String findConfirmed(Model model) {
 	List<Incident> all = null;

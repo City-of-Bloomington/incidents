@@ -56,19 +56,19 @@
 	</dd>
 	
 	<dt>
-	  <label for="damageType">Problem Type</label>
+	  <label class="required">*Problem Type</label>
 	</dt>
 	<dd>
 	  <ul class="menu">
             <li class="menu" th:each="r : ${damageTypes}">
-              <input type="radio" th:field="${property.damageType}" th:value="${r.id}" />
+              <input type="radio" th:field="${property.damageType}" th:value="${r.id}" required="required" />
               <label th:text="${r.name}"></label>
             </li>	    
 	  </ul>
 	</dd>
 	<br />
 	<dt>
-	  <label for="value_id">Value</label>
+	  <label for="value_id" class="required">*Value</label>
 	</dt>
 	<dd>$
 	  <input type="text" th:field="${property.value}" id="value_id" placeholder="Value" required="required" />
@@ -81,15 +81,15 @@
 	  <span th:if="${#fields.hasErrors('owner')}" th:errors="*{owner}"></span>
 	</dd>
 	<dt>
-	  <label for="description">Item Description</label>
+	  <label for="description" class="required">*Item Description</label>
 	</dt>
 	<dd>				
-	  <textarea th:field="${property.description}" id="description" placeholder="Description" rows="5" columns="50">
+	  <textarea th:field="${property.description}" id="description" placeholder="Description" rows="5" cols="50" required="required">
 	    <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></span>
 	  </textarea>
 	</dd>
 	<dd th:if="${vehicleRequired != null}">
-	  <input type="submit" value="Next, Add Vehicle" />
+	  <input type="submit" value="Save, Next Add Vehicle" />
 	</dd>
 	<dd th:if="${vehicleRequired == null}">
 	  <input type="submit" value="Save" />

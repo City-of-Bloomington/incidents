@@ -30,7 +30,7 @@
 	<dt>Related incident</dt>
 	<dd><a th:href="@{/incident/{id}(id=${vehicle.incident.id})}">Back to Incident</a></dd>							
 	<dt>
-	  <label for="damageType">*Damage Type</label>
+	  <label for="damageType_id" class="required">*Damage Type</label>
 	</dt>
 	<dd>
 	  <select id="damageType_id" th:field="${vehicle.carDamageType}" required="required">
@@ -42,10 +42,10 @@
 	  </select>
 	</dd>
 	<dt>
-	  <label for="brand">Vehicle Year</label>
+	  <label for="year">Vehicle Year</label>
 	</dt>
 	<dd>
-	  <input type="text" th:field="${vehicle.year}" id="brand" placeholder="year" />
+	  <input type="text" th:field="${vehicle.year}" id="year" placeholder="year" />
 	  <span th:if="${#fields.hasErrors('year')}" th:errors="*{year}"></span>
 	</dd>
 	<dt>
@@ -63,21 +63,21 @@
 	  <span th:if="${#fields.hasErrors('model')}" th:errors="*{model}"></span>
 	</dd>
 	<dt>
-	  <label for="model">Color</label>
+	  <label for="color">Color</label>
 	</dt>
 	<dd>
 	  <input type="text" th:field="${vehicle.color}" id="color" placeholder="Color" />
 	  <span th:if="${#fields.hasErrors('color')}" th:errors="*{color}"></span>
 	</dd>
 	<dt>
-	  <label for="serialNum">License Plate Number</label>
+	  <label for="plateNum">License Plate Number</label>
 	</dt>
 	<dd>
 	  <input type="text" th:field="${vehicle.plateNumber}" id="plateNum" placeholder="Plate Number" />
 	  <span th:if="${#fields.hasErrors('plateNumber')}" th:errors="*{plateNumber}"></span>
 	</dd>
 	<dt>
-	  <label for="serialNum">License Plate Year</label>
+	  <label for="plateYear">License Plate Year</label>
 	</dt>
 	<dd>
 	  <input type="text" th:field="${vehicle.plateYear}" id="plateYear" placeholder="Plate Year" />
@@ -105,7 +105,7 @@
 	  <span th:if="${#fields.hasErrors('owner')}" th:errors="*{owner}"></span>
 	</dd>
 	<dt>
-	  <label for="description">*Description</label>
+	  <label for="description" class="required">*Description</label>
 	</dt>
 	<dd>				
 	  <textarea th:field="${vehicle.description}" id="description" placeholder="Description" rows="5" columns="50" required="required">

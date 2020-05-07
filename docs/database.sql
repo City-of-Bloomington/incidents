@@ -294,6 +294,9 @@ insert into actions select * from statuses;
      create or Replace view incident_processed AS                                    select i.id from incidents i,action_logs l where l.incident_id=i.id and l.action_id = 5 and l.action_id in (select max(l2.action_id) from action_logs l2 where l2.incident_id=i.id);
 
 ;;
+;; incomplete incidents are those started but not submitted
+   create or Replace view incident_incomplete AS                                  select i.id from incidents i where i.address is not null and i.details is not null and i.id not in (select distinct(l.incident_id) from action_logs l);
+;;
 ;; for import, first we do clean up
 ;;
 delete from action_logs;

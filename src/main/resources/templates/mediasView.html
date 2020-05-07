@@ -11,7 +11,7 @@
     <header>
       <div th:replace="general::header-staff"></div>
     </header>  
-    <div th:fragment="medias(medias)">
+    <div th:fragment="mediasView(medias)">
       <h4>Uploaded Images</h4>
       <div th:switch="${medias}">
 	<h2 th:case="null">No files found</h2>
@@ -21,12 +21,14 @@
 	      <tr>
 		<th>File Name</th>
 		<th>Description</th>
+		<th>Show Image</th>
 	      </tr>
 	    </thead>
 	    <tbody>
 	      <tr th:each="one : ${medias}">
 		<td><a th:href="@{/media/download/{id}(id=${one.id})}"><span th:text="${one.oldFileName}"></span></a></td>
 		<td th:text="${one.notes}"></td>
+		<td><a th:href="@{/media/image/{id}(id=${one.id})}" onclick="return popup(this, 'image')">Show Image</a></td>		
 	      </tr>
 	    </tbody>
 	  </table>

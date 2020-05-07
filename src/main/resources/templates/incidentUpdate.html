@@ -24,6 +24,7 @@
     <form action="#"
 	  th:action="@{/incident/update/{id}(id=${incident.id})}"
 	  th:object="${incident}"
+	  onsubmit="return verifyIncidentInput()"
 	  method="post">
       <input type="hidden" th:field="${incident.email}" />
       <input type="hidden" th:field="${incident.receivedStr}" />
@@ -52,8 +53,8 @@
 	    <dd>
 	      If unsure of the exact date and time, describe below when this took place.
 	    </dd>
-	    <dd colspan='2'>
-	      <textarea th:field="${incident.dateDescription}" id="incident-dateDescription" rows="3" cols="60"></textarea>
+	    <dd>
+	      <textarea th:field="${incident.dateDescription}" id="date_description" rows="3" cols="60"></textarea>
 	    </dd>
 	  </dl>
       </fieldset>
@@ -80,10 +81,10 @@
 	  <dd><input type="text" th:field="${incident.address}" onchange="replaceMarker()" id="addr_id" value="" size="60" required="required" placeholder="Address" />
 	  </dd>
 	  <dt>
-	    <label for="city" class="required">City</label>
+	    <label for="city_id" class="required">City</label>
 	  </dt>
 	  <dd>
-	    <select th:field="${incident.city}" id="city">
+	    <select th:field="${incident.city}" id="city_id">
 	      <option value="">City</option>
 	      <option th:each="r : ${allCities}"
 		      th:value="${r}"
@@ -92,10 +93,10 @@
 	    </select>
 	  </dd>
 	  <dt>
-	    <label for="state" class="required">State</label>
+	    <label for="state_id" class="required">State</label>
 	  </td>
 	  <dd>
-	    <select th:field="${incident.state}" id="state">
+	    <select th:field="${incident.state}" id="state_id">
 	      <option value="">State</option>
 	      <option th:each="r : ${allStates}"
 		      th:value="${r}"
@@ -104,10 +105,10 @@
 	    </select>
 	  </dd>
 	  <dt>
-	    <label for="incident-zip" class="required">Zip Code</label>
+	    <label for="zip_id" class="required">Zip Code</label>
 	  </dt>
 	  <dd>
-	    <select th:field="${incident.zip}" id="zip">
+	    <select th:field="${incident.zip}" id="zip_id">
 	      <option value="">Zip</option>
 	      <option th:each="r : ${allZipCodes}"
 		      th:value="${r}"
@@ -141,10 +142,10 @@
 	      <textarea th:field="${incident.otherEntry}" id="other_entry" rows="3" cols="60" placeholder="Other entry" ></textarea>
 	    </dd>
 	    <dt>
-	      <label for="incident-details" class="required">Incident Details</label>
+	      <label for="details_id" class="required">Incident Details</label>
 	    </dt>
 	    <dd>
-	      <textarea th:field="${incident.details}" id="incident-details" rows="3" cols="60" required="required" placeholder="Incident Details" ></textarea>
+	      <textarea th:field="${incident.details}" id="details_id" rows="3" cols="60" required="required" placeholder="Incident Details" ></textarea>
 	    </dd>
 	    <dd colspan="2">Optional, if you have incident images available you will be able to upload them.</dd>
 	    <dd colspan="2"><input type="checkbox" th:field="${incident.haveMedia}" th:checked="${incident.haveMedia}?'checked'" value="y"  />Yes, I have incident images I would like to upload.</dd>

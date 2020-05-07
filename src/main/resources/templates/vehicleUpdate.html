@@ -43,14 +43,14 @@
 	  </select>
 	</dd>
 	<dt>
-	  <label for="brand">Vehicle Year</label>
+	  <label for="year">Vehicle Year</label>
 	</dt>
 	<dd>
-	  <input type="text" th:field="${vehicle.year}" id="brand" placeholder="year" />
+	  <input type="text" th:field="${vehicle.year}" id="year" placeholder="year" />
 	  <span th:if="${#fields.hasErrors('year')}" th:errors="*{year}"></span>
 	</dd>
 	<dt>
-	  <label for="model">Make</label>
+	  <label for="make">Make</label>
 	</dt>
 	<dd>
 	  <input type="text" th:field="${vehicle.make}" id="make" placeholder="Make" />
@@ -64,21 +64,21 @@
 	  <span th:if="${#fields.hasErrors('model')}" th:errors="*{model}"></span>
 	</dd>
 	<dt>
-	  <label for="model">Color</label>
+	  <label for="color">Color</label>
 	</dt>
 	<dd>
 	  <input type="text" th:field="${vehicle.color}" id="color" placeholder="Color" />
 	  <span th:if="${#fields.hasErrors('color')}" th:errors="*{color}"></span>
 	</dd>
 	<dt>
-	  <label for="serialNum">License Plate Number</label>
+	  <label for="plateNum">License Plate Number</label>
 	</dt>
 	<dd>
 	  <input type="text" th:field="${vehicle.plateNumber}" id="plateNum" placeholder="Plate Number" />
 	  <span th:if="${#fields.hasErrors('plateNumber')}" th:errors="*{plateNumber}"></span>
 	</dd>
 	<dt>
-	  <label for="serialNum">License Plate Year</label>
+	  <label for="plateYear">License Plate Year</label>
 	</dt>
 	<dd>
 	  <input type="text" th:field="${vehicle.plateYear}" id="plateYear" placeholder="Plate Year" />
@@ -106,10 +106,10 @@
 	  <span th:if="${#fields.hasErrors('owner')}" th:errors="*{owner}"></span>
 	</dd>
 	<dt>
-	  <label for="description">Description</label>
+	  <label for="description" class="required">*Description</label>
 	</dt>
 	<dd>				
-	  <textarea th:field="${vehicle.description}" id="description" placeholder="Description" rows="5" columns="50">
+	  <textarea th:field="${vehicle.description}" id="description" placeholder="Description" rows="5" columns="50" required="required">
 	    <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></span>
 	  </textarea>
 	</dd>
