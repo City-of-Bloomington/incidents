@@ -542,7 +542,13 @@ public class Incident extends TopModel implements java.io.Serializable{
     @Transient
     public boolean hasNextAction(){
 	getStatus();
-	if(lastAction != null && !lastAction.isProcessed()){
+	/**
+	if(lastAction != null && !(lastAction.isProcessed()
+				   || lastAction.isRejected())){
+	    return true;
+	}
+	*/
+	if(lastAction != null && lastAction.hasNextstep()){
 	    return true;
 	}
 	return false;

@@ -122,11 +122,12 @@ public class ProcessController extends TopController{
 	    model.addAttribute("incident", incident);
 	    model.addAttribute("actionLog", actionLog);
 	    model.addAttribute("actions", actions);
+	    
 	}catch(Exception ex){
 	    logger.error("Error no incident "+id+" not found "+ex);
 	    addError("Invalid incident ID "+id);
 	}
-	handleErrorsAndMessages(model);	
+	getMessagesAndErrorsFromSession(session, model);
 	return "staff/process_decision";
     }    
     //
@@ -142,7 +143,7 @@ public class ProcessController extends TopController{
 	    addError(error);
 	    logger.error("Error saving action "+error);
 	    addMessagesAndErrorsToSession(session);
-	    return "redirect:/search/preApproved";
+	    return "redirect:/search/confirmed";
 	}
 	user = findUserFromSession(session);
 	if(user == null ){
@@ -165,7 +166,7 @@ public class ProcessController extends TopController{
 		actionLog = new ActionLog();
 		actionLog.setIncident(incident);
 		// process action
-		actionLog.setAction(actionService.findById(5)); 
+		actionLog.setAction(actionService.findById(6)); 
 		actionLog.setDateNow();
 		actionLog.setUser(user);
 		actionLogService.save(actionLog);	    
@@ -183,7 +184,8 @@ public class ProcessController extends TopController{
 		    email.populateEmail(incident, "approve");
 		    sendApproveEmail(email, user);
 		    addMessage("Email sent successfully ");
-		    handleErrorsAndMessages(model);	
+		    // handleErrorsAndMessages(model);
+		    getMessagesAndErrorsFromSession(session, model);
 		    return "staff/staff_intro";
 		}
 		else if(action.isRejected()){
@@ -198,7 +200,7 @@ public class ProcessController extends TopController{
 	    return "redirect:/staff/staff_intro";
 	}
 	addMessagesAndErrorsToSession(session);
-	return "redirect:/search/preApproved";	    
+	return "redirect:/search/confirmed";	    
     }
     //reject email form
     @GetMapping("/rejectForm/{id}")
@@ -215,6 +217,7 @@ public class ProcessController extends TopController{
 	Email email = new Email();
 	email.populateEmail(incident, "reject");
 	model.addAttribute("email", email);
+	getMessagesAndErrorsFromSession(session, model);
 	return "staff/rejectForm";
     }
     //login staff
@@ -267,6 +270,12 @@ public class ProcessController extends TopController{
 	if(user == null){
 	    return "redirect:/login";
 	}
+	if(!actionLog.hasCaseNumber()){
+	    addError("Case number is required");
+	    addMessagesAndErrorsToSession(session);
+	    Incident incident = actionLog.getIncident();
+	    return "redirect:/process/"+incident.getId();
+	}
 	else if(user.canProcess()){
 	    actionLog.setDateNow();
 	    actionLog.setUser(user);
@@ -317,7 +326,7 @@ public class ProcessController extends TopController{
 	    logger.error("Error no incident "+id+" not found "+ex);
 	    addError("Invalid incident ID "+id);
 	}
-	handleErrorsAndMessages(model);
+	getMessagesAndErrorsFromSession(session, model);
 	return "incidentView";
 
     }    
@@ -347,8 +356,7 @@ public class ProcessController extends TopController{
 	List<Action> nextActions = null;
 	if(incident.hasNextAction()){
 	    Action lastAction = incident.getLastAction();
-	    // next workflow step is the last  workflow step + 1
-	    int next_step = lastAction.getWorkflowStep()+1;
+	    int next_step = lastAction.getNextstep();// lastAction.getWorkflowStep()+1;
 	    List<Action> actions = actionService.getAll();
 	    nextActions = new ArrayList<>();
 	    for(Action action:actions){

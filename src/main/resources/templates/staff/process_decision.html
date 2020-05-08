@@ -28,13 +28,13 @@
       <div th:insert="personsView::persons(${incident.persons})"></div>
     </div>
     <div th:if="${incident.hasPropertyList()}">
-      <div th:insert="propertiesView::properties(${incident.properties},${incident.propertiesTotalValueFr})"></div>
+      <div th:insert="propertiesView::properties(${incident.properties},${incident.totalValueFr})"></div>
     </div>
     <div th:if="${incident.hasVehicleList()}">
       <div th:insert="vehiclesView::vehicles(${incident.vehicles})"></div>
     </div>
     <div th:if="${incident.hasMediaList()}">
-      <div th:insert="mediasView::medias(${incident.medias})"></div>
+      <div th:insert="mediasView::mediasView(${incident.medias})"></div>
     </div>
     <div th:if="${incident.hasActionLogs()}">
       <div th:insert="actionLogs::actionLogs(${incident.actionLogs})"></div>
@@ -58,9 +58,7 @@
 	</tr>
 	<tr>
 	  <td>Case Number</td>
-	  <td>
-	    <input th:field="${actionLog.caseNumber}" size="10" maxlength="20" />
-	  </td>
+	  <td><input th:field="${actionLog.caseNumber}" size="10" maxlength="20" required="required" /></td>
 	</tr>
 	<tr>
 	  <td>Comments</td>

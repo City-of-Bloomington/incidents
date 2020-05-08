@@ -51,6 +51,7 @@ public class Action implements java.io.Serializable{
     private String name;
     private String description;
     private Integer workflowStep;
+    private Integer nextstep;
     @ManyToMany
     @JoinTable(name = "role_actions")
     List<Role> roles;
@@ -59,12 +60,13 @@ public class Action implements java.io.Serializable{
 
     }
 
-    public Action(int id, @NotNull String name, String description, Integer workflowStep, List<Role> roles) {
+    public Action(int id, @NotNull String name, String description, Integer workflowStep, Integer nextstep, List<Role> roles) {
 	super();
 	this.id = id;
 	this.name = name;
 	this.description = description;
 	this.workflowStep = workflowStep;
+	this.nextstep = nextstep;
 	this.roles = roles;
     }
 
@@ -100,9 +102,19 @@ public class Action implements java.io.Serializable{
 	return workflowStep;
     }
 
+    public void setNextstep(Integer val) {
+	this.nextstep = val;
+    }
+    public Integer getNextstep(){
+	return nextstep;
+    }
+    @Transient
+    public boolean hasNextstep(){
+	return nextstep != null && nextstep > 0;
+    }
     public void setWorkflowStep(Integer workflowStep) {
 	this.workflowStep = workflowStep;
-    }
+    }    
     public void setRoles(List<Role> roles) {
 	this.roles = roles;
     }

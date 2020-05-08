@@ -46,7 +46,7 @@ public class Role implements java.io.Serializable{
     List<User> users;
 		
     @ManyToMany
-    @JoinTable(name = "action_roles", joinColumns = @JoinColumn(name = "role_id"), inverseJoinColumns = @JoinColumn(name = "action_id"))
+    @JoinTable(name = "role_actions", joinColumns = @JoinColumn(name = "role_id"), inverseJoinColumns = @JoinColumn(name = "action_id"))
     List<Action> actions;		
     public Role(){
 

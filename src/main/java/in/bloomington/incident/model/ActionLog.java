@@ -127,7 +127,11 @@ public class ActionLog implements java.io.Serializable{
     @Transient
     public String getCaseNumber(){    
 	return caseNumber;
-    }    
+    }
+    @Transient
+    public boolean hasCaseNumber(){
+	return caseNumber != null && !caseNumber.isEmpty();
+    }
     @Override
     public boolean equals(Object obj) { 
           
