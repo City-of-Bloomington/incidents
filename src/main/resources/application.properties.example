@@ -78,3 +78,8 @@ incident.email.sender=
 spring.session.store-type=jdbc
 spring.session.jdbc.initialize-schema=always
 spring.session.timeout.seconds=900
+;;
+;; quartz related configuration
+;;
+spring.quartz.job-store-type = jdbc
+spring.quartz.properties.org.quartz.threadPool.threadCount = 5

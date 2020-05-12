@@ -344,7 +344,7 @@ public class IncidentController extends TopController{
 
 	    ActionLog actionLog = new ActionLog();
 	    actionLog.setIncident(incident);
-	    Action action = actionService.findById(1); // received action
+	    Action action = actionService.findById(2); // received action
 	    actionLog.setAction(action);
 	    actionLog.setDateNow();
 	    actionLogService.save(actionLog);
@@ -403,7 +403,7 @@ public class IncidentController extends TopController{
 	    //
 	    ActionLog actionLog = new ActionLog();
 	    actionLog.setIncident(incident);
-	    Action action = actionService.findById(2); // confirmed action
+	    Action action = actionService.findById(3); // confirmed action
 	    actionLog.setAction(action);
 	    actionLog.setDateNow();
 	    actionLogService.save(actionLog);

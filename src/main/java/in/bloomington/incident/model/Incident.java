@@ -466,6 +466,10 @@ public class Incident extends TopModel implements java.io.Serializable{
 	this.haveMedia = haveMedia;
     }
 
+    public boolean hasEmail() {
+	return email != null && !email.isEmpty();
+    }
+
     public String getEmail() {
 	return email;
     }

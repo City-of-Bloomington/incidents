@@ -212,7 +212,7 @@ public class ProcessController extends TopController{
 	User user = null;
 	user = findUserFromSession(session);
 	if(user == null){
-	    return "redirect:login";
+	    return "redirect:/login";
 	}
 	Email email = new Email();
 	email.populateEmail(incident, "reject");
@@ -234,7 +234,7 @@ public class ProcessController extends TopController{
 	}
 	User user = findUserFromSession(session);
 	if(user == null){
-	    return "redirect:login";
+	    return "redirect:/login";
 	}
 	else{
 	    email.setUser_id(user.getId());
