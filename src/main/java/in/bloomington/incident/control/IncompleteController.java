@@ -26,8 +26,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import javax.validation.Valid;
 import org.springframework.web.bind.annotation.RequestParam;
-//
-// implementation of logging is logback
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.mail.SimpleMailMessage;
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
+import java.nio.charset.StandardCharsets;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 //
@@ -46,6 +50,13 @@ public class IncompleteController extends TopController{
     private Scheduler scheduler;
     @Autowired
     IncidentIncompleteService incompleteService;
+
+    @Autowired
+    private JavaMailSender mailSender;
+    @Value("${incident.email.sender}")
+    private String sender;
+    @Value("${server.servlet.context-path}")
+    private String host_path;
     String jobName = "incomplete_job";
     String groupName = "incomplete_group";
 
@@ -63,19 +74,26 @@ public class IncompleteController extends TopController{
 	cal.set(Calendar.HOUR_OF_DAY, 7);//to run at 7am of the day
 	cal.set(Calendar.MINUTE, 0);
 	Date startTime = cal.getTime();
-	return TriggerBuilder.newTrigger()
-	    .withIdentity(jobName, groupName)
-	    .startAt(startTime)
-	    .withSchedule(
-			  SimpleScheduleBuilder.simpleSchedule()
-			  // .withIntervalInMinutes(3)
-			  .withIntervalInHours(24) // every day
-			  .repeatForever()
-			  // .withRepeatCount(2) 
-			  // .withMisfireHandlingInstructionFireNow())
-			  .withMisfireHandlingInstructionIgnoreMisfires())
-	    // .endAt(endDate)						  
-	    .build();
+	System.err.println(" scheduling "+startTime);
+	Trigger myTrigger = null;
+	try{
+	    myTrigger = TriggerBuilder.newTrigger()
+		.withIdentity(jobName, groupName)
+		.startAt(startTime)
+		.withSchedule(
+			      SimpleScheduleBuilder.simpleSchedule()
+			      // .withIntervalInMinutes(3)
+			      .withIntervalInHours(24) // every day
+			      .repeatForever()
+			      // .withRepeatCount(2) 
+			      // .withMisfireHandlingInstructionFireNow())
+			      .withMisfireHandlingInstructionIgnoreMisfires())
+		// .endAt(endDate)
+		.build();
+	}catch(Exception ex){
+	    System.err.println(" "+ex);
+	}
+	return myTrigger;
     }
     private String startSchedule(){
 	String back = "";
@@ -139,16 +157,50 @@ public class IncompleteController extends TopController{
 			all.add(incident);
 		}
 	    }
+	    if(all != null && all.size() > 0){
+		String subject = "Incident reporting submission request";
+		String url = host_path;
+		if(host_path.isEmpty()){
+		    url = "localhost:8080";
+		}
+		Incident one = all.get(0);
+		if(one.hasEmail()){
+		    String body = "We noticed that you haven't completed your report. Please click <a href='"+url+"/incident/"+one.getId()+"'>here</a> to finish and submit your report. If not, your report will not be seen or processed by a representative of the Bloomington Police Department.";
+		    String toEmail = one.getEmail();
+		    String back = sendMail(sender, toEmail, subject, body);
+		    if(!back.isEmpty()){
+			logger.error(back);
+		    }
+		}
+	    }
 	}
 	else if(schedule_flag){
-	    back = startSchedule();
+	    String back = startSchedule();
 	    if(!back.isEmpty()){
 		addError(back);
 	    }
 	}
-        return "staff/incomplete";
+        return "redirect:/search/incomplete";
     }
-    
+    private String sendMail(String fromEmail, String toEmail, String subject, String body) {
+	String back = "";
+        try {
+            logger.info("Sending Email to {}", toEmail);
+            MimeMessage message = mailSender.createMimeMessage();
 
+            MimeMessageHelper messageHelper = new MimeMessageHelper(message, StandardCharsets.UTF_8.toString());
+            messageHelper.setSubject(subject);
+            messageHelper.setText(body, true);
+            messageHelper.setFrom(fromEmail);
+            messageHelper.setTo(toEmail);
+	    System.err.println(" Sending email by mailSender");
+            mailSender.send(message);
+	    System.err.println(" Email sent successfully");	    
+        } catch (MessagingException ex) {
+            logger.error("Failed to send email to ", toEmail);
+	    back = "Failed to send email "+toEmail;
+        }
+	return back;
+     } 
 		
 }

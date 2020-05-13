@@ -15,16 +15,19 @@ import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.mail.MailProperties;
+import org.springframework.mail.MailSender;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.scheduling.quartz.QuartzJobBean;
 import org.springframework.stereotype.Component;
 import org.springframework.core.env.Environment;
 import org.springframework.beans.factory.annotation.Value;
-
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.nio.charset.StandardCharsets;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import in.bloomington.incident.model.Incident;
@@ -34,6 +37,8 @@ import in.bloomington.incident.model.IncidentIncomplete;
 import in.bloomington.incident.service.IncidentIncompleteService;
 import in.bloomington.incident.service.ActionService;
 import in.bloomington.incident.service.ActionLogService;
+
+
 @Component
 public class IncompleteJob extends QuartzJobBean{
 
@@ -42,11 +47,14 @@ public class IncompleteJob extends QuartzJobBean{
     static Logger logger = LoggerFactory.getLogger(IncompleteJob.class);
     String subject = "Incident reporting submission request";
     String fromEmail = "incident_reporting";
-    @Autowired
-    private JavaMailSender mailSender;
+    //    @Autowired
+    //    private JavaMailSender mailSender;
 
     @Autowired
-    private MailProperties mailProperties;
+    private JavaMailSender mailSender;
+    
+    // @Autowired
+    // private MailProperties mailProperties;
 
     @Autowired
     IncidentIncompleteService incompleteService;
@@ -68,6 +76,7 @@ public class IncompleteJob extends QuartzJobBean{
     protected void executeInternal(JobExecutionContext jobExecutionContext) throws JobExecutionException {
         logger.info("Executing Job ");
 	checkRecordsAndSendEmail();
+	
     }
     private void checkRecordsAndSendEmail(){
 	List<Incident> all = null;
@@ -114,6 +123,28 @@ public class IncompleteJob extends QuartzJobBean{
 	    System.err.println("Incomplete incidents: No records found, no email sent");
 	}
     }
+    /**
+    private String sendMail(String fromEmail, String toEmail, String subject, String body) {
+	String back = "";
+        try {
+            logger.info("Sending Email to {}", toEmail);
+            // MimeMessage message = mailSender.createMimeMessage();
+	    SimpleMailMessage message = new SimpleMailMessage(); 
+            
+            message.setSubject(subject);
+            message.setText(body);
+            message.setFrom(fromEmail);
+            message.setTo(toEmail);
+	    System.err.println(" Sending email by mailSender");
+            mailSender.send(message);
+	    System.err.println(" Email sent successfully");	    
+        } catch (Exception ex) {
+            logger.error("Failed to send email to ", toEmail);
+	    back = "Failed to send email "+toEmail;
+        }
+	return back;
+     }
+    */
     private String sendMail(String fromEmail, String toEmail, String subject, String body) {
 	String back = "";
         try {
@@ -125,15 +156,16 @@ public class IncompleteJob extends QuartzJobBean{
             messageHelper.setText(body, true);
             messageHelper.setFrom(fromEmail);
             messageHelper.setTo(toEmail);
-
+	    System.err.println(" Sending email by mailSender");
             mailSender.send(message);
+	    System.err.println(" Email sent successfully");	    
         } catch (MessagingException ex) {
             logger.error("Failed to send email to ", toEmail);
 	    back = "Failed to send email "+toEmail;
         }
 	return back;
-     }
-    
+     }    
+
 }
 
 
