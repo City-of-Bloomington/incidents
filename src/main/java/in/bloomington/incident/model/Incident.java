@@ -358,7 +358,7 @@ public class Incident extends TopModel implements java.io.Serializable{
     }
     @Transient
     public boolean canEdit(){
-	return actionLogs == null;
+	return canBeChanged();
     }
 				
     @Transient
@@ -588,7 +588,7 @@ public class Incident extends TopModel implements java.io.Serializable{
 	    addError("You need to add vehicle information");
 	    return false;
 	}
-	if(hasActionLogs()){
+	if(hasActionLogs() && !hasEmailActionLogOnly()){
 	    addError("The incident is already submitted");
 	    return false;
 	}
@@ -599,7 +599,7 @@ public class Incident extends TopModel implements java.io.Serializable{
     // if the incident is submitted no more changes can be done
     @Transient
     public boolean canBeChanged(){
-	return !hasActionLogs();
+	return !hasActionLogs() || hasEmailActionLogOnly();
     }    
 				
     @Transient
@@ -621,6 +621,19 @@ public class Incident extends TopModel implements java.io.Serializable{
     @Transient
     public boolean hasActionLogs(){
 	return actionLogs != null && actionLogs.size() > 0;
+    }
+    @Transient
+    public boolean hasEmailActionLogOnly(){
+	if(hasActionLogs()){
+	    if(actionLogs.size() == 1){
+		ActionLog actionLog = actionLogs.get(0);
+		Action action = actionLog.getAction();
+		if(action != null && action.getName().indexOf("email") > -1){
+		    return true;
+		}
+	    }
+	}
+	return false;
     }
 				
     @Transient

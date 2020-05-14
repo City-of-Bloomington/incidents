@@ -27,19 +27,19 @@ import org.springframework.web.bind.annotation.PathVariable;
 import javax.validation.Valid;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.mail.SimpleMailMessage;
-import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
-import java.nio.charset.StandardCharsets;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 //
 import in.bloomington.incident.model.User;
 import in.bloomington.incident.model.Incident;
 import in.bloomington.incident.model.IncidentIncomplete;
+import in.bloomington.incident.model.Action;
+import in.bloomington.incident.model.ActionLog;
 import in.bloomington.incident.control.IncompleteJob;
+import in.bloomington.incident.utils.EmailHelper;
 import in.bloomington.incident.service.IncidentIncompleteService;
+import in.bloomington.incident.service.ActionService;
+import in.bloomington.incident.service.ActionLogService;
 
 @Controller
 public class IncompleteController extends TopController{
@@ -50,9 +50,13 @@ public class IncompleteController extends TopController{
     private Scheduler scheduler;
     @Autowired
     IncidentIncompleteService incompleteService;
-
     @Autowired
     private JavaMailSender mailSender;
+    @Autowired
+    ActionService actionService;
+    @Autowired
+    ActionLogService actionLogService;
+    
     @Value("${incident.email.sender}")
     private String sender;
     @Value("${server.servlet.context-path}")
@@ -158,19 +162,9 @@ public class IncompleteController extends TopController{
 		}
 	    }
 	    if(all != null && all.size() > 0){
-		String subject = "Incident reporting submission request";
-		String url = host_path;
-		if(host_path.isEmpty()){
-		    url = "localhost:8080";
-		}
-		Incident one = all.get(0);
-		if(one.hasEmail()){
-		    String body = "We noticed that you haven't completed your report. Please click <a href='"+url+"/incident/"+one.getId()+"'>here</a> to finish and submit your report. If not, your report will not be seen or processed by a representative of the Bloomington Police Department.";
-		    String toEmail = one.getEmail();
-		    String back = sendMail(sender, toEmail, subject, body);
-		    if(!back.isEmpty()){
-			logger.error(back);
-		    }
+		String back = sendSubmissionEmails(all);
+		if(back.isEmpty()){
+		    addMessage("Emails sent successfully");
 		}
 	    }
 	}
@@ -182,25 +176,40 @@ public class IncompleteController extends TopController{
 	}
         return "redirect:/search/incomplete";
     }
-    private String sendMail(String fromEmail, String toEmail, String subject, String body) {
-	String back = "";
-        try {
-            logger.info("Sending Email to {}", toEmail);
-            MimeMessage message = mailSender.createMimeMessage();
-
-            MimeMessageHelper messageHelper = new MimeMessageHelper(message, StandardCharsets.UTF_8.toString());
-            messageHelper.setSubject(subject);
-            messageHelper.setText(body, true);
-            messageHelper.setFrom(fromEmail);
-            messageHelper.setTo(toEmail);
-	    System.err.println(" Sending email by mailSender");
-            mailSender.send(message);
-	    System.err.println(" Email sent successfully");	    
-        } catch (MessagingException ex) {
-            logger.error("Failed to send email to ", toEmail);
-	    back = "Failed to send email "+toEmail;
-        }
-	return back;
-     } 
+    private String sendSubmissionEmails(List<Incident> all){
+	String messages = "";
+	if(all != null && all.size() > 0){
+	    String subject = "Incident reporting submission request";
+	    String url = "https://"+host_path;
+	    if(host_path.isEmpty()){
+		url = "http://localhost:8080";
+	    }
+	    Incident one = all.get(0);
+	    if(one.hasEmail()){
+		String body = "We noticed that you haven't completed your report. Please click <a href='"+url+"/incident/"+one.getId()+"'>here</a> to finish and submit your report. If not, your report will not be seen or processed by a representative of the Bloomington Police Department.";
+		String toEmail = one.getEmail();
+		EmailHelper emailHelper = new EmailHelper(mailSender, sender, toEmail, subject, body);
+		String back = emailHelper.send();
+		if(back.isEmpty()){
+		    // success
+		    // action log
+		    ActionLog actionLog = new ActionLog();
+		    actionLog.setIncident(one);
+		    Action action = actionService.findById(1); // emailed
+		    actionLog.setAction(action);
+		    actionLog.setDateNow();
+		    actionLogService.save(actionLog);
+		}
+		else{
+		    addError(back);
+		    messages += back;
+		    logger.error(back);
+		    // failure
+		    // add email log
+		}
+	    }
+	}
+	return messages;
+    }
 		
 }

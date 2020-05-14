@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.validation.ObjectError;
 import org.springframework.validation.FieldError;
+import org.springframework.mail.javamail.JavaMailSender;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -46,7 +47,7 @@ import in.bloomington.incident.model.Person;
 import in.bloomington.incident.model.Request;
 import in.bloomington.incident.model.User;
 import in.bloomington.incident.utils.Helper;
-import in.bloomington.incident.utils.EmailHandle;
+import in.bloomington.incident.utils.EmailHelper;
 
 @Controller
 public class IncidentController extends TopController{
@@ -64,10 +65,11 @@ public class IncidentController extends TopController{
     ActionLogService actionLogService;
     @Autowired
     RequestService requestService;
-    // remove later
     @Autowired
     UserService userService;    
     @Autowired
+    private JavaMailSender mailSender;
+    
     private Environment env;
     @Value( "${incident.defaultcity}" )
     private String defaultCity;
@@ -75,8 +77,6 @@ public class IncidentController extends TopController{
     private String defaultState;		
     @Value( "${incident.zipcodes}" )
     private List<String> zipCodes;
-    @Value("${incident.email.host}")
-    private String email_host;
     @Value("${incident.email.sender}")
     private String email_sender;
     @Value("${incident.application.name}")
@@ -560,15 +560,16 @@ public class IncidentController extends TopController{
 	//
 	String subject = " Bloomington's Police Department Online Reporting Confirmation ";
 	String to = incident.getEmail();
-	String message = "Click on the link ";
-	message += url+id+"/"+hash+" to confirm.\n\n ";
-	message += " Once your report is reviewed it will either be accepted or rejected, at which time you will receive another email explaining the reason for denial or a report reference number.\n\n";
-	message += "Please do not reply to this email as this is an automated system.";
-	if(email_host == null || email_sender == null){
-	    String error = " no email host or sender specified";
-	    addError(error);
-	    logger.error(error);
-	    return error;
+	String body = "Click on the link ";
+	body += url+id+"/"+hash+" to confirm.\n\n ";
+	body += " Once your report is reviewed it will either be accepted or rejected, at which time you will receive another email explaining the reason for denial or a report reference number.\n\n";
+	body += "Please do not reply to this email as this is an automated system.";
+	EmailHelper emailHelper = new EmailHelper(mailSender, email_sender, to, subject, body);
+	String back = emailHelper.send();
+	if(!back.isEmpty()){
+	    addError(back);
+	    logger.error(back);
+	    ret += back;
 	}
 	/**
 	   System.err.println(" url "+url);
@@ -576,15 +577,16 @@ public class IncidentController extends TopController{
 	   System.err.println(" to "+to);
 	   System.err.println(" from "+email_sender);
 	*/
+	/**
 	EmailHandle emailer = new EmailHandle(email_host,
 					      to,
 					      email_sender,
 					      subject,
 					      message);
+	*/
 	//
 	// uncomment in production to send email
 	//
-	ret = emailer.send(); 
 	return ret;
     }
 

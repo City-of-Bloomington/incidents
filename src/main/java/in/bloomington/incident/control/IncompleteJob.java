@@ -14,18 +14,11 @@ import org.quartz.*;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.mail.MailProperties;
-import org.springframework.mail.MailSender;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
-import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.scheduling.quartz.QuartzJobBean;
 import org.springframework.stereotype.Component;
 import org.springframework.core.env.Environment;
 import org.springframework.beans.factory.annotation.Value;
-import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
 import java.nio.charset.StandardCharsets;
 
 import org.slf4j.Logger;
@@ -37,7 +30,7 @@ import in.bloomington.incident.model.IncidentIncomplete;
 import in.bloomington.incident.service.IncidentIncompleteService;
 import in.bloomington.incident.service.ActionService;
 import in.bloomington.incident.service.ActionLogService;
-
+import in.bloomington.incident.utils.EmailHelper;
 
 @Component
 public class IncompleteJob extends QuartzJobBean{
@@ -53,9 +46,6 @@ public class IncompleteJob extends QuartzJobBean{
     @Autowired
     private JavaMailSender mailSender;
     
-    // @Autowired
-    // private MailProperties mailProperties;
-
     @Autowired
     IncidentIncompleteService incompleteService;
 
@@ -90,15 +80,16 @@ public class IncompleteJob extends QuartzJobBean{
 	    }
 	}
 	if(all != null && all.size() > 0){
-	    String url = host_path;
+	    String url = "https//"+host_path;
 	    if(host_path.isEmpty()){
-		url = "localhost:8080";
+		url = "http://localhost:8080";
 	    }
 	    for(Incident incident:all){
 		if(incident.hasEmail()){
 		    String body = "We noticed that you haven't completed your report. Please click <a href='"+url+"/incident/"+incident.getId()+"'>here</a> to finish and submit your report. If not, your report will not be seen or processed by a representative of the Bloomington Police Department.";
 		    String toEmail = incident.getEmail();
-		    String back = sendMail(sender, toEmail, subject, body);
+		    EmailHelper emailHelper = new EmailHelper(mailSender,sender, toEmail, subject, body);
+		    String back = emailHelper.send();
 		    if(back.isEmpty()){
 			// success
 			// action log
@@ -123,48 +114,6 @@ public class IncompleteJob extends QuartzJobBean{
 	    System.err.println("Incomplete incidents: No records found, no email sent");
 	}
     }
-    /**
-    private String sendMail(String fromEmail, String toEmail, String subject, String body) {
-	String back = "";
-        try {
-            logger.info("Sending Email to {}", toEmail);
-            // MimeMessage message = mailSender.createMimeMessage();
-	    SimpleMailMessage message = new SimpleMailMessage(); 
-            
-            message.setSubject(subject);
-            message.setText(body);
-            message.setFrom(fromEmail);
-            message.setTo(toEmail);
-	    System.err.println(" Sending email by mailSender");
-            mailSender.send(message);
-	    System.err.println(" Email sent successfully");	    
-        } catch (Exception ex) {
-            logger.error("Failed to send email to ", toEmail);
-	    back = "Failed to send email "+toEmail;
-        }
-	return back;
-     }
-    */
-    private String sendMail(String fromEmail, String toEmail, String subject, String body) {
-	String back = "";
-        try {
-            logger.info("Sending Email to {}", toEmail);
-            MimeMessage message = mailSender.createMimeMessage();
-
-            MimeMessageHelper messageHelper = new MimeMessageHelper(message, StandardCharsets.UTF_8.toString());
-            messageHelper.setSubject(subject);
-            messageHelper.setText(body, true);
-            messageHelper.setFrom(fromEmail);
-            messageHelper.setTo(toEmail);
-	    System.err.println(" Sending email by mailSender");
-            mailSender.send(message);
-	    System.err.println(" Email sent successfully");	    
-        } catch (MessagingException ex) {
-            logger.error("Failed to send email to ", toEmail);
-	    back = "Failed to send email "+toEmail;
-        }
-	return back;
-     }    
 
 }
 

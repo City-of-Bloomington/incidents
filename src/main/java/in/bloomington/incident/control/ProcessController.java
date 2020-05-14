@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.core.env.Environment;
 import org.springframework.beans.factory.annotation.Value;
 import javax.validation.Valid;
@@ -42,7 +43,7 @@ import in.bloomington.incident.model.Request;
 import in.bloomington.incident.model.User;
 import in.bloomington.incident.model.Email;
 import in.bloomington.incident.utils.Helper;
-import in.bloomington.incident.utils.EmailHandle;
+import in.bloomington.incident.utils.EmailHelper;
 
 @Controller
 public class ProcessController extends TopController{
@@ -58,7 +59,9 @@ public class ProcessController extends TopController{
     ActionLogService actionLogService;
     @Autowired
     RequestService requestService;
-    // remove later
+    @Autowired
+    private JavaMailSender mailSender;    
+
     @Autowired
     UserService userService;    
     @Autowired
@@ -182,7 +185,7 @@ public class ProcessController extends TopController{
 		if(action.isApproved() && incident.hasCaseNumber()){
 		    Email email = new Email();
 		    email.populateEmail(incident, "approve");
-		    sendApproveEmail(email, user);
+		    sendApproveEmail(email);
 		    addMessage("Email sent successfully ");
 		    // handleErrorsAndMessages(model);
 		    getMessagesAndErrorsFromSession(session, model);
@@ -236,14 +239,11 @@ public class ProcessController extends TopController{
 	if(user == null){
 	    return "redirect:/login";
 	}
-	else{
-	    email.setUser_id(user.getId());
-	}
-	email.setSender(email_sender);// +",'-fwebmaster@bloomington.in.gov'");
+	email.setSender(email_sender);
 	//
 	// send the email
 	//
-	EmailHandle emailer = new EmailHandle(email, email_host);
+	EmailHelper emailer = new EmailHelper(mailSender, email);
 	String back = emailer.send();
 	//
 	// we may need add email to email logs
@@ -290,7 +290,7 @@ public class ProcessController extends TopController{
 		System.err.println(" **** sending approve email ");
 		Email email = new Email();
 		email.populateEmail(incident, "approve");
-		String back = sendApproveEmail(email, user);
+		String back = sendApproveEmail(email);
 		if(back.isEmpty())
 		    addMessage("Email sent successfully ");
 		else
@@ -338,16 +338,16 @@ public class ProcessController extends TopController{
 	}
 	return user;
     }
-    private String sendApproveEmail(Email email,
-				    User user
-				    ){
+    private String sendApproveEmail(Email email){
 	String ret = "";
-	EmailHandle emailer = new EmailHandle(email, email_host);
 	email.setSender(email_sender);
+	EmailHelper emailer = new EmailHelper(mailSender, email);
 	ret = emailer.send();
 	return ret;
     }
 
+
+    
     /**
      * find next action in workflow steps compare to the last
      * action (if any)
@@ -367,5 +367,7 @@ public class ProcessController extends TopController{
 	}
 	return nextActions;
     }
+
+    
 		
 }
