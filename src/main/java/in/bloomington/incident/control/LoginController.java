@@ -23,7 +23,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import javax.validation.Valid;
 import org.springframework.web.bind.annotation.RequestParam;
 //
-// implementation of logging is logback
+// implementation of logging is logback logging
+//
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 //
@@ -76,18 +77,17 @@ public class LoginController extends TopController{
 	}
 
 	Helper helper = new Helper();
-	   // for test purpose commented out
-	/**
+	// for test purpose commented out
+	// uncomment for production
 	if(!helper.checkUser(username, password, ldap_host)){
 	    addMessage("invalid username or password");
 	    addMessagesAndErrorsToSession(session);
 	    return "staff/loginForm";
 	}
-	*/
 	User user = userService.findUserByUsername(username);
 	if(user == null){
-	    addMessage("user not found "+username);
-	    addMessagesAndErrorsToSession(session);
+	    // addMessage("user not found "+username);
+	    // addMessagesAndErrorsToSession(session);
 	    return "staff/loginForm";
 	}
 	session.setAttribute("user", user);
@@ -98,6 +98,11 @@ public class LoginController extends TopController{
 			       HttpSession session) {
 	// check for user and if he is an admin
 	User user = getUserFromSession(session);
+	if(user == null){
+	    // addMessage("user not found "+username);
+	    // addMessagesAndErrorsToSession(session);
+	    return "staff/loginForm";
+	}	
 	System.err.println("settings: user from session "+user);
         return "staff/settings";
     }         

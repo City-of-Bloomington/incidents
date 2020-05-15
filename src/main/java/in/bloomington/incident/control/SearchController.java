@@ -8,6 +8,7 @@ package in.bloomington.incident.control;
 
 import java.util.List;
 import java.util.ArrayList;
+import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,12 +32,14 @@ import in.bloomington.incident.service.IncidentApprovedService;
 import in.bloomington.incident.service.IncidentTypeService;
 import in.bloomington.incident.service.SearchService;
 import in.bloomington.incident.service.ActionService;
+import in.bloomington.incident.service.UserService;
 import in.bloomington.incident.model.Incident;
 import in.bloomington.incident.model.IncidentIncomplete;
 import in.bloomington.incident.model.IncidentReceived;
 import in.bloomington.incident.model.IncidentConfirmed;
 import in.bloomington.incident.model.IncidentApproved;
 import in.bloomington.incident.model.Search;
+import in.bloomington.incident.model.User;
 import in.bloomington.incident.model.IncidentType;
 
 @Controller
@@ -57,9 +60,16 @@ public class SearchController extends TopController{
     SearchService searchService;
     @Autowired
     ActionService actionService;
+    @Autowired
+    UserService userService;
     
     @GetMapping("/search/received")
-    public String findReceieved(Model model) {
+    public String findReceieved(Model model,
+				HttpSession session) {
+	User user = findUserFromSession(session);
+	if(user == null ){
+	    return "redirect:/login";
+	}	
 	List<Incident> all = null;
 	List<IncidentReceived> plist = receivedService.getAll();
 	if(plist != null){
@@ -80,8 +90,13 @@ public class SearchController extends TopController{
         return "staff/received";
     }
     @GetMapping("/search/incomplete")
-    public String findIncomplete(Model model) {
+    public String findIncomplete(Model model,
+				 HttpSession session) {
 	List<Incident> all = null;
+	User user = findUserFromSession(session);
+	if(user == null ){
+	    return "redirect:/login";
+	}	
 	List<IncidentIncomplete> plist = incompleteService.getAll();
 	if(plist != null){
 	    all = new ArrayList<>();
@@ -102,8 +117,13 @@ public class SearchController extends TopController{
     }
     
     @GetMapping("/search/confirmed")
-    public String findConfirmed(Model model) {
+    public String findConfirmed(Model model,
+				HttpSession session) {
 	List<Incident> all = null;
+	User user = findUserFromSession(session);
+	if(user == null ){
+	    return "redirect:/login";
+	}	
 	List<IncidentConfirmed> plist = confirmedService.getAll();
 	if(plist != null){
 	    all = new ArrayList<>();
@@ -124,8 +144,13 @@ public class SearchController extends TopController{
     }    
     
     @GetMapping("/search/approved")
-    public String findApproved(Model model) {
+    public String findApproved(Model model,
+			       HttpSession session) {
 	List<Incident> all = null;
+	User user = findUserFromSession(session);
+	if(user == null ){
+	    return "redirect:/login";
+	}	
 	List<IncidentApproved> plist = approvedService.getAll();
 	if(plist != null){
 	    all = new ArrayList<>();
@@ -145,7 +170,11 @@ public class SearchController extends TopController{
         return "staff/approved";
     }
     @GetMapping("/search")
-    public String search(Model model) {
+    public String search(Model model, HttpSession session) {
+	User user = findUserFromSession(session);
+	if(user == null ){
+	    return "redirect:/login";
+	}	
 	Search search = new Search();
 	List<IncidentType> types = incidentTypeService.getAll();
         model.addAttribute("search", search);
@@ -160,11 +189,17 @@ public class SearchController extends TopController{
     @PostMapping("/search/find")
     public String searchFind(@Valid Search search,
 			    BindingResult result,
-			    Model model) {
+			     Model model,
+			     HttpSession session
+			     ) {
         if (result.hasErrors()) {
 	    logger.error(" Error creating new action ");
             return "redirect:/search";
         }
+	User user = findUserFromSession(session);
+	if(user == null ){
+	    return "redirect:/login";
+	}	
 	if(!search.isValid()){
 	    addError("You have to fill some search fields");
 	    
@@ -188,7 +223,14 @@ public class SearchController extends TopController{
 	model.addAttribute("messages", getMessages());				
         return "incidents";
     }    
-    
+    private User findUserFromSession(HttpSession session){
+	User user = null;
+    	User user2 = getUserFromSession(session);
+	if(user2 != null){
+	    user = userService.findById(user2.getId());
+	}
+	return user;
+    }    
     
 		
 }

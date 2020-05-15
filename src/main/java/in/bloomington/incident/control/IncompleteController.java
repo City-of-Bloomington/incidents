@@ -40,6 +40,7 @@ import in.bloomington.incident.utils.EmailHelper;
 import in.bloomington.incident.service.IncidentIncompleteService;
 import in.bloomington.incident.service.ActionService;
 import in.bloomington.incident.service.ActionLogService;
+import in.bloomington.incident.service.UserService;
 
 @Controller
 public class IncompleteController extends TopController{
@@ -54,6 +55,8 @@ public class IncompleteController extends TopController{
     private JavaMailSender mailSender;
     @Autowired
     ActionService actionService;
+    @Autowired
+    UserService userService;    
     @Autowired
     ActionLogService actionLogService;
     
@@ -116,6 +119,12 @@ public class IncompleteController extends TopController{
     public String incompleteOptions(Model model,
 				    HttpSession session
 				    ) {
+	User user = findUserFromSession(session);
+	if(user == null){
+	    // addMessage("user not found "+username);
+	    // addMessagesAndErrorsToSession(session);
+	    return "staff/loginForm";
+	}
 	List<Incident> all = null;
 	List<IncidentIncomplete> plist = incompleteService.getAll();
 	if(plist != null){
@@ -142,6 +151,12 @@ public class IncompleteController extends TopController{
 				   HttpSession session
 			      ){
 	boolean schedule_flag = false, run_flag=false;
+	User user = findUserFromSession(session);
+	if(user == null){
+	    // addMessage("user not found "+username);
+	    // addMessagesAndErrorsToSession(session);
+	    return "staff/loginForm";
+	}	
 	if(action !=null){
 	    if(action.equals("Schedule")){
 		schedule_flag = true;
@@ -211,5 +226,12 @@ public class IncompleteController extends TopController{
 	}
 	return messages;
     }
-		
+    private User findUserFromSession(HttpSession session){
+	User user = null;
+    	User user2 = getUserFromSession(session);
+	if(user2 != null){
+	    user = userService.findById(user2.getId());
+	}
+	return user;
+    }   		
 }

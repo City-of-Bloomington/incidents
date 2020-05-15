@@ -151,8 +151,6 @@ insert into actions select * from statuses;
 
 ;; later drop the old statuses table
 
-  create table action_roles(                                                           action_id int unsigned not null,                                                role_id int unsigned not null,                                                  FOREIGN KEY (action_id) REFERENCES actions (id),                                FOREIGN KEY (role_id) REFERENCES roles (id),                                    unique(action_id, role_id)                                                      )engine=InnoDB;
-
   create table role_actions(                                                           role_id int unsigned not null,                                                  action_id int unsigned not null,                                                 FOREIGN KEY (action_id) REFERENCES actions (id),                                FOREIGN KEY (role_id) REFERENCES roles (id),                                    primary key(role_id, action_id)                                               )engine=InnoDB;	
 
 	insert into role_actions select role_id,action_id from action_roles;
@@ -335,7 +333,7 @@ delete from incidents;
  alter table vehicles add value decimal(10,2);
 
 ;;
-;;
+;; actions table
  id | name      | description              | workflow_step |
 +----+-----------+--------------------------+---------------+
 |  1 | received  | Incident report received |             1 |
