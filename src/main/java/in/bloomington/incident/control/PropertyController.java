@@ -64,9 +64,11 @@ public class PropertyController extends TopController{
 	    logger.error(" "+ex);
 	}
         model.addAttribute("property", property);
-	List<DamageType> types = damageTypeService.getAll();
-	if(types != null)
-	    model.addAttribute("damageTypes", types);
+	if(incident.isNotLostRelated()){
+	    List<DamageType> types = damageTypeService.getActiveOnly();
+	    if(types != null)
+		model.addAttribute("damageTypes", types);
+	}
 	if(incident.isVehicleRequired() && !incident.hasVehicleList()){
 	    model.addAttribute("vehicleRequired","true");
 	}
@@ -92,7 +94,7 @@ public class PropertyController extends TopController{
 	    String error = property.getErrorInfo();
 	    addError(error);
 	    logger.error(error);
-	    List<DamageType> types = damageTypeService.getAll();
+	    List<DamageType> types = damageTypeService.getActiveOnly();
 	    if(types != null)
 		model.addAttribute("damageTypes", types);
 	    handleErrorsAndMessages(model);
@@ -116,9 +118,10 @@ public class PropertyController extends TopController{
 			       Model model,
 			       HttpSession session) {
 	Property property = null;
+	Incident incident = null;
 	try{
 	    property = propertyService.findById(id);
-	    Incident incident = property.getIncident();
+	    incident = property.getIncident();
 	    if(incident != null){
 		property.setBalance(incident.getTotalValue());
 	    }
@@ -130,9 +133,11 @@ public class PropertyController extends TopController{
 	    return "redirect:/index";
 	}
 	model.addAttribute("property", property);
-	List<DamageType> types = damageTypeService.getAll();
-	if(types != null)
-	    model.addAttribute("damageTypes", types);
+	if(incident.isNotLostRelated()){
+	    List<DamageType> types = damageTypeService.getActiveOnly();
+	    if(types != null)
+		model.addAttribute("damageTypes", types);
+	}
 	handleErrorsAndMessages(model);
 	return "propertyUpdate";
     }
@@ -154,7 +159,7 @@ public class PropertyController extends TopController{
 	    String error = property.getErrorInfo();
 	    addError(error);
 	    logger.error(error);
-	    model.addAttribute("properties", propertyService.getAll());
+	    // model.addAttribute("properties", propertyService.getAll());
 	    handleErrorsAndMessages(model);
 	    return "propertyUpdate";						
 	}

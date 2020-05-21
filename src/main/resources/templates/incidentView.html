@@ -51,12 +51,16 @@
 	  <dd>
 	    <span th:text="${incident.addressInfo}"> </span>
 	  </dd>
+	</dl>
+	<dl th:if="${incident.hasAccessInfo()}">
 	  <dt>
 	    <label>Entry access:</label>
 	  </dt>
 	  <dd>
 	    <span th:text="${incident.entryInfo}" ></span>
 	  </dd>
+	</dl>
+	<dl>
 	  <dt>
 	    <label>Incident Details</label>
 	  </dt>

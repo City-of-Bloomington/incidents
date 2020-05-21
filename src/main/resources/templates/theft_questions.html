@@ -47,8 +47,8 @@
 	  </ul>
 	</form>
       </div>
-      <div class="questions" style="display:none">
-	<p>3. Was a vehicle stolen?
+      <div class="questions" style="display:none" id="lastQuestion">
+	<p>3. Is the stolen property a firearm, vehicle or license plate?
 	</p>
 	<form>
 	  <ul>
@@ -59,30 +59,6 @@
 	  </ul>
 	</form>
       </div>
-      <div class="questions" style="display:none">
-	<p>4. Was a firearm stolen?
-	</p>
-	<form>
-	  <ul>
-            <li> <input class="option" type="radio" name="question4" value="Stop. Please contact us at 812-339-4477 to make this report." />Yes
-	    </li>
-            <li> <input class="option" type="radio" name="question4" value="Next" />No
-	    </li>
-	  </ul>
-	</form>
-      </div>
-      <div class="questions" style="display:none" id="lastQuestion">
-	<p>5. Are you reporting a Lost or stolen license plates?
-	</p>
-	<form>
-	  <ul>
-            <li> <input class="option" type="radio" name="question5" value="Stop. Please contact us at 812-339-4477 to make this report." />Yes
-	    </li>
-            <li> <input class="option" type="radio" name="question5" value="finalStep" />No
-	    </li>
-	  </ul>
-	</form>
-      </div>        
       <div id="next_div">
 	Click on <input type="button" id='next' value="Next" /> to continue.
       </div>
@@ -91,13 +67,10 @@
       </div>
       <br />
       <div id="finalStep" class="questions" style="display:none">
+	<p> In the next step you will provide a valid email, please click on Next </p>
 	<form action="#"
-	      th:action="@{/initialStart}"
-	      onsubmit="return verifyConfirm();"
-	      method="post">	
-	  <input type="hidden" name="type_id" value="1" />
-	  <div th:replace="general::reportSteps"></div>
-	  <div th:replace="general::emailFields"></div>
+	      th:action="@{/emailRequest/1}"
+	      method="get">	
 	  <button type="submit"> Next </button>
 	</form>
       </div>          

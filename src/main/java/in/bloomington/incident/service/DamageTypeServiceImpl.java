@@ -17,37 +17,46 @@ import in.bloomington.incident.model.DamageType;
 @Service
 public class DamageTypeServiceImpl implements DamageTypeService {
 
-		@Autowired
-		DamageTypeRepository repository;
+    @Autowired
+    DamageTypeRepository repository;
 
-		@Override
-		public void save(DamageType type){
-				repository.save(type);
-		}
-		@Override
-		public DamageType findById(int id){
-				DamageType type = repository.findById(id)
-						.orElseThrow(() -> new IllegalArgumentException("Invalid damage type Id:" + id));
-				return type;
-		}		
+    @Override
+    public void save(DamageType type){
+	repository.save(type);
+    }
+    @Override
+    public DamageType findById(int id){
+	DamageType type = repository.findById(id)
+	    .orElseThrow(() -> new IllegalArgumentException("Invalid damage type Id:" + id));
+	return type;
+    }		
 		
-		@Override
-		public void update(DamageType type){
-				repository.save(type);
-		}
-		@Override
-		public void delete(int id){
-				repository.deleteById(id);
-		}
-		@Override
-		public List<DamageType> getAll(){
-				List<DamageType> all = null;
-				Iterable<DamageType> it = repository.findAll();
-				all = new ArrayList<>();
-				for(DamageType one:it){
-						all.add(one);
-				}
-				return all;
-		}
-
+    @Override
+    public void update(DamageType type){
+	repository.save(type);
+    }
+    @Override
+    public void delete(int id){
+	repository.deleteById(id);
+    }
+    @Override
+    public List<DamageType> getAll(){
+	List<DamageType> all = null;
+	Iterable<DamageType> it = repository.findAll();
+	all = new ArrayList<>();
+	for(DamageType one:it){
+	    all.add(one);
+	}
+	return all;
+    }
+    @Override
+    public List<DamageType> getActiveOnly(){
+	List<DamageType> activeOnly = new ArrayList<>();
+	List<DamageType> all = getAll();
+	for(DamageType one:all){
+	    if(one.isActive())
+		activeOnly.add(one);
+	}	
+	return activeOnly;
+    }
 }

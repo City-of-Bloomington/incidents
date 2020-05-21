@@ -29,12 +29,31 @@
       <input type="hidden" id="old_value_id" th:field="${property.oldValue}" />
       <input type="hidden" id="balance_id" th:field="${property.balance}" />
       <input type="hidden" id="max_total_id" th:field="${property.maxTotalValue}" />			
-      <dl>
-	<dt>Related incident</dt>
-	<dd><a th:href="@{/incident/{id}(id=${property.incident.id})}">Back to Incident</a></dd>							
-	<td>
+
+      <div>
+	<label> Related incident </label>
+	<a th:href="@{/incident/{id}(id=${property.incident.id})}">Back to Incident</a>
+      </div>
+      <div th:if="${damageTypes}">
+	<dl>
+	  <dt>
+	    <label class="required">*Problem Type</label>
+	  </dt>
+	  <dd>
+	    <ul class="menu">
+              <li class="menu" th:each="r : ${damageTypes}">
+		<input type="radio" th:field="${property.damageType}" th:value="${r.id}" required="required" />
+		<label th:text="${r.name}"></label>
+              </li>	    
+	    </ul>
+	  </dd>
+	</dl>
+      </div>
+      <br />
+      <dl>	
+	<dt>
 	  <label for="brand">Brand</label>
-	</td>
+	</dt>
 	<dd>
 	  <input type="text" th:field="${property.brand}" id="brand" placeholder="Brand" />
 	  <span th:if="${#fields.hasErrors('brand')}" th:errors="*{brand}"></span>
@@ -54,18 +73,6 @@
 	  <input type="text" th:field="${property.serialNum}" id="serialNum" placeholder="Serial Number" />
 	  <span th:if="${#fields.hasErrors('serialNum')}" th:errors="*{serialNum}"></span>
 	</dd>
-	
-	<dt>
-	  <label class="required">*Problem Type</label>
-	</dt>
-	<dd>
-	  <ul class="menu">
-            <li class="menu" th:each="r : ${damageTypes}">
-              <input type="radio" th:field="${property.damageType}" th:value="${r.id}" required="required" />
-              <label th:text="${r.name}"></label>
-            </li>	    
-	  </ul>
-	</dd>
 	<br />
 	<dt>
 	  <label for="value_id" class="required">*Value</label>
@@ -76,7 +83,8 @@
 	</dd>
 	<dt>
 	  <label for="owener">Owner</label>
-	<dt>
+	</dt>
+	<dd>
 	  <input type="text" th:field="${property.owner}" id="owner" placeholder="property owner" size="30" maxlength="70" />
 	  <span th:if="${#fields.hasErrors('owner')}" th:errors="*{owner}"></span>
 	</dd>

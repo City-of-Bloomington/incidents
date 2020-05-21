@@ -288,7 +288,7 @@ insert into actions select * from statuses;
 
 ;;
 ;; incomplete incidents are those started but not submitted
-   create or Replace view incident_incomplete AS                                  select i.id from incidents i where i.address is not null and i.details is not null and i.id not in (select distinct(l.incident_id) from action_logs l);
+   create or Replace view incident_incomplete AS                                  select i.id from incidents i where i.address is not null and i.details is not null and 0 = (select count(*) from action_logs l where l.incident_id=i.id);
 ;;
 ;; for import, first we do clean up
 ;;
@@ -421,5 +421,6 @@ old role_actions;
 
 
 ;; need to update views
-
-
+;;
+ alter table damage_types add inactive char(1);
+ update damage_types set inactive='y' where id=3;

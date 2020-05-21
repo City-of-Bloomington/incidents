@@ -34,7 +34,7 @@ $(document).ready(function(){
     $('input.timepicker').timepicker({
 	timeFormat: 'hh:mm p',
 	interval: 15,
-	startTime: '10:00 PM',
+	startTime: '12:00 AM',
 	dynamic: false,
 	dropdown: true,
 	scrollbar: true

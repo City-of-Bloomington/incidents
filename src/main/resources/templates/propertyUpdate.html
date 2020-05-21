@@ -29,18 +29,33 @@
       <input type="hidden" id="old_value_id" name="oldValue" th:value="${property.value}" />
       <input type="hidden" id="balance_id" th:field="${property.balance}" />
       <input type="hidden" id="max_total_id" th:field="${property.maxTotalValue}" />			
+      <div>
+	<label>Related incident</label>
+	<a th:href="@{/incident/{id}(id=${property.incident.id})}">Back to Incident</a>							
+      </div>
+      <div th:if="${damageTypes}">
+	<dl>
+	  <dt>
+	    <label class="required">*Problem Type</label>
+	  </dt>
+	  <dd>
+	    <ul class="menu">
+              <li class="menu" th:each="r : ${damageTypes}">
+		<input type="radio" th:field="${property.damageType}" th:value="${r.id}" required="required" />
+		<label th:text="${r.name}"></label>
+              </li>	    
+	    </ul>
+	  </dd>
+	</dl>
+      </div>      
       <dl>
-	<dt>Related incident</dt>
-	<dd><a th:href="@{/incident/{id}(id=${property.incident.id})}">Back to Incident</a></dt>							
-
-	<dd>
+	<dt>
 	  <label for="brand">Brand</label>
 	</dt>
 	<dd>
 	  <input type="text" th:field="${property.brand}" id="brand" placeholder="Brand" />
 	  <span th:if="${#fields.hasErrors('brand')}" th:errors="*{brand}"></span>
 	</dd>
-	
 	<dt>
 	  <label for="model">Model</label>
 	</dt>

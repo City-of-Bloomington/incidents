@@ -34,38 +34,14 @@
 	  </ul>
 	</form>
       </div>
-      <div class="questions" style="display:none">
-	<p>2. Is the lost a vehicle?
+      <div class="questions" style="display:none" id="lastQuestion">
+	<p>2. Is the lost property a firearm, vehicle or license plate?
 	</p>
 	<form>
 	  <ul>	  
             <li> <input class="option" type="radio" name="question2" value="Stop. Please contact us at 812-339-4477 to make this report." />Yes
 	    </li>
-            <li> <input class="option" type="radio" name="question2" value="Next" />No
-	    </li>
-	  </ul>
-	</form>
-      </div>
-      <div class="questions" style="display:none">
-	<p>3. Is the lost a firearm?
-	</p>
-	<form>
-	  <ul>
-            <li> <input class="option" type="radio" name="question3" value="Stop. Please contact us at 812-339-4477 to make this report." />Yes
-	    </li>
-            <li> <input class="option" type="radio" name="question3" value="Next" />No
-	    </li>
-	  </ul>
-	</form>
-      </div>
-      <div class="questions" style="display:none" id="lastQuestion">
-	<p>4. Is the Lost a license plate(s)?
-	</p>
-	<form>
-	  <ul>
-            <li> <input class="option" type="radio" name="question4" value="Stop. Please contact us at 812-339-4477 to make this report." />Yes
-	    </li>
-            <li> <input class="option" type="radio" name="question4" value="finalStep" />No
+            <li> <input class="option" type="radio" name="question2" value="finalStep" />No
 	    </li>
 	  </ul>
 	</form>
@@ -78,16 +54,13 @@
 	Click on <input type="button" id='next' value="Next" /> to continue.
       </div>      
       <div id="finalStep" class="questions" style="display:none">
+	<p> In the next step you will provide a valid email, please click on Next </p>
 	<form action="#"
-	      th:action="@{/initialStart}"
-	      onsubmit="return verifyConfirm();"
-	      method="post">	
-	  <input type="hidden" name="type_id" value="3" />
-	  <div th:replace="general::reportSteps"></div>
-	  <div th:replace="general::emailFields"></div>
+	      th:action="@{/emailRequest/3}"
+	      method="get">	
 	  <button type="submit"> Next </button>
 	</form>
-      </div>        
+      </div>          
     </div>
   </body>
 </html>

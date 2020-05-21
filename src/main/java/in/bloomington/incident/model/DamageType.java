@@ -33,61 +33,74 @@ import javax.validation.constraints.NotNull;
 @Table(name = "damage_types")
 public class DamageType implements java.io.Serializable{
 
-		@Id
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-		@NotNull(message = "Damage type may not be null")
-		private String name;
-		//
+    @NotNull(message = "Damage type may not be null")
+    private String name;
+    private Character inactive;
+    //
 		
-		public DamageType(){
+    public DamageType(){
 
-		}
+    }
 		
-		public DamageType(int id, @NotNull(message = "Damage type may not be null") String name) {
-				super();
-				this.id = id;
-				this.name = name;
-		}
+    public DamageType(int id, @NotNull(message = "Damage type may not be null") String name, Character inactive) {
+	super();
+	this.id = id;
+	this.name = name;
+	this.inactive = inactive;
+    }
 
 
 
-		public int getId() {
-				return id;
-		}
+    public int getId() {
+	return id;
+    }
 
-		public void setId(int id) {
-				this.id = id;
-		}
+    public void setId(int id) {
+	this.id = id;
+    }
 
-		public String getName() {
-				return name;
-		}
-
-		public void setName(String name) {
-				this.name = name;
-		}
-		@Override
+    public String getName() {
+	return name;
+    }
+    public Character getInactive() {
+	return inactive;
+    }
+    public void setName(String val) {
+	if(val != null)	
+	this.name = val;
+    }
+    public void setInactive(Character val) {
+	if(val != null)
+	    this.inactive = val;
+    }
+    @Transient
+    public boolean isActive(){
+	return inactive == null || !Character.isLetter(inactive);
+    }
+    @Override
     public boolean equals(Object obj) { 
           
-				if(this == obj) 
-						return true; 
+	if(this == obj) 
+	    return true; 
 				
         if(obj == null || obj.getClass()!= this.getClass()) 
             return false; 
 				
         DamageType one = (DamageType) obj; 
         return one.getId() == this.getId();
-		}
-		@Override
-		public int hashCode(){ 
-				int ret = 29;
+    }
+    @Override
+    public int hashCode(){ 
+	int ret = 29;
         return ret += this.id; 
     }
 
-		@Override
-		public String toString() {
-			return name;
-		} 	
+    @Override
+    public String toString() {
+	return name;
+    } 	
 		
 }

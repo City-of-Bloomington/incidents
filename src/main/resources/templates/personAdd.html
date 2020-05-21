@@ -40,14 +40,7 @@
 	  <dt> 
 	    *Full Name: 
 	  </dt>
-	  <dd><label for="title_id">Title </label>(Mr, Ms, Mrs)
-	    <select id="title_id" th:field="${person.title}" >
-	      <option value=""></option>
-	      <option th:each="r : ${personTitles}"
-		      th:value="${r}"
-		      th:text="${r}">
-	      </option>
-	    </select>	      
+	  <dd>
 	    <label for="firstname_id" class="required">*First Name</label>
 	    <input type="text" th:field="${person.firstname}" id="firstname_id" size="30" required="required" placeholder="First Name" />
 	    <label for="midname_id">MI</label>

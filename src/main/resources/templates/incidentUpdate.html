@@ -120,9 +120,12 @@
       </fieldset>
       <fieldset>
 	<legend>Incident Details</legend>
+	<div>
+	  <label>Incident Type:</label>
+	  <span th:text="${incident.incidentType}" ></span>
+	</div>
+	<div th:if="${incident.isNotLostRelated()}">
 	  <dl>
-	    <dt><label>Incident Type:</label></dt>
-	    <dd><span th:text="${incident.incidentType}" ></span></dd>
 	    <dt>
 	      <label for="entry_type">Identify how entry was gained to commit the theft.</label>
 	    </dt>
@@ -141,15 +144,18 @@
 	    <dd>
 	      <textarea th:field="${incident.otherEntry}" id="other_entry" rows="3" cols="60" placeholder="Other entry" ></textarea>
 	    </dd>
-	    <dt>
-	      <label for="details_id" class="required">Incident Details</label>
-	    </dt>
-	    <dd>
-	      <textarea th:field="${incident.details}" id="details_id" rows="3" cols="60" required="required" placeholder="Incident Details" ></textarea>
-	    </dd>
-	    <dd colspan="2">Optional, if you have incident images available you will be able to upload them.</dd>
-	    <dd colspan="2"><input type="checkbox" th:field="${incident.haveMedia}" th:checked="${incident.haveMedia}?'checked'" value="y"  />Yes, I have incident images I would like to upload.</dd>
 	  </dl>
+	</div>
+	<dl>
+	  <dt>
+	    <label for="details_id" class="required">Incident Details</label>
+	  </dt>
+	  <dd>
+	    <textarea th:field="${incident.details}" id="details_id" rows="3" cols="60" required="required" placeholder="Incident Details" ></textarea>
+	  </dd>
+	  <dd colspan="2">Optional, if you have incident images available you will be able to upload them.</dd>
+	  <dd colspan="2"><input type="checkbox" th:field="${incident.haveMedia}" th:checked="${incident.haveMedia}?'checked'" value="y"  />Yes, I have incident images I would like to upload.</dd>
+	</dl>
       </fieldset>				
       <dl>
 	<dd>If you made any changes click on <input type="submit" value="Save Changes" />

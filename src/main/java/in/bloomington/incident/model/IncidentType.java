@@ -65,6 +65,10 @@ public class IncidentType implements java.io.Serializable{
 	this.name = name;
     }
     @Transient
+    public boolean isLostRelated(){
+	return name != null && name.indexOf("Lost") > -1;
+    }    
+    @Transient
     public boolean isVehicleRequired(){
 	return name != null && name.indexOf("Vehicle") > 0;
     }

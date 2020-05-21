@@ -110,7 +110,7 @@ public class IncidentController extends TopController{
 			      Model model,
 			      HttpServletRequest req
 			      ){
-	HttpSession session = req.getSession(true);
+	HttpSession session = req.getSession();
 	boolean emailProblem = false;
 	if(email == null || email.isEmpty() ||
 	   email2 == null || email2.isEmpty()){
@@ -156,7 +156,16 @@ public class IncidentController extends TopController{
 	return "redirect:/incidentStart/"+incident.getId();
 
     }
-    
+    @RequestMapping("/emailRequest/{type_id}")
+    public String emailRequest(@PathVariable("type_id") int type_id,
+			      Model model,
+			      HttpServletRequest req
+			      ){
+	HttpSession session = req.getSession(true);
+        model.addAttribute("type_id", type_id);	
+	return "email_questions";
+
+    }
     @GetMapping("/incidentStart/{id}")
     public String startIncident(@PathVariable("id") int id,
 				Model model,
@@ -164,8 +173,10 @@ public class IncidentController extends TopController{
 				HttpServletRequest req
 				) {
 	if(!Helper.verifySession(req, ""+id)){
+	    /**
 	    System.err.println(" not in session ");
 	    addMessage(" not in session ");
+	    */
 	}
 	Incident incident = null;
 	try{
@@ -241,8 +252,10 @@ public class IncidentController extends TopController{
 			       ) {
 	Incident incident = null;
 	if(!Helper.verifySession(req, ""+id)){
+	    /*
 	    System.err.println(" not in session ");
 	    addMessage("not in session ");
+	    */
 	}
 	try{
 	    incident = incidentService.findById(id);
@@ -284,8 +297,9 @@ public class IncidentController extends TopController{
 				    ) {
 	Incident incident = null;
 	if(!verifySession(session, ""+id)){
-	    System.err.println(" not in session ");
+	    /*
 	    addMessage("not in session ");
+	    */
 	}
 	try{
 	    incident = incidentService.findById(id);
@@ -318,7 +332,7 @@ public class IncidentController extends TopController{
 				 ) {
 	HttpSession session = req.getSession();
 	if(!verifySession(session, ""+id)){
-	    addMessage("not in session ");
+	    // addMessage("not in session ");
 	}
 	Incident incident = null;
 	incident = incidentService.findById(id);
@@ -441,8 +455,7 @@ public class IncidentController extends TopController{
 			       HttpSession session
 			       ) {
 	if(!verifySession(session, ""+id)){
-	    System.err.println(" not in session ");
-	    addMessage(" not in session ");
+	    // addMessage(" not in session ");
 	}
 	Incident incident = null;
 	try{
@@ -484,7 +497,7 @@ public class IncidentController extends TopController{
 	    return "updateIncident";
 	}
 	if(!verifySession(session, ""+id)){
-	    System.err.println(" not in session ");
+	    // System.err.println(" not in session ");
 	}
 	if(incident.canBeChanged()){
 	    incidentService.update(incident);
@@ -505,7 +518,7 @@ public class IncidentController extends TopController{
 				 HttpServletRequest req
 				 ) {
 	if(!Helper.verifySession(req, ""+id)){
-	    System.err.println(" not in session ");
+	    // System.err.println(" not in session ");
 	}				
 	Incident incident = null;
 	try{

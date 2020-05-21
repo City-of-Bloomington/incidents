@@ -357,6 +357,14 @@ public class Incident extends TopModel implements java.io.Serializable{
 	this.endDate = end_date;
     }
     @Transient
+    public boolean isLostRelated(){
+	return incidentType != null && incidentType.isLostRelated();
+    }
+    @Transient
+    public boolean isNotLostRelated(){
+	return !isLostRelated();
+    }            
+    @Transient
     public boolean canEdit(){
 	return canBeChanged();
     }
@@ -430,10 +438,13 @@ public class Incident extends TopModel implements java.io.Serializable{
     public void setEndTimeStr(String val) {
 	if(val != null && !val.equals("")){
 	    endTimeStr = val;
-	    endDate = setDateValue(endDateStr, endTimeStr);						
+	    endDate = setDateValue(endDateStr, endTimeStr);
 	}
     }				
-
+    @Transient
+    public boolean hasAccessInfo(){
+	return isNotLostRelated() && !getEntryInfo().isEmpty();
+    }
     public String getEntryType() {
 	return entryType;
     }
