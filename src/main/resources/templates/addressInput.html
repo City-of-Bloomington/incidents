@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--
+ - @copyright Copyright (C) 2014-2015 City of Bloomington, Indiana. All rights reserved.
+ - @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
+ - @author W. Sibo <sibow@bloomington.in.gov>
+ -
+ -->
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head th:replace="general::head('Incident')"></head>
+  <body>
+    <header th:replace="general::header">
+    </header>
+    <h2>Address Input</h2>
+    <div th:if="${errors}">
+      <div th:replace="general::errors(${errors})"></div>			
+    </div>
+    <div th:if="${messages}">
+      <div th:replace="general::messages(${messages})"></div>			
+    </div>					
+    <p> *indicated required fields</p>		
+    <form action="#"
+	  th:action="@{/addressCheck}"
+	  method="post">
+      <fieldset><legend>Location of Incident</legend>
+	<dl>
+	  <dt>
+	    <label for="addr_id" class="required">*Address where the incident occured</label>
+	  </dt>
+	  <dd>
+	      <input type="text" name="address" onchange="replaceMarker()" id="addr_id" value="" size="60" placeholder="Address" required="required" />
+	  </dd>
+	  <dt>
+	    <label for="lat_id">Latitude</label>
+	  </dt>
+	  <dd>
+	      <input type="text" value="" name="latitude" id="lat_id" size="20" />
+	  </dd>
+	  <dt>
+	    <label for="long_id">Longitude</label>
+	  </dt>
+	  <dd>
+	      <input type="text" value="" name="longitude" id="long_id" size="20" />
+	  </dd>
+	  <dt>
+	    <label for="project_id">Projection</label>
+	  </dt>
+	  <dd>
+	      <input type="text" value="" name="projection" id="project_id" size="30" />
+	  </dd>	  
+	  <dt>
+	    <label for="city_id" class="required">*City</label>
+	  </dt>
+	  <dd>
+	      <input type="text" value="" name="city" id="city_id" size="60" placeholder="city" />
+	  </dd>
+	  <dt>
+	    <label for="zip_id" class="required">*Zip Code</label>
+	  </dt>
+	  <dd>
+	      <input type="text" value="" name="zip" id="zip_id" size="10" placeholder="Zip code" />
+	  </dd>
+	</dl>
+      </fieldset>
+      <dl>
+	<dd>
+	  <input type="submit" value="Next" />
+	</dd>
+      </dl>
+    </form>
+  </body>
+</html>

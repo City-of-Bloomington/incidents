@@ -105,6 +105,6 @@ public class LoginController extends TopController{
 	}	
 	System.err.println("settings: user from session "+user);
         return "staff/settings";
-    }         
-		
+    }
+
 }

@@ -3,11 +3,20 @@ package in.bloomington.incident.util;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.springframework.core.env.Environment;
+import org.springframework.beans.factory.annotation.Value;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.json.JSONArray;
@@ -26,7 +35,15 @@ public class AddressCheck{
 		
     @Autowired
     private Environment env;
-		
+    @Value("${incident.address.geoUrl}")
+    private String geoUrl;
+    // Lat Long projection 
+    private String projection="4269";
+    //
+    // for state plane coordinate 
+    // uncomment if using state plane coordinate 
+    // private String projection="2966";
+    //
     Item address = null, exactMatchAddress = null;
     List<Item> addresses = null;
 
@@ -61,6 +78,92 @@ public class AddressCheck{
 	    }
 	}
 	return false;
+    }
+    public String isInTheLayer(String xmlStr){
+	String back = "";
+	System.err.println(" xml "+xmlStr);
+	System.err.println(" geo url "+geoUrl);
+	try{
+	    URL url = new URL(geoUrl+"/wfs/Service?");
+	    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+	    connection.setConnectTimeout(20000);
+	    connection.setReadTimeout(20000);
+	    
+	    // Set DoOutput to true if you want to use URLConnection for output.
+	    // Default is false
+	    connection.setDoOutput(true);
+	    // connection.setUseCaches(true);
+	    connection.setRequestMethod("POST");
+	    
+	    // Set Headers
+	    connection.setRequestProperty("Accept", "application/xml");
+	    connection.setRequestProperty("Content-Type", "application/xml");
+	    
+	    // Write XML
+	    OutputStream outputStream = connection.getOutputStream();
+	    byte[] bytes = xmlStr.getBytes("UTF-8");
+	    outputStream.write(bytes);
+	    outputStream.flush();
+	    outputStream.close();
+	    
+	    // Read XML
+	    InputStream inputStream = connection.getInputStream();
+	    byte[] res = new byte[2048];
+	    int i = 0;
+	    StringBuilder response = new StringBuilder();
+	    while ((i = inputStream.read(res)) != -1) {
+		response.append(new String(res, 0, i));
+	    }
+	    inputStream.close();
+	    back = response.toString();
+	    System.out.println("Response: " + back);
+	}catch(Exception ex){
+	    System.err.println(" "+ex);
+	}
+	return back;
+    }
+    public boolean isInIUCompus(double lat,
+				double longi){
+	// IU Compus
+	String typeName="publicgis:IUCampusArea";
+	String xmlStr = buildXmlString(lat, longi, typeName);
+	String back = isInTheLayer(xmlStr);
+	return (back != null  && back.indexOf("Polygon") > -1);
+    }
+    public boolean isInCityLimits(double lat,
+				  double longi){
+	// Bloomington City Boundary
+	String typeName = "publicgis:BloomingtonMunicipalBoundary";
+	String xmlStr = buildXmlString(lat, longi, typeName);
+	String back = isInTheLayer(xmlStr);
+	return (back != null && back.indexOf("Polygon") > -1);
+    }    
+    //
+    public String buildXmlString(double lat,
+				 double longi,
+				 String typeName){
+	String xmlStr = "";
+	xmlStr ="<wfs:GetFeature service=\"WFS\" version=\"1.0.0\"\n"+
+	    "outputFormat=\"GML2\"\n"+
+	    "xmlns:topp=\"http://www.openplans.org/topp\"\n"+
+	    "xmlns:wfs=\"http://www.opengis.net/wfs\"\n"+
+	    "xmlns=\"http://www.opengis.net/ogc\"\n"+
+	    "xmlns:gml=\"http://www.opengis.net/gml\"\n"+
+	    "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n"+
+	    "xsi:schemaLocation=\"http://www.opengis.net/wfs\n"+
+	    "http://schemas.opengis.net/wfs/1.0.0/WFS-basic.xsd\">"+
+	    "<wfs:Query typeName=\""+typeName+"\">"+
+	    "<Filter>"+
+	    "<Contains>"+
+	    "<PropertyName>the_geom</PropertyName>"+
+	    "<gml:Point srsName=\"http://www.opengis.net/gml/srs/epsg.xml#"+projection+"\">"+
+	    "<gml:coordinates>"+longi+","+lat+"</gml:coordinates>"+
+	    "</gml:Point>"+
+	    "</Contains>"+
+	    "</Filter>"+
+	    "</wfs:Query>"+
+	    "</wfs:GetFeature>";
+	return xmlStr;
     }
     /* 
      * given certain address, find similar addresses in master_address app

@@ -1,0 +1,45 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--
+ - @copyright Copyright (C) 2014-2015 City of Bloomington, Indiana. All rights reserved.
+ - @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
+ - @author W. Sibo <sibow@bloomington.in.gov>
+ -
+ -->
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head th:replace="general::head('Incident')"></head>
+  <body>
+    <header th:replace="general::header">
+    </header>
+    <h2>Address Input</h2>
+    <div th:if="${errors}">
+      <div th:replace="general::errors(${errors})"></div>			
+    </div>
+    <div th:if="${messages}">
+      <div th:replace="general::messages(${messages})"></div>			
+    </div>					
+    <fieldset><legend>Location of Incident</legend>
+      <dl>
+	<dt>
+	  <label>Address</label>
+	</dt>
+	<dd><span th:text="${address}"></span></dd>
+	<dt>
+	  <label>Latitude</label>
+	</dt>
+	<dd><span th:text="${latitude}"></span></dd>
+	<dt>
+	  <label>Longitude</label>
+	</dt>
+	<dd><span th:text="${longitude}"></span></dd>	
+	<dt>
+	  <label>Projection</label>
+	</dt>
+	<dd><span th:text="${projection}"></span></dd>
+	<dt>
+	  <label>Message</label>
+	</dt>
+	<dd><span th:text="${msg}"></span></dd>	
+      </dl>
+    </fieldset>
+  </body>
+</html>

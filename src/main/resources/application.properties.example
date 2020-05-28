@@ -16,6 +16,8 @@ incident.zipcodes=47401,47403,47404,47408
 ;; maximum of total value of all properties damage allowed in dollars
 incident.property.maxtotalvalue=750.0
 ;;
+;; geoserver url to check address within city limits
+incident.address.geoUrl=
 ;;
 ;; file storage location
 ;;
