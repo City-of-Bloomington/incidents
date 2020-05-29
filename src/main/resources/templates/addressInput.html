@@ -27,38 +27,46 @@
 	    <label for="addr_id" class="required">*Address where the incident occured</label>
 	  </dt>
 	  <dd>
-	      <input type="text" name="address" onchange="replaceMarker()" id="addr_id" value="" size="60" placeholder="Address" required="required" />
+	    <input type="text" name="address" id="addr_id" value="" size="60" placeholder="Address" required="required" />
+	    <button  id="address_id-chooserButton" type="button"
+		     onclick="ADDRESS_CHOOSER.start(handleAddressChoice, {addressQuery:document.getElementById('addr_id').value})" class="choose button">Look up address</button>
 	  </dd>
 	  <dt>
-	    <label for="lat_id">Latitude</label>
+	    <label>Master Address Id </label>
 	  </dt>
 	  <dd>
-	      <input type="text" value="" name="latitude" id="lat_id" size="20" />
+	    <input type="text" name="maAddressId" id="address_id" readonly="true"/>
 	  </dd>
 	  <dt>
-	    <label for="long_id">Longitude</label>
+	    <label for="latitude">Latitude</label>
 	  </dt>
 	  <dd>
-	      <input type="text" value="" name="longitude" id="long_id" size="20" />
+	      <input type="text" value="" name="latitude" id="latitude" size="20" readonly="readonly"/>
 	  </dd>
 	  <dt>
-	    <label for="project_id">Projection</label>
+	    <label for="longitude">Longitude</label>
 	  </dt>
 	  <dd>
-	      <input type="text" value="" name="projection" id="project_id" size="30" />
+	      <input type="text" value="" name="longitude" id="longitude" size="20" readonly="readonly"/>
+	  </dd>
+	  <dt>
+	    <label for="city" class="required">*City</label>
+	  </dt>
+	  <dd>
+	      <input type="text" value="" name="city" id="city" size="60" placeholder="city" />
+	  </dd>
+	  <dt>
+	    <label for="zip" class="required">*Zip Code</label>
+	  </dt>
+	  <dd>
+	      <input type="text" value="" name="zip" id="zip" size="10" placeholder="Zip code" />
+	  </dd>
+	  <dt>
+	    <label for="state">State</label>
+	  </dt>
+	  <dd>
+	      <input type="text" value="" name="state" id="state" size="2" placeholder="State" />
 	  </dd>	  
-	  <dt>
-	    <label for="city_id" class="required">*City</label>
-	  </dt>
-	  <dd>
-	      <input type="text" value="" name="city" id="city_id" size="60" placeholder="city" />
-	  </dd>
-	  <dt>
-	    <label for="zip_id" class="required">*Zip Code</label>
-	  </dt>
-	  <dd>
-	      <input type="text" value="" name="zip" id="zip_id" size="10" placeholder="Zip code" />
-	  </dd>
 	</dl>
       </fieldset>
       <dl>

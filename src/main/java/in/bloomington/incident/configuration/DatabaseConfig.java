@@ -17,6 +17,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 class DatabaseConfig{
@@ -33,7 +35,18 @@ class DatabaseConfig{
     @Autowired
     public JdbcTemplate createJdbcTemplate_DbDataService(@Qualifier("dbdatasource") DataSource jdbcServiceDS) {
 	return new JdbcTemplate(jdbcServiceDS);
-    }		
+    }
+    @Bean
+    public WebMvcConfigurer corsConfigurer() {
+	return new WebMvcConfigurer() {
+	    @Override
+	    public void addCorsMappings(CorsRegistry registry) {
+		registry.addMapping("/addressInput").allowedOrigins("https://bloomington.in.gov");
+	    }
+	};
+    }
+
+    
     /**
      //
      // copy from example

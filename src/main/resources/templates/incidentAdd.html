@@ -79,7 +79,9 @@
 	    <label for="addr_id" class="required">*Address where the incident occured</label>
 	  </dt>
 	  <dd>
-	      <input type="text" th:field="${incident.address}" onchange="replaceMarker()" id="addr_id" value="" size="60" placeholder="Address" required="required" />
+	    <input type="text" th:field="${incident.address}" onchange="replaceMarker()" id="addr_id" value="" size="60" placeholder="Address" required="required" />
+	    <button  id="address_id-chooserButton" type="button" class="choose"
+		     onclick="ADDRESS_CHOOSER.start(handleChoice, {addressQuery:document.getElementById('addr_id').value})" class="button">Look up address</button>	    
 	  </dd>
 	  <dt>
 	    <label for="city_id" class="required">*City</label>

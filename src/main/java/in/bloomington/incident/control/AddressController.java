@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import javax.validation.Valid;
 import org.springframework.web.bind.annotation.RequestParam;
 //
@@ -53,6 +54,7 @@ public class AddressController extends TopController{
         return json;
     }
     */
+    @CrossOrigin(origins = "https://bloomington.in.gov")
     @GetMapping("/addressInput")
     public String addressInput(HttpServletRequest req,
 			       Model model) {
