@@ -122,18 +122,18 @@ public class AddressCheck{
 	}
 	return back;
     }
-    public boolean isInIUCompus(double lat,
+    public boolean isInIUPDLayer(double lat,
 				double longi){
 	// IU Compus
-	String typeName="publicgis:IUCampusArea";
+	String typeName="publicgis:IUPDPoliceDistrict";
 	String xmlStr = buildXmlString(lat, longi, typeName);
 	String back = isInTheLayer(xmlStr);
 	return (back != null  && back.indexOf("Polygon") > -1);
     }
-    public boolean isInCityLimits(double lat,
+    public boolean isInCityPDLayer(double lat,
 				  double longi){
 	// Bloomington City Boundary
-	String typeName = "publicgis:BloomingtonMunicipalBoundary";
+	String typeName = "publicgis:BPDPoliceDistrict";
 	String xmlStr = buildXmlString(lat, longi, typeName);
 	String back = isInTheLayer(xmlStr);
 	return (back != null && back.indexOf("Polygon") > -1);

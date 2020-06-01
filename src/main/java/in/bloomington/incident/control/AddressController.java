@@ -61,6 +61,14 @@ public class AddressController extends TopController{
 	model.addAttribute("messages","Enter your address");
         return "addressInput";
     }
+    @CrossOrigin(origins = "https://bloomington.in.gov")
+    @GetMapping("/addressWindow")
+    public String addressWindow(HttpServletRequest req,
+			       Model model) {
+	model.addAttribute("messages","Enter your address");
+        return "addressWindow";
+    }    
+    
     /**
        list of addresses to try
 
@@ -116,29 +124,27 @@ public class AddressController extends TopController{
 	// boolean answer = addressCheck.isInIUCompus(lati, longi);
 	// System.err.println(" answer "+answer);
 	// not in compus, in city
-	// addr = "932 N Fairview ST";
-	// lati  =  39.17613466;
-	// longi = -86.54085991;
+	addr = "932 N Fairview ST";
+	lati  =  39.17613466;
+	longi = -86.54085991;
 	// not in compus, not in city
 	//
-	addr = "3304 S Rogers ST";
-	lati = 39.12822405;
-	longi = -86.53897868;	
-	boolean answer = addressCheck.isInIUCompus(lati, longi);
+	// addr = "3304 S Rogers ST";
+	// lati = 39.12822405;
+	// longi = -86.53897868;	
+	boolean answer = addressCheck.isInIUPDLayer(lati, longi);
 	String msg = "";
 	System.err.println(" answer "+answer);
 	if(answer)
 	    msg = "In IU Compus PD ";
 	else
 	    msg = "Not in IU Compus";
-	answer = addressCheck.isInCityLimits(lati, longi);
+	answer = addressCheck.isInCityPDLayer(lati, longi);
 	System.err.println(" answer "+answer);
 	if(answer)
 	    msg += " In City BPD area ";
 	else
 	    msg += " Not in City BPD area ";
-
-	
 	model.addAttribute("address",addr);
 	model.addAttribute("latitude", lati);
 	model.addAttribute("longitude", longi);
