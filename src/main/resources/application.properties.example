@@ -7,6 +7,7 @@
 ;;
 spring.application.name=incidents
 address.required.message=address is required
+server.servlet.context-path=/incidents
 spring.cache.type=NONE
 ;;
 ;; the following zipcodes, defaultCity and defualState 
@@ -37,7 +38,9 @@ spring.servlet.multipart.location=${java.io.tmpdir}
 ;; some changes in the model Incident.java similar to the way 
 ;; we handle zip codes above
 incident.defaultcity=Bloomington
+incident.defaultjurisdiction=Bloomington
 incident.defaultstate=IN
+
 ;;
 ;;
 ;; application name that is part of the app url for 

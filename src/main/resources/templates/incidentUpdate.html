@@ -29,6 +29,7 @@
       <input type="hidden" th:field="${incident.email}" />
       <input type="hidden" th:field="${incident.receivedStr}" />
       <input type="hidden" th:field="${incident.incidentType} "/>
+      <input type="hidden" th:field="${incident.oldAddress} "/>      
       <fieldset>
 	<legend>Incident Date and Time: </legend>
 	<dl>
@@ -59,39 +60,45 @@
 	  </dl>
       </fieldset>
       <fieldset><legend>Location of Incident</legend>
-	<img src="/images/citylimits.jpg" alt="city limits" width="900"/>
-	<ul>
-	  <li>
-	    If unsure of location, please report your home address or closest intersection of the incident and explain in the Incident Details.
-	  </li>
-	  <li>
-	    If you are in the blue area, you can make a report using this system.
-	  </li>
-	  <li>
-	    If you are within the green area, you can not file a report using this system, contact Indiana University Police Department.
-	  </li>
-	  <li>
-	    If you are within the white area, contact Monroe County Sheriff's Office.
-	  </li>
-	</ul>
+	<p>If you want to change the address, use 'Look up Address' button</p>
 	<dl>
 	  <dt>
 	    <label for="addr_id" class="required">Address where the incident occured</label>
 	  </dt>
-	  <dd><input type="text" th:field="${incident.address}" onchange="replaceMarker()" id="addr_id" value="" size="60" required="required" placeholder="Address" />
+	  <dd>
+	    <input type="text" th:field="${incident.address}" id="addr_id" size="60" placeholder="Address" readonly="readonly" />
+	    <button th:attr="onclick=|popwit('${hostPath}/addressWindow','_blank');return false;|">Look up Address</button>
 	  </dd>
 	  <dt>
-	    <label for="city_id" class="required">City</label>
+	    <label for="latitude">Latitude</label>
 	  </dt>
 	  <dd>
-	    <select th:field="${incident.city}" id="city_id">
-	      <option value="">City</option>
-	      <option th:each="r : ${allCities}"
-		      th:value="${r}"
-		      th:text="${r}">
-	      </option>											
-	    </select>
+	      <input type="text" th:field="${incident.latitude}" id="latitude" size="20" readonly="readonly"/>
 	  </dd>
+	  <dt>
+	    <label for="longitude">Longitude</label>
+	  </dt>
+	  <dd>
+	      <input type="text" th:feild="${incident.longitude}" id="longitude" size="20" readonly="readonly"/>
+	  </dd>
+	  <dt>
+	    <label for="city" class="required">*City</label>
+	  <dd>
+	    <input type="text" th:field="${incident.city}" id="city" />	 
+	  </dd>
+	  <dt>
+	    <label for="jurisdiction">Jurisdiction</label>
+	  </dt>
+	  <dd>
+	      <input type="text" th:field="${incident.jurisdiction}" id="jurisdiction" size="60" placeholder="Jurisdiction" readonly="readonly" />
+	  </dd>
+	  <dt>
+	    <label for="zip" class="required">*Zip Code</label>
+	  </dt>
+	  <dd>
+	      <input type="text" th:field="${incident.zip}" id="zip" size="10" placeholder="Zip code" readonly="readonly"/>
+	  </dd>	  
+	  
 	  <dt>
 	    <label for="state_id" class="required">State</label>
 	  </td>
@@ -102,18 +109,6 @@
 		      th:value="${r}"
 		      th:text="${r}">
 	      </option>											
-	    </select>
-	  </dd>
-	  <dt>
-	    <label for="zip_id" class="required">Zip Code</label>
-	  </dt>
-	  <dd>
-	    <select th:field="${incident.zip}" id="zip_id">
-	      <option value="">Zip</option>
-	      <option th:each="r : ${allZipCodes}"
-		      th:value="${r}"
-		      th:text="${r}">
-	      </option>								
 	    </select>
 	  </dd>
 	</dl>

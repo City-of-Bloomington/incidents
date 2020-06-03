@@ -108,22 +108,29 @@ function verifyIncidentInput(){
 	$('#addr_id').focus();
 	return false;
     }
-    var city = $('#city_id').val();
+    var city = $('#city').val();
     if(city === ''){
 	alert ('Please provide city');
-	$('#city_id').focus();
+	return false;
+    }
+    if(city != 'Bloomington'){
+	alert ('Your address is not in Bloomington');
 	return false;
     }    
-    var state = $('#state_id').val();
+    var jurisdiction = $('#jurisdiction').val();
+    if(jurisdiction != '' || jurisdiction != 'Bloomington'){
+	alert ('Your address is not in Bloomington jurisdiction');
+	return false;
+    }        
+    var state = $('#state').val();
     if(state === ''){
 	alert ('Please provide state');
-	$('#state_id').focus();
+	$('#state').focus();
 	return false;
     }    
-    var zip = $('#zip_id').val();
+    var zip = $('#zip').val();
     if(zip === ''){
 	alert ('Please provide zip code');
-	$('#zip_id').focus();
 	return false;
     }
     var details = $('#details_id').val();

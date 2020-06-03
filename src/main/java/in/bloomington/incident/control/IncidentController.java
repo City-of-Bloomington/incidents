@@ -73,6 +73,8 @@ public class IncidentController extends TopController{
     private Environment env;
     @Value( "${incident.defaultcity}" )
     private String defaultCity;
+    @Value( "${incident.defaultjurisdiction}" )
+    private String defaultJurisdiction;    
     @Value( "${incident.defaultstate}" )
     private String defaultState;		
     @Value( "${incident.zipcodes}" )
@@ -194,6 +196,7 @@ public class IncidentController extends TopController{
 	model.addAttribute("allZipCodes", getAllZipCodes());
 	model.addAttribute("allStates", getAllStates());
 	model.addAttribute("allCities", getAllCities());
+	model.addAttribute("hostPath", host_path);
 	handleErrorsAndMessages(model);
         return "incidentAdd";
     }
@@ -213,6 +216,7 @@ public class IncidentController extends TopController{
             return "incidentAdd";
         }
 	if(!incident.verifyAll(defaultCity,
+			       defaultJurisdiction,
 			       defaultState,
 			       zipCodes)){
 	    addError(incident.getErrorInfo());
@@ -473,7 +477,9 @@ public class IncidentController extends TopController{
 	    model.addAttribute("allZipCodes", getAllZipCodes());
 	    model.addAttribute("allStates", getAllStates());
 	    model.addAttribute("allCities", getAllCities());
-	    handleErrorsAndMessages(model);
+	    model.addAttribute("hostPath",host_path);
+	    getMessagesAndErrorsFromSession(session, model);
+	    // handleErrorsAndMessages(model);
 	    return "incidentUpdate";
 	}
 	else {
@@ -500,10 +506,21 @@ public class IncidentController extends TopController{
 	    // System.err.println(" not in session ");
 	}
 	if(incident.canBeChanged()){
-	    incidentService.update(incident);
-	    addMessage("Updated Successfully");				
-	    addMessagesAndErrorsToSession(session);
-	    return "redirect:/incident/"+id;
+	    if(!incident.verifyAll(defaultCity,
+				   defaultJurisdiction,
+				   defaultState,
+				   zipCodes)){
+		addError(incident.getErrorInfo());
+		addMessagesAndErrorsToSession(session);		
+		return "redirect:/incident/edit/"+incident.getId();
+
+	    }
+	    else{
+		incidentService.update(incident);
+		addMessage("Updated Successfully");				
+		addMessagesAndErrorsToSession(session);
+		return "redirect:/incident/"+id;
+	    }
 	}
 	else{
 	    addError("No more changes can be made to this incident");

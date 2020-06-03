@@ -42,7 +42,7 @@ var handleAddressChoice2 = function (chosenAddress) {
     let address_id   = 'address_id',
 	// subunit_id   = 'subunit_id',
 	// location_id = 'location_id',
-	addressInput = window.opener.document.getElementById(address_id),
+	// addressInput = window.opener.document.getElementById(address_id),
 	addressInput2 = window.opener.document.getElementById('addr_id'),
 	zip = window.opener.document.getElementById('zip'),
 	city = window.opener.document.getElementById("city"),
@@ -53,7 +53,7 @@ var handleAddressChoice2 = function (chosenAddress) {
 	jurisdiction = window.opener.document.getElementById('jurisdiction'),
 	display   = window.opener.document.getElementById(address_id + '-display');
     // console.log(chosenAddress);
-    addressInput.value = chosenAddress.id;
+    // addressInput.value = chosenAddress.id;
     zip.value = chosenAddress.zip;
     city.value = chosenAddress.city;
     jurisdiction.value = chosenAddress.jurisdiction_name;

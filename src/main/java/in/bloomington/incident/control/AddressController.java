@@ -107,6 +107,26 @@ public class AddressController extends TopController{
        state_plane_y: 1413619
        Latitude: 39.12822405
        Longitude: -86.53897868
+
+
+       Ellettsville
+       5352 N Monica CT
+       location_id:  70924
+       https://bloomington.in.gov/master_address/addresses/58416
+       x: 3089943
+       y: 1449642
+       Latitude:  39.22739223
+       Longitude:  -86.59904201
+
+       Stinesville
+
+       8357 N Market ST
+       location_id: 77983
+       https://bloomington.in.gov/master_address/addresses/65392
+       x: 3075115
+       y: 1475365
+       Latitude: 39.29821949
+       Longitude: -86.65094971
        
      */
     @PostMapping("/addressCheck")
@@ -131,7 +151,19 @@ public class AddressController extends TopController{
 	//
 	// addr = "3304 S Rogers ST";
 	// lati = 39.12822405;
-	// longi = -86.53897868;	
+	// longi = -86.53897868;
+	//
+	// Ellettsville
+	//
+	addr = "5352 N Monica CT";
+	lati = 39.22739223;
+	longi =  -86.59904201;
+	//
+	// Stinesville
+	addr = "8357 N Market ST";
+	lati = 39.29821949;
+	longi = -86.65094971;	
+	
 	boolean answer = addressCheck.isInIUPDLayer(lati, longi);
 	String msg = "";
 	System.err.println(" answer "+answer);

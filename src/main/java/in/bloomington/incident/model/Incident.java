@@ -89,7 +89,15 @@ public class Incident extends TopModel implements java.io.Serializable{
     private Action lastAction=null;
     @Transient
     String status = "";
-
+    @Transient
+    private Double latitude;
+    @Transient
+    private Double longitude;    
+    @Transient
+    private String jurisdiction;
+    @Transient
+    private String oldAddress;
+    
     @OneToMany
     @JoinColumn(name="incident_id",insertable=false, updatable=false)		
     private List<Person> persons;		
@@ -283,6 +291,14 @@ public class Incident extends TopModel implements java.io.Serializable{
 	if(address != null && !address.isEmpty())
 	    this.address = address.trim();
     }
+    public void setOldAddress(String val) {
+	if(val != null && !val.isEmpty())
+	    this.oldAddress = val.trim();
+    }
+    public String getOldAddress(){
+	return address;
+    }
+	
     public String getCity() {
 	return city;
     }
@@ -339,6 +355,14 @@ public class Incident extends TopModel implements java.io.Serializable{
 	    ret = true;
 	}
 	return ret;
+    }
+    @Transient
+    public boolean isAddressChanged(){
+	if(address == null || address.isEmpty()) return true;
+	if(id > 0 && address != null && oldAddress != null){
+	    return !address.equals(oldAddress);
+	}
+	return false;
     }
     public String getDateDescription() {
 	return dateDescription;
@@ -646,7 +670,30 @@ public class Incident extends TopModel implements java.io.Serializable{
 	}
 	return false;
     }
-				
+    @Transient
+    public Double getLatitude(){
+	return latitude;
+    }
+    @Transient
+    public Double getLongitude(){
+	return longitude;
+    }
+    @Transient
+    public String getJurisdiction(){
+	return jurisdiction;
+    }
+    @Transient
+    public void setLatitude(Double val){
+	latitude = val;
+    }
+    @Transient
+    public void setLongitude(Double val){
+	longitude = val;
+    }
+    @Transient
+    public void setJurisdiction(String val){
+	jurisdiction = val;
+    }    
     @Transient
     public void setReceivedNow(){
 	received = new Date();
@@ -736,10 +783,12 @@ public class Incident extends TopModel implements java.io.Serializable{
     @Transient
     public boolean verifyAll(
 			     String default_city,
+			     String default_jurisdiction,
 			     String default_state,
 			     List<String> default_zip_codes){
 	boolean ret = verifyTimes();
 	ret = ret && verifyAddressInfo(default_city,
+				       default_jurisdiction,
 				       default_state,
 				       default_zip_codes);
 	ret = ret && verifyDetails();
@@ -789,40 +838,47 @@ public class Incident extends TopModel implements java.io.Serializable{
 				
     @Transient
     public boolean verifyAddressInfo(String default_city,
+				     String default_jurisdiction,
 				     String default_state,
 				     List<String> default_zip_codes){
-	if(address == null || address.trim().equals("")){
-	    addError("Address is required");
-	    return false;
-	}
-	else if(city == null || city.equals("")){
-	    addError("City is required");
-	    return false;
-	}
-	else if(!city.equals(default_city)){
-	    addError("Invalid city "+city);
-	    return false;
-	}
-	else if(state == null || state.equals("")){
-	    addError("State is required");
-	    return false;
-	}
-	else if(!state.equals(default_state)){
-	    addError("Invalid state "+state);
-	    return false;
-	}
-	else if(zip == null || zip.equals("")){
-	    addError("Zip code is required");
-	    return false;
-	}
-	else if(zip != null && !zip.equals("")){
-	    for(String str:default_zip_codes){
-		if(zip.equals(str)){
-		    return true;
-		}
+	if(isAddressChanged()){
+	    if(address == null || address.trim().equals("")){
+		addError("Address is required");
+		return false;
 	    }
-	    addError("invalid zipcode "+zip);
-	    return false;
+	    else if(city == null || city.equals("")){
+		addError("City is required");
+		return false;
+	    }
+	    else if(!city.equals(default_city)){
+		addError("Invalid city "+city+", verify your address or contact the related Police Department" );
+		return false;
+	    }
+	    else if(state == null || state.equals("")){
+		addError("State is required");
+		return false;
+	    }
+	    else if(!state.equals(default_state)){
+		addError("Invalid state "+state);
+		return false;
+	    }
+	    else if(jurisdiction != null && !jurisdiction.equals(default_jurisdiction)){
+		addError("Your address is not in "+default_jurisdiction+" jurisdiction, verify your address or contact the related Police Department ");
+		return false;
+	    }
+	    else if(zip == null || zip.equals("")){
+		addError("Zip code is required");
+		return false;
+	    }
+	    else if(zip != null && !zip.equals("")){
+		for(String str:default_zip_codes){
+		    if(zip.equals(str)){
+			return true;
+		    }
+		}
+		addError("invalid zipcode "+zip);
+		return false;
+	    }
 	}
 	return true;
     }
