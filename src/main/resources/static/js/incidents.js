@@ -118,7 +118,7 @@ function verifyIncidentInput(){
 	return false;
     }    
     var jurisdiction = $('#jurisdiction').val();
-    if(jurisdiction != '' || jurisdiction != 'Bloomington'){
+    if(jurisdiction != '' && jurisdiction != 'Bloomington'){
 	alert ('Your address is not in Bloomington jurisdiction');
 	return false;
     }        

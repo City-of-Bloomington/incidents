@@ -46,6 +46,7 @@ var handleAddressChoice2 = function (chosenAddress) {
 	addressInput2 = window.opener.document.getElementById('addr_id'),
 	zip = window.opener.document.getElementById('zip'),
 	city = window.opener.document.getElementById("city"),
+	state = window.opener.document.getElementById("state"),
 	// subunitInput = document.getElementById(subunit_id),
 	// locationId  = document.getElementById(location_id),
 	latitude  = window.opener.document.getElementById('latitude'),
@@ -57,6 +58,7 @@ var handleAddressChoice2 = function (chosenAddress) {
     zip.value = chosenAddress.zip;
     city.value = chosenAddress.city;
     jurisdiction.value = chosenAddress.jurisdiction_name;
+    state.value = "IN";
     // display.innerHTML  = chosenAddress.streetAddress;
     // An example of checking for a chosen subunit
     //

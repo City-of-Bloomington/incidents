@@ -73,16 +73,17 @@
 	    <label for="latitude">Latitude</label>
 	  </dt>
 	  <dd>
-	      <input type="text" th:field="${incident.latitude}" id="latitude" size="20" readonly="readonly"/>
+	    <input type="text" th:field="${incident.latitude}" id="latitude" size="20" readonly="readonly"/>
 	  </dd>
 	  <dt>
 	    <label for="longitude">Longitude</label>
 	  </dt>
 	  <dd>
-	      <input type="text" th:feild="${incident.longitude}" id="longitude" size="20" readonly="readonly"/>
+	    <input type="text" th:field="${incident.longitude}" id="longitude" size="20" readonly="readonly"/>
 	  </dd>
 	  <dt>
 	    <label for="city" class="required">*City</label>
+	  </dt>
 	  <dd>
 	    <input type="text" th:field="${incident.city}" id="city" />	 
 	  </dd>
@@ -90,26 +91,19 @@
 	    <label for="jurisdiction">Jurisdiction</label>
 	  </dt>
 	  <dd>
-	      <input type="text" th:field="${incident.jurisdiction}" id="jurisdiction" size="60" placeholder="Jurisdiction" readonly="readonly" />
+	    <input type="text" th:field="${incident.jurisdiction}" id="jurisdiction" size="60" placeholder="Jurisdiction" readonly="readonly" />
 	  </dd>
 	  <dt>
 	    <label for="zip" class="required">*Zip Code</label>
 	  </dt>
 	  <dd>
-	      <input type="text" th:field="${incident.zip}" id="zip" size="10" placeholder="Zip code" readonly="readonly"/>
+	    <input type="text" th:field="${incident.zip}" id="zip" size="10" placeholder="Zip code" readonly="readonly"/>
 	  </dd>	  
-	  
 	  <dt>
-	    <label for="state_id" class="required">State</label>
-	  </td>
+	    <label for="state" class="required">State</label>
+	  </dt>
 	  <dd>
-	    <select th:field="${incident.state}" id="state_id">
-	      <option value="">State</option>
-	      <option th:each="r : ${allStates}"
-		      th:value="${r}"
-		      th:text="${r}">
-	      </option>											
-	    </select>
+	    <input type="text" th:field="${incident.state}" id="state" readonly="readonly" size="2" />
 	  </dd>
 	</dl>
       </fieldset>

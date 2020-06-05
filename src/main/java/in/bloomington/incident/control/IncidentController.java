@@ -48,6 +48,7 @@ import in.bloomington.incident.model.Request;
 import in.bloomington.incident.model.User;
 import in.bloomington.incident.utils.Helper;
 import in.bloomington.incident.utils.EmailHelper;
+import in.bloomington.incident.util.AddressCheck;
 
 @Controller
 public class IncidentController extends TopController{
@@ -69,6 +70,8 @@ public class IncidentController extends TopController{
     UserService userService;    
     @Autowired
     private JavaMailSender mailSender;
+    @Autowired
+    AddressCheck addressCheck;
     
     private Environment env;
     @Value( "${incident.defaultcity}" )
@@ -206,29 +209,34 @@ public class IncidentController extends TopController{
 			       BindingResult result, Model model,
 			       HttpSession session
 			       ) {
+	boolean pass = true;
         if (result.hasErrors()) {
 	    addError(Helper.extractErrors(result));
-	    model.addAttribute("entryTypes", entryTypes);
-	    model.addAttribute("allZipCodes", getAllZipCodes());
-	    model.addAttribute("allStates", getAllStates());
-	    model.addAttribute("allCities", getAllCities());
-	    handleErrorsAndMessages(model);
-            return "incidentAdd";
+	    pass = false;
         }
-	if(!incident.verifyAll(defaultCity,
-			       defaultJurisdiction,
-			       defaultState,
-			       zipCodes)){
-	    addError(incident.getErrorInfo());
-	    model.addAttribute("entryTypes", entryTypes);
-	    model.addAttribute("allZipCodes", getAllZipCodes());
-	    model.addAttribute("allStates", getAllStates());
-	    model.addAttribute("allCities", getAllCities());
-	    model.addAttribute("errors", getErrors());
-	    handleErrorsAndMessages(model);
-	    return "incidentAdd";
-	}
-	if(incident.canBeChanged()){
+	incident.setId(id);
+	if(incident.canBeChanged()){	
+	    if(!incident.verifyAll(defaultCity,
+				   defaultJurisdiction,
+				   defaultState,
+				   zipCodes)){
+		addError(incident.getErrorInfo());
+		pass = false;
+	    }
+	    if(pass && addressCheck.isInIUPDLayer(incident.getLatitude(),
+						  incident.getLongitude())){
+		pass = false;
+		addError("This address is in IU Police Department district");
+	    }
+	    if(!pass){
+		model.addAttribute("entryTypes", entryTypes);
+		model.addAttribute("allZipCodes", getAllZipCodes());
+		model.addAttribute("allStates", getAllStates());
+		model.addAttribute("allCities", getAllCities());
+		model.addAttribute("hostPath", host_path);
+		handleErrorsAndMessages(model);
+		return "incidentAdd";
+	    }
 	    incidentService.update(incident);
 	    // check if incident have persons
 	    if(incident.hasPersonList()){
@@ -243,7 +251,7 @@ public class IncidentController extends TopController{
 	else {
 	    addMessage("no more changes can be made");
 	    addMessagesAndErrorsToSession(session);
-	    return "redirect:/";	    
+	    return "redirect:/introStart";	    
 	}
     }
     // view mode
@@ -269,17 +277,22 @@ public class IncidentController extends TopController{
 	    redirectAttributes.addFlashAttribute("errors", errors);
 	    return "redirect:/error";
 	}
-	if(!incident.hasPropertyList()){
-	    addMessage("You need to add a property");
-	    addMessagesAndErrorsToSession(session);	    
-	    return "redirect:/property/add/"+id;
-	}
-	if(incident.isVehicleRequired() && !incident.hasVehicleList()){
-	    addMessage("You need to add a vehicle");
-	    addMessagesAndErrorsToSession(session);
-	    return "redirect:/vehicle/add/"+id;
-	}
-	if(incident.canBeChanged()){
+	if(incident.canBeChanged()){	
+	    if(!incident.hasPersonList()){
+		addMessage("You need to add a person");
+		addMessagesAndErrorsToSession(session);	    
+		return "redirect:/person/add/"+id;
+	    }	
+	    if(!incident.hasPropertyList()){
+		addMessage("You need to add a property");
+		addMessagesAndErrorsToSession(session);	    
+		return "redirect:/property/add/"+id;
+	    }
+	    if(incident.isVehicleRequired() && !incident.hasVehicleList()){
+		addMessage("You need to add a vehicle");
+		addMessagesAndErrorsToSession(session);
+		return "redirect:/vehicle/add/"+id;
+	    }
 	    model.addAttribute("incident", incident);
 	    model.addAttribute("hostPath", host_path);	    
 	    getMessagesAndErrorsFromSession(session, model);
@@ -288,7 +301,7 @@ public class IncidentController extends TopController{
 	else {
 	    addError("No more changes can be made to this incident");
 	    addMessagesAndErrorsToSession(session);
-	    return "redirect:/index";
+	    return "redirect:/introStart";
 	}
 
     }
@@ -323,7 +336,7 @@ public class IncidentController extends TopController{
 	    addMessage("incident can be submitted ");
 	    addMessages(incident.getErrors());
 	    addMessagesAndErrorsToSession(session);
-	    return "redirect:/";
+	    return "redirect:/introStart";
 	}
     }
     
@@ -434,6 +447,7 @@ public class IncidentController extends TopController{
 	    return "failedconfirm";
 	}
     }
+    /**
     @PostMapping("/incident/add")
     public String addIncident(@Valid Incident incident,
 			      BindingResult result,
@@ -452,7 +466,7 @@ public class IncidentController extends TopController{
 	resetAll();
 	return "redirect:/incident/"+incident.getId();
     }
-
+    */
     @GetMapping("/incident/edit/{id}")
     public String showEditForm(@PathVariable("id") int id,
 			       Model model,
@@ -506,21 +520,28 @@ public class IncidentController extends TopController{
 	    // System.err.println(" not in session ");
 	}
 	if(incident.canBeChanged()){
+	    boolean pass = true;
 	    if(!incident.verifyAll(defaultCity,
 				   defaultJurisdiction,
 				   defaultState,
 				   zipCodes)){
 		addError(incident.getErrorInfo());
 		addMessagesAndErrorsToSession(session);		
+		pass = false;
+	    }
+	    if(pass && incident.isAddressChanged() &&
+	       addressCheck.isInIUPDLayer(incident.getLatitude(),
+					  incident.getLongitude())){
+		pass = false;
+		addError("This address is in IU Police Department district");
+	    }
+	    if(!pass){
 		return "redirect:/incident/edit/"+incident.getId();
-
 	    }
-	    else{
-		incidentService.update(incident);
-		addMessage("Updated Successfully");				
-		addMessagesAndErrorsToSession(session);
-		return "redirect:/incident/"+id;
-	    }
+	    incidentService.update(incident);
+	    addMessage("Updated Successfully");				
+	    addMessagesAndErrorsToSession(session);
+	    return "redirect:/incident/"+id;
 	}
 	else{
 	    addError("No more changes can be made to this incident");
