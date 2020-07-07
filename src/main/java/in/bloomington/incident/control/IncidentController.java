@@ -55,7 +55,7 @@ public class IncidentController extends TopController{
 
     final static Logger logger = LoggerFactory.getLogger(IncidentController.class);		
     final static List<String> entryTypes =
-	new ArrayList<>(Arrays.asList("Unlocked vehicle", "Broke window","Pried window","Pried door","Other specify"));
+				new ArrayList<>(Arrays.asList("Unlocked vehicle", "Broke window","Pried window","Pried door","Other specify"));
     @Autowired
     IncidentService incidentService;		
     @Autowired
@@ -89,556 +89,553 @@ public class IncidentController extends TopController{
     @Value("${incident.address.checkurl}")    
     private String address_check_url;
     @Value("${server.servlet.context-path}")
-    private String host_path; // incidents in production
+    private String hostPath; // incidents in production
 
     public List<String> getAllZipCodes(){
-	return zipCodes;
+				return zipCodes;
     }
     public List<String> getAllCities(){
-	List<String> allCities = new ArrayList<>();
-	if(defaultCity != null){
-	    allCities.add(defaultCity);
-	}
-	return allCities;
+				List<String> allCities = new ArrayList<>();
+				if(defaultCity != null){
+						allCities.add(defaultCity);
+				}
+				return allCities;
     }
     public List<String> getAllStates(){
-	List<String> allStates = new ArrayList<>();
-	if(defaultState != null){
-	    allStates.add(defaultState);
-	}
-	return allStates;
+				List<String> allStates = new ArrayList<>();
+				if(defaultState != null){
+						allStates.add(defaultState);
+				}
+				return allStates;
     }
     @RequestMapping("/initialStart")
     public String initialNext(@RequestParam(required = true) String email,
-			      @RequestParam(required = true) String email2,
-			      @RequestParam(required = true) int type_id,				    
-			      Model model,
-			      HttpServletRequest req
-			      ){
-	HttpSession session = req.getSession();
-	boolean emailProblem = false;
-	if(email == null || email.isEmpty() ||
-	   email2 == null || email2.isEmpty()){
-	    addError("Both emails are required");
-	    addMessagesAndErrorsToSession(session);
-	    emailProblem = true;
-	}
-	if(!email.equals(email2)){
-	    addError("The two emails do not match");
-	    addMessagesAndErrorsToSession(session);
-	    emailProblem = true;
-	}
-	if(!Helper.isValidEmail(email)){
-	    addError("Invalid Email "+email);
-	    addMessagesAndErrorsToSession(session);
-	    emailProblem = true;
-	}
-	if(emailProblem){
-	    return "redirect:/introEmail?type_id="+type_id;
-	}
-	IncidentType type = incidentTypeService.findById(type_id);
-	Incident incident = new Incident();
-	incident.setEmail(email);
-	incident.setReceivedNow();
-	incident.setIncidentType(type);
-	incidentService.save(incident);
-	//
-	// this is the only place we are adding
-	// incident ID in the session
-	//
+															@RequestParam(required = true) String email2,
+															@RequestParam(required = true) int type_id,				    
+															Model model,
+															HttpServletRequest req
+															){
+				HttpSession session = req.getSession();
+				boolean emailProblem = false;
+				if(email == null || email.isEmpty() ||
+					 email2 == null || email2.isEmpty()){
+						addError("Both emails are required");
+						addMessagesAndErrorsToSession(session);
+						emailProblem = true;
+				}
+				if(!email.equals(email2)){
+						addError("The two emails do not match");
+						addMessagesAndErrorsToSession(session);
+						emailProblem = true;
+				}
+				if(!Helper.isValidEmail(email)){
+						addError("Invalid Email "+email);
+						addMessagesAndErrorsToSession(session);
+						emailProblem = true;
+				}
+				if(emailProblem){
+						return "redirect:/introEmail?type_id="+type_id;
+				}
+				IncidentType type = incidentTypeService.findById(type_id);
+				Incident incident = new Incident();
+				incident.setEmail(email);
+				incident.setReceivedNow();
+				incident.setIncidentType(type);
+				incidentService.save(incident);
+				//
+				// this is the only place we are adding
+				// incident ID in the session
+				//
 
-	List<String> ids = null;
-	try{
-	    ids = (List<String>) session.getAttribute("incident_ids");
-	}catch(Exception ex){
-	    System.err.println(ex);
-	}
-	if(ids == null){
-	    ids = new ArrayList<>();
-	}
-	ids.add(""+incident.getId());
-	session.setAttribute("incident_ids", ids);
-	return "redirect:/incidentStart/"+incident.getId();
+				List<String> ids = null;
+				try{
+						ids = (List<String>) session.getAttribute("incident_ids");
+				}catch(Exception ex){
+						System.err.println(ex);
+				}
+				if(ids == null){
+						ids = new ArrayList<>();
+				}
+				ids.add(""+incident.getId());
+				session.setAttribute("incident_ids", ids);
+				return "redirect:/incidentStart/"+incident.getId();
 
     }
     @RequestMapping("/emailRequest/{type_id}")
     public String emailRequest(@PathVariable("type_id") int type_id,
-			      Model model,
-			      HttpServletRequest req
-			      ){
-	HttpSession session = req.getSession(true);
+															 Model model,
+															 HttpServletRequest req
+															 ){
+				HttpSession session = req.getSession(true);
         model.addAttribute("type_id", type_id);	
-	return "email_questions";
+				return "email_questions";
 
     }
     @GetMapping("/incidentStart/{id}")
     public String startIncident(@PathVariable("id") int id,
-				Model model,
-				RedirectAttributes redirectAttributes,
-				HttpServletRequest req
-				) {
-	if(!Helper.verifySession(req, ""+id)){
-	    /**
-	    System.err.println(" not in session ");
-	    addMessage(" not in session ");
-	    */
-	}
-	Incident incident = null;
-	try{
-	    incident = incidentService.findById(id);
-	}catch(Exception ex){
-	    addError("Invalid incident Id: "+id);
-	    logger.error(errors+" "+ex);
-	    model.addAttribute("errors", errors);
-	    redirectAttributes.addFlashAttribute("errors",
-						 "invalid incident " + id + "!");
-	    return "redirect:/start";
-	}
+																Model model,
+																RedirectAttributes redirectAttributes,
+																HttpServletRequest req
+																) {
+				if(!Helper.verifySession(req, ""+id)){
+						/**
+							 System.err.println(" not in session ");
+							 addMessage(" not in session ");
+						*/
+				}
+				Incident incident = null;
+				try{
+						incident = incidentService.findById(id);
+				}catch(Exception ex){
+						addError("Invalid incident Id: "+id);
+						logger.error(errors+" "+ex);
+						model.addAttribute("errors", errors);
+						redirectAttributes.addFlashAttribute("errors",
+																								 "invalid incident " + id + "!");
+						return "redirect:/start";
+				}
         model.addAttribute("incident", incident);
-	model.addAttribute("entryTypes", entryTypes);
-	model.addAttribute("allZipCodes", getAllZipCodes());
-	model.addAttribute("allStates", getAllStates());
-	model.addAttribute("allCities", getAllCities());
-	model.addAttribute("hostPath", host_path);
-	handleErrorsAndMessages(model);
+				model.addAttribute("entryTypes", entryTypes);
+				model.addAttribute("allZipCodes", getAllZipCodes());
+				model.addAttribute("allStates", getAllStates());
+				model.addAttribute("allCities", getAllCities());
+				model.addAttribute("hostPath", hostPath);
+				handleErrorsAndMessages(model);
         return "incidentAdd";
     }
     @PostMapping("/incidentNext/{id}")
     public String incidentNext(@PathVariable("id") int id,
-			       @Valid Incident incident,
-			       BindingResult result, Model model,
-			       HttpSession session
-			       ) {
-	boolean pass = true;
+															 @Valid Incident incident,
+															 BindingResult result, Model model,
+															 HttpSession session
+															 ) {
+				boolean pass = true;
         if (result.hasErrors()) {
-	    addError(Helper.extractErrors(result));
-	    pass = false;
+						addError(Helper.extractErrors(result));
+						pass = false;
         }
-	incident.setId(id);
-	if(incident.canBeChanged()){	
-	    if(!incident.verifyAll(defaultCity,
-				   defaultJurisdiction,
-				   defaultState,
-				   zipCodes)){
-		addError(incident.getErrorInfo());
-		pass = false;
-	    }
-	    if(pass && addressCheck.isInIUPDLayer(incident.getLatitude(),
-						  incident.getLongitude())){
-		pass = false;
-		addError("This address is in IU Police Department district");
-	    }
-	    if(!pass){
-		model.addAttribute("entryTypes", entryTypes);
-		model.addAttribute("allZipCodes", getAllZipCodes());
-		model.addAttribute("allStates", getAllStates());
-		model.addAttribute("allCities", getAllCities());
-		model.addAttribute("hostPath", host_path);
-		handleErrorsAndMessages(model);
-		return "incidentAdd";
-	    }
-	    incidentService.update(incident);
-	    // check if incident have persons
-	    if(incident.hasPersonList()){
-		model.addAttribute("incident", incident);
-		model.addAttribute("hostPath", host_path);
-		return "incident";		
-	    }
-	    else{
-		return "redirect:/person/add/"+id;
-	    }
-	}
-	else {
-	    addMessage("no more changes can be made");
-	    addMessagesAndErrorsToSession(session);
-	    return "redirect:/introStart";	    
-	}
+				incident.setId(id);
+				if(incident.canBeChanged()){	
+						if(!incident.verifyAll(defaultCity,
+																	 defaultJurisdiction,
+																	 defaultState,
+																	 zipCodes)){
+								addError(incident.getErrorInfo());
+								pass = false;
+						}
+						if(pass && addressCheck.isInIUPDLayer(incident.getLatitude(),
+																									incident.getLongitude())){
+								pass = false;
+								addError("This address is in IU Police Department district");
+						}
+						if(!pass){
+								model.addAttribute("entryTypes", entryTypes);
+								model.addAttribute("allZipCodes", getAllZipCodes());
+								model.addAttribute("allStates", getAllStates());
+								model.addAttribute("allCities", getAllCities());
+								model.addAttribute("hostPath", hostPath);
+								handleErrorsAndMessages(model);
+								return "incidentAdd";
+						}
+						incidentService.update(incident);
+						// check if incident have persons
+						if(incident.hasPersonList()){
+								model.addAttribute("incident", incident);
+								model.addAttribute("hostPath", hostPath);
+								return "incident";		
+						}
+						else{
+								return "redirect:/person/add/"+id;
+						}
+				}
+				else {
+						addMessage("no more changes can be made");
+						addMessagesAndErrorsToSession(session);
+						return "redirect:/introStart";	    
+				}
     }
     // view mode
     @GetMapping("/incident/{id}")
     public String showIncident(@PathVariable("id") int id,
-			       Model model,
-			       HttpServletRequest req,
-			       RedirectAttributes redirectAttributes,
-			       HttpSession session
-			       ) {
-	Incident incident = null;
-	if(!Helper.verifySession(req, ""+id)){
-	    /*
-	    System.err.println(" not in session ");
-	    addMessage("not in session ");
-	    */
-	}
-	try{
-	    incident = incidentService.findById(id);
-	}catch(Exception ex){
-	    addError("Invalid incident Id "+id);
-	    logger.error(""+ex);
-	    redirectAttributes.addFlashAttribute("errors", errors);
-	    return "redirect:/error";
-	}
-	if(incident.canBeChanged()){	
-	    if(!incident.hasPersonList()){
-		addMessage("You need to add a person");
-		addMessagesAndErrorsToSession(session);	    
-		return "redirect:/person/add/"+id;
-	    }	
-	    if(!incident.hasPropertyList()){
-		addMessage("You need to add a property");
-		addMessagesAndErrorsToSession(session);	    
-		return "redirect:/property/add/"+id;
-	    }
-	    if(incident.isVehicleRequired() && !incident.hasVehicleList()){
-		addMessage("You need to add a vehicle");
-		addMessagesAndErrorsToSession(session);
-		return "redirect:/vehicle/add/"+id;
-	    }
-	    model.addAttribute("incident", incident);
-	    model.addAttribute("hostPath", host_path);	    
-	    getMessagesAndErrorsFromSession(session, model);
-	    return "incident";	    
-	}
-	else {
-	    addError("No more changes can be made to this incident");
-	    addMessagesAndErrorsToSession(session);
-	    return "redirect:/introStart";
-	}
+															 Model model,
+															 HttpServletRequest req,
+															 RedirectAttributes redirectAttributes,
+															 HttpSession session
+															 ) {
+				Incident incident = null;
+				if(!Helper.verifySession(req, ""+id)){
+						/*
+							System.err.println(" not in session ");
+							addMessage("not in session ");
+						*/
+				}
+				try{
+						incident = incidentService.findById(id);
+				}catch(Exception ex){
+						addError("Invalid incident Id "+id);
+						logger.error(""+ex);
+						redirectAttributes.addFlashAttribute("errors", errors);
+						return "redirect:/error";
+				}
+				if(incident.canBeChanged()){	
+						if(!incident.hasPersonList()){
+								addMessage("You need to add a person");
+								addMessagesAndErrorsToSession(session);	    
+								return "redirect:/person/add/"+id;
+						}	
+						if(!incident.hasPropertyList()){
+								addMessage("You need to add a property");
+								addMessagesAndErrorsToSession(session);	    
+								return "redirect:/property/add/"+id;
+						}
+						if(incident.isVehicleRequired() && !incident.hasVehicleList()){
+								addMessage("You need to add a vehicle");
+								addMessagesAndErrorsToSession(session);
+								return "redirect:/vehicle/add/"+id;
+						}
+						model.addAttribute("incident", incident);
+						model.addAttribute("hostPath", hostPath);	    
+						getMessagesAndErrorsFromSession(session, model);
+						return "incident";	    
+				}
+				else {
+						addError("No more changes can be made to this incident");
+						addMessagesAndErrorsToSession(session);
+						return "redirect:/introStart";
+				}
 
     }
     //
     @GetMapping("/incident/finalPage/{id}")
     public String incidentFinalPage(@PathVariable("id") int id,
-				    Model model,
-				    HttpSession session,
-				    RedirectAttributes redirectAttributes
-				    ) {
-	Incident incident = null;
-	if(!verifySession(session, ""+id)){
-	    /*
-	    addMessage("not in session ");
-	    */
-	}
-	try{
-	    incident = incidentService.findById(id);
-	}catch(Exception ex){
-	    addError("Invalid incident Id "+id);
-	    logger.error(""+ex);
-	    redirectAttributes.addFlashAttribute("errors", errors);
-	    return "redirect:/error";
-	}
-	if(incident.canBeSubmitted()){
-	    addMessage("this is final page");
-	    model.addAttribute("incident", incident);
-	    handleErrorsAndMessages(model);	
-	    return "finalSubmit";
-	}
-	else{
-	    addMessage("incident can be submitted ");
-	    addMessages(incident.getErrors());
-	    addMessagesAndErrorsToSession(session);
-	    return "redirect:/introStart";
-	}
+																		Model model,
+																		HttpSession session,
+																		RedirectAttributes redirectAttributes
+																		) {
+				Incident incident = null;
+				if(!verifySession(session, ""+id)){
+						/*
+							addMessage("not in session ");
+						*/
+				}
+				try{
+						incident = incidentService.findById(id);
+				}catch(Exception ex){
+						addError("Invalid incident Id "+id);
+						logger.error(""+ex);
+						redirectAttributes.addFlashAttribute("errors", errors);
+						return "redirect:/error";
+				}
+				if(incident.canBeSubmitted()){
+						addMessage("this is final page");
+						model.addAttribute("incident", incident);
+						handleErrorsAndMessages(model);	
+						return "finalSubmit";
+				}
+				else{
+						addMessage("incident can be submitted ");
+						addMessages(incident.getErrors());
+						addMessagesAndErrorsToSession(session);
+						return "redirect:/introStart";
+				}
     }
     
 		
     @GetMapping("/incident/submit/{id}")
     public String submitIncident(@PathVariable("id") int id,
-				 Model model,
-				 RedirectAttributes redirectAttributes,
-				 HttpServletRequest req
-				 ) {
-	HttpSession session = req.getSession();
-	if(!verifySession(session, ""+id)){
-	    // addMessage("not in session ");
-	}
-	Incident incident = null;
-	incident = incidentService.findById(id);
-	if(!incident.canBeSubmitted()){
-	    addMessage("Incident can not be submitted ");
-	    addMessages(incident.getErrors());
-	    addMessagesAndErrorsToSession(session);
-	    return "redirect:/index";
-	}
-	try{
-	    String host = req.getServerName();
-	    String uri = req.getRequestURI();
-	    String scheme = req.getScheme();
-	    int port = req.getServerPort();
-	    String url = scheme+"://"+host;
-	    if(port == 8080){ // for localhost
-		url += ":"+port;
-	    }	    
-	    if(host_path != null)
-		url += host_path;
+																 Model model,
+																 RedirectAttributes redirectAttributes,
+																 HttpServletRequest req
+																 ) {
+				HttpSession session = req.getSession();
+				if(!verifySession(session, ""+id)){
+						// addMessage("not in session ");
+				}
+				Incident incident = null;
+				incident = incidentService.findById(id);
+				if(!incident.canBeSubmitted()){
+						addMessage("Incident can not be submitted ");
+						addMessages(incident.getErrors());
+						addMessagesAndErrorsToSession(session);
+						return "redirect:/index";
+				}
+				try{
+						String host = req.getServerName();
+						String uri = req.getRequestURI();
+						String scheme = req.getScheme();
+						int port = req.getServerPort();
+						String url = scheme+"://"+host;
+						if(port == 8080){ // for localhost
+								url += ":"+port;
+						}	    
+						if(hostPath != null)
+								url += hostPath;
 
-	    url += "/incident/confirm/";
+						url += "/incident/confirm/";
 
-	    ActionLog actionLog = new ActionLog();
-	    actionLog.setIncident(incident);
-	    Action action = actionService.findById(2); // received action
-	    actionLog.setAction(action);
-	    actionLog.setDateNow();
-	    actionLogService.save(actionLog);
-	    //
-	    // create the request and related hash
-	    //
-	    String back = createRequestAndEmail(url, incident);
-	    // the success submission and what to do next
-	    // confirmation email
-	    //
+						ActionLog actionLog = new ActionLog();
+						actionLog.setIncident(incident);
+						Action action = actionService.findById(2); // received action
+						actionLog.setAction(action);
+						actionLog.setDateNow();
+						actionLogService.save(actionLog);
+						//
+						// create the request and related hash
+						//
+						String back = createRequestAndEmail(url, incident);
+						// the success submission and what to do next
+						// confirmation email
+						//
 						
-	}catch(Exception ex){
-	    addError("Invalid incident Id "+id);
-	    logger.error(errors+" "+ex);
-	    model.addAttribute("errors", errors);
-	    return "redirect:/index"; 
-	}
-	handleErrorsAndMessages(model);
-	return "successSubmission";
+				}catch(Exception ex){
+						addError("Invalid incident Id "+id);
+						logger.error(errors+" "+ex);
+						model.addAttribute("errors", errors);
+						return "redirect:/index"; 
+				}
+				handleErrorsAndMessages(model);
+				return "successSubmission";
     }		
     @GetMapping("/incident/confirm/{id}/{hash}")
     public String submitIncident(@PathVariable("id") int id,
-				 @PathVariable("hash") String hash,
-				 Model model
-				 ) {
-	String error = "";
-	Request request = null;
-	Incident incident = null;
-	try{
-	    request = requestService.findById(id);
-	    incident = incidentService.findById(id);
-	}catch(Exception ex){}
-	System.err.println("hash: "+hash);
-	System.err.println("req hash: "+request.getHash());
-	if(request == null){
-	    error = "Incident not found ";
-	}
-	else if(request.isConfirmed()){
-	    error = "The incident is already confirmed ";
-	}
-	else if(!request.getHash().equals(hash)){
-	    error = "The hash does not match ";
-	}
-	/*
-	else if(request.checkExpired()){ // with current time
-	    // we may ignore this condition and still
-	    // let the request to be confirmed
-	    error = "The confirmation is too late, the request expired";
-	}
-	*/
-	else{
-	    request.setConfirmed('y');
-	    requestService.update(request);
-	    //
-	    // add action log
-	    //
-	    ActionLog actionLog = new ActionLog();
-	    actionLog.setIncident(incident);
-	    Action action = actionService.findById(3); // confirmed action
-	    actionLog.setAction(action);
-	    actionLog.setDateNow();
-	    actionLogService.save(actionLog);
-	}
-	if(error.equals("")){
-	    return "confirm";
-	}
-	else{
-	    model.addAttribute("failure_message", error);
-	    return "failedconfirm";
-	}
+																 @PathVariable("hash") String hash,
+																 Model model
+																 ) {
+				String error = "";
+				Request request = null;
+				Incident incident = null;
+				try{
+						request = requestService.findById(id);
+						incident = incidentService.findById(id);
+				}catch(Exception ex){}
+				System.err.println("hash: "+hash);
+				System.err.println("req hash: "+request.getHash());
+				if(request == null){
+						error = "Incident not found ";
+				}
+				else if(request.isConfirmed()){
+						error = "The incident is already confirmed ";
+				}
+				else if(!request.getHash().equals(hash)){
+						error = "The hash does not match ";
+				}
+				/*
+					else if(request.checkExpired()){ // with current time
+					// we may ignore this condition and still
+					// let the request to be confirmed
+					error = "The confirmation is too late, the request expired";
+					}
+				*/
+				else{
+						request.setConfirmed('y');
+						requestService.update(request);
+						//
+						// add action log
+						//
+						ActionLog actionLog = new ActionLog();
+						actionLog.setIncident(incident);
+						Action action = actionService.findById(3); // confirmed action
+						actionLog.setAction(action);
+						actionLog.setDateNow();
+						actionLogService.save(actionLog);
+				}
+				if(error.equals("")){
+						return "confirm";
+				}
+				else{
+						model.addAttribute("failure_message", error);
+						return "failedconfirm";
+				}
     }
     /**
-    @PostMapping("/incident/add")
-    public String addIncident(@Valid Incident incident,
-			      BindingResult result,
-			      Model model,
-			      HttpSession session
-			      ) {
-        if (result.hasErrors()) {
-	    String error = Helper.extractErrors(result);
-	    addError(error);
-	    logger.error("Error starting new incident "+error);
-            return "incidentAdd";
-        }
-        incidentService.save(incident);
-	addMessage("Added Successfully");
-	addMessagesAndErrorsToSession(session);
-	resetAll();
-	return "redirect:/incident/"+incident.getId();
-    }
+			 @PostMapping("/incident/add")
+			 public String addIncident(@Valid Incident incident,
+			 BindingResult result,
+			 Model model,
+			 HttpSession session
+			 ) {
+			 if (result.hasErrors()) {
+			 String error = Helper.extractErrors(result);
+			 addError(error);
+			 logger.error("Error starting new incident "+error);
+			 return "incidentAdd";
+			 }
+			 incidentService.save(incident);
+			 addMessage("Added Successfully");
+			 addMessagesAndErrorsToSession(session);
+			 resetAll();
+			 return "redirect:/incident/"+incident.getId();
+			 }
     */
     @GetMapping("/incident/edit/{id}")
     public String showEditForm(@PathVariable("id") int id,
-			       Model model,
-			       HttpSession session
-			       ) {
-	if(!verifySession(session, ""+id)){
-	    // addMessage(" not in session ");
-	}
-	Incident incident = null;
-	try{
-	    incident = incidentService.findById(id);
+															 Model model,
+															 HttpSession session
+															 ) {
+				if(!verifySession(session, ""+id)){
+						// addMessage(" not in session ");
+				}
+				Incident incident = null;
+				try{
+						incident = incidentService.findById(id);
 						
-	}catch(Exception ex){
-	    addError("Invalid incident Id "+id);
-	    logger.error(""+ex);
+				}catch(Exception ex){
+						addError("Invalid incident Id "+id);
+						logger.error(""+ex);
 
-	    return "start";
-	}
-	if(incident.canBeChanged()){
-	    model.addAttribute("incident", incident);
-	    model.addAttribute("entryTypes", entryTypes);
-	    model.addAttribute("allZipCodes", getAllZipCodes());
-	    model.addAttribute("allStates", getAllStates());
-	    model.addAttribute("allCities", getAllCities());
-	    model.addAttribute("hostPath",host_path);
-	    getMessagesAndErrorsFromSession(session, model);
-	    // handleErrorsAndMessages(model);
-	    return "incidentUpdate";
-	}
-	else {
-	    addError("No more changes can be made to this incident");
-	    addMessagesAndErrorsToSession(session);
-	    return "redirect:/index";
-	}
+						return "start";
+				}
+				if(incident.canBeChanged()){
+						model.addAttribute("incident", incident);
+						model.addAttribute("entryTypes", entryTypes);
+						model.addAttribute("allZipCodes", getAllZipCodes());
+						model.addAttribute("allStates", getAllStates());
+						model.addAttribute("allCities", getAllCities());
+						model.addAttribute("hostPath",hostPath);
+						getMessagesAndErrorsFromSession(session, model);
+						// handleErrorsAndMessages(model);
+						return "incidentUpdate";
+				}
+				else {
+						addError("No more changes can be made to this incident");
+						addMessagesAndErrorsToSession(session);
+						return "redirect:/index";
+				}
     }
     @PostMapping("/incident/update/{id}")
     public String updateIncident(@PathVariable("id") int id,
-				 @Valid Incident incident, 
-				 BindingResult result,
-				 Model model,
-				 HttpSession session
-				 ) {
-	if (result.hasErrors()) {
-	    String error = Helper.extractErrors(result);
-	    addError(error);
-	    logger.error("Error update incident "+id+" "+error);
-	    handleErrorsAndMessages(model);
-	    return "updateIncident";
-	}
-	if(!verifySession(session, ""+id)){
-	    // System.err.println(" not in session ");
-	}
-	if(incident.canBeChanged()){
-	    boolean pass = true;
-	    if(!incident.verifyAll(defaultCity,
-				   defaultJurisdiction,
-				   defaultState,
-				   zipCodes)){
-		addError(incident.getErrorInfo());
-		addMessagesAndErrorsToSession(session);		
-		pass = false;
-	    }
-	    if(pass && incident.isAddressChanged() &&
-	       addressCheck.isInIUPDLayer(incident.getLatitude(),
-					  incident.getLongitude())){
-		pass = false;
-		addError("This address is in IU Police Department district");
-	    }
-	    if(!pass){
-		return "redirect:/incident/edit/"+incident.getId();
-	    }
-	    incidentService.update(incident);
-	    addMessage("Updated Successfully");				
-	    addMessagesAndErrorsToSession(session);
-	    return "redirect:/incident/"+id;
-	}
-	else{
-	    addError("No more changes can be made to this incident");
-	    addMessagesAndErrorsToSession(session);
-	    return "redirect:/index";
-	}
+																 @Valid Incident incident, 
+																 BindingResult result,
+																 Model model,
+																 HttpSession session
+																 ) {
+				if (result.hasErrors()) {
+						String error = Helper.extractErrors(result);
+						addError(error);
+						logger.error("Error update incident "+id+" "+error);
+						handleErrorsAndMessages(model);
+						return "updateIncident";
+				}
+				if(!verifySession(session, ""+id)){
+						// System.err.println(" not in session ");
+				}
+				if(incident.canBeChanged()){
+						boolean pass = true;
+						if(!incident.verifyAll(defaultCity,
+																	 defaultJurisdiction,
+																	 defaultState,
+																	 zipCodes)){
+								addError(incident.getErrorInfo());
+								addMessagesAndErrorsToSession(session);		
+								pass = false;
+						}
+						if(pass && incident.isAddressChanged() &&
+							 addressCheck.isInIUPDLayer(incident.getLatitude(),
+																					incident.getLongitude())){
+								pass = false;
+								addError("This address is in IU Police Department district");
+						}
+						if(!pass){
+								return "redirect:/incident/edit/"+incident.getId();
+						}
+						incidentService.update(incident);
+						addMessage("Updated Successfully");				
+						addMessagesAndErrorsToSession(session);
+						return "redirect:/incident/"+id;
+				}
+				else{
+						addError("No more changes can be made to this incident");
+						addMessagesAndErrorsToSession(session);
+						return "redirect:/index";
+				}
     }
 		
     @GetMapping("/incident/delete/{id}")
     public String deleteIncident(@PathVariable("id") int id,
-				 Model model,
-				 HttpServletRequest req
-				 ) {
-	if(!Helper.verifySession(req, ""+id)){
-	    // System.err.println(" not in session ");
-	}				
-	Incident incident = null;
-	try{
-	    incident = incidentService.findById(id);
-	    if(incident.canBeChanged()){
-		incidentService.delete(id);
-		addMessage("Deleted Succefully");
-	    }
-	}catch(Exception ex){
-	    logger.error("Error delete incident "+id+" "+ex);
-	    addError("Invalid incident ID "+id);
-	}
-	HttpSession session = req.getSession();
-	addMessagesAndErrorsToSession(session);
-	return "redirect:/index";
+																 Model model,
+																 HttpServletRequest req
+																 ) {
+				if(!Helper.verifySession(req, ""+id)){
+						// System.err.println(" not in session ");
+				}				
+				Incident incident = null;
+				try{
+						incident = incidentService.findById(id);
+						if(incident.canBeChanged()){
+								incidentService.delete(id);
+								addMessage("Deleted Succefully");
+						}
+				}catch(Exception ex){
+						logger.error("Error delete incident "+id+" "+ex);
+						addError("Invalid incident ID "+id);
+				}
+				HttpSession session = req.getSession();
+				addMessagesAndErrorsToSession(session);
+				return "redirect:/index";
 
     }
-    public String getHostPath(){
-	return host_path;
-    }
     private String createRequestAndEmail(String url,
-					 Incident incident){
-	String ret = "";
-	String lastname = "";
-	int id = incident.getId();
-	Person person = null;
-	List<Person> persons = incident.getPersons();
-	if(persons != null){
-	    for(Person one:persons){
-		if(one.isReporter()){ // first reporter
-		    person = one;
-		    break;
-		}
-	    }
-	    // if non is reporter we take the first one
-	    if(person == null){
-		person = persons.get(0);
-	    }
-	}
-	if(person != null){
-	    lastname = person.getLastname();
-	}
-	String strToHash = ""+id+""+lastname;
-	String hash = Helper.createMD5Hash(strToHash);
-	Request request = new Request();
-	request.setId(id);
-	request.setHash(hash);
-	request.setExpireDateTime(); // 72 hours from now
-	requestService.save(request);
-	//
-	// now we can send the submission email
-	//
-	String subject = " Bloomington's Police Department Online Reporting Confirmation ";
-	String to = incident.getEmail();
-	String body = "Click on the link ";
-	body += url+id+"/"+hash+" to confirm.\n\n ";
-	body += " Once your report is reviewed it will either be accepted or rejected, at which time you will receive another email explaining the reason for denial or a report reference number.\n\n";
-	body += "Please do not reply to this email as this is an automated system.";
-	EmailHelper emailHelper = new EmailHelper(mailSender, email_sender, to, subject, body);
-	String back = emailHelper.send();
-	if(!back.isEmpty()){
-	    addError(back);
-	    logger.error(back);
-	    ret += back;
-	}
-	/**
-	   System.err.println(" url "+url);
-	   System.err.println(" host "+email_host);
-	   System.err.println(" to "+to);
-	   System.err.println(" from "+email_sender);
-	*/
-	/**
-	EmailHandle emailer = new EmailHandle(email_host,
-					      to,
-					      email_sender,
-					      subject,
-					      message);
-	*/
-	//
-	// uncomment in production to send email
-	//
-	return ret;
+																				 Incident incident){
+				String ret = "";
+				String lastname = "";
+				int id = incident.getId();
+				Person person = null;
+				List<Person> persons = incident.getPersons();
+				if(persons != null){
+						for(Person one:persons){
+								if(one.isReporter()){ // first reporter
+										person = one;
+										break;
+								}
+						}
+						// if non is reporter we take the first one
+						if(person == null){
+								person = persons.get(0);
+						}
+				}
+				if(person != null){
+						lastname = person.getLastname();
+				}
+				String strToHash = ""+id+""+lastname;
+				String hash = Helper.createMD5Hash(strToHash);
+				Request request = new Request();
+				request.setId(id);
+				request.setHash(hash);
+				request.setExpireDateTime(); // 72 hours from now
+				requestService.save(request);
+				//
+				// now we can send the submission email
+				//
+				String subject = " Bloomington's Police Department Online Reporting Confirmation ";
+				String to = incident.getEmail();
+				String body = "Click on the link ";
+				body += url+id+"/"+hash+" to confirm.\n\n ";
+				body += " Once your report is reviewed it will either be accepted or rejected, at which time you will receive another email explaining the reason for denial or a report reference number.\n\n";
+				body += "Please do not reply to this email as this is an automated system.";
+				EmailHelper emailHelper = new EmailHelper(mailSender, email_sender, to, subject, body);
+				String back = emailHelper.send();
+				if(!back.isEmpty()){
+						addError(back);
+						logger.error(back);
+						ret += back;
+				}
+				/**
+					 System.err.println(" url "+url);
+					 System.err.println(" host "+email_host);
+					 System.err.println(" to "+to);
+					 System.err.println(" from "+email_sender);
+				*/
+				/**
+					 EmailHandle emailer = new EmailHandle(email_host,
+					 to,
+					 email_sender,
+					 subject,
+					 message);
+				*/
+				//
+				// uncomment in production to send email
+				//
+				return ret;
     }
 
 }
