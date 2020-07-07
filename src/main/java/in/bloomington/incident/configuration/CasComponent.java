@@ -73,8 +73,9 @@ public class CasComponent{
 				filter.setServiceProperties(sP);
 				filter.setAuthenticationManager(authenticationManager());
 				return filter;
-
 		}
+		
+		
 		// @Override
 		@Bean
 		protected AuthenticationManager authenticationManager() throws Exception {
