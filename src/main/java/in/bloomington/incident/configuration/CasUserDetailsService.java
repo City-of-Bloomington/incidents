@@ -57,17 +57,25 @@ public class CasUserDetailsService implements AuthenticationUserDetailsService {
 		public UserDetails loadUserDetails(Authentication authentication) throws UsernameNotFoundException {
         CasAssertionAuthenticationToken casAssertionAuthenticationToken = (CasAssertionAuthenticationToken) authentication;
         AttributePrincipal principal = casAssertionAuthenticationToken.getAssertion().getPrincipal();
-        Map attributes = principal.getAttributes();
-        String uname = (String) attributes.get("username");
-        // String email = (String) attributes.get("email");
-        // String role = (String) attributes.get("role");
-        String username = authentication.getName();
-				System.err.println(" username "+username);
-				/**
-        Collection<SimpleGrantedAuthority> collection = new ArrayList<SimpleGrantedAuthority>();
-        collection.add(new SimpleGrantedAuthority(uname));
-				*/
-        return new User(username, "", null); // collection
+				try{
+						Map attributes = principal.getAttributes();
+						// String uname = (String) attributes.get("username");
+						String email = (String) attributes.get("mail");
+						String username = (String) attributes.get("sAMAccountName");
+						String employeeId = (String) attributes.get("employeeId");
+        // String username = authentication.getName();
+						System.err.println(" *** ");
+						System.err.println(" *** username "+username);
+						System.err.println(" *** email "+email);
+						System.err.println(" *** ");				
+						Collection<SimpleGrantedAuthority> collection = new ArrayList<SimpleGrantedAuthority>();
+						collection.add(new SimpleGrantedAuthority(email));
+						collection.add(new SimpleGrantedAuthority(employeeId));				
+						return new User(username, "", collection);
+				}catch(Exception ex){
+						System.err.println(" user exp "+ex);
+				}
+				return null;
     }
 		
 }

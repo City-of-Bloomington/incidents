@@ -35,8 +35,9 @@ import org.springframework.security.cas.authentication.CasAuthenticationProvider
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.jasig.cas.client.validation.TicketValidator;
-// import org.jasig.cas.client.validation.Cas30ServiceTicketValidator;
 import org.jasig.cas.client.validation.Cas30ServiceTicketValidator;
+import org.jasig.cas.client.validation.Cas20ServiceTicketValidator;
+import org.jasig.cas.client.validation.Cas20ProxyReceivingTicketValidationFilter;
 import org.jasig.cas.client.session.SingleSignOutFilter;
 import org.jasig.cas.client.session.SingleSignOutHttpSessionListener;
 import org.springframework.stereotype.Component;
@@ -65,7 +66,8 @@ public class CasComponent{
 		
 		@Autowired
 		CasUserDetailsService casUserDetailService;
-		
+
+
 		@Bean
 		public CasAuthenticationFilter casAuthenticationFilter(ServiceProperties sP)
 				throws Exception {
@@ -74,9 +76,6 @@ public class CasComponent{
 				filter.setAuthenticationManager(authenticationManager());
 				return filter;
 		}
-		
-		
-		// @Override
 		@Bean
 		protected AuthenticationManager authenticationManager() throws Exception {
 				return new ProviderManager(
@@ -85,6 +84,7 @@ public class CasComponent{
 		//
 		// for logout
 		//
+		/**
 		@Bean
 		public SecurityContextLogoutHandler securityContextLogoutHandler() {
 				return new SecurityContextLogoutHandler();
@@ -109,12 +109,12 @@ public class CasComponent{
 				singleSignOutHttpSessionListener(HttpSessionEvent event) {
 				return new SingleSignOutHttpSessionListener();
 		}
-		
+		*/
 		@Bean
 		public ServiceProperties serviceProperties() {
 				ServiceProperties serviceProperties = new ServiceProperties();
 				// serviceProperties.setService("http://localhost:9000/login/cas");
-				// String url = serverUrl+hostPath+"login";
+				// String url = serverUrl+hostPath+"/login";
 				// System.err.println(" usrl "+url);
 				serviceProperties.setService(serverUrl+hostPath+"/login");
 				serviceProperties.setSendRenew(false);
@@ -122,13 +122,11 @@ public class CasComponent{
 		}
 		@Bean
 		@Primary
-		public AuthenticationEntryPoint authenticationEntryPoint(
-																														 ServiceProperties sP) {
- 
+		public AuthenticationEntryPoint authenticationEntryPoint(ServiceProperties sp) {
 				CasAuthenticationEntryPoint entryPoint
 						= new CasAuthenticationEntryPoint();
 				entryPoint.setLoginUrl(casLoginUrl);
-				entryPoint.setServiceProperties(sP);
+				entryPoint.setServiceProperties(sp);
 				return entryPoint;
 		}
 		@Bean
@@ -137,7 +135,6 @@ public class CasComponent{
 		}
 		@Bean
 		public CasAuthenticationProvider authenticationProvider() {
-				// public CasAuthenticationProvider casAuthenticationProvider() { 
 				CasAuthenticationProvider provider = new CasAuthenticationProvider();
 				provider.setServiceProperties(serviceProperties());
 				provider.setTicketValidator(ticketValidator());
@@ -150,6 +147,14 @@ public class CasComponent{
 				*/
 				provider.setKey("CAS_PROVIDER_FOR_INCIDENTS");
 				return provider;
-		}		
-
+		}
+		/**
+		@Bean
+		public Cas20ProxyReceivingTicketValidationFilter casValidatorFilter(){
+				Cas20ProxyReceivingTicketValidationFilter	filter = new Cas20ProxyReceivingTicketValidationFilter();
+				filter.setServerName(serverUrl);				
+				filter.setService(casUrl); // cas url prefix
+				return filter;
+		}
+		*/
 }

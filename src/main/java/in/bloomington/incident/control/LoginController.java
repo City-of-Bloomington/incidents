@@ -89,7 +89,7 @@ public class LoginController extends TopController{
 		@GetMapping("/login")
     @ResponseBody
 		public String loginUser(HttpServletRequest request) {
-				HttpServletRequest httpRequest = (HttpServletRequest) request;
+				// HttpServletRequest httpRequest = (HttpServletRequest) request;
 				Enumeration<String> headerNames = request.getHeaderNames();
 				if (headerNames != null) {
             while (headerNames.hasMoreElements()) {

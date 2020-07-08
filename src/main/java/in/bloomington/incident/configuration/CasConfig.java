@@ -42,18 +42,16 @@ import org.jasig.cas.client.validation.TicketValidator;
 // @EnableWebSecurity
 public class CasConfig extends WebSecurityConfigurerAdapter {
 
-    private Environment env;
-    @Value("${spring.mail.host}")
-    private String mailHost;
-
 		@Autowired
 		AuthenticationEntryPoint authenticationEntryPoint;
 		@Autowired
 		CasAuthenticationProvider authenticationProvider;
+		/**
 		@Autowired
 		SingleSignOutFilter singleSignOutFilter;
 		@Autowired
 		LogoutFilter logoutFilter;
+		*/
 		/**
 		public CasConfig(){
 				super(true); // to disable the defaults such as anonymous user
@@ -63,6 +61,7 @@ public class CasConfig extends WebSecurityConfigurerAdapter {
 		protected void configure(HttpSecurity http) throws Exception {
 
 				http
+						.csrf().disable()
 						.authorizeRequests()
 						.regexMatchers("/login") // ("/login", "/staff")
 						.authenticated()
