@@ -1,0 +1,528 @@
+@import 'cob-design-sys-utils';
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500&display=swap');
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+
+body {
+	line-height: 1;
+}
+
+ol, ul {
+	list-style: none;
+}
+
+blockquote, q {
+	quotes: none;
+}
+
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+$text-color: darken($color-grey, 55%);
+
+html,
+body {
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  background: $color-blue;
+  font-family: 'IBM Plex Sans', sans-serif;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+h1 {
+  font-size: 30px;
+  line-height: 30px;
+  font-weight: 500;
+}
+
+h2 {
+  font-size: 26px;
+  font-weight: 500;
+  line-height: 26px;
+  margin: 0 0 10px 0;
+  padding: 0 0 10px 0;
+  border-bottom: 1px solid #dbdbdb;
+}
+
+h3 {
+  font-size: 22px;
+  font-weight: 500;
+  line-height: 22px;
+}
+
+p, li {
+  font-size: 16px;
+  line-height: 20px;
+}
+
+ul, ol {
+  padding: 0 0 0 20px;
+  margin: 0 0 10px 0;
+
+  li {
+    margin: 0 0 10px 0;
+
+    strong {
+      color: darken($text-color, 15%);
+    }
+
+    &:last-of-type {
+      margin: 0;
+    }
+  }
+}
+
+a {
+  color: $color-blue;
+  text-decoration: none;
+
+  &:hover,
+  &:focus {
+    color: $text-color;
+  }
+}
+
+form {
+
+  input, textarea {
+    border: 1px solid $color-grey;
+  }
+
+  textarea {
+    width: 100%;
+  }
+
+  input {
+    width: 100%;
+
+    &[type="submit"] {
+      background: $color-fern;
+      color: white;
+      font-weight: 500;
+      font-size: 16px;
+      line-height: 16px;
+      padding: 4px 8px;
+      margin: 20px 0 0 0;
+      border-radius: $radius-default;
+      border: none;
+      cursor: pointer;
+
+      &:focus,
+      &:hover {
+        background: darken($color-fern, 5%);
+      }
+    }
+  }
+
+  button {
+    cursor: pointer;
+    border-radius: $radius-default;
+    border: none;
+    color: white;
+    margin: 10px 0;
+  }
+
+  fieldset {
+    color: $text-color;
+    margin: 0 0 20px 0;
+
+    &:last-of-type {
+      margin: 0;
+    }
+
+    span {
+      color: $text-color;
+    }
+
+    input {
+      margin: 0 0 10px 0;
+    }
+
+    legend {
+      font-size: 18px;
+      font-weight: 500;
+      margin: 0 0 5px 0;
+    }
+  }
+}
+
+.field-group {
+  margin: 0 0 20px 0;
+  width: 100%;
+}
+
+@mixin visuallyHidden() {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+}
+
+@mixin clearfix {
+  &:after {
+    clear: both;
+    content: '';
+    display: table;
+  }
+}
+
+// Create a tint
+//
+// @param  {Color}  $color to tint
+// @param  {Number} $percentage of `$color` in returned color
+// @return {Color}
+@function tint($color, $percentage) {
+  @return mix(white, $color, $percentage);
+}
+
+// Create a shade
+//
+// @param  {Color}  $color to shade
+// @param  {Number} $percentage of `$color` in returned color
+// @return {Color}
+@function shade($color, $percentage) {
+  @return mix(black, $color, $percentage);
+}
+
+.m-b-10 {
+  margin-bottom: 10px;
+  display: inline-block;
+}
+
+
+header {
+  background: white;
+  border-top: 4px solid $color-blue;
+  padding: 15px 20px 13px 20px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  width: 100%;
+
+  div:first-of-type {
+    display: flex;
+    align-items: center;
+    width: 100%;
+  }
+
+  a {
+    text-decoration: none;
+
+    &.logo {
+      display: block;
+      width: 200px;
+    }
+
+    &.app-name {
+      border-left: 2px solid $color-grey;
+      color: $text-color;
+      letter-spacing: -.5px;
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 21px;
+      margin: 0 0 0 20px;
+      padding: 0 0 0 20px;
+    }
+  }
+
+  nav {
+    display: flex;
+    align-items: center;
+    align-self: center;
+    margin: 0 0 0 auto;
+
+    &#navigation {
+      ul {
+        li {
+          a {
+            color: $text-color;
+          }
+        }
+      }
+    }
+
+    &.navigation-dropdown {
+      margin: 0 0 0 20px;
+      position: relative;
+      display: inline-flex;
+      flex-wrap: wrap;
+
+      summary {
+      box-sizing: border-box;
+      z-index: 1;
+      position: relative;
+      will-change: transform;
+      transition: all .2s ease;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-decoration: none;
+      margin: 0;
+      padding: 0 8px;
+      border: 0;
+      border-radius: 3px;
+      background: #1e5aae;
+      color: #fff;
+      font-weight: 600;
+      font-size: 16px;
+      font-family: IBM Plex Sans,Helvetica,Arial,sans-serif;
+      line-height: 1.6;
+      cursor: pointer;
+      }
+
+      ul {
+        z-index: 10;
+        background: #fff;
+        border: 1px solid #dbdbdb;
+        margin: 0;
+        padding: 0;
+        position: absolute;
+        top: 30px;
+        min-width: 100px;
+        list-style: none;
+        border-radius: 3px;
+
+        li {
+          padding: 0 10px;
+
+          &:hover,
+          &:focus {
+            background: #f2f2f2
+          }
+
+          a {
+            display: inline-block;
+            padding: 5px 0;
+            width: 100%;
+            color: #373737;
+            text-decoration: none;
+            font-weight: 400;
+            font-size: 14px;
+            font-family: IBM Plex Sans,Helvetica,Arial,sans-serif;
+            line-height: 1.3
+          }
+        }
+      }
+    }
+  }
+
+  .navigation-dropdown {
+    
+  }
+}
+
+main {
+  &.public-questions-wrapper {
+    width: 520px;
+    margin: 20px auto;
+    padding: 20px;
+    border-radius: $radius-default;
+    background: white;
+    box-shadow: 0 1px 5px 0 rgba(70, 70, 70, 0.3);
+
+    p {
+      margin: 0 0 10px 0;
+
+      strong {
+        font-weight: 500;
+      }
+    }
+
+    // .welcome {
+    //   h2 {
+    //     margin: 0 0 10px 0;
+    //     padding: 0 0 10px 0;
+    //     border-bottom: 1px solid $color-grey;
+    //   }
+    // }
+
+    #questions {
+      .question {
+        p {
+          font-weight: 500;
+        }
+
+        form {
+
+          ul {
+            display: flex;
+
+            li {
+              margin: 0 20px 0 0;
+              display: flex;
+              align-items: center;
+
+              input {
+                margin: 0 5px 0 0;
+                width: max-content;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    #finalStep {
+      ul {
+        padding: 0;
+
+        li {
+
+          a {
+            display: inline-block;
+            background: $color-fern;
+            color: white;
+            padding: 4px 8px;
+            border-radius: $radius-default;
+            font-weight: 500;
+
+            &:hover,
+            &:focus {
+              background: darken($color-fern, 5%);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  #moreInfo {
+    border-top: 1px solid $color-grey;
+    font-size: 16px;
+    color: $text-color;
+    margin: 20px 0 0 0;
+    padding: 20px 0 0 0;
+  }
+
+  .next-button {
+    background: $color-fern;
+    color: white;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 16px;
+    padding: 4px 8px;
+    margin: 0 5px;
+    border-radius: $radius-default;
+    border: none;
+    cursor: pointer;
+
+    &:focus,
+    &:hover {
+      background: darken($color-fern, 5%);
+    }
+  }
+
+  #next_div,
+  .next_div {
+    border-top: 1px solid $color-grey;
+    padding: 20px 0 0 0;
+    margin: 20px 0 0 0;
+    color: $text-color;
+
+    p {
+      color: $text-color;
+      margin: 0;
+      display: flex;
+      align-items: center;
+    }
+
+    input[type="button"],
+    button,
+    .button {
+      background: $color-fern;
+      color: white;
+      font-weight: 500;
+      font-size: 16px;
+      line-height: 16px;
+      padding: 10px 20px;
+      margin: 0;
+      border-radius: $radius-default;
+      border: none;
+      cursor: pointer;
+
+      &:focus,
+      &:hover {
+        background: darken($color-fern, 5%);
+      }
+    }
+  }
+}
+
+.button-group {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  border-top: 1px solid $color-grey;
+  border-bottom: 1px solid $color-grey;
+  margin: 10px 0;
+  padding: 10px 0;
+
+  input[type="button"],
+  button,
+  .button {
+    cursor: pointer;
+    background: $color-fern;
+    color: white;
+    padding: 2px 8px;
+    border: none;
+    border-radius: $radius-default;
+    font-size: 14px;
+    font-weight: 500;
+
+    &:hover,
+    &:focus {
+      background: darken($color-fern, 5%);
+    }
+  }
+}

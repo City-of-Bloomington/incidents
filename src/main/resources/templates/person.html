@@ -8,111 +8,111 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head th:replace="general::head('Person')"></head>
   <body>
-    <header th:replace="general::header">
-    </header>			
-    <h2>Person Info</h2>
-    <div th:if="${errors}">
-      <div th:insert="general::errors(${errors})"></div>			
-    </div>
-    <div th:if="${messages}">
-      <div th:insert="general::messages(${messages})"></div>			
-    </div>						
-    <fieldset>
-      <caption>View Person</caption>
-      <p>
-	The following are the details about this person.
-      </p>
-      <ul>
-	<li>Check the info entered so far</li>
-	<li>if you want to change some of the data click on 'Edit' button below.</li>
-	<li>You amy also delete this record if you think it is irrelevant, by cl
-	<li>If the data are correct, click on 'Back to incident' link below to continue </li>
-      </ul>
-      <dl>
-	  <dt>Related incident</dt>
-	  <dd><a th:href="@{/incident/{id}(id=${person.incident.id})}">Back to Incident</a>
-	  </dd>
-	  <dt>
-	    <label>Involvement of this person to this incident as: </label>
-	  </dt>
-	  <dd>
-	    <span th:text="${personType}"></span>
-	  </dd>
+		<header th:replace="general::header"></header>
+		
+		<main class="public-questions-wrapper">
+			<h2>Person Info</h2>
+			
+			<div th:if="${errors}">
+				<div th:insert="general::errors(${errors})"></div>
+			</div>
+			
+			<div th:if="${messages}">
+				<div th:insert="general::messages(${messages})"></div>
+			</div>
 
-	  <dt>
-	    Name: 
-	  </dt>
-	  <dd>
-	    <span th:text="${person.fullname}"></span>
-	  </dd>
+			<fieldset>
+				<p>The following are the details about this person.</p>
+				
+				<ul>
+					<li>Check the info entered so far</li>
+					<li>If you want to change some of the data click on 'Edit' button below.</li>
+					<li>You amy also delete this record if you think it is irrelevant.</li>
+					<li>If the data are correct, click on 'Back to incident' link below to continue.</li>
+				</ul>
 
-	  <dt>Address: </dt>
-	  <dd>
-	    <span th:text="${person.address}"></span>	
-	  </dd>
+				<h3>Related incident</h3>
+				<a th:href="@{/incident/{id}(id=${person.incident.id})}">Back to Incident</a>
 
-	  <dd>City, State Zipcode: </dd>
-	  <dt>
-	    <span th:text="${person.cityStateZip}">	</span>
-	  </dt>
+				<ul style="padding: 0;">
+					<li>
+						<strong>Involvement of this person to this incident as:</strong>
+						<span th:text="${personType}"></span>
+					</li>
 
-	  <dt>Phone(s): </dt>
-	  <dd>
-	    <span th:text="${person.phones}"></span>
-	  </dd>
+					<li>
+						<strong>Name:</strong>
+						<span th:text="${person.fullname}"></span>
+					</li>
 
-	  <dt>Email(s): </dt>
-	  <dd>
-	    <span th:text="${person.emails}"></span>
-	  </dd>
-	  <dt>Date of Birth: </dt>
-	  <dd>
-	    <span th:text="${person.dobStr}"></span>
-	  </dd>
+					<li>
+						<strong>Address:</strong>
+						<span th:text="${person.address}"></span>
+					</li>
 
-	<!-- some space -->
+					<li>
+						<strong>City, State Zipcode:</strong>
+						<span th:text="${person.cityStateZip}"> </span>
+					</li>
 
-	  <dd> Note: the following fields are optional but helpful</dd>
+					<li>
+						<strong>Phone(s):</strong>
+						<span th:text="${person.phones}"></span>
+					</li>
 
-	  <dt>Driver License Number:
-	  </dt>
-	  <dd>
-	    <span th:text="${person.dln}"></span>
-	  </dd>
+					<li>
+						<strong>Email(s):</strong>
+						<span th:text="${person.emails}"></span>
+					</li>
 
-	  <dt>Social Security Number:
-	  </dt>
-	  <dd>
-	    <span th:text="${person.ssnLastFour}"></span>
-	  </dd>
+					<li>
+						<strong>Date of Birth:</strong>
+						<span th:text="${person.dobStr}"></span>
+					</li>
 
-	  <dt>Race:
-	  </dt>
-	  <dd>
-	    <span th:text="${person.race}"></span>
-	  </dd>
+					<li>
+						<strong>Note: the following fields below are optional but helpful</strong>
+					</li>
 
-	  <dt>Height & Weight:
-	  </dt>
-	  <dd>
-	    <span th:text="${person.heightAndWeight}"></span>
-	  </dd>
+					<li>
+						<strong>Driver License Number:</strong>
+						<span th:text="${person.dln}"></span>
+					</li>
 
-	  <dt>Sex & Race:
-	  </dt>
-	  <dd>
-	    <span th:text="${person.sexAndRace}"></span>
-	  </dd>
+					<li>
+						<strong>Social Security Number:</strong>
+						<span th:text="${person.ssnLastFour}"></span>
+					</li>
 
-	  <dt>Occupation:
-	  </dt>
-	  <dd>
-	    <span th:text="${person.occupation}"></span>
-	  </dd>
+					<li>
+						<strong>Race:</strong>
+						<span th:text="${person.race}"></span>
+					</li>
 
-	  <dt><a th:href="@{/person/edit/{id}(id=${person.id})}">Edit</a>
-	  <a th:href="@{/person/delete/{id}(id=${person.id})}">Delete</a></dt> 
-      </dl>					
-    </fieldset>
+					<li>
+						<strong>Height & Weight:</strong>
+						<span th:text="${person.heightAndWeight}"></span>
+					</li>
+
+					<li>
+						<strong>Sex & Race:</strong>
+						<span th:text="${person.sexAndRace}"></span>
+					</li>
+
+					<li>
+						<strong>Occupation:</strong>
+						<span th:text="${person.occupation}"></span>
+					</li>
+
+					<li>
+						<a th:href="@{/person/edit/{id}(id=${person.id})}">Edit</a>
+					</li>
+
+					<li>
+						<a th:href="@{/person/delete/{id}(id=${person.id})}">Delete</a>
+					</li>
+				</ul>
+			</fieldset>
+		</main>
   </body>
 </htmL>

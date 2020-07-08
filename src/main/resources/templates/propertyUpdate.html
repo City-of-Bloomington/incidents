@@ -8,110 +8,98 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head th:replace="general::head('Properties')"></head>
   <body>
-    <header th:replace="general::header">
-    </header>		
-    <h2>Edit Property/Item</h2>
-    <div th:if="${errors}">
-      <div th:insert="general::errors(${errors})"></div>			
-    </div>
-    <div th:if="${messages}">
-      <div th:insert="general::messages(${messages})"></div>			
-    </div>	
-    <p>*Indicate required fields</p>		
-    <div th:insert="general::propertyInstructions">
-    </div>
-    <form action="#"
-	  th:action="@{/property/update/{id}(id=${property.id})}"
-	  th:object="${property}"
-	  onsubmit="return verifyTotalValue()"
-	  method="post">
-      <input type="hidden" th:field="${property.incident}" />
-      <input type="hidden" id="old_value_id" name="oldValue" th:value="${property.value}" />
-      <input type="hidden" id="balance_id" th:field="${property.balance}" />
-      <input type="hidden" id="max_total_id" th:field="${property.maxTotalValue}" />			
-      <div>
-	<label>Related incident</label>
-	<a th:href="@{/incident/{id}(id=${property.incident.id})}">Back to Incident</a>							
-      </div>
-      <div th:if="${damageTypes}">
-	<dl>
-	  <dt>
-	    <label class="required">*Problem Type</label>
-	  </dt>
-	  <dd>
-	    <ul class="menu">
-              <li class="menu" th:each="r : ${damageTypes}">
-		<input type="radio" th:field="${property.damageType}" th:value="${r.id}" required="required" />
-		<label th:text="${r.name}"></label>
-              </li>	    
-	    </ul>
-	  </dd>
-	</dl>
-      </div>      
-      <dl>
-	<dt>
-	  <label for="brand">Brand</label>
-	</dt>
-	<dd>
-	  <input type="text" th:field="${property.brand}" id="brand" placeholder="Brand" />
-	  <span th:if="${#fields.hasErrors('brand')}" th:errors="*{brand}"></span>
-	</dd>
-	<dt>
-	  <label for="model">Model</label>
-	</dt>
-	<dd>
-	  <input type="text" th:field="${property.model}" id="model" placeholder="Model" />
-	  <span th:if="${#fields.hasErrors('model')}" th:errors="*{model}"></span>
-	</dd>
-	
-	<dt>
-	  <label for="serialNum">Serial Number</label>
-	</dt>
-	<dd>
-	  <input type="text" th:field="${property.serialNum}" id="serialNum" placeholder="Serial Number" />
-	  <span th:if="${#fields.hasErrors('serialNum')}" th:errors="*{serialNum}"></span>
-	</dd>
-	
-	<dt>
-	  <label for="damageType" class="required">*Problem Type</label>
-	</dt>
-	<dd>
-	  <ul class="menu">
-            <li class="menu" th:each="r : ${damageTypes}">
-              <input type="radio" th:field="${property.damageType}" th:value="${r.id}" required="required" />
-              <label th:text="${r.name}"></label>
-            </li>	    
-	  </ul>
-	</dd>
-	<br />	
-	<dt>
-	  <label for="value_id" class="required">*Value</label>
-	</dt>
-	<dd>$
-	  <input type="text" th:field="${property.value}" id="value_id" placeholder="Value" required="required" />
-	  <span th:if="${#fields.hasErrors('value')}" th:errors="*{value}"></span>
-	</dd>
-	
-	<dt>
-	  <label for="owener">Owner</label>
-	</dt>
-	<dd>
-	  <input type="text" th:field="${property.owner}" id="owner" placeholder="property owner" />
-	  <span th:if="${#fields.hasErrors('owner')}" th:errors="*{owner}"></span>
-	</dd>
-	
-	<dt>
-	  <label for="description" class="required">*Item Description</label>
-	</dt>
-	<dd>				
-	  <textarea th:field="${property.description}" placeholder="Description" rows="5" cols="50" required="required" id="description">
-	    <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></span>
-	  </textarea>
-	</dd>
-	<dt>
-	  <input type="submit" value="Save Changes" />
-	</dt> 
-      </dl>
-    </form>
+		<header th:replace="general::header"></header>		
+		
+		<main class="public-questions-wrapper">
+			<h2>Edit Property/Item</h2>
+			
+			<div th:if="${errors}">
+				<div th:insert="general::errors(${errors})"></div>
+			</div>
+			
+			<div th:if="${messages}">
+				<div th:insert="general::messages(${messages})"></div>
+			</div>
+			
+			<p>*Indicate required fields</p>
+			
+			<div th:insert="general::propertyInstructions"></div>
+
+			<form
+				action="#"
+				th:action="@{/property/update/{id}(id=${property.id})}"
+				th:object="${property}"
+				onsubmit="return verifyTotalValue()" method="post">
+				
+				<input type="hidden" th:field="${property.incident}" />
+				<input type="hidden" id="old_value_id" name="oldValue" th:value="${property.value}" />
+				<input type="hidden" id="balance_id" th:field="${property.balance}" />
+				<input type="hidden" id="max_total_id" th:field="${property.maxTotalValue}" />
+				
+				<div>
+					<label>Related incident</label>
+					<a th:href="@{/incident/{id}(id=${property.incident.id})}">Back to Incident</a>
+				</div>
+				
+				<div th:if="${damageTypes}">
+					<label class="required">*Problem Type</label>
+					<ul class="menu">
+						<li class="menu" th:each="r : ${damageTypes}">
+							<input type="radio" th:field="${property.damageType}" th:value="${r.id}" required="required" />
+							<label th:text="${r.name}"></label>
+						</li>
+					</ul>
+				</div>
+				
+				<div>
+					<label for="brand">Brand</label>
+					<input type="text" th:field="${property.brand}" id="brand" placeholder="Brand" />
+					<span th:if="${#fields.hasErrors('brand')}" th:errors="*{brand}"></span>
+				</div>
+				
+				<div>
+					<label for="model">Model</label>
+				  <input type="text" th:field="${property.model}" id="model" placeholder="Model" />
+				  <span th:if="${#fields.hasErrors('model')}" th:errors="*{model}"></span>
+				</div>
+				
+				<div>
+					<label for="serialNum">Serial Number</label>
+				  <input type="text" th:field="${property.serialNum}" id="serialNum" placeholder="Serial Number" />
+				  <span th:if="${#fields.hasErrors('serialNum')}" th:errors="*{serialNum}"></span>
+				</div>
+				
+				<div>
+					<label for="damageType" class="required">*Problem Type</label>
+					<ul class="menu">
+						<li class="menu" th:each="r : ${damageTypes}">
+							<input type="radio" th:field="${property.damageType}" th:value="${r.id}" required="required" />
+							<label th:text="${r.name}"></label>
+						</li>
+					</ul>
+				</div>
+
+				<div>
+					<label for="value_id" class="required">*Value ($)</label>
+					<input type="text" th:field="${property.value}" id="value_id" placeholder="Value" required="required" />
+					<span th:if="${#fields.hasErrors('value')}" th:errors="*{value}"></span>
+				</div>
+				
+				<div>
+					<label for="owener">Owner</label>
+					<input type="text" th:field="${property.owner}" id="owner" placeholder="property owner" />
+					<span th:if="${#fields.hasErrors('owner')}" th:errors="*{owner}"></span>
+				</div>
+
+				<div>
+					<span th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></span>
+					<label for="description" class="required">*Item Description</label>
+					<textarea th:field="${property.description}" placeholder="Description" rows="5" cols="50" required="required"
+						id="description"></textarea>
+				</div>
+
+				<input type="submit" value="Save Changes" />
+			</form>
+		</main>
   </body>
 </html>

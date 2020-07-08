@@ -8,165 +8,163 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head th:replace="general::head('Person')"></head>
   <body>
-    <header th:replace="general::header">
-    </header>		
-    <h2>Update Person</h2>
-    <div th:if="${errors}">
-      <div th:insert="general::errors(${errors})"></div>			
-    </div>
-    <div th:if="${messages}">
-      <div th:insert="general::messages(${messages})"></div>			
-    </div>
-    <p>*Indicates Required Fields </p>
-    <ul th:insert="general::personInstructions">
-    </ul>
-    <form action="#"
-	  th:action="@{/person/update/{id}(id=${person.id})}"
-	  th:object="${person}"
-	  method="post">
-      <input type="hidden" th:field="${person.incident}" />
-      <input type="hidden" th:field="${person.email}" />			
-      <fieldset>
-	<p>Information about the Person Reporting this Incident </p>
-	
-	<label for="person_type_id" class="required">*Involvement of this person to this incident as: </label>
-	<select id="person_type_id" th:field="${person.personType}" required >
-	  <option th:each="r : ${personTypes}"
-		  th:value="${r.id}"
-		  th:text="${r.name}">
-	  </option>
-	</select>
-	<dl>	
-	  <dt><label>Related incident</label></dt>
-	  <dd><a th:href="@{/incident/{id}(id=${person.incident.id})}">Back to Incident</a>
-	  </dd>
-	  <dt><label class="required"> *Full Name: </label>
-	  </dt>
-	  <dd><label for="firstname_id" class="required">*First Name </label>
-	    <input type="text" th:field="${person.firstname}" id="firstname_id" size="30" required="required" placeholder="First Name" />
-	    <label for="midname_id">MI </label>
-	    <input type="text" th:field="${person.midname}" id="midname_id" size="2" maxlength="2" placeholder="MI" />
-	    <label for="lastname_id" class="required">*Last Name </label>
-	    <input type="text" th:field="${person.lastname}" id="lastname_id" size="30" required="required" placeholder="Last Name" />
-	    <label for="suffix_id">Suffix</label>
-	    <input type="text" th:field="${person.suffix}" id="suffix_id" size="6" placeholder="Suffix" />(Jr, Sr)	    
-	  </dd>
-	  <dt><label for="address_id" class="required">*Address: </label></dt>
-	  <dd>
-	    <input type="text" th:field="${person.address}" id="address_id" size="70" required="required" placeholder="Address" />	
-	  </dd>
-	  <dt><label for="city_id" class="required">*City: </label></dt>
-	  <dd>
-	    <input type="text" th:field="${person.city}" id="city_id" size="50" required="required" placeholder="City" />	
-	  </dd>
-	  <dt><label for="state_id" class="required">*State: </label></dt>
-	  <dd>
-	    <input type="text" th:field="${person.state}" id="state_id" size="2" required="required" maxlength="2"/>
-	    
-	  </dd>
-	  <dt><label for="zip_id" class="required">*Zip code: </label></dt>
-	  <dd>
-	    <input type="text" th:field="${person.zip}" id="zip_id" size="10" required="required" maxlength="10" placeholder="Zip code" />	
-	  </dd>
-	  <dt><label for="phone_type_id" class="required">*Primary phone: </label></dt>
-	  <dd>
-	    <select id="phone_type_id" th:field="${person.phoneType}" >
-	      <option th:each="r : ${phoneTypes}"
-		      th:value="${r}"
-		      th:text="${r}">
-	      </option>
-	    </select>							
-	    <input type="text" th:field="${person.phone}" id="phone" size="10" required="required" maxlength="30" placeholder="Phone #" />
-	    <label for="phone_type_id2">Secondary Phone:</label>
-	    <select id="phone_type_id2" th:field="${person.phoneType2}" >
-	      <option th:each="r : ${phoneTypes}"
-		      th:value="${r}"
-		      th:text="${r}">
-	      </option>
-	    </select>							
-	    <input type="text" th:field="${person.phone2}" id="phone2" size="10" maxlength="30" placeholder="Phone #" />
-	  </dd>
-	  <dt><label for="email2_id">Another Email: </label></dt>
-	  <dd>
-	    <input type="text" th:field="${person.email2}" id="email2_id" size="70" maxlength="80" placeholder="Email" />
-	  </dd>
-	  <dt><label for="dob_mm" class="required">*Date of Birth: </label></dt>
-	  <dd>
-	    <select id="dob_mm" th:field="${person.dobMonth}" required="required">
-	      <option value="">Month</option>
-	      <option th:each="r : ${#numbers.sequence(1,12)}"
-		      th:value="${r}"
-		      th:text="${r}">
-	      </option>
-	    </select>/
-	    <select id="dob_dd" th:field="${person.dobDay}" required="required">
-	      <option value="">Day</option>
-	      <option th:each="r : ${#numbers.sequence(1,31)}"
-		      th:value="${r}"
-		      th:text="${r}">
-	      </option>
-	    </select> /
-	    <input type="text" th:field="${person.dobYear}" id="dob_year" size="4" required="required" maxlength="4" placeholder="Year" />(mm/dd/yyyy)
-	  </dd>
-	  <!-- some space -->
-	  <dd> &nbsp;</dd>
-	  <dd> Note: the following fields are optional but helpful</dd>
-	  <dt><label for="dln_id">Driver License Number: </label></dt>
-	  <dd>
-	    <input type="text" th:field="${person.dln}" id="dln_id" size="20"  maxlength="20" placeholder="DLN" />
-	  </dd>
-	  <dt><label for="ssn_id">Social Security Number: </label></dt>
-	  <dd>
-	    <input type="text" th:field="${person.ssn}" id="ssn_id" size="12"  maxlength="12" placeholder="SSN" />
-	  </dd>
-	  <dt> <label for="race_id">Race: </label></dt>
-	  <dd>
-	    <select id="race_id" th:field="${person.race}" >
-	      <option value="">Race</option>
-	      <option th:each="r : ${raceTypes}"
-		      th:value="${r}"
-		      th:text="${r}">
-	      </option>
-	    </select>
-	  </dd>
-	  <dt><label for="height_ft_id">Height: </label>
-	  </dt>
-	  <dd>
-	    <select id="height_ft_id" th:field="${person.heightFeet}" >
-	      <option value="">ft.</option>
-	      <option th:each="r : ${#numbers.sequence(2,7)}"
-		      th:value="${r}"
-		      th:text="${r}">
-	      </option>
-	    </select>
-	    <select id="height_in_id" th:field="${person.heightInch}" >
-	      <option value="">in.</option>
-	      <option th:each="r : ${#numbers.sequence(0,11)}"
-		      th:value="${r}"
-		      th:text="${r}">
-	      </option>
-	    </select> <label for="weight_id">Weight: </label>
-	    <input type="text" th:field="${person.weight}" id="weight_id" size="3" />lb
-	  </dd>
-	  <dt><label for="sex_id">Sex:</label></dt>
-	  <dd>
-	    <select id="sex_id" th:field="${person.sex}" >
-	      <option value="">Sex</option>
-	      <option th:each="r : ${sexTypes}"
-		      th:value="${r}"
-		      th:text="${r}">
-	      </option>
-	    </select>
-	  </dd>
-	  <dt><label for="occupation_id">Occupation:</label></dt>
-	  <dd>
-	    <input type="text" th:field="${person.occupation}" id="occupation_id" size="70" placeholder="Occupation" />
-	  </dd>
-	  <dd>
-	    <input type="submit" value="Save Changes" />
-	  </dd>
-	</dl>					
-      </fieldset>
-    </form>
+		<header th:replace="general::header"></header>
+		
+		<main class="public-questions-wrapper ">
+			<h2>Update Person</h2>
+			<div th:if="${errors}">
+				<div th:insert="general::errors(${errors})"></div>
+			</div>
+			<div th:if="${messages}">
+				<div th:insert="general::messages(${messages})"></div>
+			</div>
+			<p>*Indicates Required Fields </p>
+			<ul th:insert="general::personInstructions">
+			</ul>
+			<form action="#" th:action="@{/person/update/{id}(id=${person.id})}" th:object="${person}" method="post">
+				<input type="hidden" th:field="${person.incident}" />
+				<input type="hidden" th:field="${person.email}" />
+				<fieldset>
+					<p>Information about the Person Reporting this Incident </p>
+			
+					<label for="person_type_id" class="required">*Involvement of this person to this incident as: </label>
+					<select id="person_type_id" th:field="${person.personType}" required>
+						<option th:each="r : ${personTypes}" th:value="${r.id}" th:text="${r.name}">
+						</option>
+					</select>
+					<dl>
+						<dt><label>Related incident</label></dt>
+						<dd><a th:href="@{/incident/{id}(id=${person.incident.id})}">Back to Incident</a>
+						</dd>
+						<dt><label class="required"> *Full Name: </label>
+						</dt>
+						<dd><label for="firstname_id" class="required">*First Name </label>
+							<input type="text" th:field="${person.firstname}" id="firstname_id" size="30" required="required"
+								placeholder="First Name" />
+							<label for="midname_id">MI </label>
+							<input type="text" th:field="${person.midname}" id="midname_id" size="2" maxlength="2" placeholder="MI" />
+							<label for="lastname_id" class="required">*Last Name </label>
+							<input type="text" th:field="${person.lastname}" id="lastname_id" size="30" required="required"
+								placeholder="Last Name" />
+							<label for="suffix_id">Suffix</label>
+							<input type="text" th:field="${person.suffix}" id="suffix_id" size="6" placeholder="Suffix" />(Jr, Sr)
+						</dd>
+						<dt><label for="address_id" class="required">*Address: </label></dt>
+						<dd>
+							<input type="text" th:field="${person.address}" id="address_id" size="70" required="required"
+								placeholder="Address" />
+						</dd>
+						<dt><label for="city_id" class="required">*City: </label></dt>
+						<dd>
+							<input type="text" th:field="${person.city}" id="city_id" size="50" required="required" placeholder="City" />
+						</dd>
+						<dt><label for="state_id" class="required">*State: </label></dt>
+						<dd>
+							<input type="text" th:field="${person.state}" id="state_id" size="2" required="required" maxlength="2" />
+			
+						</dd>
+						<dt><label for="zip_id" class="required">*Zip code: </label></dt>
+						<dd>
+							<input type="text" th:field="${person.zip}" id="zip_id" size="10" required="required" maxlength="10"
+								placeholder="Zip code" />
+						</dd>
+						<dt><label for="phone_type_id" class="required">*Primary phone: </label></dt>
+						<dd>
+							<select id="phone_type_id" th:field="${person.phoneType}">
+								<option th:each="r : ${phoneTypes}" th:value="${r}" th:text="${r}">
+								</option>
+							</select>
+							<input type="text" th:field="${person.phone}" id="phone" size="10" required="required" maxlength="30"
+								placeholder="Phone #" />
+							<label for="phone_type_id2">Secondary Phone:</label>
+							<select id="phone_type_id2" th:field="${person.phoneType2}">
+								<option th:each="r : ${phoneTypes}" th:value="${r}" th:text="${r}">
+								</option>
+							</select>
+							<input type="text" th:field="${person.phone2}" id="phone2" size="10" maxlength="30" placeholder="Phone #" />
+						</dd>
+						<dt><label for="email2_id">Another Email: </label></dt>
+						<dd>
+							<input type="text" th:field="${person.email2}" id="email2_id" size="70" maxlength="80" placeholder="Email" />
+						</dd>
+						<dt><label for="dob_mm" class="required">*Date of Birth: </label></dt>
+						<dd>
+							<select id="dob_mm" th:field="${person.dobMonth}" required="required">
+								<option value="">Month</option>
+								<option th:each="r : ${#numbers.sequence(1,12)}"
+					      th:value="${r}"
+					      th:text="${r}">
+				      </option>
+				    </select>/
+				    <select id="dob_dd" th:field="${person.dobDay}" required="required">
+				      <option value="">Day</option>
+				      <option th:each="r : ${#numbers.sequence(1,31)}"
+					      th:value="${r}"
+					      th:text="${r}">
+				      </option>
+				    </select> /
+				    <input type="text" th:field="${person.dobYear}" id="dob_year" size="4" required="required" maxlength="4" placeholder="Year" />(mm/dd/yyyy)
+				  </dd>
+				  <!-- some space -->
+				  <dd> &nbsp;</dd>
+				  <dd> Note: the following fields are optional but helpful</dd>
+				  <dt><label for="dln_id">Driver License Number: </label></dt>
+				  <dd>
+				    <input type="text" th:field="${person.dln}" id="dln_id" size="20"  maxlength="20" placeholder="DLN" />
+				  </dd>
+				  <dt><label for="ssn_id">Social Security Number: </label></dt>
+				  <dd>
+				    <input type="text" th:field="${person.ssn}" id="ssn_id" size="12"  maxlength="12" placeholder="SSN" />
+				  </dd>
+				  <dt> <label for="race_id">Race: </label></dt>
+				  <dd>
+				    <select id="race_id" th:field="${person.race}" >
+				      <option value="">Race</option>
+				      <option th:each="r : ${raceTypes}"
+					      th:value="${r}"
+					      th:text="${r}">
+				      </option>
+				    </select>
+				  </dd>
+				  <dt><label for="height_ft_id">Height: </label>
+				  </dt>
+				  <dd>
+				    <select id="height_ft_id" th:field="${person.heightFeet}" >
+				      <option value="">ft.</option>
+				      <option th:each="r : ${#numbers.sequence(2,7)}"
+					      th:value="${r}"
+					      th:text="${r}">
+				      </option>
+				    </select>
+				    <select id="height_in_id" th:field="${person.heightInch}" >
+				      <option value="">in.</option>
+				      <option th:each="r : ${#numbers.sequence(0,11)}"
+					      th:value="${r}"
+					      th:text="${r}">
+				      </option>
+				    </select> <label for="weight_id">Weight: </label>
+				    <input type="text" th:field="${person.weight}" id="weight_id" size="3" />lb
+				  </dd>
+				  <dt><label for="sex_id">Sex:</label></dt>
+				  <dd>
+				    <select id="sex_id" th:field="${person.sex}" >
+				      <option value="">Sex</option>
+				      <option th:each="r : ${sexTypes}"
+					      th:value="${r}"
+					      th:text="${r}">
+				      </option>
+				    </select>
+				  </dd>
+				  <dt><label for="occupation_id">Occupation:</label></dt>
+				  <dd>
+				    <input type="text" th:field="${person.occupation}" id="occupation_id" size="70" placeholder="Occupation" />
+				  </dd>
+				  <dd>
+				    <input type="submit" value="Save Changes" />
+				  </dd>
+				</dl>					
+			      </fieldset>
+			    </form>
+		</main>
   </body>
 </htmL>

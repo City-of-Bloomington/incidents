@@ -13,10 +13,10 @@
     <h2>Incident Error </h2>		
     <h1><span th:text="${errorMsg}"></span></h1>
     <div th:if="${errors}">
-      <div th:switch="${errors}">
-	<ul th:each="error : ${errors}">
-	  <li th:text="${error}"></li>
-	</ul>
+      <div role="alert" class="alert" th:switch="${errors}">
+        <ul th:each="error : ${errors}">
+          <li th:text="${error}"></li>
+        </ul>
       </div>
     </div>
   </body>

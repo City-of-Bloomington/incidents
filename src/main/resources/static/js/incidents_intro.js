@@ -12,7 +12,7 @@ function verifyConfirm(){
     return true;
 }
 $(document).ready(function () {
-    $('div.questions').each(function () {
+    $('div.question').each(function () {
 	$(this).find('input:radio').prop('checked', false);
     });
     $('#next_div').hide();
@@ -42,17 +42,17 @@ $(document).ready(function(){
     })
     var totalQuestions = $('.questions').length;
     var currentQuestion = 0;
-	  $questions = $('.questions');
-    $questions.hide();
-    $($questions.get(currentQuestion)).fadeIn();
+	  $question = $('.question');
+    $question.hide();
+    $($question.get(currentQuestion)).fadeIn();
     $('#next').click(function(){
-	$($questions.get(currentQuestion)).fadeOut(function(){
+	$($question.get(currentQuestion)).fadeOut(function(){
 	    currentQuestion = currentQuestion + 1;
 	    if(currentQuestion == totalQuestions){
 		// if the last question 
 		$("#moreInfo").show();
 	    }else{
-		$($questions.get(currentQuestion)).fadeIn();
+		$($question.get(currentQuestion)).fadeIn();
 		$('#next_div').hide();
 		$("#moreInfo").hide();		      
 	    }

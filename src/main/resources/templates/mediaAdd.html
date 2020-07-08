@@ -8,40 +8,44 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head th:replace="general::head('Upload Image')"></head>
   <body>
-    <header th:replace="general::header">
-    </header>			
-    <h2>Add Image File</h2>
-    <div th:if="${errors}">
-      <div th:insert="general::errors(${errors})"></div>			
-    </div>
-    <div th:if="${messages}">
-      <div th:insert="general::messages(${messages})"></div>			
-    </div>
-    <p>Image size should not exceed 2M (or 2000K) , if more than 2M please downsize the file using one of the image apps such as MS paint </p>
-    <fieldset>
-      <caption>Upload Images of the Incident</caption>
-      <ul th:replace="general::uploadInstructions">
-      </ul>
-      <div>
-	<form enctype="multipart/form-data"
-	      th:action="@{/media/save}" method="post">
-	  <input type="hidden" name="incident_id" th:value="${incident_id}" />
-	  <dl>
-	    <dt>
-	      <label for="file_id">Image File to Upload</label>
-	    </dt>
-	    <dd>
-	      <input type="file" name="file" id="file_id" placeholder="Select file" />
-	    </dd>
-	    <dt>Notes (any explanation of the picture, optional)</dt>
-	    <dd><textarea name="notes" rows="5" cols="60" placeHolder="Image description"></textarea>
-	    </dd>						
-	    <dd>		
-	      <input type="submit" value="Save" />
-	    </dd>
-	  </dl>
-	</div>
-      </form>
-    </fieldset>
+    <header th:replace="general::header"></header>
+
+    <main class="public-questions-wrapper">
+      <h2>Add Image File</h2>
+      <div th:if="${errors}">
+        <div th:insert="general::errors(${errors})"></div>
+      </div>
+      
+      <div th:if="${messages}">
+        <div th:insert="general::messages(${messages})"></div>
+      </div>
+
+      <p>Image size should not exceed 2M (or 2000K) , if more than 2M please downsize the file using one of the image apps such as MS paint.</p>
+
+      <fieldset>
+        <caption>Upload Images of the Incident</caption>
+        <ul th:replace="general::uploadInstructions">
+        </ul>
+        <div>
+          <form enctype="multipart/form-data" th:action="@{/media/save}" method="post">
+            <input type="hidden" name="incident_id" th:value="${incident_id}" />
+            <dl>
+              <dt>
+                <label for="file_id">Image File to Upload</label>
+              </dt>
+              <dd>
+                <input type="file" name="file" id="file_id" placeholder="Select file" />
+              </dd>
+              <dt>Notes (any explanation of the picture, optional)</dt>
+              <dd><textarea name="notes" rows="5" cols="60" placeHolder="Image description"></textarea>
+              </dd>
+              <dd>
+                <input type="submit" value="Save" />
+              </dd>
+            </dl>
+        </div>
+        </form>
+      </fieldset>
+    </main>
   </body>
 </htmL>

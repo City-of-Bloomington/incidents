@@ -1,0 +1,622 @@
+$color-ucla-gold: rgb(255, 186, 10);
+$color-orange-light: rgb(255, 218, 143);
+$color-ucla-gold-darker: rgb(179, 128, 0);
+$color-vermilion-lighter: rgb(244, 151, 138);
+$color-vermilion-darker: rgb(154, 31, 14);
+$color-ucla-gold-lighter: rgb(255, 219, 128);
+$color-bleu-de-france-dark: rgb(16, 112, 209);
+$color-grey-darker: rgb(166, 166, 166);
+$color-bleu-de-france-light: rgb(84, 163, 242);
+$color-green: rgb(76, 174, 79);
+$color-silver: rgb(127, 136, 145);
+$color-orange: rgb(255, 201, 92);
+$color-orange-dark: rgb(255, 184, 41);
+$color-green-lighter: rgb(166, 216, 168);
+$color-blue-darker: rgb(24, 72, 140);
+$color-blue-light: rgb(98, 152, 228);
+$color-green-dark: rgb(67, 152, 70);
+$color-orange-lighter: rgb(255, 235, 194);
+$color-bleu-de-france: rgb(37, 138, 239);
+$color-grey-light: rgb(230, 230, 230);
+$color-bleu-de-france-darker: rgb(12, 87, 161);
+$color-bleu-de-france-lighter: rgb(132, 189, 246);
+$color-red: rgb(163, 22, 33);
+$color-ucla-gold-dark: rgb(230, 164, 0);
+$color-vermilion-light: rgb(239, 101, 82);
+$color-vermilion-dark: rgb(201, 40, 19);
+$color-blue: rgb(30, 90, 174);
+$color-ucla-gold-light: rgb(255, 204, 77);
+$color-orange-darker: rgb(245, 163, 0);
+$color-cloud: rgb(233, 243, 253);
+$color-blue-lighter: rgb(142, 181, 236);
+$color-brown: rgb(121, 85, 72);
+$color-grey-dark: rgb(191, 191, 191);
+$color-grey: rgb(219, 219, 219);
+$color-green-darker: rgb(51, 117, 54);
+$color-slate: rgb(33, 33, 33);
+$color-green-light: rgb(124, 197, 126);
+$color-grey-lighter: rgb(242, 242, 242);
+$color-blue-dark: rgb(27, 81, 157);
+$color-vermilion: rgb(235, 59, 36);
+$size-xxxl: 48px;
+$size-xxl: 36px;
+$size-xl: 30px;
+$size-l: 24px;
+$size-m: 16px;
+$size-s: 14px;
+$size-xs: 12px;
+$font-heading: 'IBM Plex Sans', Helvetica, Arial, sans-serif;
+$font-text: 'IBM Plex Sans', Helvetica, Arial, sans-serif;
+$weight-bold: 700;
+$weight-semi-bold: 600;
+$weight-normal: 400;
+$weight-light: 300;
+$opacity-disabled: 0.5;
+$height-footer: 64px;
+$tappable-square: 44px;
+$duration-quickly: 0.08s;
+$duration-slowly: 0.5s;
+$z-index-modal: 9999;
+$z-index-sticky: 100;
+$media-query-m: (min-width: 768px);
+$media-query-l: (min-width: 1024px);
+$shadow-s: 0 0 0 1px rgba(92,106,196,.1);
+$spacing-xl: 2px;
+$spacing-l: 1px;
+$spacing-m: 0.5px;
+$spacing-s: -0.5px;
+$spacing-xs: -1px;
+$radius-default: 3px;
+$radius-circle: 50%;
+$space-xxl: 128px;
+$space-xl: 64px;
+$space-l: 48px;
+$space-m: 24px;
+$space-s: 16px;
+$space-xs: 8px;
+$space-xxs: 4px;
+$line-height-m: 1.6;
+$line-height-s: 1.3;
+$line-height-xs: 1;
+
+$border-default:   1px solid $color-grey-light;
+$text-color:       darken($color-grey, 55%);
+$color-fern:             #4caf50;
+
+/* VUE DESIGN SYSTEM SPACING HELPERS
+--------------------------------------------- */
+
+$spacing-ratio: 1.7;
+
+/*
+  INSET-SPACE: For interface containers.
+  INSET-SQUISH-SPACE: For buttons, form elements, cells.
+  STACK-SPACE: For vertically stacked content.
+  INLINE-SPACE: For things displayed inline.
+*/
+
+// Create inset-space
+//
+// @param  {Number} inset-space to set
+@mixin inset-space($value) {
+  padding: $value;
+}
+
+// Create inset-squish-space
+//
+// @param  {Number} inset-squish-space to set
+@mixin inset-squish-space($value) {
+  padding: round($value / $spacing-ratio - 1px) $value round($value / $spacing-ratio);
+}
+
+// Create stack-space
+//
+// @param  {Number} stack-space to set
+@mixin stack-space($value) {
+  margin-bottom: $value;
+
+  &:last-child,
+  &:last-of-type {
+    margin-bottom: 0;
+  }
+}
+
+// Create inline-space
+//
+// @param  {Number} inline-space to set
+@mixin inline-space($value) {
+  margin-right: $value;
+  &:last-child {
+    margin-right: 0;
+  }
+}
+
+/* GLOBAL MIXINS
+--------------------------------------------- */
+
+/* AUTO SCALING FOR TYPE WITH MIN/MAX SIZES
+
+  @param {Number}  $responsive  - Viewport-based size
+  @param {Number}  $min         - Minimum font size (px)
+  @param {Number}  $max         - Maximum font size (px) (optional)
+
+  @param {Number}  $fallback    - Fallback for viewport-based units (optional)
+
+  @example SCSS - 5vw size, 35px min & 150px max size + 50px fallback:
+
+  @include responsive-font(5vw, 35px, 150px, 50px);
+*/
+@mixin responsive-font($responsive, $min, $max: false, $fallback: false) {
+  $responsive-unitless: $responsive / ($responsive - $responsive + 1);
+  $dimension: if(unit($responsive) == "vh", "height", "width");
+  $min-breakpoint: $min / $responsive-unitless * 100;
+
+  @media (max-#{$dimension}: #{$min-breakpoint}) {
+    font-size: $min;
+  }
+
+  @if $max {
+    $max-breakpoint: $max / $responsive-unitless * 100;
+
+    @media (min-#{$dimension}: #{$max-breakpoint}) {
+      font-size: $max;
+    }
+  }
+
+  @if $fallback {
+    font-size: $fallback;
+  }
+
+  font-size: $responsive;
+}
+
+// Reset
+@mixin reset {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+// Used to prevent text selection on an element
+@mixin prevent-user-select {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+}
+
+/// Used to hide an element visually, but keeping it accessible for
+/// accessibility tools.
+@mixin visually-hidden {
+  // Need to make sure we override any existing styles.
+  position: absolute !important;
+  top: 0;
+  clip: rect(1px, 1px, 1px, 1px) !important;
+  overflow: hidden !important;
+  height: 1px !important;
+  width: 1px !important;
+  padding: 0 !important;
+  border: 0 !important;
+}
+
+/// To be used on flex items. Resolves some common layout issues, such as
+/// text truncation not respecting padding or breaking out of container.
+/// https://css-tricks.com/flexbox-truncated-text/
+@mixin layout-flex-fix {
+  min-width: 0;
+  max-width: 100%;
+}
+
+/* GLOBAL FUNCTIONS
+--------------------------------------------- */
+
+// Create a tint
+//
+// @param  {Color}  $color to tint
+// @param  {Number} $percentage of `$color` in returned color
+// @return {Color}
+@function tint($color, $percentage) {
+  @return mix(white, $color, $percentage);
+}
+
+// Create a shade
+//
+// @param  {Color}  $color to shade
+// @param  {Number} $percentage of `$color` in returned color
+// @return {Color}
+@function shade($color, $percentage) {
+  @return mix(black, $color, $percentage);
+}
+
+// Calculate color difference
+// See https://www.w3.org/TR/AERT/#color-contrast for algorithm
+//
+// @param  {Color} $color of foreground
+// @param  {Color} $color of background
+// @return {Boolean}
+@function color-difference($foreground, $background) {
+  $r: (max(red($foreground), red($background))) - (min(red($foreground), red($background)));
+  $g: (max(green($foreground), green($background))) - (min(green($foreground), green($background)));
+  $b: (max(blue($foreground), blue($background))) - (min(blue($foreground), blue($background)));
+  $sum-rgb: $r + $g + $b;
+
+  @if $sum-rgb < 350 {
+    @return "false";
+  } @else {
+    @return "true";
+  }
+}
+
+// Set text color based on contrast
+//
+// @param  {Color}  $color to set
+// @param  {Color}  $background color to test
+// @param  {Color}  $fallback color to set in case contrast check fails
+@function set-text-color($color, $background, $fallback: null) {
+  @if $fallback == null {
+    $fallback: #000;
+  }
+  @if (color-difference($color, $background) == "false") {
+    @return $fallback;
+  } @else {
+    @return $color;
+  }
+}
+
+/// Darkens the foreground color by the background color. This is the same as the
+/// “multiply” filter in graphics apps.
+///
+/// @param {Color} $foreground - The color to darken.
+/// @param {Color} $background - The background to base darkening on.
+/// @return {Color} The modified color.
+@function color-multiply($foreground, $background: null) {
+  @if $background == null {
+    $background: #ffffff;
+  }
+
+  @return $foreground * $background / 255;
+}
+
+/// Returns the value in rem for a given pixel value.
+/// @param {Number} $value - The pixel value to be converted.
+/// @return {Number} The converted value in rem.
+@function rem($value) {
+  $unit: unit($value);
+
+  @if $unit == "rem" {
+    @return $value;
+  } @else if $unit == "px" {
+    @return $value / $size-m * 1rem;
+  } @else if $unit == "em" {
+    @return $unit / 1em * 1rem;
+  } @else {
+    @error "Value must be in px, em, or rem.";
+  }
+}
+
+/// Returns the value in pixels for a given rem value.
+/// @param {Number} $value - The rem value to be converted.
+/// @return {Number} The converted value in pixels.
+@function px($value) {
+  $unit: unit($value);
+
+  @if $unit == "px" {
+    @return $value;
+  } @else if $unit == "em" {
+    @return ($value / 1em) * $size-m;
+  } @else if $unit == "rem" {
+    @return ($value / 1rem) * $size-m;
+  } @else {
+    @error "Value must be in rem, em, or px.";
+  }
+}
+
+/// Returns the list of available names in a given map.
+/// @param {Map} $map - The map of data to list the names from.
+/// @param {Number} $map - The level of depth to get names from.
+/// @return {String} The list of names in the map.
+@function available-names($map, $level: 1) {
+  @if type-of($map) != "map" {
+    @return null;
+  }
+
+  $output: "";
+  $newline: "\A ";
+
+  @if $level == 1 {
+    @each $key, $value in $map {
+      $output: $output + "#{$newline}- #{$key} #{available-names($value, $level + 1)}";
+    }
+  } @else {
+    $output: "(";
+    $i: 1;
+
+    @each $key, $value in $map {
+      $sep: if($i < length($map), ", ", "");
+      $output: $output + "#{$key}#{$sep}#{available-names($value, $level + 1)}";
+      $i: $i + 1;
+    }
+
+    $output: $output + ")";
+  }
+
+  @return $output;
+}
+
+
+
+h1, h2, h3, h4, h5, h6, p, strong, span, i, ul, li {
+  color: $text-color;
+}
+
+p, ol, ul, li, a {
+  font-size: $size-m;
+  line-height: 20px;
+}
+
+ul, ol {
+  margin-bottom: 20px;
+}
+
+.button,
+button {
+  span {
+    font-size: $size-m;
+    line-height: $size-m;
+  }
+}
+
+a {
+  position: relative;
+  
+
+  &.external {
+    display: inline-flex;
+    padding: 10px 33px 10px 16px;
+
+    &:after {
+      position: absolute;
+      content: '';
+      right: 8px;
+      top: 50%;
+      transform: translateY(-50%);
+      height: 15px;
+      width: 15px;
+      background-image: url("data:image/svg+xml,%3Csvg version='1.1' id='external-link' focusable='false' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewBox='0 0 512 512' enable-background='new 0 0 512 512' xml:space='preserve'%3E%3Cpath id='arrow' fill='%23FFFFFF' d='M511.9292603,2.9698486C512,1.3435059,510.6564941,0,508.9594116,0L280.0689697,0.0707397 C278.442627,0,277.0991211,1.3435059,277.0991211,3.0405884l0.1414185,47.2346802 c0,1.6970825,1.3435059,3.0405884,3.0405884,3.0405884l136.0473022-1.838501 c2.616333-0.0706787,4.0305176,3.1820068,2.1213379,5.0911865L242.3094482,232.7088623 c-1.2020874,1.2020874-1.2020874,3.0405273,0,4.2426147l32.5269165,32.5269165c1.2020874,1.2020874,3.0405884,1.2020874,4.2426758,0 L455.572876,92.9845581c1.9091797-1.9092407,5.0911865-0.5656738,5.0911865,2.1212769l-1.838501,136.7544556 c0,1.6970825,1.3435059,3.0405884,3.1113281,2.9698486h47.0932617C510.6564941,234.9008789,512,233.557373,512,231.8602905 L511.9292603,2.9698486z'/%3E%3Cpath id='box' fill='%23FFFFFF' d='M393.5952148,459H56c-1.6568527,0-3-1.3431396-3-3V118.4052734c0-1.6568527,1.3431473-3,3-3 h157.4873047c1.6568604,0,3-1.3431473,3-3v-47c0-1.6568527-1.3431396-3-3-3H3c-1.6568543,0-3,1.3431473-3,3V485.5V509 c0,1.6568604,1.3431457,3,3,3h23.5h420.0952148c1.6568604,0,3-1.3431396,3-3V298.5136719c0-1.6568604-1.3431396-3-3-3h-47 c-1.6568604,0-3,1.3431396-3,3V456C396.5952148,457.6568604,395.2520752,459,393.5952148,459z'/%3E%3C/svg%3E");
+    }
+  }
+}
+
+.tabs-group {
+
+  .tabs {
+    // margin: 0 0 20px 0;
+    margin: 0;
+
+    ul {
+      border-bottom: $border-default;
+
+      li {
+        padding: 12px 16px 8px 16px;
+        font-size: 18px;
+        font-weight: $weight-semi-bold;
+        letter-spacing: .25px;
+        color: lighten($text-color, 25%);
+
+        &.active,
+        &:hover,
+        &:focus {
+          border: $border-default;
+          border-bottom: 1px solid transparent;
+          color: $color-blue;
+        }
+      }
+    }
+  }
+
+  .tab-content {
+    width: 100%;
+    padding: 0 !important;
+    border-right: $border-default;
+    border-bottom: $border-default;
+    border-left: $border-default;
+
+    .tab-pane {
+      padding: 20px;
+    }
+  }
+
+  &.vertical-left {
+    display: flex;
+
+    .tabs {
+      margin: 0 40px 0 0;
+      padding: 0 40px 0 0;
+      border-right: $border-default;
+      
+      ul {
+        flex-direction: column;
+        width: max-content;
+        border: none;
+        
+        li {
+          margin: 0 0 15px 0;
+          padding: 0;
+          text-align: left;
+          font-size: 18px;
+          font-weight: $weight-semi-bold;
+          letter-spacing: .25px;
+          color: $text-color;
+          border: none;
+
+          &.active,
+          &:hover,
+          &:focus {
+            background: transparent;
+            border-radius: 0;
+            border: none;
+            color: $color-blue;
+          }
+        }
+      }
+    }
+
+    .tab-content {
+      width: 100%;
+      padding: 0;
+
+      .tab-pane {
+        padding: 0;
+      }
+    }
+  }
+}
+
+.crumbs {
+  z-index: 1;
+  position: fixed;
+  top: 90px;
+  width: 100%;
+  padding: 5px 0;
+  background: white;
+  border-bottom: 1px solid $color-grey;
+}
+
+form {
+  input, textarea, option, select {
+    color: $text-color;
+    font-size: 14px;
+    line-height: 18px;
+  }
+
+  textarea {
+    white-space: pre-line;
+    height: auto;
+    min-height: auto;
+  }
+  
+  input[disabled] {
+    color: $text-color;
+  }
+
+  .field-group {
+
+    &.select {
+
+      label {
+        width: 100%;
+      }
+    }
+  }
+
+  h3 {
+    border-bottom: 1px solid $color-grey;
+    margin: 0 0  15px 0;
+    padding: 0 0 15px 0;
+  }
+
+  label {
+    display: block;
+    color: lighten($text-color, 10%);
+    font-weight: 600;
+    letter-spacing: .5px;
+    font-size: 16px;
+    margin: 0 0 5px 0 !important;
+  }
+
+  button {
+    background: $color-fern;
+    margin: 0 10px 0 0;
+    padding: 5px 20px;
+  }
+
+  footer {
+    display: flex;
+    align-items: center;
+    margin: 20px 0 0 0;
+
+    button {
+      background-color: $color-fern;
+
+      &:hover,
+      &:focus { 
+        background-color: darken($color-fern, 5%);
+      }
+    }
+
+    a {
+      color: lighten($text-color, 20%);
+      font-weight: 600;
+      text-decoration: none;
+
+      &:hover,
+      &:focus { 
+        color: $text-color;
+      }
+    }
+  }
+}
+
+blockquote {
+  border-left: 2px solid $color-grey-dark;
+  padding: 0 0 0 20px;
+  margin: 0 0 20px 10px;
+}
+
+button,
+.button {
+  padding: 6px 14px;
+  font-size: 16px;
+  line-height: 16px;
+  background: $color-blue;
+  border-color: darken($color-blue, 15%);
+
+  &:hover,
+  &:focus {
+    backround: darken($color-blue, 5%);
+  }
+
+  &.crop-image {
+    border-color: darken($color-fern, 15%);
+    background: $color-fern;
+  }
+
+  &.reset-image {
+    border-color: darken($color-fern, 15%);
+    background: $color-orange-darker;
+  }
+
+  &.remove-image {
+    border-color: darken($color-vermilion-dark, 15%);
+    background: $color-vermilion-dark;
+  }
+}
+
+.alert {
+  padding: 5px 10px;
+  border-radius: $radius-default;
+  margin: 0 0 10px 0;
+
+  &.error {
+    background: #f7b6ad;
+    color: #8d2316;
+  }
+
+  &.message {
+    background: #ffe6a6;
+    color: #6b4d00;
+  }
+
+  ul {
+    margin: 0;
+    padding: 0;
+
+    li {
+      margin: 0 0 10px 0;
+      padding: 0;
+
+      &:last-of-type {
+        margin: 0;
+      }
+    }
+  }
+}
