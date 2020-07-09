@@ -8,31 +8,30 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head th:replace="general::head('Confirmation')"></head>
   <body>
-    <header th:replace="general::header">
-    </header>		
-    <div th:if="${errors}">
-      <div th:insert="general::errors(${errors})"></div>			
-    </div>
-    <div th:if="${messages}">
-      <div th:insert="general::messages(${messages})"></div>			
-    </div>
-    <h4>Successful Submission</h4>
-    <fieldset>
-      <legend></legend>
-      <p>
-	Your request has been submitted successfully.
-      </p>
-      <p>
-	An email has been sent to you. It may take couple minutes to appear in your email system. Your report will not be accepted until you log in to your email and use the link in your email to confirm your request. Failure to confirm your report within 24 hours of receiving your confirmation email means the report isn't finished and therefore will not be processed.
-      </p>
-      <p>
-	Thank you for your using Bloomington Police Department's Incident Reporting System.
-      </p>
-      <ul>
-	<li><a th:href="@{/index}">Report another incident</a></li>
-	<li><a href="https://bloomington.in.gov">Back to the City of Bloomington
-	    home page</a></li>
-      </ul>
-    </fieldset>
+    <header th:replace="general::header"></header>		
+    
+    <main class="public-questions-wrapper">
+      <div th:if="${errors}">
+        <div th:insert="general::errors(${errors})"></div>			
+      </div>
+      
+      <div th:if="${messages}">
+        <div th:insert="general::messages(${messages})"></div>			
+      </div>
+      
+      <h2>Successful Submission</h2>
+      <p>Your request has been submitted successfully.</p>
+      
+      <p>An email has been sent to you. It may take couple minutes to appear in your email system. Your report will not be
+        accepted until you log in to your email and use the link in your email to confirm your request. Failure to confirm
+        your report within 24 hours of receiving your confirmation email means the report isn't finished and therefore will
+        not be processed.</p>
+      
+      <p>Thank you for your using Bloomington Police Department's Incident Reporting System.</p>
+
+      <a th:href="@{/index}">Report another incident</a>
+      <a href="https://bloomington.in.gov">Back to the City of Bloomington
+        home page</a>
+    </main>
   </body>
 </htmL>

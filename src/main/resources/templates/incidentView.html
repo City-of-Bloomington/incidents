@@ -12,16 +12,16 @@
 <body>
 	<header th:replace="general::header-staff"></header>
 
-	<div th:if="${errors}">
-		<div th:insert="general::errors(${errors})"></div>
-	</div>
-
-	<div th:if="${messages}">
-		<div th:insert="general::messages(${messages})"></div>
-	</div>
-
 	<main class="public-questions-wrapper">
 		<h3>View Incident</h3>
+
+		<div th:if="${errors}">
+			<div th:insert="general::errors(${errors})"></div>
+		</div>
+		
+		<div th:if="${messages}">
+			<div th:insert="general::messages(${messages})"></div>
+		</div>
 		
 		<fieldset>
 			<legend>Incident General Info</legend>
@@ -69,7 +69,7 @@
 		</fieldset>
 
 		<div class="button-group">
-			
+
 		</div>
 		
 		<div th:if="${incident.hasPersonList()}">

@@ -12,15 +12,18 @@
 <body>
 	<header th:replace="general::header"></header>
 
-	<div th:if="${errors}">
-		<div th:replace="general::errors(${errors})"></div>
-	</div>
-	<div th:if="${messages}">
-		<div th:replace="general::messages(${messages})"></div>
-	</div>
+	
 
 	<main class="public-questions-wrapper">
 		<h2>View Incident</h2>
+
+		<div th:if="${errors}">
+			<div th:replace="general::errors(${errors})"></div>
+		</div>
+		
+		<div th:if="${messages}">
+			<div th:replace="general::messages(${messages})"></div>
+		</div>
 		
 		<p>Incident details, if you notice any incident information need to be changed click on <a th:href="@{/incident/edit/{id}(id=${incident.id})}">Edit</a> link and do your changes.</p>
 
