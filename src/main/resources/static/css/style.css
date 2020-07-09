@@ -312,8 +312,70 @@ body {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  background: #1e5aae;
   font-family: "IBM Plex Sans", sans-serif;
+}
+
+body {
+  background: #1e5aae;
+}
+body.address-popup {
+  padding: 20px;
+  background: white;
+}
+body.address-popup #modal-container {
+  margin: 20px 0 0 0;
+}
+body.address-popup .alert {
+  margin: 10px 0;
+}
+body.address-popup .button,
+body.address-popup button[type=button] {
+  display: inline-block;
+  background: #4f4f4f;
+  color: white;
+  border-radius: 3px;
+}
+body.address-popup #addressSearchForm legend {
+  display: none;
+}
+body.address-popup #searchResults ul {
+  margin: 0 0 10px 0;
+  padding: 0;
+}
+body.address-popup #searchResults ul li {
+  cursor: pointer;
+  margin: 0;
+  padding: 10px 0;
+  display: block;
+  border-bottom: 1px solid #dbdbdb;
+}
+body.address-popup #searchResults ul li:nth-child(even) {
+  background: whitesmoke;
+}
+body.address-popup #searchResults ul li:last-of-type {
+  border-bottom: none;
+}
+body.address-popup #searchResults table {
+  width: 100%;
+  margin: 0 0 10px 0;
+}
+body.address-popup #searchResults table caption {
+  text-align: left;
+  margin: 0 0 10px 0;
+  font-weight: 500;
+}
+body.address-popup #searchResults table tr {
+  cursor: pointer;
+  margin: 0;
+  padding: 10px 0;
+  display: block;
+  border-bottom: 1px solid #dbdbdb;
+}
+body.address-popup #searchResults table tr:nth-child(even) {
+  background: whitesmoke;
+}
+body.address-popup #searchResults table tr:last-of-type {
+  border-bottom: none;
 }
 
 *,
