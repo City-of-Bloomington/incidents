@@ -1,0 +1,38 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--
+ - @copyright Copyright (C) 2014-2015 City of Bloomington, Indiana. All rights reserved.
+ - @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
+ - @author W. Sibo <sibow@bloomington.in.gov>
+ -
+ -->
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head th:replace="general::head('Incident')"></head>
+  <body onload="ADDRESS_CHOOSER.start(handleAddressChoice2, {addressQuery:window.opener.document.getElementById('addr_id').value})">
+    <header th:replace="general::header">
+    </header>
+    <h2>Address Input</h2>
+    <div th:if="${errors}">
+      <div th:replace="general::errors(${errors})"></div>			
+    </div>
+    <div th:if="${messages}">
+      <div th:replace="general::messages(${messages})"></div>			
+    </div>					
+    <form>
+      <fieldset><legend>Look up Address</legend>
+	<ul>
+	  <li>If the address is not entered, enter the address</li>
+	  <li>Click on 'Search'</li>
+	  <li>Pick one address</li>
+	  <li>If the address has units (such as appartments, condos, etc) pick one</li>
+	  <li>When you are done, click on 'Close this window'</li>
+	  <li>You will see the address info on the original incident form </li>
+	</ul>
+      </fieldset>
+      <dl>
+	<dd>
+	  <a href="javascript:window.close()"> Close this window </a>
+	</dd>
+      </dl>
+    </form>
+  </body>
+</html>
