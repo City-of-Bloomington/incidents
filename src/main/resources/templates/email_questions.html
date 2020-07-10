@@ -6,32 +6,38 @@
  -
  -->
 <html xmlns="http://www.w3.org/1999/xhtml">
-  <head th:replace="general::head('incidents')">
-  </head>
-  <body>
-    <header th:replace="general::header">
-    </header>
-    <br />
-    <div th:if="${errors}">
-      <div th:replace="general::errors(${errors})"></div>			
-    </div>
-    <div th:if="${messages}">
-      <div th:replace="general::messages(${messages})"></div>			
-    </div>
+
+<head th:replace="general::head('incidents')">
+</head>
+
+<body>
+  <header th:replace="general::header"></header>
+
+  <div th:if="${errors}">
+    <div th:replace="general::errors(${errors})"></div>
+  </div>
+
+  <div th:if="${messages}">
+    <div th:replace="general::messages(${messages})"></div>
+  </div>
+
+  <main class="public-questions-wrapper">
     <div>
-      <h3> Incident Reporting (continue)</h3>
+      <h2>Incident Reporting (continue)</h2>
     </div>
-    <br />    
-    <div id="finalStep" class="questions" style="display:none">
-      <form action="#"
-	    th:action="@{/initialStart}"
-	    onsubmit="return verifyConfirm();"
-	    method="post">	
-	<input type="hidden" name="type_id" th:value="${type_id}" />
-	<div th:replace="general::reportSteps"></div>
-	<div th:replace="general::emailFields"></div>
-	<button type="submit"> Next </button>
+
+    <div id="finalStep" class="question" style="display:none">
+      <form action="#" th:action="@{/initialStart}" onsubmit="return verifyConfirm();" method="post">
+        <input type="hidden" name="type_id" th:value="${type_id}" />
+        <div th:replace="general::reportSteps"></div>
+        <div th:replace="general::emailFields"></div>
+        
+        <div class="next_div">
+          <button type="submit" class="next-button"> Next </button>
+        </div>
       </form>
     </div>
-  </body>
+  </main>
+</body>
+
 </html>

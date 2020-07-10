@@ -8,114 +8,112 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head th:replace="general::head('Vehicle')"></head>
   <body>
-    <header th:replace="general::header">
-    </header>		
-    <h2>Add Vehicle</h2>
-    <div th:if="${errors}">
-      <div th:insert="general::errors(${errors})"></div>			
-    </div>
-    <div th:if="${messages}">
-      <div th:insert="general::messages(${messages})"></div>			
-    </div>					
-    <div th:insert="general::vehicleInstructions">
-    </div>
-    <form action="#"
-	  th:action="@{/vehicle/save}"
-	  th:object="${vehicle}" method="post">
-      <input type="hidden" th:field="${vehicle.incident}" />
-      <input type="hidden" id="old_value_id" th:field="${vehicle.oldValue}" />
-      <input type="hidden" id="balance_id" th:field="${vehicle.balance}" />
-      <input type="hidden" id="max_total_id" th:field="${vehicle.maxTotalValue}" />	
-      <dl>
-	<dt>Related incident</dt>
-	<dd><a th:href="@{/incident/{id}(id=${vehicle.incident.id})}">Back to Incident</a></dd>							
-	<dt>
-	  <label for="damageType_id" class="required">*Damage Type</label>
-	</dt>
-	<dd>
-	  <select id="damageType_id" th:field="${vehicle.carDamageType}" required="required">
-	    <option value="">Damage Type</option>
-	    <option th:each="r : ${damageTypes}"
-		    th:value="${r.id}"
-		    th:text="${r.name}">
-	    </option>
-	  </select>
-	</dd>
-	<dt>
-	  <label for="year">Vehicle Year</label>
-	</dt>
-	<dd>
-	  <input type="text" th:field="${vehicle.year}" id="year" placeholder="year" />
-	  <span th:if="${#fields.hasErrors('year')}" th:errors="*{year}"></span>
-	</dd>
-	<dt>
-	  <label for="model">Make</label>
-	</dt>
-	<dd>
-	  <input type="text" th:field="${vehicle.make}" id="make" placeholder="Make" />
-	  <span th:if="${#fields.hasErrors('make')}" th:errors="*{make}"></span>
-	</dd>
-	<dt>
-	  <label for="model">Model</label>
-	</dt>
-	<dd>
-	  <input type="text" th:field="${vehicle.model}" id="model" placeholder="Model" />
-	  <span th:if="${#fields.hasErrors('model')}" th:errors="*{model}"></span>
-	</dd>
-	<dt>
-	  <label for="color">Color</label>
-	</dt>
-	<dd>
-	  <input type="text" th:field="${vehicle.color}" id="color" placeholder="Color" />
-	  <span th:if="${#fields.hasErrors('color')}" th:errors="*{color}"></span>
-	</dd>
-	<dt>
-	  <label for="plateNum">License Plate Number</label>
-	</dt>
-	<dd>
-	  <input type="text" th:field="${vehicle.plateNumber}" id="plateNum" placeholder="Plate Number" />
-	  <span th:if="${#fields.hasErrors('plateNumber')}" th:errors="*{plateNumber}"></span>
-	</dd>
-	<dt>
-	  <label for="plateYear">License Plate Year</label>
-	</dt>
-	<dd>
-	  <input type="text" th:field="${vehicle.plateYear}" id="plateYear" placeholder="Plate Year" />
-	  <span th:if="${#fields.hasErrors('plateYear')}" th:errors="*{plateYear}"></span>
-	</dd>
-	<dt>
-	  <label for="plateState">Plate State</label>
-	</dt>
-	<dd>
-	  <input type="text" th:field="${vehicle.state}" id="plateState" size="2" maxlength="2" required="required" />
-	  <span th:if="${#fields.hasErrors('state')}" th:errors="*{state}"></span>
-	</dd>
-	<dt>
-	  <label for="value_id">Damage Value</label>
-	</dt>
-	<dd>$
-	  <input type="text" th:field="${vehicle.value}" id="value_id" placeholder="Value" />(damage value related to this incident only)
-	  <span th:if="${#fields.hasErrors('value')}" th:errors="*{value}"></span>
-	</dd>	
-	<dt>
-	  <label for="owener">Owner</label>
-	</dt>
-	<dd>
-	  <input type="text" th:field="${vehicle.owner}" id="owner" placeholder="vehicle owner if not yours" size="30" maxlength="70" />
-	  <span th:if="${#fields.hasErrors('owner')}" th:errors="*{owner}"></span>
-	</dd>
-	<dt>
-	  <label for="description" class="required">*Description</label>
-	</dt>
-	<dd>				
-	  <textarea th:field="${vehicle.description}" id="description" placeholder="Description" rows="5" columns="50" required="required">
-	    <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></span>
-	  </textarea>
-	</dd>
-	<dd>		
-	  <input type="submit" value="Save" />
-	</dd>
-      </dl>
-    </form>
+		<header th:replace="general::header"></header>
+		
+		<main class="public-questions-wrapper">
+			<h2>Add Vehicle</h2>
+			<div th:if="${errors}">
+				<div th:insert="general::errors(${errors})"></div>
+			</div>
+			<div th:if="${messages}">
+				<div th:insert="general::messages(${messages})"></div>
+			</div>
+			<div th:insert="general::vehicleInstructions">
+			</div>
+			<form action="#" th:action="@{/vehicle/save}" th:object="${vehicle}" method="post">
+				<input type="hidden" th:field="${vehicle.incident}" />
+				<input type="hidden" id="old_value_id" th:field="${vehicle.oldValue}" />
+				<input type="hidden" id="balance_id" th:field="${vehicle.balance}" />
+				<input type="hidden" id="max_total_id" th:field="${vehicle.maxTotalValue}" />
+				<dl>
+					<dt>Related incident</dt>
+					<dd><a th:href="@{/incident/{id}(id=${vehicle.incident.id})}">Back to Incident</a></dd>
+					<dt>
+						<label for="damageType_id" class="required">*Damage Type</label>
+					</dt>
+					<dd>
+						<select id="damageType_id" th:field="${vehicle.carDamageType}" required="required">
+							<option value="">Damage Type</option>
+							<option th:each="r : ${damageTypes}" th:value="${r.id}" th:text="${r.name}">
+							</option>
+						</select>
+					</dd>
+					<dt>
+						<label for="year">Vehicle Year</label>
+					</dt>
+					<dd>
+						<input type="text" th:field="${vehicle.year}" id="year" placeholder="year" />
+						<span th:if="${#fields.hasErrors('year')}" th:errors="*{year}"></span>
+				</dd>
+				<dt>
+				  <label for="model">Make</label>
+				</dt>
+				<dd>
+				  <input type="text" th:field="${vehicle.make}" id="make" placeholder="Make" />
+				  <span th:if="${#fields.hasErrors('make')}" th:errors="*{make}"></span>
+				</dd>
+				<dt>
+				  <label for="model">Model</label>
+				</dt>
+				<dd>
+				  <input type="text" th:field="${vehicle.model}" id="model" placeholder="Model" />
+				  <span th:if="${#fields.hasErrors('model')}" th:errors="*{model}"></span>
+				</dd>
+				<dt>
+				  <label for="color">Color</label>
+				</dt>
+				<dd>
+				  <input type="text" th:field="${vehicle.color}" id="color" placeholder="Color" />
+				  <span th:if="${#fields.hasErrors('color')}" th:errors="*{color}"></span>
+				</dd>
+				<dt>
+				  <label for="plateNum">License Plate Number</label>
+				</dt>
+				<dd>
+				  <input type="text" th:field="${vehicle.plateNumber}" id="plateNum" placeholder="Plate Number" />
+				  <span th:if="${#fields.hasErrors('plateNumber')}" th:errors="*{plateNumber}"></span>
+				</dd>
+				<dt>
+				  <label for="plateYear">License Plate Year</label>
+				</dt>
+				<dd>
+				  <input type="text" th:field="${vehicle.plateYear}" id="plateYear" placeholder="Plate Year" />
+				  <span th:if="${#fields.hasErrors('plateYear')}" th:errors="*{plateYear}"></span>
+				</dd>
+				<dt>
+				  <label for="plateState">Plate State</label>
+				</dt>
+				<dd>
+				  <input type="text" th:field="${vehicle.state}" id="plateState" size="2" maxlength="2" required="required" />
+				  <span th:if="${#fields.hasErrors('state')}" th:errors="*{state}"></span>
+				</dd>
+				<dt>
+				  <label for="value_id">Damage Value</label>
+				</dt>
+				<dd>$
+				  <input type="text" th:field="${vehicle.value}" id="value_id" placeholder="Value" />(damage value related to this incident only)
+				  <span th:if="${#fields.hasErrors('value')}" th:errors="*{value}"></span>
+				</dd>	
+				<dt>
+				  <label for="owener">Owner</label>
+				</dt>
+				<dd>
+				  <input type="text" th:field="${vehicle.owner}" id="owner" placeholder="vehicle owner if not yours" size="30" maxlength="70" />
+				  <span th:if="${#fields.hasErrors('owner')}" th:errors="*{owner}"></span>
+				</dd>
+				<dt>
+				  <label for="description" class="required">*Description</label>
+				</dt>
+				<dd>				
+				  <textarea th:field="${vehicle.description}" id="description" placeholder="Description" rows="5" columns="50" required="required">
+				    <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></span>
+				  </textarea>
+				</dd>
+				<dd>		
+				  <input type="submit" value="Save" />
+				</dd>
+			      </dl>
+			    </form>
+		</main>
   </body>
 </htmL>

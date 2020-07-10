@@ -6,68 +6,76 @@
  -
  -->
 <html xmlns="http://www.w3.org/1999/xhtml">
-  <head th:replace="general::head('incidents')">
-  </head>
-  <body>
-    <header th:replace="general::header">
-    </header>
-    <br />
-    <div th:if="${errors}">
-      <div th:replace="general::errors(${errors})"></div>			
-    </div>
-    <div th:if="${messages}">
-      <div th:replace="general::messages(${messages})"></div>			
-    </div>
-    <div>
-      <h3> Incident Reporting (continue)</h3>
-      Please answer the following vandalism questions carefully to create your report.
-    </div>
+
+<head th:replace="general::head('incidents')"></head>
+
+<body>
+  <header th:replace="general::header"></header>
+
+  <div th:if="${errors}">
+    <div th:replace="general::errors(${errors})"></div>
+  </div>
+
+  <div th:if="${messages}">
+    <div th:replace="general::messages(${messages})"></div>
+  </div>
+
+  <main class="public-questions-wrapper">
+    <h3>Incident Reporting (continue)</h3>
+    <p>Please answer the following vandalism questions carefully to create your report.</p>
+
     <div id="questions">
-      <div class="questions">
-	<p>1. Was there unlawful entry to a building or dwelling made during this incident?
-	</p>
-	<form>
-	  <ul>
-            <li> <input class="option" type="radio" name="question1" value="Stop. Please contact us at 812-339-4477 to make this report." />Yes </li>
+      <div class="question">
+        <p>1. Was there unlawful entry to a building or dwelling made during this incident?</p>
+        <form>
+          <ul>
+            <li> <input class="option" type="radio" name="question1"
+                value="Stop. Please contact us at 812-339-4477 to make this report." />Yes </li>
             <li> <input class="option" type="radio" name="question1" value="Next" />No </li>
-	  </ul>
-	</form>
+          </ul>
+        </form>
       </div>
-      <div class="questions" style="display:none">
-	<p>2. Is the value of the vandalized property more than $2000.00?
-	</p>
-	<form>
-	  <ul>
-            <li> <input class="option" type="radio" name="question2" value="Stop. Please contact us at 812-339-4477 to make this report." />Yes </li>
+    
+      <div class="question" style="display:none">
+        <p>2. Is the value of the vandalized property more than $2000.00?</p>
+        <form>
+          <ul>
+            <li> <input class="option" type="radio" name="question2"
+                value="Stop. Please contact us at 812-339-4477 to make this report." />Yes </li>
             <li> <input class="option" type="radio" name="question2" value="Next" />No </li>
-	  </ul>
-	</form>
+          </ul>
+        </form>
       </div>
-      <div class="questions" style="display:none" id="lastQuestion">
-	<p>3. Are you reporting graffiti?
-	</p>
-	<form>
-	  <ul>
-            <li> <input class="option" type="radio" name="question3" value="Stop. Please contact us at 812-339-4477" />Yes </li>
+    
+      <div class="question" style="display:none" id="lastQuestion">
+        <p>3. Are you reporting graffiti?</p>
+        <form>
+          <ul>
+            <li> <input class="option" type="radio" name="question3" value="Stop. Please contact us at 812-339-4477" />Yes
+            </li>
             <li> <input class="option" type="radio" name="question3" value="finalStep" />No </li>
-	  </ul>
-	</form>
-      </div>	       
+          </ul>
+        </form>
+      </div>
+    
       <div id="next_div">
-	Click on <input type="button" id='next' value="Next" /> to continue.
+        Click on <input type="button" id='next' value="Next" /> to continue.
       </div>
+    
       <div id="moreInfo">
-	<div th:replace="general::introMoreInfo"></div>
+        <div th:replace="general::introMoreInfo"></div>
       </div>
-      <br />
-      <div id="finalStep" class="questions" style="display:none">
-	<p> In the next step you will provide a valid email, please click on Next </p>
-	<form action="#"
-	      th:action="@{/emailRequest/2}"
-	      method="get">	
-	  <button type="submit"> Next </button>
-	</form>
-      </div>        
+    
+      <div id="finalStep" class="question" style="display:none">
+        <p> In the next step you will provide a valid email, please click on Next </p>
+        <form action="#" th:action="@{/emailRequest/2}" method="get">
+          <div class="next_div">
+            <button type="submit"> Next </button>
+          </div>
+        </form>
+      </div>
     </div>
-  </body>
+  </main>
+</body>
+
 </html>

@@ -6,84 +6,91 @@
  -
  -->
 <html xmlns="http://www.w3.org/1999/xhtml">
-  <head th:replace="general::head('Incident Details')"></head>
-  <body>
-    <header>
-      <div th:replace="general::header-staff"></div>
-    </header>
-    <br />
-    <h3>View Incident</h3>
-    <div th:if="${errors}">
-      <div th:insert="general::errors(${errors})"></div>			
-    </div>
-    <div th:if="${messages}">
-      <div th:insert="general::messages(${messages})"></div>			
-    </div>		
-    <fieldset>
-      <legend>Incident General Info</legend>
-      <div th:fragment="incident(incident)">      
-	<dl>
-	  <dt><label> Incident Type:</label></dt>
-	  <dd>
-	    <span th:text="${incident.incidentType}"> </span>
-	  </dd>
-	  <dt><label> Status:</label></dt>
-	  <dd>
-	    <span th:text="${incident.status}"> </span>
-	  </dd>				
-	  <dt><label> Reporter Email</label></dt>
-	  <dd>
-	    <span th:text="${incident.email}"> </span>
-	  </dd>
-	  <dt><label> Report Date & Time </label></dt>
-	  <dd>
-	    <span th:text="${incident.receivedStr}"> </span>
-	  </dd>
-	  <dt>
-	    <label>Incident Date & time </label>
-	  </dt>
-	  <dd>
-	    <span th:text="${incident.dateTimeInfo}"> </span> 
-	  </dd>
-	  <dt>
-	    <label>Incident address:</label>
-	  </dt>
-	  <dd>
-	    <span th:text="${incident.addressInfo}"> </span>
-	  </dd>
-	</dl>
-	<dl th:if="${incident.hasAccessInfo()}">
-	  <dt>
-	    <label>Entry access:</label>
-	  </dt>
-	  <dd>
-	    <span th:text="${incident.entryInfo}" ></span>
-	  </dd>
-	</dl>
-	<dl>
-	  <dt>
-	    <label>Incident Details</label>
-	  </dt>
-	  <dd>
-	    <span th:text="${incident.details}" ></span>
-	  </dd>
-	</dl>
-      </div>
-    </fieldset>      
-    <div th:if="${incident.hasPersonList()}">
-      <div th:insert="personsView::persons(${incident.persons})"></div>
-    </div>
-    <div th:if="${incident.hasPropertyList()}">
-      <div th:insert="propertiesView::properties(${incident.properties},${incident.totalValueFr})"></div>
-    </div>
-    <div th:if="${incident.hasVehicleList()}">
-      <div th:insert="vehiclesView::vehicles(${incident.vehicles})"></div>
-    </div>
-    <div th:if="${incident.hasMediaList()}">
-      <div th:insert="mediasView::medias(${incident.medias})"></div>
-    </div>
-    <div th:if="${incident.hasActionLogs()}">
-      <div th:insert="actionLogs::actionLogs(${incident.actionLogs})"></div>
-    </div>    
-  </body>
+
+<head th:replace="general::head('Incident Details')"></head>
+
+<body>
+	<header th:replace="general::header-staff"></header>
+
+	<main class="public-questions-wrapper">
+		<h3>View Incident</h3>
+
+		<div th:if="${errors}">
+			<div th:insert="general::errors(${errors})"></div>
+		</div>
+		
+		<div th:if="${messages}">
+			<div th:insert="general::messages(${messages})"></div>
+		</div>
+		
+		<fieldset>
+			<legend>Incident General Info</legend>
+			<div th:fragment="incident(incident)">
+				<div class="m-b-10">
+					<label> Incident Type:</label>
+					<span th:text="${incident.incidentType}"> </span>
+				</div>
+
+				<div class="m-b-10">
+					<label>Status:</label>
+					<span th:text="${incident.status}"> </span>
+				</div>
+
+				<div class="m-b-10">
+					<label>Reporter Email:</label>
+					<span th:text="${incident.email}"> </span>
+				</div>
+
+				<div class="m-b-10">
+					<label>Report Date & Time:</label>
+					<span th:text="${incident.receivedStr}"> </span>
+				</div>
+
+				<div class="m-b-10">
+					<label>Incident Date & time: </label>
+					<span th:text="${incident.dateTimeInfo}"> </span>
+				</div>
+		
+				<div class="m-b-10">
+					<label>Incident address:</label>
+					<span th:text="${incident.addressInfo}"> </span>
+				</div>
+				
+				<div class="m-b-10" th:if="${incident.hasAccessInfo()}">
+					<label>Entry access:</label>
+					<span th:text="${incident.entryInfo}"></span>
+				</div>
+				
+				<div class="m-b-10">
+					<label>Incident Details:</label>
+					<span th:text="${incident.details}"></span>
+				</div>
+			</div>
+		</fieldset>
+
+		<div class="button-group">
+
+		</div>
+		
+		<div th:if="${incident.hasPersonList()}">
+			<div th:insert="personsView::persons(${incident.persons})"></div>
+		</div>
+
+		<div th:if="${incident.hasPropertyList()}">
+			<div th:insert="propertiesView::properties(${incident.properties},${incident.totalValueFr})"></div>
+		</div>
+		
+		<div th:if="${incident.hasVehicleList()}">
+			<div th:insert="vehiclesView::vehicles(${incident.vehicles})"></div>
+		</div>
+		
+		<div th:if="${incident.hasMediaList()}">
+			<div th:insert="mediasView::medias(${incident.medias})"></div>
+		</div>
+		
+		<div th:if="${incident.hasActionLogs()}">
+			<div th:insert="actionLogs::actionLogs(${incident.actionLogs})"></div>
+		</div>
+	</main>
+</body>
 </html>

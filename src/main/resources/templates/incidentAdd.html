@@ -6,148 +6,142 @@
  -
  -->
 <html xmlns="http://www.w3.org/1999/xhtml">
-  <head th:replace="general::head('Incident')"></head>
-  <body>
-    <header th:replace="general::header">
-    </header>
-    <h2>Add Incident Details</h2>
-    <div th:if="${errors}">
-      <div th:replace="general::errors(${errors})"></div>			
-    </div>
-    <div th:if="${messages}">
-      <div th:replace="general::messages(${messages})"></div>			
-    </div>					
-    <p th:insert="general::incidentInstructions">
-    </p>
-    <p> *indicated required fields</p>		
-    <p>Incident Type <span th:text="${incident.incidentType}"> </span> </p>
-    <form action="#"
-	  th:action="@{/incidentNext/{id}(id=${incident.id})}"
-	  th:object="${incident}"
-	  onsubmit="return verifyIncidentInput()"
-	  method="post">
-      <input type="hidden" th:field="${incident.email}" />
-      <input type="hidden" th:field="${incident.receivedStr}" />
-      <input type="hidden" th:field="${incident.incidentType} "/>
-      <fieldset>
-	<legend>Incident Date and Time</legend>
-	<dl>
-	  <dd>
-	      (For EXAMPLE: I went to bed at 11:00 PM Saturday night Aug 8 <br />
-	      and when I woke up Sunday at 6:00 AM my car has a smashed window.<br />
-	      You report 8/8/2015 21:00 PM - 8/9/2015 06:00 AM.)						
-	  </dd>
-	  <dt>
-	    <label for="start_date" class="required">*Incident Occurred, Date:</label>
-	  </dt>
-	  <dd>
-	    <input type="date" th:field="${incident.dateStr}" id="start_date" size="15" placeholder="mm/dd/yyyy" /> Time:
-	    <input type="text" th:field="${incident.timeStr}" id="start_time" size="15" class="timepicker" placeholder="hh:mm am/pm" />(for example 10:30 PM)
-	  </dd>
-	  <dt><label for="end_date">End Incident, Date:</label>
-	  </dt>
-	  <dd>
-	    <input type="date" th:field="${incident.endDateStr}" id="end_date" value="" size="15" placeholder="mm/dd/yyyy" /> Time:
-	    <input type="text" th:field="${incident.endTimeStr}" id="end_time" value="" size="15" class="timepicker" placeholder="hh:mm am/pm" /> (for example 11:30 PM)
-	  </dd>
-	  <dd>
-	   Or, if unsure of the exact date and time, describe below when this took place.
-	  </dd>
-	  <dd>
-	    <textarea th:field="${incident.dateDescription}" id="date_description" rows="3" cols="60"></textarea>
-	  </dd>
-	</dl>
-      </fieldset>
-      <fieldset><legend>Location of Incident</legend>
-	<p>To add the address, use the 'Look up Address' button, a popup window will open where you enter the address, then pick the right address from the list. </p>
-	<dl>
-	  <dt>
-	    <label for="addr_id" class="required">*Address where the incident occured</label>
-	  </dt>
-	  <dd>
-	    <input type="text" th:field="${incident.address}" id="addr_id" size="60" placeholder="Address" readonly="readonly" />
-	    <button th:attr="onclick=|popwit('${hostPath}/addressWindow','_blank');return false;|">Look up Address</button>
-	  </dd>
-	  <dt>
-	    <label for="latitude">Latitude</label>
-	  </dt>
-	  <dd>
-	      <input type="text" th:field="${incident.latitude}" id="latitude" size="20" readonly="readonly"/>
-	  </dd>
-	  <dt>
-	    <label for="longitude">Longitude</label>
-	  </dt>
-	  <dd>
-	      <input type="text" th:field="${incident.longitude}" id="longitude" size="20" readonly="readonly"/>
-	  </dd>
-	  <dt>
-	    <label for="city" class="required">*City</label>
-	  </dt>
-	  <dd>
-	    <input type="text" th:field="${incident.city}" id="city" />	 
-	  </dd>
-	  <dt>
-	    <label for="jurisdiction">Jurisdiction</label>
-	  </dt>
-	  <dd>
-	    <input type="text" th:field="${incident.jurisdiction}" id="jurisdiction" size="60" placeholder="Jurisdiction" readonly="readonly" />
-	  </dd>
-	  <dt>
-	    <label for="zip" class="required">Zip Code</label>
-	  </dt>
-	  <dd>
-	    <input type="text" th:field="${incident.zip}" id="zip" size="10" placeholder="Zip code" readonly="readonly"/>
-	  </dd>	  
-	  <dt>
-	    <label for="state" class="required">State</label>
-	  </dt>
-	  <dd>
-	    <input type="text" th:field="${incident.state}" id="state" readonly="readonly" size="2" />
-	  </dd>
-	</dl>
-      </fieldset>
-      <fieldset>
-	<legend>Incident Details</legend>
-	<div>
-	  <label>Incident Type:</label>
-	  <span th:text="${incident.incidentType}" ></span>
-	</div>
-	<div th:if="${incident.isNotLostRelated()}">
-	  <label for="entry_type">Identify how entry was gained to commit the act.</label>
-	  <dl>
-	  <dd>
-	    <select th:field="${incident.entryType}" id="entry_type">
-	      <option value="">Does not apply</option>
-	      <option th:each="r : ${entryTypes}"
-		      th:value="${r}"
-		      th:text="${r}">
-	      </option>	
-	    </select>					
-	  </dd>
-	  <dt>
-	    <label for="other_entry">Other entry gained details</label>
-	  </dt>
-	  <dd>
-	    <textarea th:field="${incident.otherEntry}" id="other_entry" rows="3" cols="60" placeholder="Other entry details"></textarea>
-	  </dd>
-	</dl>
-      </div>
-      <dl>
-	<dt>
-	  <label for="details_id" class="required">*Incident Details</label>
-	</dt>
-	<dd>
-	  <textarea th:field="${incident.details}" id="details_id" rows="3" cols="60" required="reguired" placeholder="Incident Details"></textarea>
-	</dd>
-	<dd>Optional, if you have incident images available you need to mark the checkbox below, then when you click on 'Next' you have the chance to upload them.</dd>
-	<dd colspan="2"><input type="checkbox" th:field="${incident.haveMedia}" th:checked="${incident.haveMedia}?'checked'" value="y"  />Yes, I have incident images I would like to upload.</dd>
-      </dl>
-      </fieldset>
-      <dl>
-	<dd> All required fields must be filled in to move on to next page 
-	  <input type="submit" value="Next" />
-	</dd>
-      </dl>
-    </form>
-  </body>
+
+<head th:replace="general::head('Incident')"></head>
+
+<body>
+	<header th:replace="general::header"></header>
+
+	<main class="public-questions-wrapper">
+		<h2>Add Incident Details</h2>
+		
+		<div th:if="${errors}">
+			<div th:replace="general::errors(${errors})"></div>
+		</div>
+		
+		<div th:if="${messages}">
+			<div th:replace="general::messages(${messages})"></div>
+		</div>
+		
+		<p th:insert="general::incidentInstructions"></p>
+
+		<p>* indicated required fields</p>
+		<p>Incident Type: <strong><span th:text="${incident.incidentType}"></span></strong>.</p>
+		
+		<form
+			action="#"
+			th:action="@{/incidentNext/{id}(id=${incident.id})}"
+			th:object="${incident}"
+			onsubmit="return verifyIncidentInput()"
+			method="post">
+
+			<input type="hidden" th:field="${incident.email}" />
+			<input type="hidden" th:field="${incident.receivedStr}" />
+			<input type="hidden" th:field="${incident.incidentType} " />
+
+			<fieldset>
+				<legend>Incident Date and Time</legend>
+				<p>eg. I went to bed at 11:00 PM Saturday night Aug 8 and when I woke up Sunday at 6:00 AM my car has a smashed window.
+				</p>
+				<p>You report 8/8/2015 21:00 PM - 8/9/2015 06:00 AM.)</p>
+
+				<label for="start_date" class="required">
+					*Incident Occurred, Date:
+				</label>
+
+				<input type="date" th:field="${incident.dateStr}" id="start_date" size="15" placeholder="mm/dd/yyyy" />
+
+				<label for="start_time" class="required">
+						Time:
+				</label>
+				
+				<input type="text" th:field="${incident.timeStr}" id="start_time" size="15" class="timepicker" placeholder="hh:mm am/pm" />
+					
+				<label for="end_date">
+					End Incident, Date:
+				</label>
+				
+				<input type="date" th:field="${incident.endDateStr}" id="end_date" value="" size="15" placeholder="mm/dd/yyyy" />
+				
+				<label for="end_time" class="required">
+					Time:
+				</label>
+
+				<input type="text" th:field="${incident.endTimeStr}" id="end_time" value="" size="15" class="timepicker"
+					placeholder="hh:mm am/pm" />
+					
+				<p>Or, if unsure of the exact date and time, describe below when this took place.</p>
+					
+				<textarea th:field="${incident.dateDescription}" id="date_description" rows="3" cols="60"></textarea>
+			</fieldset>
+			
+			<fieldset>
+				<legend>Location of Incident</legend>
+				<p>To add the address, use the 'Look up Address' button, a popup window will open where you enter the address, then pick the right address from the list.</p>
+				<label for="addr_id" class="required">*Address where the incident occured</label>
+
+				<input type="text" th:field="${incident.address}" id="addr_id" size="60" placeholder="Address" readonly="readonly" />
+
+				<button th:attr="onclick=|popwit('${hostPath}/addressWindow','_blank');return false;|">Look up
+					Address</button>
+
+				<label for="latitude">Latitude</label>
+				<input type="text" th:field="${incident.latitude}" id="latitude" size="20" readonly="readonly" />
+				
+				<label for="longitude">Longitude</label>
+				<input type="text" th:field="${incident.longitude}" id="longitude" size="20" readonly="readonly" />
+
+				<label for="city" class="required">*City</label>
+				<input type="text" th:field="${incident.city}" id="city" />
+						
+				<label for="jurisdiction">Jurisdiction</label>
+				<input type="text" th:field="${incident.jurisdiction}" id="jurisdiction" size="60" placeholder="Jurisdiction"
+					readonly="readonly" />
+					
+				<label for="zip" class="required">Zip Code</label>
+				<input type="text" th:field="${incident.zip}" id="zip" size="10" placeholder="Zip code" readonly="readonly" />
+
+				<label for="state" class="required">State</label>
+				<input type="text" th:field="${incident.state}" id="state" readonly="readonly" size="2" />
+			</fieldset>
+			
+			<fieldset>
+				<legend>Incident Details</legend>
+				<div>
+					<label>Incident Type:</label>
+					<span th:text="${incident.incidentType}"></span>
+				</div>
+
+				<div th:if="${incident.isNotLostRelated()}">
+					
+				<label for="entry_type">
+					Identify how entry was gained to commit the act.
+				</label>
+				<select th:field="${incident.entryType}" id="entry_type">
+					<option value="">Does not apply</option>
+					<option th:each="r : ${entryTypes}" th:value="${r}" th:text="${r}">
+					</option>
+				</select>
+				
+				<label for="other_entry">Other entry gained details</label>
+				<textarea th:field="${incident.otherEntry}" id="other_entry" rows="3" cols="60" placeholder="Other entry details"></textarea>
+								
+				<label for="details_id" class="required">*Incident Details</label>
+				<textarea th:field="${incident.details}" id="details_id" rows="3" cols="60" required="reguired"
+					placeholder="Incident Details"></textarea>
+				
+				<p>Optional, if you have incident images available you need to mark the checkbox below, then when you click on 'Next' you have the chance to upload them.</p>
+				
+				<input type="checkbox" th:field="${incident.haveMedia}" th:checked="${incident.haveMedia}?'checked'" value="y" />Yes, I have incident images I would like to upload.
+			</fieldset>
+
+			<div class="next_div">
+				<input type="submit" value="Next" />
+			</div>
+
+			
+		</form>
+	</main>
+</body>
+
 </html>
