@@ -7,125 +7,122 @@
  -->
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head th:replace="general::head('Incident')"></head>
-  <body>
+  <body class="staff">
     <header>
       <div th:replace="general::header-staff"></div>
-    </header>
-    <br />
-    <h2>Search</h2>
-    <div th:if="${errors}">
-      <div th:insert="general::errors(${errors})"></div>			
-    </div>
-    <div th:if="${messages}">
-      <div th:insert="general::messages(${messages})"></div>			
-    </div>					
-    <form action="#"
-	  th:action="@{/search/find}"
-	  th:object="${search}"
-	  method="post">
-      <fieldset>
-	<table summary="layout for search" width="90%">
-	  <tr>
-	    <td width="18%">
-	      <label for="id">Incident ID:</label>
-	    </td>
-	    <td>
-	      <input type="text" th:field="${search.id}" id="id" size="5" />
-	    </td>
-	  </tr>
-	  <tr>
-	    <td width="18%">
-	      <label for="case_number">Case Number:</label>
-	    </td>
-	    <td>
-	      <input type="text" th:field="${search.caseNumber}" id="case_number" size="10" />
-	    </td>
-	  </tr>	  
-	  <tr>
-	    <td>
-	      <label for="id">Incident Type:</label>
-	    </td>
-	    <td>
-	      <select id="type_id" th:field="${search.incidentTypeId}" >
-		<option value="">All</option>
-		<option th:each="r : ${types}"
-			th:value="${r.id}"
-		      th:text="${r.name}">
-		</option>
-	      </select>
-	    </td>
-	  </tr>
-	  <tr>
-	    <td>
-	      <label for="from_date" class="required">Incident Date</label>
-	    </td>
-	    <td>from:
-	      <input type="date" th:field="${search.dateFrom}" id="from_date" size="20" /> to:
-	      <input type="date" th:field="${search.dateTo}" id="to_date" size="20" />							
-	    </td>
-	  </tr>
-	  <tr>
-	    <td>
-	      <label for="addr_id">Address</label>
-	    </td>
-	    <td>
-	      <input type="text" th:field="${search.address}" id="addr_id" value="" size="60" />
-	    </td>
-	  </tr>
-	  <tr>
-	    <td>
-	      <label for="city">City</label>
-	    </td>
-	    <td>
-	      <input type="text" th:field="${search.city}" id="city" value="" size="60" />
-	    </td>
-	  </tr>
-	  <tr>
-	    <td>
-	      <label for="zip_id">Zip Code</label>
-	    </td>
-	    <td>
-	      <input type="text" th:field="${search.zip}" id="zip_id" value="" size="10" />
-	    </td>
-	  </tr>
-	</table>
-      </fieldset>
-      <fieldset>
-	<legend>Incident Related Person</legend>
-	<table width="90%" summary="Person related search">
-	  <tr>
-	    <td width="18%">
-	      <label for="name_id">Name</label>
-	    </td>
-	    <td>
-	      <input type="text" th:field="${search.name}" id="name_id" value="" size="30" />
-	    </td>
-	  </tr>
-	  <tr>
-	    <td>
-	      <label for="dln_id">DLN</label>
-	    </td>
-	    <td>
-	      <input type="text" th:field="${search.dln}" id="dln_id" value="" size="30" />
-	    </td>
-	  </tr>
-	  <tr>
-	    <td>
-	      <label for="dob_id">DOB</label>
-	    </td>
-	    <td>
-	      <input type="date" th:field="${search.dob}" id="dob_id" value="" size="10" />
-	    </td>
-	  </tr>	  
-	</table>
-      </fieldset>				
-      <table>
-	<tr>
-	  <td> 
-	    <input type="submit" value="Search" />
-	  </td>
-	</tr>
-      </table>
-    </form>
+		</header>
+		
+		<main class="staff">
+			<h2>Search</h2>
+			<div th:if="${errors}">
+				<div th:insert="general::errors(${errors})"></div>
+			</div>
+			<div th:if="${messages}">
+				<div th:insert="general::messages(${messages})"></div>
+			</div>
+			<form action="#" th:action="@{/search/find}" th:object="${search}" method="post">
+				<fieldset>
+					<table summary="layout for search" width="90%">
+						<tr>
+							<td width="18%">
+								<label for="id">Incident ID:</label>
+							</td>
+							<td>
+								<input type="text" th:field="${search.id}" id="id" size="5" />
+							</td>
+						</tr>
+						<tr>
+							<td width="18%">
+								<label for="case_number">Case Number:</label>
+							</td>
+							<td>
+								<input type="text" th:field="${search.caseNumber}" id="case_number" size="10" />
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<label for="id">Incident Type:</label>
+							</td>
+							<td>
+								<select id="type_id" th:field="${search.incidentTypeId}">
+									<option value="">All</option>
+									<option th:each="r : ${types}" th:value="${r.id}" th:text="${r.name}">
+									</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<label for="from_date" class="required">Incident Date</label>
+							</td>
+							<td>from:
+								<input type="date" th:field="${search.dateFrom}" id="from_date" size="20" /> to:
+								<input type="date" th:field="${search.dateTo}" id="to_date" size="20" />
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<label for="addr_id">Address</label>
+							</td>
+							<td>
+								<input type="text" th:field="${search.address}" id="addr_id" value="" size="60" />
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<label for="city">City</label>
+							</td>
+							<td>
+								<input type="text" th:field="${search.city}" id="city" value="" size="60" />
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<label for="zip_id">Zip Code</label>
+							</td>
+							<td>
+								<input type="text" th:field="${search.zip}" id="zip_id" value="" size="10" />
+							</td>
+						</tr>
+					</table>
+				</fieldset>
+				<fieldset>
+					<legend>Incident Related Person</legend>
+					<table width="90%" summary="Person related search">
+						<tr>
+							<td width="18%">
+								<label for="name_id">Name</label>
+							</td>
+							<td>
+								<input type="text" th:field="${search.name}" id="name_id" value="" size="30" />
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<label for="dln_id">DLN</label>
+							</td>
+							<td>
+								<input type="text" th:field="${search.dln}" id="dln_id" value="" size="30" />
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<label for="dob_id">DOB</label>
+							</td>
+							<td>
+								<input type="date" th:field="${search.dob}" id="dob_id" value="" size="10" />
+							</td>
+						</tr>
+					</table>
+				</fieldset>
+				<table>
+					<tr>
+						<td>
+							<input type="submit" value="Search" />
+						</td>
+					</tr>
+				</table>
+			</form>
+		</main>
   </body>
 </html>

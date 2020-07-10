@@ -7,20 +7,21 @@
  -->
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head th:replace="general::head('Incident')"></head>
-  <body>
+  <body class="staff">
     <header>
       <div th:replace="general::header-staff"></div>
     </header>
-    <br />
-    <p>
-      You can perfom one of the following options depending on your privileges
-    </p>
-    <ul>
-      <li>Received: Handle newly recieved incidents </li>
-      <li>Approved/Rejected: Handle recently approved/rejected incidents</li>
-      <li>Search: Search all incidents by incident number, type, date, etc</li>
-      <li>Reports: Run stats reports for certain period of time, week, month, year, or date range</li>
-      <li>Setting: Limited to 'Admin' group to handle app different types of settings</li>
-    </ul>
+
+    <main class="staff">
+      <p>You can perfom one of the following options depending on your privileges.</p>
+      
+      <ul>
+        <li>Received: Handle newly recieved incidents </li>
+        <li>Approved/Rejected: Handle recently approved/rejected incidents</li>
+        <li>Search: Search all incidents by incident number, type, date, etc</li>
+        <li>Reports: Run stats reports for certain period of time, week, month, year, or date range</li>
+        <li>Setting: Limited to 'Admin' group to handle app different types of settings</li>
+      </ul>
+    </main>
    </body>
 </html>

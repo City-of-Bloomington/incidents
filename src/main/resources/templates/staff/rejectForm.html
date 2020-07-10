@@ -6,49 +6,53 @@
  -
  -->
 <html xmlns="http://www.w3.org/1999/xhtml">
-  <head th:replace="general::head('Person Type')"></head>
-  <body>
-    <header th:replace="general::header">
-    </header>
-    <h2>Compose Rejection Email</h2>
-    <div th:if="${errors}">
-      <div th:insert="general::errors(${errors})"></div>			
-    </div>
-    <div th:if="${messages}">
-      <div th:insert="general::messages(${messages})"></div>			
-    </div>				
-    <form action="#"
-	  th:action="@{/rejectEmail}"
-	  th:object="${email}"
-	  method="post">
-      <input type="hidden" th:field="${email.receiver}" />
-      <input type="hidden" th:field="${email.type}" />
-      <input type="hidden" th:field="${email.incident_id}" />      
-      <fieldset>
-	<legend>Rejection Email</legend>
-	<p>
-	  This is the email message that will be sent to the reporter of this incident.
-	  Please read and edit this message as you find fit explaining the reasons why the report was rejected.
-	</p>
-	<table summary="layout for email message">
-	  <tr><th>To</th>
-	    <td><span th:text="${email.receiver}"></span></td>
-	  </tr>
-	  <tr>
-	    <th><label for="subject">Subject:</label></th>
-	    <td>
-	      <input th:field="${email.subject}" id="subject" size="50" />
-	    </td>
-	  </tr>
-	  <tr>
-	    <td colspan="2">
-	      <textarea th:field="${email.message}" id="message" rows="12" cols="60">
+
+<head th:replace="general::head('Person Type')"></head>
+
+<body class="staff">
+	<header th:replace="general::header"></header>
+
+	<main class="staff">
+		<h2>Compose Rejection Email</h2>
+		<div th:if="${errors}">
+			<div th:insert="general::errors(${errors})"></div>
+		</div>
+		<div th:if="${messages}">
+			<div th:insert="general::messages(${messages})"></div>
+		</div>
+		<form action="#" th:action="@{/rejectEmail}" th:object="${email}" method="post">
+			<input type="hidden" th:field="${email.receiver}" />
+			<input type="hidden" th:field="${email.type}" />
+			<input type="hidden" th:field="${email.incident_id}" />
+			<fieldset>
+				<legend>Rejection Email</legend>
+				<p>
+					This is the email message that will be sent to the reporter of this incident.
+					Please read and edit this message as you find fit explaining the reasons why the report was rejected.
+				</p>
+				<table summary="layout for email message">
+					<tr>
+						<th>To</th>
+						<td><span th:text="${email.receiver}"></span></td>
+					</tr>
+					<tr>
+						<th><label for="subject">Subject:</label></th>
+						<td>
+							<input th:field="${email.subject}" id="subject" size="50" />
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2">
+							<textarea th:field="${email.message}" id="message" rows="12" cols="60">
 	      </textarea>
-	    </td>
-	  </tr>
-	</table>
-	<button type="submit" class="send">Send</button>
-      </fieldset>
-    </form>
-  </body>
+						</td>
+					</tr>
+				</table>
+				<button type="submit" class="send">Send</button>
+			</fieldset>
+		</form>
+	</main>
+
+</body>
+
 </htmL>

@@ -6,15 +6,18 @@
  -
  -->
 <html xmlns="http://www.w3.org/1999/xhtml">
-  <head th:replace="general::head('Incident')"></head>
-  <body>
-    <header>
-      <div th:replace="general::header-staff"></div>
-    </header>
-    <br />
-    <h3> Settings </h3>
+
+<head th:replace="general::head('Incident')"></head>
+
+<body class="staff">
+  <header>
+    <div th:replace="general::header-staff"></div>
+  </header>
+
+  <main class="staff">
+    <h2>Settings</h2>
     <ul>
-      <li><a th:href="@{/addressInput}">Address Check</a></li>      
+      <li><a th:href="@{/addressInput}">Address Check</a></li>
       <li><a th:href="@{/users}">Users</a></li>
       <li><a th:href="@{/personTypes}">Person Types</a></li>
       <li><a th:href="@{/incidentTypes}">Incident Types</a></li>
@@ -24,5 +27,6 @@
       <li><a th:href="@{/roles}">User roles</a></li>
       <li><a th:href="@{/staff/incompleteOptions}">Incomplete Schedule</a></li>
     </ul>
-   </body>
+  </main>
+</body>
 </html>

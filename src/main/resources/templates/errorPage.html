@@ -7,18 +7,22 @@
  -->
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head th:replace="general::head('Error')"></head>
-  <body>
+  <body class="staff">
     <header th:replace="general::header">
     </header>
-    <h2>Incident Error </h2>		
-    <h1><span th:text="${errorMsg}"></span></h1>
-    <div th:if="${errors}">
-      <div role="alert" class="alert" th:switch="${errors}">
-        <ul th:each="error : ${errors}">
-          <li th:text="${error}"></li>
-        </ul>
+
+    <main class="staff">
+      <h2>Incident Error </h2>
+      <h1><span th:text="${errorMsg}"></span></h1>
+      <div th:if="${errors}">
+        <div role="alert" class="alert" th:switch="${errors}">
+          <ul th:each="error : ${errors}">
+            <li th:text="${error}"></li>
+          </ul>
+        </div>
       </div>
-    </div>
+    </main>
+    
   </body>
 </htmL>
 		
