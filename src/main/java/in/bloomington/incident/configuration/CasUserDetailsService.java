@@ -59,6 +59,7 @@ public class CasUserDetailsService implements AuthenticationUserDetailsService {
         AttributePrincipal principal = casAssertionAuthenticationToken.getAssertion().getPrincipal();
 				try{
 						Map attributes = principal.getAttributes();
+						System.err.println(" prin attr "+attributes);						
 						// String uname = (String) attributes.get("username");
 						String email = (String) attributes.get("mail");
 						String username = (String) attributes.get("sAMAccountName");

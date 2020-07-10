@@ -32,6 +32,7 @@ import org.springframework.security.cas.ServiceProperties;
 import org.springframework.security.cas.web.CasAuthenticationEntryPoint;
 import org.springframework.security.cas.web.CasAuthenticationFilter;
 import org.springframework.security.cas.authentication.CasAuthenticationProvider;
+import org.springframework.security.cas.web.authentication.ServiceAuthenticationDetailsSource;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.jasig.cas.client.validation.TicketValidator;
@@ -72,8 +73,10 @@ public class CasComponent{
 		public CasAuthenticationFilter casAuthenticationFilter(ServiceProperties sP)
 				throws Exception {
 				CasAuthenticationFilter filter = new CasAuthenticationFilter();
-				filter.setServiceProperties(sP);
+				filter.setServiceProperties(serviceProperties()); // sP
 				filter.setAuthenticationManager(authenticationManager());
+				filter.setFilterProcessesUrl("/login");
+				filter.setAuthenticationDetailsSource(new ServiceAuthenticationDetailsSource(serviceProperties()));
 				return filter;
 		}
 		@Bean
@@ -116,8 +119,9 @@ public class CasComponent{
 				// serviceProperties.setService("http://localhost:9000/login/cas");
 				// String url = serverUrl+hostPath+"/login";
 				// System.err.println(" usrl "+url);
-				serviceProperties.setService(serverUrl+hostPath+"/login");
+				serviceProperties.setService(serverUrl+hostPath+"/login"); // login
 				serviceProperties.setSendRenew(false);
+				serviceProperties.setAuthenticateAllArtifacts(true);
 				return serviceProperties;
 		}
 		@Bean
@@ -126,7 +130,8 @@ public class CasComponent{
 				CasAuthenticationEntryPoint entryPoint
 						= new CasAuthenticationEntryPoint();
 				entryPoint.setLoginUrl(casLoginUrl);
-				entryPoint.setServiceProperties(sp);
+				entryPoint.setServiceProperties(serviceProperties());
+				entryPoint.afterPropertiesSet();
 				return entryPoint;
 		}
 		@Bean

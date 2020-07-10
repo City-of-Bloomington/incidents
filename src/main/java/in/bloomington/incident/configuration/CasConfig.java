@@ -46,6 +46,8 @@ public class CasConfig extends WebSecurityConfigurerAdapter {
 		AuthenticationEntryPoint authenticationEntryPoint;
 		@Autowired
 		CasAuthenticationProvider authenticationProvider;
+		@Autowired
+		CasAuthenticationFilter casAuthenticationFilter;
 		/**
 		@Autowired
 		SingleSignOutFilter singleSignOutFilter;
@@ -62,12 +64,12 @@ public class CasConfig extends WebSecurityConfigurerAdapter {
 
 				http
 						.csrf().disable()
+						.addFilter(casAuthenticationFilter)
+						.anonymous().disable()						
 						.authorizeRequests()
 						.regexMatchers("/login") // ("/login", "/staff")
 						.authenticated()
-						.and()						
-						// .anonymous().disable()
-						// .and()
+						.and()
 						.authorizeRequests()
 						// .regexMatchers("/")
 						// .permitAll()

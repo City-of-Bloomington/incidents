@@ -36,15 +36,6 @@ public class UserRequestFilter implements Filter {
 											 ServletResponse response,
 											 FilterChain chain)
 			throws IOException, ServletException {
-			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-			if(auth != null){
-					String username = auth.getName();
-					Object credentials = auth.getCredentials();
-					System.err.println(" *** from sec username "+username);					
-			}
-			else{
-					System.err.println(" *** auth is null ");					
-			}
 			HttpServletRequest req = (HttpServletRequest) request;
 			Enumeration<String> parameterNames = req.getParameterNames();
 			while (parameterNames.hasMoreElements()) {
