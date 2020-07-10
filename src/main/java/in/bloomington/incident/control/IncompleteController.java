@@ -69,169 +69,170 @@ public class IncompleteController extends TopController{
 
 
     private JobDetail buildJobDetail(){
-	return JobBuilder.newJob(IncompleteJob.class)
-	    .withIdentity(jobName, groupName)
-	    .withDescription("Send Email Job")
-	    //.usingJobData(jobDataMap)
-	    .storeDurably()
-	    .build();
+				return JobBuilder.newJob(IncompleteJob.class)
+						.withIdentity(jobName, groupName)
+						.withDescription("Send Email Job")
+						//.usingJobData(jobDataMap)
+						.storeDurably()
+						.build();
     }
     private Trigger buildJobTrigger(JobDetail jobDetail) {
-	java.util.Calendar cal = Calendar.getInstance();
-	cal.set(Calendar.HOUR_OF_DAY, 7);//to run at 7am of the day
-	cal.set(Calendar.MINUTE, 0);
-	Date startTime = cal.getTime();
-	System.err.println(" scheduling "+startTime);
-	Trigger myTrigger = null;
-	try{
-	    myTrigger = TriggerBuilder.newTrigger()
-		.withIdentity(jobName, groupName)
-		.startAt(startTime)
-		.withSchedule(
-			      SimpleScheduleBuilder.simpleSchedule()
-			      // .withIntervalInMinutes(3)
-			      .withIntervalInHours(24) // every day
-			      .repeatForever()
-			      // .withRepeatCount(2) 
-			      // .withMisfireHandlingInstructionFireNow())
-			      .withMisfireHandlingInstructionIgnoreMisfires())
-		// .endAt(endDate)
-		.build();
-	}catch(Exception ex){
-	    System.err.println(" "+ex);
-	}
-	return myTrigger;
+				java.util.Calendar cal = Calendar.getInstance();
+				cal.set(Calendar.HOUR_OF_DAY, 7);//to run at 7am of the day
+				cal.set(Calendar.MINUTE, 0);
+				Date startTime = cal.getTime();
+				System.err.println(" scheduling "+startTime);
+				Trigger myTrigger = null;
+				try{
+						myTrigger = TriggerBuilder.newTrigger()
+								.withIdentity(jobName, groupName)
+								.startAt(startTime)
+								.withSchedule(
+															SimpleScheduleBuilder.simpleSchedule()
+															// .withIntervalInMinutes(3)
+															.withIntervalInHours(24) // every day
+															.repeatForever()
+															// .withRepeatCount(2) 
+															// .withMisfireHandlingInstructionFireNow())
+															.withMisfireHandlingInstructionIgnoreMisfires())
+								// .endAt(endDate)
+								.build();
+				}catch(Exception ex){
+						System.err.println(" "+ex);
+				}
+				return myTrigger;
     }
     private String startSchedule(){
-	String back = "";
-	try{
-	    JobDetail jobDetail = buildJobDetail();
-	    Trigger trigger = buildJobTrigger(jobDetail);
-	    scheduler.scheduleJob(jobDetail, trigger);
-	}
-	catch(Exception ex){
-	    back += ex;
-	}
-	return back;
+				String back = "";
+				try{
+						JobDetail jobDetail = buildJobDetail();
+						Trigger trigger = buildJobTrigger(jobDetail);
+						scheduler.scheduleJob(jobDetail, trigger);
+				}
+				catch(Exception ex){
+						back += ex;
+				}
+				return back;
     }
     
     @GetMapping("/staff/incompleteOptions")
     public String incompleteOptions(Model model,
-				    HttpSession session
-				    ) {
-	User user = findUserFromSession(session);
-	if(user == null){
-	    // addMessage("user not found "+username);
-	    // addMessagesAndErrorsToSession(session);
-	    return "staff/loginForm";
-	}
-	List<Incident> all = null;
-	List<IncidentIncomplete> plist = incompleteService.getAll();
-	if(plist != null){
-	    all = new ArrayList<>();
-	    for(IncidentIncomplete one:plist){
-		Incident incident = one.getIncident();
-		if(incident != null)
-		    all.add(incident);
-	    }
-	}
-	if(all != null && all.size() > 0){
-	    // 
-	    model.addAttribute("incidents", all);
-	}
-	else{
-	    addMessage("No incident found");
-	    model.addAttribute("messages", messages);
-	}
+																		HttpSession session
+																		) {
+				User user = findUserFromSession(session);
+				if(user == null){
+						// addMessage("user not found "+username);
+						// addMessagesAndErrorsToSession(session);
+						return "staff/loginForm";
+				}
+				List<Incident> all = null;
+				List<IncidentIncomplete> plist = incompleteService.getAll();
+				if(plist != null){
+						all = new ArrayList<>();
+						for(IncidentIncomplete one:plist){
+								Incident incident = one.getIncident();
+								if(incident != null)
+										all.add(incident);
+						}
+				}
+				if(all != null && all.size() > 0){
+						// 
+						model.addAttribute("incidents", all);
+				}
+				else{
+						addMessage("No incident found");
+						model.addAttribute("messages", messages);
+				}
         return "staff/incompleteOptions";
     }    
     @GetMapping("/staff/incompleteAction")
     public String incompleteAction(@RequestParam String action,
-				   Model model,
-				   HttpSession session
-			      ){
-	boolean schedule_flag = false, run_flag=false;
-	User user = findUserFromSession(session);
-	if(user == null){
-	    // addMessage("user not found "+username);
-	    // addMessagesAndErrorsToSession(session);
-	    return "staff/loginForm";
-	}	
-	if(action !=null){
-	    if(action.equals("Schedule")){
-		schedule_flag = true;
-	    }
-	    else if(action.equals("Run")){
-		run_flag = true;
-	    }
-	}
-	if(run_flag){
-	    List<Incident> all = null;
-	    List<IncidentIncomplete> plist = incompleteService.getAll();
-	    if(plist != null){
-		all = new ArrayList<>();
-		for(IncidentIncomplete one:plist){
-		    Incident incident = one.getIncident();
-		    if(incident != null)
-			all.add(incident);
-		}
-	    }
-	    if(all != null && all.size() > 0){
-		String back = sendSubmissionEmails(all);
-		if(back.isEmpty()){
-		    addMessage("Emails sent successfully");
-		}
-	    }
-	}
-	else if(schedule_flag){
-	    String back = startSchedule();
-	    if(!back.isEmpty()){
-		addError(back);
-	    }
-	}
+																	 Model model,
+																	 HttpSession session
+																	 ){
+				boolean schedule_flag = false, run_flag=false;
+				User user = findUserFromSession(session);
+				if(user == null){
+						// addMessage("user not found "+username);
+						// addMessagesAndErrorsToSession(session);
+						return "staff/loginForm";
+				}	
+				if(action !=null){
+						if(action.equals("Schedule")){
+								schedule_flag = true;
+						}
+						else if(action.equals("Run")){
+								run_flag = true;
+						}
+				}
+				if(run_flag){
+						List<Incident> all = null;
+						List<IncidentIncomplete> plist = incompleteService.getAll();
+						if(plist != null){
+								all = new ArrayList<>();
+								for(IncidentIncomplete one:plist){
+										Incident incident = one.getIncident();
+										if(incident != null)
+												all.add(incident);
+								}
+						}
+						if(all != null && all.size() > 0){
+								String back = sendSubmissionEmails(all);
+								if(back.isEmpty()){
+										addMessage("Emails sent successfully");
+								}
+						}
+				}
+				else if(schedule_flag){
+						String back = startSchedule();
+						if(!back.isEmpty()){
+								addError(back);
+						}
+				}
         return "redirect:/search/incomplete";
     }
     private String sendSubmissionEmails(List<Incident> all){
-	String messages = "";
-	if(all != null && all.size() > 0){
-	    String subject = "Incident reporting submission request";
-	    String url = "https://"+host_path;
-	    if(host_path.isEmpty()){
-		url = "http://localhost:8080";
-	    }
-	    Incident one = all.get(0);
-	    if(one.hasEmail()){
-		String body = "We noticed that you haven't completed your report. Please click <a href='"+url+"/incident/"+one.getId()+"'>here</a> to finish and submit your report. If not, your report will not be seen or processed by a representative of the Bloomington Police Department.";
-		String toEmail = one.getEmail();
-		EmailHelper emailHelper = new EmailHelper(mailSender, sender, toEmail, subject, body);
-		String back = emailHelper.send();
-		if(back.isEmpty()){
-		    // success
-		    // action log
-		    ActionLog actionLog = new ActionLog();
-		    actionLog.setIncident(one);
-		    Action action = actionService.findById(1); // emailed
-		    actionLog.setAction(action);
-		    actionLog.setDateNow();
-		    actionLogService.save(actionLog);
-		}
-		else{
-		    addError(back);
-		    messages += back;
-		    logger.error(back);
-		    // failure
-		    // add email log
-		}
-	    }
-	}
-	return messages;
+				String messages = "";
+				if(all != null && all.size() > 0){
+						String subject = "Incident reporting submission request";
+						String url = "https://"+host_path;
+						if(host_path.isEmpty()){
+								url = "http://localhost:8080";
+						}
+						Incident one = all.get(0);
+						if(one.hasEmail()){
+								String body = "We noticed that you haven't completed your report. Please click <a href='"+url+"/incident/"+one.getId()+"'>here</a> to finish and submit your report. If not, your report will not be seen or processed by a representative of the Bloomington Police Department.";
+								String toEmail = one.getEmail();
+								EmailHelper emailHelper = new EmailHelper(mailSender, sender, toEmail, subject, body);
+								String back = emailHelper.send();
+								if(back.isEmpty()){
+										// success
+										// action log
+										ActionLog actionLog = new ActionLog();
+										actionLog.setIncident(one);
+										Action action = actionService.findById(1); // emailed
+										actionLog.setAction(action);
+										actionLog.setDateNow();
+										actionLogService.save(actionLog);
+								}
+								else{
+										addError(back);
+										messages += back;
+										logger.error(back);
+										// failure
+										// add email log
+								}
+						}
+				}
+				return messages;
     }
     private User findUserFromSession(HttpSession session){
-	User user = null;
-    	User user2 = getUserFromSession(session);
-	if(user2 != null){
-	    user = userService.findById(user2.getId());
-	}
-	return user;
-    }   		
+				User user = null;
+				User user2 = getUserFromSession(session);
+				if(user2 != null){
+						user = userService.findById(user2.getId());
+				}
+				return user;
+    }
+		
 }

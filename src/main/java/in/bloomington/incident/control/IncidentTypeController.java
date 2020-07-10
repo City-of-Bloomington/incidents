@@ -7,6 +7,7 @@ package in.bloomington.incident.control;
  */
 
 import java.util.List;
+import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,7 +21,9 @@ import javax.validation.Valid;
 // import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestParam;
 import in.bloomington.incident.service.IncidentTypeService;
+import in.bloomington.incident.service.UserService;
 import in.bloomington.incident.model.IncidentType;
+import in.bloomington.incident.model.User;
 
 
 @Controller
@@ -28,78 +31,128 @@ public class IncidentTypeController extends TopController{
 
     @Autowired
     IncidentTypeService incidentTypeService;
+
+		@Autowired 
+    private HttpSession session;
+		@Autowired
+    UserService userService;
 		
     @GetMapping("/incidentTypes")
     public String getAll(Model model) {
+				String ret = canUserAccess(session);
+				if(!ret.isEmpty()){
+						return ret;
+				}
         model.addAttribute("types", incidentTypeService.getAll());
         return "incidentTypes";
     }
     @GetMapping("/incidentType/new")
     public String newIncidentType(Model model) {
-	IncidentType incidentType = new IncidentType();
+				String ret = canUserAccess(session);
+				if(!ret.isEmpty()){
+						return ret;
+				}
+				IncidentType incidentType = new IncidentType();
         model.addAttribute("type", incidentType);
         return "incidentTypeAdd";
     }     
     @PostMapping("/incidentType/add")
     public String addIncidentType(@Valid IncidentType incidentType, BindingResult result, Model model) {
+				String ret = canUserAccess(session);
+				if(!ret.isEmpty()){
+						return ret;
+				}
         if (result.hasErrors()) {
             return "addIncidentType";
         }
         incidentTypeService.save(incidentType);
-	addMessage("Added Successfully");
+				addMessage("Added Successfully");
         model.addAttribute("types", incidentTypeService.getAll());
-	model.addAttribute("messages", messages);				
+				model.addAttribute("messages", messages);				
         return "incidentTypes";
     }
 
     @GetMapping("/incidentType/edit/{id}")
     public String showEditForm(@PathVariable("id") int id, Model model) {
-	IncidentType type = null;
-	try{
-	    type = incidentTypeService.findById(id);
+				String ret = canUserAccess(session);
+				if(!ret.isEmpty()){
+						return ret;
+				}
+				IncidentType type = null;
+				try{
+						type = incidentTypeService.findById(id);
 						
-	}catch(Exception ex){
-	    addError("Invalid incident type Id");
-	    model.addAttribute("types", incidentTypeService.getAll());
-	    model.addAttribute("errors", errors);
-	    return "incidentTypes";
-	}
-	model.addAttribute("type", type);
-	return "incidentTypeUpdate";
+				}catch(Exception ex){
+						addError("Invalid incident type Id");
+						model.addAttribute("types", incidentTypeService.getAll());
+						model.addAttribute("errors", errors);
+						return "incidentTypes";
+				}
+				model.addAttribute("type", type);
+				return "incidentTypeUpdate";
     }
     @PostMapping("/incidentType/update/{id}")
     public String updateIncidentType(@PathVariable("id") int id, @Valid IncidentType type, 
-				     BindingResult result, Model model) {
-	if (result.hasErrors()) {
-	    type.setId(id);
-	    return "incidentTypeUpdate";
-	}
-	addMessage("Updated Successfully");
-	incidentTypeService.save(type);
-	model.addAttribute("types", incidentTypeService.getAll());				
-	model.addAttribute("messages", messages);
-	return "incidentTypes";
+																		 BindingResult result, Model model) {
+				String ret = canUserAccess(session);
+				if(!ret.isEmpty()){
+						return ret;
+				}
+				if (result.hasErrors()) {
+						type.setId(id);
+						return "incidentTypeUpdate";
+				}
+				addMessage("Updated Successfully");
+				incidentTypeService.save(type);
+				model.addAttribute("types", incidentTypeService.getAll());				
+				model.addAttribute("messages", messages);
+				return "incidentTypes";
     }
 		
     @GetMapping("/incidentType/delete/{id}")
     public String deleteIncidentType(@PathVariable("id") int id, Model model) {
 
-	try{
-	    IncidentType type = incidentTypeService.findById(id);
-	    incidentTypeService.delete(id);
-	    addMessage("Deleted Succefully");
-	}catch(Exception ex){
-	    addError("Invalid incidentType ID "+id);
-	}
-	model.addAttribute("types", incidentTypeService.getAll());
-	if(hasMessages()){
-	    model.addAttribute("messages", messages);
-	}
-	else if(hasErrors()){
-	    model.addAttribute("errors", errors);
-	}
+				String ret = canUserAccess(session);
+				if(!ret.isEmpty()){
+						return ret;
+				}
+				try{
+						IncidentType type = incidentTypeService.findById(id);
+						incidentTypeService.delete(id);
+						addMessage("Deleted Succefully");
+				}catch(Exception ex){
+						addError("Invalid incidentType ID "+id);
+				}
+				model.addAttribute("types", incidentTypeService.getAll());
+				if(hasMessages()){
+						model.addAttribute("messages", messages);
+				}
+				else if(hasErrors()){
+						model.addAttribute("errors", errors);
+				}
 					 
-	return "incidentTypes";
+				return "incidentTypes";
     }
+		// 
+		private User findUserFromSession(HttpSession session){
+				User user = null;
+				User user2 = getUserFromSession(session);
+				if(user2 != null){
+						user = userService.findById(user2.getId());
+				}
+				return user;
+    }
+		private String canUserAccess(HttpSession session){
+				User user = findUserFromSession(session);
+				if(user == null){
+						return "redirect:/login";
+				}
+				if(!user.isAdmin()){
+						addMessage("you can not access");
+						addMessagesAndErrorsToSession(session);
+						return "redirect:staff";
+				}
+				return "";
+		}		
 		
 }

@@ -7,6 +7,7 @@ package in.bloomington.incident.control;
  */
 
 import java.util.List;
+import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,91 +35,136 @@ public class UserController extends TopController{
     UserService userService;
     @Autowired
     RoleService roleService;
+		@Autowired
+		HttpSession session;
 		
     @GetMapping("/users")
     public String getAll(Model model) {
+				String ret = canUserAccess(session);
+				if(!ret.isEmpty()){
+						return ret;
+				}
         model.addAttribute("users", userService.getAll());
         return "users";
     }
     @GetMapping("/user/new")
     public String newUser(Model model) {
-	User user = new User();
+				String ret = canUserAccess(session);
+				if(!ret.isEmpty()){
+						return ret;
+				}
+				User user = new User();
         model.addAttribute("user", user);
-	List<Role> roles = roleService.getAll();
-	if(roles != null)
-	    model.addAttribute("roles", roles);						
+				List<Role> roles = roleService.getAll();
+				if(roles != null)
+						model.addAttribute("roles", roles);						
         return "userAdd";
     }     
     @PostMapping("/user/add")
     public String addUser(@Valid User user, BindingResult result, Model model) {
+				String ret = canUserAccess(session);
+				if(!ret.isEmpty()){
+						return ret;
+				}
         if (result.hasErrors()) {
             return "userAdd";
         }
         userService.save(user);
-	addMessage("Added Successfully");
-	logger.debug("New user added "+user);
+				addMessage("Added Successfully");
+				logger.debug("New user added "+user);
         model.addAttribute("users", userService.getAll());
-	model.addAttribute("messages", messages);				
+				model.addAttribute("messages", messages);				
         return "users";
     }
 
     @GetMapping("/user/edit/{id}")
     public String showEditForm(@PathVariable("id") int id, Model model) {
-	User user = null;
-	try{
-	    user = userService.findById(id);
+				String ret = canUserAccess(session);
+				if(!ret.isEmpty()){
+						return ret;
+				}
+				User user = null;
+				try{
+						user = userService.findById(id);
 						
-	}catch(Exception ex){
-	    addError("Invalid user Id "+id);
-	    logger.error(" "+ex);
-	    model.addAttribute("users", userService.getAll());
-	    model.addAttribute("errors", errors);
-	    return "users";
-	}
-	List<Role> roles = roleService.getAll();
-	if(roles != null)
-	    model.addAttribute("roles", roles);				
-	model.addAttribute("user", user);
-	return "userUpdate";
+				}catch(Exception ex){
+						addError("Invalid user Id "+id);
+						logger.error(" "+ex);
+						model.addAttribute("users", userService.getAll());
+						model.addAttribute("errors", errors);
+						return "users";
+				}
+				List<Role> roles = roleService.getAll();
+				if(roles != null)
+						model.addAttribute("roles", roles);				
+				model.addAttribute("user", user);
+				return "userUpdate";
     }
     @PostMapping("/user/update/{id}")
     public String updateUser(@PathVariable("id") int id, @Valid User user, 
-			     BindingResult result, Model model) {
-	if (result.hasErrors()) {
-	    String error = Helper.extractErrors(result);
-	    addError("Error update user "+error);
-	    user.setId(id);
-	    return "userUpdate";
-	}
-	addMessage("Updated Successfully");
-	userService.update(user);
-	model.addAttribute("users", userService.getAll());				
-	List<Role> roles = roleService.getAll();
-	if(roles != null)
-	    model.addAttribute("roles", roles);
-	model.addAttribute("messages", messages);
-	return "users";
+														 BindingResult result, Model model) {
+				String ret = canUserAccess(session);
+				if(!ret.isEmpty()){
+						return ret;
+				}
+				if (result.hasErrors()) {
+						String error = Helper.extractErrors(result);
+						addError("Error update user "+error);
+						user.setId(id);
+						return "userUpdate";
+				}
+				addMessage("Updated Successfully");
+				userService.update(user);
+				model.addAttribute("users", userService.getAll());				
+				List<Role> roles = roleService.getAll();
+				if(roles != null)
+						model.addAttribute("roles", roles);
+				model.addAttribute("messages", messages);
+				return "users";
     }
 		
     @GetMapping("/user/delete/{id}")
     public String deleteUser(@PathVariable("id") int id, Model model) {
-
-	try{
-	    User user = userService.findById(id);
-	    userService.delete(id);
-	    addMessage("Deleted Succefully");
-	}catch(Exception ex){
-	    addError("Eror delete user "+id);
-	    logger.error(" "+ex);
-	}
-	model.addAttribute("users", userService.getAll());
-	if(hasMessages()){
-	    model.addAttribute("messages", messages);
-	}
-	else if(hasErrors()){
-	    model.addAttribute("errors", errors);
-	}
-	return "users";
+				String ret = canUserAccess(session);
+				if(!ret.isEmpty()){
+						return ret;
+				}
+				try{
+						User user = userService.findById(id);
+						userService.delete(id);
+						addMessage("Deleted Succefully");
+				}catch(Exception ex){
+						addError("Eror delete user "+id);
+						logger.error(" "+ex);
+				}
+				model.addAttribute("users", userService.getAll());
+				if(hasMessages()){
+						model.addAttribute("messages", messages);
+				}
+				else if(hasErrors()){
+						model.addAttribute("errors", errors);
+				}
+				return "users";
     }
+		private User findUserFromSession(HttpSession session){
+				User user = null;
+				User user2 = getUserFromSession(session);
+				if(user2 != null){
+						user = userService.findById(user2.getId());
+				}
+				return user;
+    }
+		private String canUserAccess(HttpSession session){
+				User user = findUserFromSession(session);
+				if(user == null){
+						return "redirect:/login";
+				}
+				if(!user.isAdmin()){
+						addMessage("you can not access");
+						addMessagesAndErrorsToSession(session);
+						return "redirect:staff";
+				}
+				return "";
+		}
 		
 }

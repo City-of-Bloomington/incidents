@@ -7,6 +7,7 @@ package in.bloomington.incident.control;
  */
 
 import java.util.List;
+import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,8 +25,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 //
 import in.bloomington.incident.service.ActionService;
+import in.bloomington.incident.service.UserService;
 import in.bloomington.incident.model.Action;
-
+import in.bloomington.incident.model.User;
 
 @Controller
 public class ActionController extends TopController{
@@ -33,84 +35,130 @@ public class ActionController extends TopController{
     final static Logger logger = LoggerFactory.getLogger(ActionController.class);
     @Autowired
     ActionService actionService;
+    @Autowired
+    UserService userService;		
+		@Autowired 
+    private HttpSession session;
 		
     @GetMapping("/actions")
     public String getAll(Model model) {
+				String ret = canUserAccess(session);
+				if(!ret.isEmpty()){
+						return ret;
+				}				
         model.addAttribute("actions", actionService.getAll());
         return "actions";
     }
     @GetMapping("/action/new")
     public String newAction(Model model) {
-	Action action = new Action();
+				String ret = canUserAccess(session);
+				if(!ret.isEmpty()){
+						return ret;
+				}
+				Action action = new Action();
         model.addAttribute("action", action);
         return "actionAdd";
     }     
     @PostMapping("/action/add")
     public String addAction(@Valid Action action, BindingResult result, Model model) {
+				String ret = canUserAccess(session);
+				if(!ret.isEmpty()){
+						return ret;
+				}
         if (result.hasErrors()) {
-	    logger.error(" Error creating new action ");
+						logger.error(" Error creating new action ");
             return "addAction";
         }
         actionService.save(action);
-	addMessage("Added Successfully");
-	logger.debug("Action added successfully");
+				addMessage("Added Successfully");
+				logger.debug("Action added successfully");
         model.addAttribute("actions", actionService.getAll());
-	model.addAttribute("messages", messages);				
+				model.addAttribute("messages", messages);				
         return "actions";
     }
 
     @GetMapping("/action/edit/{id}")
     public String showEditForm(@PathVariable("id") int id, Model model) {
-	Action action = null;
-	try{
-	    action = actionService.findById(id);
+				Action action = null;
+				String ret = canUserAccess(session);
+				if(!ret.isEmpty()){
+						return ret;
+				}
+				try{
+						action = actionService.findById(id);
 						
-	}catch(Exception ex){
-	    addError("Invalid action Id");
-	    model.addAttribute("actions", actionService.getAll());
-	    model.addAttribute("errors", errors);
-	    logger.error("Exception getting action ="+id+" "+ex);
-	    return "actions";
-	}
-	model.addAttribute("action", action);
-	return "actionUpdate";
+				}catch(Exception ex){
+						addError("Invalid action Id");
+						model.addAttribute("actions", actionService.getAll());
+						model.addAttribute("errors", errors);
+						logger.error("Exception getting action ="+id+" "+ex);
+						return "actions";
+				}
+				model.addAttribute("action", action);
+				return "actionUpdate";
     }
     @PostMapping("/action/update/{id}")
     public String updateAction(@PathVariable("id") int id,
-			       @Valid Action action, 
-			       BindingResult result, Model model) {
-	if (result.hasErrors()) {
-	    action.setId(id);
-	    logger.error("Error update action ="+id);						
-	    return "updateAction";
-	}
-	addMessage("Updated Successfully");
-	actionService.update(action);
-	model.addAttribute("actions", actionService.getAll());				
-	model.addAttribute("messages", messages);
-	return "actions";
+															 @Valid Action action, 
+															 BindingResult result, Model model) {
+				String ret = canUserAccess(session);
+				if(!ret.isEmpty()){
+						return ret;
+				}
+				if (result.hasErrors()) {
+						action.setId(id);
+						logger.error("Error update action ="+id);						
+						return "updateAction";
+				}
+				addMessage("Updated Successfully");
+				actionService.update(action);
+				model.addAttribute("actions", actionService.getAll());				
+				model.addAttribute("messages", messages);
+				return "actions";
     }
 		
     @GetMapping("/action/delete/{id}")
     public String deleteAction(@PathVariable("id") int id, Model model) {
-
-	try{
-	    Action action = actionService.findById(id);
-	    actionService.delete(id);
-	    addMessage("Deleted Succefully");
-	}catch(Exception ex){
-	    logger.error("Error delete action ="+id+" "+ex);								
-	    addError("Invalid action ID "+id);
-	}
-	model.addAttribute("actions", actionService.getAll());
-	if(hasMessages()){
-	    model.addAttribute("messages", messages);
-	}
-	else if(hasErrors()){
-	    model.addAttribute("errors", errors);
-	}
+				String ret = canUserAccess(session);
+				if(!ret.isEmpty()){
+						return ret;
+				}
+				try{
+						Action action = actionService.findById(id);
+						actionService.delete(id);
+						addMessage("Deleted Succefully");
+				}catch(Exception ex){
+						logger.error("Error delete action ="+id+" "+ex);								
+						addError("Invalid action ID "+id);
+				}
+				model.addAttribute("actions", actionService.getAll());
+				if(hasMessages()){
+						model.addAttribute("messages", messages);
+				}
+				else if(hasErrors()){
+						model.addAttribute("errors", errors);
+				}
 					 
-	return "actions";
+				return "actions";
     }
-		
+		private User findUserFromSession(HttpSession session){
+				User user = null;
+				User user2 = getUserFromSession(session);
+				if(user2 != null){
+						user = userService.findById(user2.getId());
+				}
+				return user;
+    }
+		private String canUserAccess(HttpSession session){
+				User user = findUserFromSession(session);
+				if(user == null){
+						return "redirect:/login";
+				}
+				if(!user.isAdmin()){
+						addMessage("you can not access");
+						addMessagesAndErrorsToSession(session);
+						return "redirect:staff";
+				}
+				return "";
+		}
 }

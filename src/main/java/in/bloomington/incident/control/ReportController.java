@@ -8,6 +8,7 @@ package in.bloomington.incident.control;
 
 import java.util.List;
 import java.util.ArrayList;
+import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,8 +26,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 //
 import in.bloomington.incident.service.ReportService;
+import in.bloomington.incident.service.UserService;
 import in.bloomington.incident.model.StatsRequest;
 import in.bloomington.incident.model.IncidentStats;
+import in.bloomington.incident.model.User;
 
 @Controller
 public class ReportController extends TopController{
@@ -35,39 +38,59 @@ public class ReportController extends TopController{
     final static String[] periods = {"Last Week","Last Month","Last Year","Other Specify"};
     @Autowired
     ReportService reportService;
+		@Autowired 
+    private HttpSession session;
+		@Autowired
+    UserService userService;
+		
     
     @GetMapping("/report")
     public String reportStats(Model model) {
-	StatsRequest report = new StatsRequest();
-	model.addAttribute("report", report);
-	model.addAttribute("periods", periods);	
-	if(hasErrors())
-	    model.addAttribute("errors", getErrors());
-	if(hasMessages()){
-	    model.addAttribute("messages", getMessages());
-	}
+				User user = findUserFromSession(session);
+				if(user == null){
+						return "redirect:/login";
+				}
+				StatsRequest report = new StatsRequest();
+				model.addAttribute("report", report);
+				model.addAttribute("periods", periods);	
+				if(hasErrors())
+						model.addAttribute("errors", getErrors());
+				if(hasMessages()){
+						model.addAttribute("messages", getMessages());
+				}
         return "staff/report";
     }
     @PostMapping("/report/find")
     public String searchFind(@Valid StatsRequest report,
-			    BindingResult result,
-			    Model model) {
+														 BindingResult result,
+														 Model model) {
+				User user = findUserFromSession(session);
+				if(user == null){
+						return "redirect:/login";
+				}
         if (result.hasErrors()) {
-	    logger.error(" Error creating new action ");
+						logger.error(" Error creating new action ");
             return "redirect:/report";
         }
         List<IncidentStats> stats = reportService.getActionStats(report);
-	if(stats == null && stats.size() == 0){
-	    addMessage(" no match found ");
-	    return "redirect:/report";
-	}
-	System.err.println(" *** stats size "+stats.size());
+				if(stats == null && stats.size() == 0){
+						addMessage(" no match found ");
+						return "redirect:/report";
+				}
+				System.err.println(" *** stats size "+stats.size());
         model.addAttribute("stats", stats);
-	if(hasMessages())
-	    model.addAttribute("messages", getMessages());
+				if(hasMessages())
+						model.addAttribute("messages", getMessages());
         return "staff/showStats";
     }    
-    
+		private User findUserFromSession(HttpSession session){
+				User user = null;
+				User user2 = getUserFromSession(session);
+				if(user2 != null){
+						user = userService.findById(user2.getId());
+				}
+				return user;
+    }    
     
 		
 }

@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.ui.Model;
-import org.springframework.core.env.Environment;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -59,9 +58,6 @@ public class LoginController extends TopController{
     @Autowired
     UserService userService;
 
-    @Autowired
-    private Environment env;
-		
     @Value("${incident.ldap.host}")    
     private String ldap_host;
 
@@ -74,7 +70,11 @@ public class LoginController extends TopController{
     }
 		// 
     @GetMapping("/login")
-    public String login(HttpServletRequest req) {
+    public String login(HttpServletRequest req,
+												Model model
+												) {
+				HttpSession session = req.getSession(true);
+				getMessagesAndErrorsFromSession(session, model);
 				return "staff/loginForm";
     }		
 		//non CAS after login action
@@ -100,7 +100,9 @@ public class LoginController extends TopController{
 				if(user == null){
 						// addMessage("user not found "+username);
 						// addMessagesAndErrorsToSession(session);
-						return "staff/loginForm";
+						addMessage("you do not have access to this system ");
+						addMessagesAndErrorsToSession(session);						
+						return "redirect:/login";
 				}
 				session.setAttribute("user", user);
 				return "staff/staff_intro";
@@ -109,15 +111,32 @@ public class LoginController extends TopController{
     public String showSettings(Model model,
 															 HttpSession session) {
 				// check for user and if he is an admin
-				User user = getUserFromSession(session);
-				if(user == null){
-						// addMessage("user not found "+username);
-						// addMessagesAndErrorsToSession(session);
-						return "staff/loginForm";
-				}	
-				System.err.println("settings: user from session "+user);
+				String ret = canUserAccess(session);
+				if(!ret.isEmpty()){
+						return ret;
+				}
         return "staff/settings";
     }
+		private User findUserFromSession(HttpSession session){
+				User user = null;
+				User user2 = getUserFromSession(session);
+				if(user2 != null){
+						user = userService.findById(user2.getId());
+				}
+				return user;
+    }
+		private String canUserAccess(HttpSession session){
+				User user = findUserFromSession(session);
+				if(user == null){
+						return "redirect:/login";
+				}
+				if(!user.isAdmin()){
+						addMessage("you can not access");
+						addMessagesAndErrorsToSession(session);
+						return "redirect:staff";
+				}
+				return "";
+		}		
 
 		
 
