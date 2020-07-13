@@ -7,42 +7,49 @@
  -->
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head th:replace="general::head('Vehicle Damage Types')"></head>
-  <body>
+  <body class="staff">
     <header>
       <div th:replace="general::header-staff"></div>
-    </header>   
-    <div th:if="${errors}">
-      <div th:insert="general::errors(${errors})"></div>			
-    </div>
-    <div th:if="${messages}">
-      <div th:insert="general::messages(${messages})"></div>			
-    </div>					
-    <h2>Vehicle Damage Types</h2>
-    <p><a th:href="@{/carDamageType/new}">Add new type</a></p>
-    <div th:switch="${types}">
-      <h4 th:case="null">No types found </h4>
-      <div th:case="*">
-        <h2>Types </h2>
-        <table>
-          <thead>
-            <tr>
-              <th>ID</th>							
-              <th>Name</th>
-              <th>Edit</th>
-              <th>Delete</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr th:each="type : ${types}">
-	      <td th:text="${type.id}"></td>
-              <td th:text="${type.name}"></td>
-              <td><a th:href="@{/carDamageType/edit/{id}(id=${type.id})}">Edit</a></td>
-              <td><a th:href="@{/carDamageType/delete/{id}(id=${type.id})}">Delete</a></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>      
-    </div>
+    </header> 
+    
+    <main class="staff">
+      <h2>Vehicle Damage Types</h2>
+      
+      <div th:if="${errors}">
+        <div th:insert="general::errors(${errors})"></div>
+      </div>
+      
+      <div th:if="${messages}">
+        <div th:insert="general::messages(${messages})"></div>
+      </div>
+      
+      
+      <p><a th:href="@{/carDamageType/new}">Add new type</a></p>
+      <div th:switch="${types}">
+        <h4 th:case="null">No types found </h4>
+        <div th:case="*">
+          <h2>Types </h2>
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Edit</th>
+                <th>Delete</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr th:each="type : ${types}">
+                <td th:text="${type.id}"></td>
+                <td th:text="${type.name}"></td>
+                <td><a th:href="@{/carDamageType/edit/{id}(id=${type.id})}">Edit</a></td>
+                <td><a th:href="@{/carDamageType/delete/{id}(id=${type.id})}">Delete</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
   </body>
 </htmL>
 		

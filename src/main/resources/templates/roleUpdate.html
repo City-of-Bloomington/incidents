@@ -6,53 +6,54 @@
  -
  -->
 <html xmlns="http://www.w3.org/1999/xhtml">
-  <head th:replace="general::head('User Roles')"></head>
-  <body>
-    <header>
-      <div th:replace="general::header-staff"></div>
-    </header>
-    <br />
-    <h4>Edit User Role</h4>
-    <div th:if="${errors}">
-      <div th:insert="general::errors(${errors})"></div>			
-    </div>
-    <div th:if="${messages}">
-      <div th:insert="general::messages(${messages})"></div>			
-    </div>				
-    <form action="#"
-	  th:action="@{/role/update/{id}(id=${role.id})}"
-	  th:object="${role}"
-	  method="post">
-      <table>
-	<tr>
-	  <td>
-	    <label for="name">Role Name</label>
-	  </td>
-	  <td>
-	    <input type="text" th:field="${role.name}" id="name" placeholder="Role  Name" />
-	    <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
-	  </td>
-	</tr>
-	<tr>
-	  <td>
-	    <label for="action_id">Assigned Action</label>
-	  </td>
-	  <td>
-	    <select id="action_id" multiple th:field="*{{actions}}" >
-              <option th:each="r : ${actions}"
-                    th:value="${r.id}"
-                    th:text="${r.name}"
-                    th:selected="${role.actions.contains(r)}">
-              </option>
-	    </select>
-	  </td>
-	</tr>								
-	<tr>
-	  <td>
-	    <input type="submit" value="Update" />
-	  </td>
-	</tr>
-      </table>
-    </form>
+
+<head th:replace="general::head('User Roles')"></head>
+
+<body class="staff">
+	<header>
+		<div th:replace="general::header-staff"></div>
+	</header>
+
+	<main class="staff">
+		<h4>Edit User Role</h4>
+		<div th:if="${errors}">
+			<div th:insert="general::errors(${errors})"></div>
+		</div>
+		<div th:if="${messages}">
+			<div th:insert="general::messages(${messages})"></div>
+		</div>
+		<form action="#" th:action="@{/role/update/{id}(id=${role.id})}" th:object="${role}" method="post">
+			<table>
+				<tr>
+					<td>
+						<label for="name">Role Name</label>
+					</td>
+					<td>
+						<input type="text" th:field="${role.name}" id="name" placeholder="Role  Name" />
+						<span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<label for="action_id">Assigned Action</label>
+							</td>
+							<td>
+								<select id="action_id" multiple th:field="*{{actions}}" >
+												<option th:each="r : ${actions}"
+															th:value="${r.id}"
+															th:text="${r.name}"
+															th:selected="${role.actions.contains(r)}">
+												</option>
+								</select>
+							</td>
+						</tr>								
+						<tr>
+							<td>
+								<input type="submit" value="Update" />
+							</td>
+						</tr>
+					</table>
+				</form>
+		</main>
   </body>
 </html>
