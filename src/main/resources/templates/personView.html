@@ -6,94 +6,100 @@
  -
  -->
 <html xmlns="http://www.w3.org/1999/xhtml">
-  <head th:replace="general::head('Person')"></head>
-  <body>
-    <header>
-      <div th:replace="general::header-staff"></div>
-    </header>
-    <br />
-    <h3>Person Info</h3>
-    <div th:if="${errors}">
-      <div th:insert="general::errors(${errors})"></div>			
-    </div>
-    <div th:if="${messages}">
-      <div th:insert="general::messages(${messages})"></div>			
-    </div>						
-    <fieldset>
-      <caption>View Person</caption>
-      <p>
-	The following are the details about this person.
-      </p>
-      <dl>
-	<dt>Related incident</dt>
-	<dd><a th:href="@{/incidentView/{id}(id=${person.incident.id})}">Back to Incident</a>
-	</dd>
-	<dt>
-	  <label>Involvement Category: </label>
-	</dt>
-	<dd>
-	  <span th:text="${person.personType}"></span>
-	</dd>
-	<dt>
-	  Name: 
-	</dt>
-	<dd>
-	  <span th:text="${person.fullname}"></span>
-	</dd>
-	<dt>Address: </dt>
-	<dd>
-	  <span th:text="${person.address}"></span>	
-	</dd>
-	<dt>*City, State Zipcode: </dt>
-	<dd>
-	  <span th:text="${person.cityStateZip}"></span>
-	</dd>
-	<dt>Phone(s): </dt>
-	<dd>
-	  <span th:text="${person.phones}"></span>
-	</dd>
-	<dt>Email(s): </dt>
-	<dd>
-	  <span th:text="${person.emails}"></span>
-	</dd>
-	<dt>Date of Birth: </dt>
-	<dd>
-	  <span th:text="${person.dobStr}"></span>
-	</dd>
-	<!-- some space -->
-	<dt> &nbsp;</dt>
-	<dt> Note: the following fields are optional but helpful</dt>
-	<dt>Driver License Number:
-	</dt>
-	<dd>
-	  <span th:text="${person.dln}"></span>
-	</dd>
-	<dt>Social Security Number:
-	</dt>
-	<dd>
-	  <span th:text="${person.ssnLastFour}"></span>
-	</dd>
-	<dt>Race:
-	</dt>
-	<dd>
-	  <span th:text="${person.race}"></span>
-	</dd>
-	<dt>Height & Weight:
-	</dt>
-	<dd>
-	  <span th:text="${person.heightAndWeight}"></span>
-	</dd>
-	<dt>Sex & Race:
-	</dt>
-	<dd>
-	  <span th:text="${person.sexAndRace}"></span>
-	</dd>
-	<dt>Occupation:
-	</dt>
-	<dd>
-	  <span th:text="${person.occupation}"></span>
-	</dd>
-      </dl>					
-    </fieldset>
-  </body>
+
+<head th:replace="general::head('Person')"></head>
+
+<body class="staff">
+	<header>
+		<div th:replace="general::header-staff"></div>
+	</header>
+
+	<main class="staff">
+		<h2>Person Info</h2>
+		<div th:if="${errors}">
+			<div th:insert="general::errors(${errors})"></div>
+		</div>
+		<div th:if="${messages}">
+			<div th:insert="general::messages(${messages})"></div>
+		</div>
+		<fieldset>
+			<caption>View Person</caption>
+			<p>
+				The following are the details about this person.
+			</p>
+			<dl>
+				<dt>Related incident</dt>
+				<dd><a th:href="@{/incidentView/{id}(id=${person.incident.id})}">Back to Incident</a>
+				</dd>
+				<dt>
+					<label>Involvement Category: </label>
+				</dt>
+				<dd>
+					<span th:text="${person.personType}"></span>
+				</dd>
+				<dt>
+					Name:
+				</dt>
+				<dd>
+					<span th:text="${person.fullname}"></span>
+				</dd>
+				<dt>Address: </dt>
+				<dd>
+					<span th:text="${person.address}"></span>
+				</dd>
+				<dt>*City, State Zipcode: </dt>
+				<dd>
+					<span th:text="${person.cityStateZip}"></span>
+				</dd>
+				<dt>Phone(s): </dt>
+				<dd>
+					<span th:text="${person.phones}"></span>
+				</dd>
+				<dt>Email(s): </dt>
+				<dd>
+					<span th:text="${person.emails}"></span>
+				</dd>
+				<dt>Date of Birth: </dt>
+				<dd>
+					<span th:text="${person.dobStr}"></span>
+				</dd>
+				<!-- some space -->
+				<dt> &nbsp;</dt>
+				<dt> Note: the following fields are optional but helpful</dt>
+				<dt>Driver License Number:
+				</dt>
+				<dd>
+					<span th:text="${person.dln}"></span>
+				</dd>
+				<dt>Social Security Number:
+				</dt>
+				<dd>
+					<span th:text="${person.ssnLastFour}"></span>
+				</dd>
+				<dt>Race:
+				</dt>
+				<dd>
+					<span th:text="${person.race}"></span>
+				</dd>
+				<dt>Height & Weight:
+				</dt>
+				<dd>
+					<span th:text="${person.heightAndWeight}"></span>
+				</dd>
+				<dt>Sex & Race:
+				</dt>
+				<dd>
+					<span th:text="${person.sexAndRace}"></span>
+				</dd>
+				<dt>Occupation:
+				</dt>
+				<dd>
+					<span th:text="${person.occupation}"></span>
+				</dd>
+			</dl>
+		</fieldset>
+	</main>
+	
+</body>
+
 </htmL>

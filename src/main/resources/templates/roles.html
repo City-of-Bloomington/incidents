@@ -7,46 +7,51 @@
  -->
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head th:replace="general::head('User Roles')"></head>
-  <body>
+  <body class="staff">
     <header>
       <div th:replace="general::header-staff"></div>
     </header>
-    <br />
-    <h4>User Roles</h4>
-    <div th:if="${errors}">
-      <div th:insert="general::errors(${errors})"></div>			
-    </div>
-    <div th:if="${messages}">
-      <div th:insert="general::messages(${messages})"></div>			
-    </div>				
-    <p><a href="/role/new">Add New Role</a></p>
     
-    <div th:switch="${roles}">
-      <h4 th:case="null">No roles found </h4>
-      <div th:case="*">
-        <h2>User Roles </h2>
-        <table>
-          <thead>
-            <tr>
-              <th>ID</th>							
-              <th>Name</th>
-	      <th>Related Actions</th>
-              <th>Edit</th>
-              <th>Delete</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr th:each="role : ${roles}">
-	      <td th:text="${role.id}"></td>
-              <td th:text="${role.name}"></td>
-	      <td th:text="${role.actions}?${role.actionsInfo}:''"></td> 
-              <td><a th:href="@{/role/edit/{id}(id=${role.id})}">Edit</a></td>
-              <td><a th:href="@{/role/delete/{id}(id=${role.id})}">Delete</a></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>      
-    </div>
+    <main class="staff">
+      <h4>User Roles</h4>
+      
+      <div th:if="${errors}">
+        <div th:insert="general::errors(${errors})"></div>
+      </div>
+
+      <div th:if="${messages}">
+        <div th:insert="general::messages(${messages})"></div>
+      </div>
+      <p><a href="/role/new">Add New Role</a></p>
+      
+      <div th:switch="${roles}">
+        <h4 th:case="null">No roles found </h4>
+        <div th:case="*">
+          <h2>User Roles </h2>
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Related Actions</th>
+                <th>Edit</th>
+                <th>Delete</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr th:each="role : ${roles}">
+                <td th:text="${role.id}"></td>
+                <td th:text="${role.name}"></td>
+                <td th:text="${role.actions}?${role.actionsInfo}:''"></td>
+                <td><a th:href="@{/role/edit/{id}(id=${role.id})}">Edit</a></td>
+                <td><a th:href="@{/role/delete/{id}(id=${role.id})}">Delete</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
   </body>
 </htmL>
 
