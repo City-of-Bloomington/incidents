@@ -44,39 +44,43 @@ public class IncidentType implements java.io.Serializable{
     }
 		
     public IncidentType(int id, @NotNull(message = "Incident type may not be null") String name) {
-	super();
-	this.id = id;
-	this.name = name;
+				super();
+				this.id = id;
+				this.name = name;
     }
 
     public int getId() {
-	return id;
+				return id;
     }
 
     public void setId(int id) {
-	this.id = id;
+				this.id = id;
     }
 
     public String getName() {
-	return name;
+				return name;
     }
 
     public void setName(String name) {
-	this.name = name;
+				this.name = name;
     }
     @Transient
     public boolean isLostRelated(){
-	return name != null && name.indexOf("Lost") > -1;
-    }    
+				return name != null && name.indexOf("Lost") > -1;
+    }
+    @Transient
+    public boolean isVandalRelated(){
+				return name != null && name.indexOf("Vandal") > -1;
+    }		
     @Transient
     public boolean isVehicleRequired(){
-	return name != null && name.indexOf("Vehicle") > 0;
+				return name != null && name.indexOf("Vehicle") > 0;
     }
     @Override
     public boolean equals(Object obj) { 
           
-	if(this == obj) 
-	    return true; 
+				if(this == obj) 
+						return true; 
 				
         if(obj == null || obj.getClass()!= this.getClass()) 
             return false; 
@@ -86,13 +90,13 @@ public class IncidentType implements java.io.Serializable{
     }
     @Override
     public int hashCode(){ 
-	int ret = 29;
+				int ret = 29;
         return ret += this.id; 
     }
 
     @Override
     public String toString() {
-	return name;
+				return name;
     } 	
 		
 }

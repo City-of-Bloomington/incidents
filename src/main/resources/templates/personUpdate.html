@@ -27,14 +27,14 @@
 				<fieldset>
 					<p>Information about the Person Reporting this Incident </p>
 			
-					<label for="person_type_id" class="required">*Involvement of this person to this incident as: </label>
+					<label for="person_type_id" class="required">*Involvement of this person to the incident: </label>
 					<select id="person_type_id" th:field="${person.personType}" required>
 						<option th:each="r : ${personTypes}" th:value="${r.id}" th:text="${r.name}">
 						</option>
 					</select>
 					<dl>
-						<dt><label>Related incident</label></dt>
-						<dd><a th:href="@{/incident/{id}(id=${person.incident.id})}">Back to Incident</a>
+						<dt><label>Incident:</label></dt>
+						<dd><a th:href="@{/incident/{id}(id=${person.incident.id})}">Back to Incident Page</a>
 						</dd>
 						<dt><label class="required"> *Full Name: </label>
 						</dt>
@@ -102,12 +102,11 @@
 					      th:value="${r}"
 					      th:text="${r}">
 				      </option>
-				    </select> /
-				    <input type="text" th:field="${person.dobYear}" id="dob_year" size="4" required="required" maxlength="4" placeholder="Year" />(mm/dd/yyyy)
+				    </select>/
+				    <input type="text" th:field="${person.dobYear}" id="dob_year" size="4" required="required" maxlength="4" placeholder="Year" />
 				  </dd>
 				  <!-- some space -->
 				  <dd> &nbsp;</dd>
-				  <dd> Note: the following fields are optional but helpful</dd>
 				  <dt><label for="dln_id">Driver License Number: </label></dt>
 				  <dd>
 				    <input type="text" th:field="${person.dln}" id="dln_id" size="20"  maxlength="20" placeholder="DLN" />
@@ -118,11 +117,11 @@
 				  </dd>
 				  <dt> <label for="race_id">Race: </label></dt>
 				  <dd>
-				    <select id="race_id" th:field="${person.race}" >
+				    <select id="race_id" th:field="${person.raceType}" >
 				      <option value="">Race</option>
 				      <option th:each="r : ${raceTypes}"
-					      th:value="${r}"
-					      th:text="${r}">
+					      th:value="${r.id}"
+					      th:text="${r.name}">
 				      </option>
 				    </select>
 				  </dd>
@@ -143,7 +142,7 @@
 					      th:text="${r}">
 				      </option>
 				    </select> <label for="weight_id">Weight: </label>
-				    <input type="text" th:field="${person.weight}" id="weight_id" size="3" />lb
+				    <input type="text" th:field="${person.weight}" id="weight_id" size="3" placeholder="weight lb" />
 				  </dd>
 				  <dt><label for="sex_id">Sex:</label></dt>
 				  <dd>
@@ -155,6 +154,26 @@
 				      </option>
 				    </select>
 				  </dd>
+					<dt>
+						<label for="gender_id">Gender:</label>
+					</dt>
+					<dd>
+						<select id="gender_id" th:field="${person.gender}">
+							<option value="">Gender</option>
+							<option th:each="r : ${genderTypes}" th:value="${r}" th:text="${r}">
+							</option>
+						</select>
+					</dd>
+					<dt>
+						<label for="eth_id">Ethnicity:</label>
+					</dt>
+					<dd>
+						<select id="eth_id" th:field="${person.ethnicity}">
+							<option value="">Ethnicity</option>
+							<option th:each="r : ${ethnicityTypes}" th:value="${r}" th:text="${r}">
+							</option>
+						</select>
+					</dd>
 				  <dt><label for="occupation_id">Occupation:</label></dt>
 				  <dd>
 				    <input type="text" th:field="${person.occupation}" id="occupation_id" size="70" placeholder="Occupation" />

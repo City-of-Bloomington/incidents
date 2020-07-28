@@ -119,7 +119,7 @@
   </div>
 
   <div th:fragment="emailFields">
-    <p>Please provide a valid email address that will be used to contact you and notify you of your report progress. If you do not have a valid email address, please ask a relative to do the report for you.</p>
+    <p>Please provide a valid email address. If you do not have a valid email address, please ask a relative to do the report for you.</p>
 
     <div class="field-group">
       <label for="email" class="required">*Email</label>
@@ -143,23 +143,24 @@
       <li> Optional, you can upload incident images </li>
       <li> Add persons' info including witnesses (if any)</li>
       <li> Add properties related to incident </li>
-      <li> Add vechile info if the incident include a vehicle </li>
+      <li> Add vehicle info if the incident include a vehicle </li>
       <li> Submit your request </li>
-      <li> You will confirm your request </li>
+      <li> You must confirm your request via the email address you provide.</li>
     </ol>
 
-    <p> After a successful submission, our staff will evaluate your incident and either approve or reject your request. You will receive an email about the staff descision, if approved the email will include a 'Case Number' that you can use for future reference to your incident. </p>
+    <p> After a successful submission, our staff will evaluate your incident and either approve or reject your request. You will receive an email about the staff descision. If approved, the email will include a case number that you can use for future reference to your incident. </p>
   </div>
 
   <p th:fragment="incidentInstructions">
-    Please fill out the requested information as COMPLETE as you can.
+    Please complete the fields below.
     The information you provide for your case is critical to the Department's overall crime analysis efforts.
   </p>
 
   <ul th:fragment="personInstructions">
-    <li>Information about the Person Reporting this Incident </li>
-    <li>Optional, you can add other people to incident after you add the first main person</li>
-    <li>Person involved in the incident could be the property owner, victim and/or witness</li>
+    <li> Information about the Person Reporting this Incident </li>		
+		<li> Please add information about the person reporting this incident. If you are the complainant and victim, please only enter your information once, choosing either complainant or victim as the involvement type. </li>
+		<li> After completing your information, you will have the option to add additional people to the report, such as property owners, other victims and witnesses.
+		</li>
   </ul>
 
   <div th:fragment="propertyInstructions">

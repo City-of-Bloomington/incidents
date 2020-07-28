@@ -424,3 +424,31 @@ old role_actions;
 ;;
  alter table damage_types add inactive char(1);
  update damage_types set inactive='y' where id=3;
+
+;;
+;; remove from person_types suspect from the list, id = 2, name = Suspect
+;; 
+ delete from person_types where id=2;
+;;
+;;
+  create table race_types(                                                          id int unsigned auto_increment primary key,                                     name varchar(50)                                                                )engine=InnoDB;
+;;
+;; new tables
+;;
+  insert into race_types values(1,'BLACK NON-HISP'),                                                           (2,'HAMAIIAN/OTH PACIFIC HISPANIC'),                                            (3,'HAMAIIAN/OTH PACIFIC NON-HISP'),                                            (4,'INDIAN/ALASKAN NATV NON-HISP'),                                             (5,'BLACK HISPANIC'),                                                           (6,'WHITE HISPANIC'),                                                           (7,'INDIAN/ALASKAN NATV HISPANIC'),                                             (8,'ASIAN NON-HISP'),                                                           (9,'ASIAN HISPANIC'),                                                           (10,'UNKOWN'),                                                                  (11,'WHITE NON-HISP');
+;;
+;; in persons table we need to change the field race enum to
+;; int unsigned
+  alter table persons add race_type_id int unsigned after race;
+	alter table persons add foreign key(race_type_id) references race_types(id);
+	update persons set race_type_id = 1 where race = 'African American';
+	update persons set race_type_id = 11 where race = 'Caucasion';
+	update persons set race_type_id = 6 where race = 'Hispanic';
+	update persons set race_type_id = 8 where race = 'Asian';		
+	update persons set race_type_id = 4 where race = 'Native American';		
+	update persons set race_type_id = 10 where race = 'Other';		
+
+  alter table persons drop column race;
+  alter table persons modify sex enum('Male','Female','Nonbinary','Unknown');
+	alter table persons add gender enum('Male','Female','Transgender') after sex;
+	alter table persons add ethnicity enum('Hispanic','Non-hispanic','Unknown') after gender;

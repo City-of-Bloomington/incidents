@@ -1,0 +1,49 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--
+ - @copyright Copyright (C) 2014-2015 City of Bloomington, Indiana. All rights reserved.
+ - @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
+ - @author W. Sibo <sibow@bloomington.in.gov>
+ -
+ -->
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head th:replace="general::head('Race Type')"></head>
+  <body>
+    <header>
+      <div th:replace="general::header-staff"></div>
+    </header>
+    <br />
+    <h2>Race Types</h2>
+    <div th:if="${errors}">
+      <div th:insert="general::errors(${errors})"></div>			
+    </div>
+    <div th:if="${messages}">
+      <div th:insert="general::messages(${messages})"></div>			
+    </div>						
+    <p><a href="/personType/new">Add New Type</a></p>
+    <div th:switch="${types}">
+      <h4 th:case="null">No types found </h4>
+      <div th:case="*">
+        <h2>Types </h2>
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>							
+              <th>Name</th>
+              <th>Edit</th>
+              <th>Delete</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="type : ${types}">
+							<td th:text="${type.id}"></td>
+              <td th:text="${type.name}"></td>
+              <td><a th:href="@{/raceType/edit/{id}(id=${type.id})}">Edit</a></td>
+              <td><a th:href="@{/raceType/delete/{id}(id=${type.id})}">Delete</a></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>      
+    </div>
+  </body>
+</htmL>
+		

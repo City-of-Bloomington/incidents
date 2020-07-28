@@ -32,11 +32,9 @@
 			<input type="hidden" th:field="${incident.oldAddress} " />
 			<fieldset>
 				<legend>Incident Date and Time: </legend>
-					<p>(For EXAMPLE: I went to bed at 11:00 pm Saturday night Aug 8
-					and when I woke up Sunday at 6:00 am mycar has a smashed window.</p>
-
-					<p>You report 8/8/2015 21:00 PM - 8/9/2015 06:00 AM.)</p>
-
+				<p>eg. I went to bed at 11:00PM on Saturday, August 8th. When I woke up on Sunday around 6:00AM, I noticed my car window was smashed with a rock.
+				</p>
+				<p>You report 8/8/2015 11:00 PM - 8/9/2015 06:00 AM.)</p>
 					
 					<label for="start_date" class="required">Incident Occurred, Date:</label>
 					
@@ -53,8 +51,7 @@
 						placeholder="hh:mm am/pm" />
 
 						
-					<p>If unsure of the exact date and time, describe below when this took place.</p>
-
+					<p>If unsure of the exact date and time, please give approximate dates/times below.</p>
 					
 					<textarea th:field="${incident.dateDescription}" id="date_description" rows="3" cols="60"></textarea>
 			</fieldset>
@@ -116,8 +113,8 @@
 					<label>Incident Type:</label>
 					<span th:text="${incident.incidentType}"></span>
 				</div>
-
-				<div th:if="${incident.isNotLostRelated()}">
+				<div th:if="${incident.showGainedEntry()}">
+					<!-- we do not show these fields for lost or vandal cases -->
 					<label for="entry_type">Identify how entry was gained to commit the theft.</label>
 					
 					<select th:field="${incident.entryType}" id="entry_type">
@@ -137,8 +134,8 @@
 				<textarea th:field="${incident.details}" id="details_id" rows="3" cols="60" required="required"
 					placeholder="Incident Details"></textarea>
 
-				<p>Optional, if you have incident images available you will be able to upload them.</p>
-				
+				<p>If you have incident images available, please mark the checkbox below. When you click 'Next' you will have the chance to upload the images.</p>
+								
 				<input type="checkbox" th:field="${incident.haveMedia}"
 					th:checked="${incident.haveMedia}?'checked'" value="y" />
 					

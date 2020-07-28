@@ -41,9 +41,9 @@
 
 			<fieldset>
 				<legend>Incident Date and Time</legend>
-				<p>eg. I went to bed at 11:00 PM Saturday night Aug 8 and when I woke up Sunday at 6:00 AM my car has a smashed window.
+				<p>eg. I went to bed at 11:00PM on Saturday, August 8th. When I woke up on Sunday around 6:00AM, I noticed my car window was smashed with a rock.
 				</p>
-				<p>You report 8/8/2015 21:00 PM - 8/9/2015 06:00 AM.)</p>
+				<p>You report 8/8/2015 11:00 PM - 8/9/2015 06:00 AM.)</p>
 
 				<label for="start_date" class="required">
 					*Incident Occurred, Date:
@@ -70,7 +70,7 @@
 				<input type="text" th:field="${incident.endTimeStr}" id="end_time" value="" size="15" class="timepicker"
 					placeholder="hh:mm am/pm" />
 					
-				<p>Or, if unsure of the exact date and time, describe below when this took place.</p>
+				<p>If unsure of exact dates/times, please give approximate dates/times below.</p>
 					
 				<textarea th:field="${incident.dateDescription}" id="date_description" rows="3" cols="60"></textarea>
 			</fieldset>
@@ -112,25 +112,27 @@
 					<span th:text="${incident.incidentType}"></span>
 				</div>
 
-				<div th:if="${incident.isNotLostRelated()}">
+				<div th:if="${incident.showGainedEntry()}">
+					<!-- we do not show these fields for lost or vandal cases -->
+					<label for="entry_type">
+						Identify how entry was gained to commit the act.
+					</label>
+					<select th:field="${incident.entryType}" id="entry_type">
+						<option value="">Does not apply</option>
+						<option th:each="r : ${entryTypes}" th:value="${r}" th:text="${r}">
+						</option>
+					</select>
 					
-				<label for="entry_type">
-					Identify how entry was gained to commit the act.
-				</label>
-				<select th:field="${incident.entryType}" id="entry_type">
-					<option value="">Does not apply</option>
-					<option th:each="r : ${entryTypes}" th:value="${r}" th:text="${r}">
-					</option>
-				</select>
+					<label for="other_entry">Other entry gained details</label>
+					<textarea th:field="${incident.otherEntry}" id="other_entry" rows="3" cols="60" placeholder="Other entry details"></textarea>
+					<!-- end gained entry section -->
+				</div>
 				
-				<label for="other_entry">Other entry gained details</label>
-				<textarea th:field="${incident.otherEntry}" id="other_entry" rows="3" cols="60" placeholder="Other entry details"></textarea>
-								
 				<label for="details_id" class="required">*Incident Details</label>
 				<textarea th:field="${incident.details}" id="details_id" rows="3" cols="60" required="reguired"
 					placeholder="Incident Details"></textarea>
 				
-				<p>Optional, if you have incident images available you need to mark the checkbox below, then when you click on 'Next' you have the chance to upload them.</p>
+				<p>If you have incident images available, please mark the checkbox below. When you click 'Next' you will have the chance to upload the images.</p>
 				
 				<input type="checkbox" th:field="${incident.haveMedia}" th:checked="${incident.haveMedia}?'checked'" value="y" />Yes, I have incident images I would like to upload.
 			</fieldset>
