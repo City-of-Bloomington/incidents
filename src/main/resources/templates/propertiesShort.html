@@ -17,38 +17,34 @@
       <div th:insert="general::messages(${messages})"></div>			
     </div>				
     <div th:fragment="properties(properties,totalBalance)">
-      <h2>Reported Item(s)</h2>
+      <h2>Reported Properties</h2>
       <div th:switch="${properties}">
-			<h4 th:case="null">No properties found</h4>
-			<div th:case="*">
-				<ul th:each="one : ${properties}" style="padding: 0;">
-					<li>
-						<strong>Damage Type:</strong>
-						<span th:text="${one.damageType}"></span>
-					</li>
-				
-					<li>
-						<strong>Description:</strong>
-						<span th:text="${one.info}"></span>
-					</li>
-				
-					<li>
-						<strong>Value:</strong>
-						<span th:text="${one.valueFr}"></span>
-					</li>
-				
-					<li>
-						<strong>More Details:</strong>
-						<span>
-							<a th:href="@{/property/{id}(id=${one.id})}">Details</a>
-						</span>
-					</li>
-
-					<li>
-						<strong>Total:</strong>
-						<span th:text="${totalBalance}"></span>
-					</li>
-				</ul>
+				<h4 th:case="null">No properties found</h4>
+				<div th:case="*">
+					<ul th:each="one : ${properties}" style="padding: 0;">
+						<li>
+							<strong>Damage Type:</strong>
+							<span th:text="${one.damageType}"></span>
+						</li>
+						
+						<li>
+							<strong>Description:</strong>
+							<span th:text="${one.info}"></span>
+						</li>
+						<li>
+							<strong>Value:</strong>
+							<span th:text="${one.valueFr}"></span>
+						</li>
+						<li>
+							<span>
+								<a th:href="@{/property/edit/{id}(id=${property.id})}">Edit</a>
+							</span>
+						</li>
+						<li>
+							<strong>Total Reported Properties Value: </strong>
+							<span th:text="${totalBalance}"></span>
+						</li>
+					</ul>
 				</div>      
       </div>
     </div>

@@ -330,7 +330,10 @@ delete from incidents;
 
  update incident_types set name='Theft - All Other' where id=1;
  insert into incident_types values(4,'Theft - From Vehicle');
- alter table vehicles add value decimal(10,2);
+ insert into incident_types values(5,'Theft - From Building');
+ insert into incident_types values(6,'Fruad');
+
+alter table vehicles add value decimal(10,2);
 
 ;;
 ;; actions table
@@ -452,3 +455,10 @@ old role_actions;
   alter table persons modify sex enum('Male','Female','Nonbinary','Unknown');
 	alter table persons add gender enum('Male','Female','Transgender') after sex;
 	alter table persons add ethnicity enum('Hispanic','Non-hispanic','Unknown') after gender;
+
+ insert into incident_types values(5,'Theft - From Building');
+ insert into incident_types values(6,'Fraud');
+ alter table incidents modify entry_type enum('Unlocked vehicle','Broke window','Pried window','Pried door','Other specify','Damaged window','Damaged door','Unlocked door');
+ alter table incidents add evidence text after details;
+ 
+ 

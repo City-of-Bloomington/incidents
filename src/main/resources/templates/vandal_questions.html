@@ -25,35 +25,13 @@
     <p>Please answer the following vandalism questions carefully to create your report.</p>
 
     <div id="questions">
-      <div class="question">
+      <div class="question" id="lastQuestion">
         <p>1. Was there unlawful entry to a building or dwelling made during this incident?</p>
         <form>
           <ul>
             <li> <input class="option" type="radio" name="question1"
                 value="Stop. Please contact us at 812-339-4477 to make this report." />Yes </li>
             <li> <input class="option" type="radio" name="question1" value="Next" />No </li>
-          </ul>
-        </form>
-      </div>
-    
-      <div class="question" style="display:none">
-        <p>2. Is the value of the vandalized property more than $2000.00?</p>
-        <form>
-          <ul>
-            <li> <input class="option" type="radio" name="question2"
-                value="Stop. Please contact us at 812-339-4477 to make this report." />Yes </li>
-            <li> <input class="option" type="radio" name="question2" value="Next" />No </li>
-          </ul>
-        </form>
-      </div>
-    
-      <div class="question" style="display:none" id="lastQuestion">
-        <p>3. Are you reporting graffiti?</p>
-        <form>
-          <ul>
-            <li> <input class="option" type="radio" name="question3" value="Stop. Please contact us at 812-339-4477" />Yes
-            </li>
-            <li> <input class="option" type="radio" name="question3" value="finalStep" />No </li>
           </ul>
         </form>
       </div>
@@ -68,7 +46,8 @@
     
       <div id="finalStep" class="question" style="display:none">
         <p> In the next step you will provide a valid email, please click on Next </p>
-        <form action="#" th:action="@{/emailRequest/2}" method="get">
+        <form action="#" th:action="@{/emailRequest}" method="get">
+					<input type="hidden" name="type_id" value="2" />	
           <div class="next_div">
             <button type="submit"> Next </button>
           </div>

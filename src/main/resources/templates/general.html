@@ -53,7 +53,7 @@
     <a th:href="@{/}"
         title="Incident Reporting"
         class="app-name">
-        Incident Reporting</a>
+        Bloomington Police Department Incident Reporting</a>
 
     <nav
       id="navigation"
@@ -139,16 +139,17 @@
     <p>To add an incident you will go through the following steps:</p>
 
     <ol>
-      <li>Add incident details (next page) </li>
-      <li> Optional, you can upload incident images </li>
+      <li> Add incident details (next page) </li>
       <li> Add persons' info including witnesses (if any)</li>
       <li> Add properties related to incident </li>
       <li> Add vehicle info if the incident include a vehicle </li>
+      <li> Upload incident image(s) (if any)</li>
       <li> Submit your request </li>
       <li> You must confirm your request via the email address you provide.</li>
     </ol>
 
     <p> After a successful submission, our staff will evaluate your incident and either approve or reject your request. You will receive an email about the staff descision. If approved, the email will include a case number that you can use for future reference to your incident. </p>
+		<p>After review, if additional follow-up is needed, you will be contacted by a member of the Bloomington Police Department Detective Division within 3-5 business days.</p>
   </div>
 
   <p th:fragment="incidentInstructions">
@@ -165,15 +166,12 @@
 
   <div th:fragment="propertyInstructions">
     <p>
-      Use this page to describe items that were lost, stolen or damaged or locations that were vandalized. <b>This
-        form is not required unless specific property (a building or object) was damaged or taken in the
-        incident.</b>
-    </p>
+      Use this page to report property that was lost, stolen or damaged.
+		</p>
     <ul>
-      <li>You may add one or more properties</li>
-      <li>Total value should not exceed $2000</li>
-      <li>You will add one property at a time</li>
-      <li>Please report vehicle damage including value in the vehicle screen.</li>
+			<li>You are able to add multiple pieces of property, however, you can only add one piece of property at a time </li>
+      <li>Total value Should not exceed $2000</li>
+			<li>If you are reporting damage to a vehicle, please give the description and value of the damage in the vehicle screen.</li>
     </ul>
   </div>
 

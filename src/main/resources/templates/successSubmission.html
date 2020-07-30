@@ -19,16 +19,16 @@
         <div th:insert="general::messages(${messages})"></div>			
       </div>
       
-      <h2>Successful Submission</h2>
-      <p>Your request has been submitted successfully.</p>
-      
-      <p>An email has been sent to you. It may take couple minutes to appear in your email system. Your report will not be
-        accepted until you log in to your email and use the link in your email to confirm your request. Failure to confirm
-        your report within 24 hours of receiving your confirmation email means the report isn't finished and therefore will
-        not be processed.</p>
-      
+      <h2>Report Submitted!</h2>
+			<ul>
+				<li> Remember to verify through your email link! </li>
+				<li> Now that your report is submitted, you will receive an email with a link to verify your submission is valid. Your report will be reviewed after verification has occurred. Reports not verified within 24 hours of submission will not be processed by the system.
+				</li>
+				<li>
+					After review, if additional follow-up is needed, you will be contacted by a member of the Bloomington Police Department Detective Division within 3-5 business days.
+				</li>
+			</ul>
       <p>Thank you for your using Bloomington Police Department's Incident Reporting System.</p>
-
       <a th:href="@{/index}">Report another incident</a>
       <a href="https://bloomington.in.gov">Back to the City of Bloomington
         home page</a>

@@ -67,6 +67,10 @@
 					<label>Incident Details:</label>
 					<span th:text="${incident.details}"></span>
 				</div>
+				<div class="m-b-10" th:if="${incident.hasEvidenceInfo()}">
+					<label>Evidence Left Behind:</label>
+					<span th:text="${incident.evidence}"></span>
+				</div>				
 			</div>
 		</fieldset>
 

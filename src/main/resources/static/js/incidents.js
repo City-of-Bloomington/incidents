@@ -21,23 +21,23 @@ function verifyConfirm(){
     var val = email.value;
     var val2 = document.getElementById("email2").value;
     if(val.trim() == '' || val2.trim() == ''){
-	alert("You need to provide valid email");
-	return false;
+				alert("You need to provide valid email");
+				return false;
     }
     if(val.trim() != val2.trim()){
-	alert("The two emails do not match");
-	return false;
+				alert("The two emails do not match");
+				return false;
     }
 
 }
 $(document).ready(function(){
     $('input.timepicker').timepicker({
-	timeFormat: 'hh:mm p',
-	interval: 15,
-	startTime: '12:00 AM',
-	dynamic: false,
-	dropdown: true,
-	scrollbar: true
+				timeFormat: 'hh:mm p',
+				interval: 15,
+				startTime: '12:00 AM',
+				dynamic: false,
+				dropdown: true,
+				scrollbar: true
     });
 });
 $(document).ready(function(){
@@ -49,35 +49,39 @@ function verifyTotalValue(){
     var val = $('#value_id').val();
     var balance = $('#balance_id').val();
     var max_val = $('#max_total_id').val();
+		//
+		// if max_val is set to 0 this means there is not limit
+		//
+		if(max_val == 0) return true;
     if(!$.isNumeric(val)){
-	alert("You need to provide a valid value ");
-	$('#value_id').focus();
-	return false;
+				alert("You need to provide a valid value ");
+				$('#value_id').focus();
+				return false;
     }
     if(!$(this).prop('required')){
-	// not required but what if the user enter a value
-	// still we need to check for the total allowed
-	if(val*1 > 0){
-	    var new_total = parseFloat(balance)+parseFloat(val) - parseFloat(old_val);
-	    if((new_total*1) > (max_val*1)){
-		alert("Current balance of  $"+new_total+" is greater than the max allowed of  $"+max_val);
-		$('#value_id').focus();
-		return false;
-	    }
-	}
+				// not required but what if the user enter a value
+				// still we need to check for the total allowed
+				if(val*1 > 0){
+						var new_total = parseFloat(balance)+parseFloat(val) - parseFloat(old_val);
+						if((new_total*1) > (max_val*1)){
+								alert("Current balance of  $"+new_total+" is greater than the max allowed of  $"+max_val);
+								$('#value_id').focus();
+								return false;
+						}
+				}
     }
     else{
-	if(val.trim() == '' || val*1 == 0){
-	    alert("You need to provide a value for the damage ");
-	    $('#value_id').focus();
-	    return false;
-	}
-	var new_total = parseFloat(balance)+parseFloat(val) - parseFloat(old_val);
-	if((new_total*1) > (max_val*1)){
-	    alert("Current balance of  $"+new_total+" is greater than the max allowed of  $"+max_val);
-	    $('#value_id').focus();
-	    return false;
-	}
+				if(val.trim() == '' || val*1 == 0){
+						alert("You need to provide a value for the damage ");
+						$('#value_id').focus();
+						return false;
+				}
+				var new_total = parseFloat(balance)+parseFloat(val) - parseFloat(old_val);
+				if((new_total*1) > (max_val*1)){
+						alert("Current balance of  $"+new_total+" is greater than the max allowed of  $"+max_val);
+						$('#value_id').focus();
+						return false;
+				}
     }
     return true;
 }
@@ -88,56 +92,56 @@ function verifyIncidentInput(){
     var end_date = $('#end_date').val();
     var end_time = $('#end_time').val();    
     if(start_date === '' && start_time === '' && date_description === ''){
-	alert ('Please provide incident date and time');
-	$('#start_date').focus();
-	return false;
+				alert ('Please provide incident date and time');
+				$('#start_date').focus();
+				return false;
     }
     if(start_date != '' && start_time === ''){
-	alert ('Please provide incident start time');
-	$('#start_time').focus();
-	return false;
+				alert ('Please provide incident start time');
+				$('#start_time').focus();
+				return false;
     }
     if(end_date != '' && end_time === ''){
-	alert ('Please provide incident end time');
-	$('#end_time').focus();
-	return false;
+				alert ('Please provide incident end time');
+				$('#end_time').focus();
+				return false;
     }    
     var addr = $('#addr_id').val();
     if(addr === ''){
-	alert ('Please provide incident address');
-	$('#addr_id').focus();
-	return false;
+				alert ('Please provide incident address');
+				$('#addr_id').focus();
+				return false;
     }
     var city = $('#city').val();
     if(city === ''){
-	alert ('Please provide city');
-	return false;
+				alert ('Please provide city');
+				return false;
     }
     if(city != 'Bloomington'){
-	alert ('Your address is not in Bloomington');
-	return false;
+				alert ('Your address is not in Bloomington');
+				return false;
     }    
     var jurisdiction = $('#jurisdiction').val();
     if(jurisdiction != '' && jurisdiction != 'Bloomington'){
-	alert ('Your address is not in Bloomington jurisdiction');
-	return false;
+				alert ('Your address is not in Bloomington jurisdiction');
+				return false;
     }        
     var state = $('#state').val();
     if(state === ''){
-	alert ('Please provide state');
-	$('#state').focus();
-	return false;
+				alert ('Please provide state');
+				$('#state').focus();
+				return false;
     }    
     var zip = $('#zip').val();
     if(zip === ''){
-	alert ('Please provide zip code');
-	return false;
+				alert ('Please provide zip code');
+				return false;
     }
     var details = $('#details_id').val();
     if(details === ''){
-	alert ('Please provide incident details');
-	$('#detail_id').focus();
-	return false;
+				alert ('Please provide incident details');
+				$('#detail_id').focus();
+				return false;
     }    
     return true;
 }

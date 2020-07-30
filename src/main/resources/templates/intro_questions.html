@@ -56,20 +56,7 @@
 			</div>
 
 			<div class="question" style="display:none">
-				<p>3. Did the incident occur inside Bloomington City limits?</p>
-				<form class="options">
-					<ul>
-						<li><input class="option" type="radio" name="question3" value="Next" />Yes </li>
-						<li><input class="option" type="radio" name="question3"
-								value="If the incident did not occur in the jurisdiction of the Bloomington, IN Police Department, this report can not be made on this system. See instruction below" />No
-						</li>
-		
-					</ul>
-				</form>
-			</div>
-
-			<div class="question" style="display:none">
-				<p>4. Are there known suspects or evidence that could lead to identification of a suspect (including surveillance video)?
+				<p>3. Are there known suspects or evidence that could lead to identification of a suspect (including surveillance video)?
 				</p>
 				<form>
 					<ul>
@@ -83,39 +70,37 @@
 			</div>
 
 			<div class="question" style="display:none">
-				<p>5. Is the incident violent?</p>
+				<p>4. Is the incident violent?</p>
 				<form>
 					<ul>
-						<li> <input class="option" type="radio" name="question5"
+						<li> <input class="option" type="radio" name="question4"
 								value="Stop. If you are currently experiencing violence, please contact 911. If you would like to report a violent crime that is not currently happening, please contact us at 812-399-4477" />Yes
 						</li>
-						<li> <input class="option" type="radio" name="question5" value="Next" />No
+						<li> <input class="option" type="radio" name="question4" value="Next" />No
 						</li>
 					</ul>
 				</form>
 			</div>
 
 			<div class="question" style="display:none">
-				<p>6. Are you reporting injury to a being?</p>
+				<p>5. Are you reporting injury to a being?</p>
 				<form>
 					<ul>
-						<li> <input class="option" type="radio" name="question6"
+						<li> <input class="option" type="radio" name="question5"
 								value="Stop. If you would like to report injury to a being, please contact us at 812-399-4477" />Yes
 						</li>
-						<li> <input class="option" type="radio" name="question6" value="Next" />No
+						<li> <input class="option" type="radio" name="question5" value="Next" />No
 						</li>
 					</ul>
 				</form>
 			</div>
-
-			<div class="question" style="display:none" id="lastQuestion">
-				<p>7. Are you reporting a Hate Crime?
-				</p>
-				<form>
+			<div class="question" style="display-none" id="lastQuestion">
+				<p>6. Did the incident occur inside Bloomington City limits?</p>
+				<form class="options">
 					<ul>
-						<li> <input class="option" type="radio" name="question9" value="Stop. Please contact us at 812-339-4477." />Yes
-						</li>
-						<li> <input class="option" type="radio" name="question9" value="finalStep" />No
+						<li><input class="option" type="radio" name="question6" value="Next" />Yes </li>
+						<li><input class="option" type="radio" name="question6"
+								value="If the incident did not occur in the jurisdiction of the Bloomington, IN Police Department, this report can not be made on this system. See instruction below" />No
 						</li>
 					</ul>
 				</form>
@@ -126,9 +111,11 @@
 				
 				<p>Please, select the incident category:</p>
 				<ul>
-					<li><a th:href="@{/introTheft}">Minor Theft (All Other)</a></li>
-					<li><a th:href="@{/introTheftFromVehicle}">Minor Theft From Vehicle</a></li>
 					<li><a th:href="@{/introLost}">Lost Property </a></li>
+					<li><a th:href="@{/introTheft/4}">Theft From Vehicle</a></li>					
+					<li><a th:href="@{/introTheft/5}">Theft From Building </a></li>	
+					<li><a th:href="@{/introTheft/1}">Theft (All Other)</a></li>
+					<li><a th:href="@{/introFraud}">Fraud </a></li>
 					<li><a th:href="@{/introVandal}">Vandalism </a></li>
 				</ul>
 			</div>

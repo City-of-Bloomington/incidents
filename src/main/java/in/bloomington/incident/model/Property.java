@@ -65,208 +65,213 @@ public class Property extends TopModel implements java.io.Serializable{
 
     }
     public Property(int id, String brand, String model, Double value, String serialNum, String owner,
-		    String description,
-		    Incident incident,
-		    DamageType damageType) {
-	super();
-	this.id = id;
-	this.brand = brand;
-	this.model = model;
-	this.setValue(value);
-	if(value !=null){
-	    this.setOldValue(value);
-	}
-	this.serialNum = serialNum;
-	this.owner = owner;
-	this.description = description;
-	this.incident = incident;
-	this.damageType = damageType;
+										String description,
+										Incident incident,
+										DamageType damageType) {
+				super();
+				this.id = id;
+				this.brand = brand;
+				this.model = model;
+				this.setValue(value);
+				if(value !=null){
+						this.setOldValue(value);
+				}
+				this.serialNum = serialNum;
+				this.owner = owner;
+				this.description = description;
+				this.incident = incident;
+				this.damageType = damageType;
     }
     public DamageType getDamageType(){
-	return damageType;
+				return damageType;
     }
     public void setDamageType(DamageType val){
-	if(val != null){
-	    damageType = val;
-	}
+				if(val != null){
+						damageType = val;
+				}
     }
 				
     public int getId() {
-	return id;
+				return id;
     }
 
     public void setId(int id) {
-	this.id = id;
+				this.id = id;
     }
 
     public String getBrand() {
-	return brand;
+				return brand;
     }
 
     public void setBrand(String val) {
-	if(val != null && !val.isEmpty())
-	    this.brand = val;
+				if(val != null && !val.isEmpty())
+						this.brand = val;
     }
 
     public String getModel() {
-	return model;
+				return model;
     }
 
     public void setModel(String val) {
-	if(val != null && !val.isEmpty())
-	    this.model = val;
+				if(val != null && !val.isEmpty())
+						this.model = val;
     }
 
     public Double getValue() {
-	return value;
+				return value;
     }
     @Transient
     public String getValueFr() {
-	String str = "";
-	if(value != null){
-	    try{
-		str = Helper.curFr.format(value);
-	    }catch(Exception ex){
-		System.err.println(value+" "+ex);
-	    }
-	}
-	return str;
+				String str = "";
+				if(value != null){
+						try{
+								str = Helper.curFr.format(value);
+						}catch(Exception ex){
+								System.err.println(value+" "+ex);
+						}
+				}
+				return str;
     }		
 
     public void setValue(Double value) {
-	if(value != null)
-	    this.value = value;
+				if(value != null)
+						this.value = value;
     }
 		
     public double getBalance() {
-	return balance;
+				return balance;
     }
 
     public void setBalance(Double val) {
-	if(val != null)
-	    this.balance = val;
+				if(val != null)
+						this.balance = val;
     }
     public double getOldValue() {
-	return oldValue;
+				return oldValue;
     }
 
     public void setOldValue(Double val) {
-	if(val != null)
-	    this.oldValue = val;
+				if(val != null)
+						this.oldValue = val;
     }
     public double getMaxTotalValue() {
-	return maxTotalValue;
+				return maxTotalValue;
     }
 
     public void setMaxTotalValue(double val) {
-	this.maxTotalValue = val;
+				this.maxTotalValue = val;
     }				
 
     public String getSerialNum() {
-	return serialNum;
+				return serialNum;
     }
 
     public void setSerialNum(String val) {
-	if(val != null && !val.isEmpty())
-	    this.serialNum = val;
+				if(val != null && !val.isEmpty())
+						this.serialNum = val;
     }
 
     public String getOwner() {
-	return owner;
+				return owner;
     }
 
     public void setOwner(String val) {
-	if(val != null && !val.isEmpty())
-	    this.owner = val;
+				if(val != null && !val.isEmpty())
+						this.owner = val;
     }
 
     public String getDescription() {
-	return description;
+				return description;
     }
 
     public void setDescription(String val) {
-	if(val != null && !val.isEmpty())
-	    this.description = val;
+				if(val != null && !val.isEmpty())
+						this.description = val;
     }
 
     public Incident getIncident() {
-	return incident;
+				return incident;
     }
 
     public void setIncident(Incident incident) {
-	this.incident = incident;
+				this.incident = incident;
     }
     @Transient
     public String getBrandInfo(){
-	String ret = "";
-	if(brand != null && !brand.isEmpty()){
-	    ret = brand;
-	}
-	if(model != null && !model.isEmpty()){
-	    if(!ret.isEmpty()) ret += " ";
-	    ret += model;
-	}
-	if(serialNum != null && !serialNum.isEmpty()){
-	    if(!ret.isEmpty()) ret += " ";
-	    ret += serialNum;
-	}				
-	return ret;
+				String ret = "";
+				if(brand != null && !brand.isEmpty()){
+						ret = brand;
+				}
+				if(model != null && !model.isEmpty()){
+						if(!ret.isEmpty()) ret += " ";
+						ret += model;
+				}
+				if(serialNum != null && !serialNum.isEmpty()){
+						if(!ret.isEmpty()) ret += " ";
+						ret += serialNum;
+				}				
+				return ret;
     }
     @Transient
     public String getInfo(){
-	String ret = getBrandInfo();
-	if(description != null && !description.isEmpty()){
-	    if(!ret.isEmpty()){
-		ret += " ";
-	    }
-	    ret += description;
-	}
-	if(owner != null && !owner.isEmpty()){
-	    if(!ret.isEmpty()){
-		ret += ", ";
-	    }
-	    ret += " Owner: "+owner;
-	}				
-	return ret;
+				String ret = getBrandInfo();
+				if(description != null && !description.isEmpty()){
+						if(!ret.isEmpty()){
+								ret += " ";
+						}
+						ret += description;
+				}
+				if(owner != null && !owner.isEmpty()){
+						if(!ret.isEmpty()){
+								ret += ", ";
+						}
+						ret += " Owner: "+owner;
+				}				
+				return ret;
     }
     @Transient
     public boolean verify(){
-	boolean ret = true;
-	String str = getInfo();
-	if(str.isEmpty()){
-	    addError("No identification of the item is provided");
-	    ret = false;
-	}
-	if(!hasValidValue()){
-	    addError("No value of the item is provided");
-	    ret = false;
-	}
-	if(!verifyMaxTotal()){
-	    ret = false;
-	}
-	return ret;
+				boolean ret = true;
+				String str = getInfo();
+				if(str.isEmpty()){
+						addError("No identification of the item is provided");
+						ret = false;
+				}
+				if(!hasValidValue()){
+						addError("No value of the item is provided");
+						ret = false;
+				}
+				if(!verifyMaxTotal()){
+						ret = false;
+				}
+				return ret;
     }
     @Transient
     public boolean hasValidValue(){
-	return value != null && value > 0;
+				return value != null && value > 0;
     }
     @Transient
     public boolean verifyMaxTotal(){
-	boolean ret = true;
-	if(value != null){
-	    double total = balance+value-oldValue;
-	    if(total > maxTotalValue){
-		addError(total +" total value exceeds max total of  "+maxTotalValue);
-		ret = false;
-	    }
-	}
-	return ret;
+				boolean ret = true;
+				//
+				// if we need to ignore total allowed value we set
+				// maxTotalValue = 0 in application.properties
+				//
+				if(maxTotalValue == 0) return ret;
+				if(value != null){
+						double total = balance+value-oldValue;
+						if(total > maxTotalValue){
+								addError(total +" total value exceeds max total of  "+maxTotalValue);
+								ret = false;
+						}
+				}
+				return ret;
     }
     @Override
     public boolean equals(Object obj) { 
           
-	if(this == obj) 
-	    return true; 
+				if(this == obj) 
+						return true; 
 				
         if(obj == null || obj.getClass()!= this.getClass()) 
             return false; 
@@ -276,13 +281,13 @@ public class Property extends TopModel implements java.io.Serializable{
     }
     @Override
     public int hashCode(){ 
-	int ret = 29;
+				int ret = 29;
         return ret += this.id; 
     }
     @Override
     public String toString() {
-	String ret = "Item ["+getInfo()+"]";
-	return ret;
+				String ret = "Item ["+getInfo()+"]";
+				return ret;
     } 		
 
 		

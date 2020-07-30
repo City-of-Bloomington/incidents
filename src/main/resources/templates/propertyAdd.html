@@ -62,22 +62,22 @@
 	
 					
 			<label for="value_id" class="required">*$ Value</label>
-			<input type="text" th:field="${property.value}" id="value_id" placeholder="Value" required="required" />
+			<input type="text" th:field="${property.value}" id="value_id" placeholder="dddd.dd" required="required" />
 			<span th:if="${#fields.hasErrors('value')}" th:errors="*{value}"></span>
 	
 	
-			<label for="owener">Owner</label>
-			<input type="text" th:field="${property.owner}" id="owner" placeholder="property owner" size="30" maxlength="70" />
+			<label for="owener">*Owner</label>
+			<input type="text" th:field="${property.owner}" id="owner" placeholder="property owner" size="30" maxlength="70" required="required" />
 			<span th:if="${#fields.hasErrors('owner')}" th:errors="*{owner}"></span>
 	
 					
-			<label for="description" class="required">*Item Description</label>
+			<label for="description" class="required">*Property Description</label>
 			<textarea th:field="${property.description}" id="description" placeholder="Description" rows="5" cols="50" required="required">
 				<span th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></span>
 			</textarea>
 					
 			<div th:if="${vehicleRequired != null}">
-				<input type="submit" value="Save, Next Add Vehicle" />
+				<input type="submit" value="Next Add Vehicle" />
 			</div>
 	
 			<div th:if="${vehicleRequired == null}">

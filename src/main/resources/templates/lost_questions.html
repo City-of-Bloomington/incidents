@@ -60,7 +60,8 @@
     
       <div id="finalStep" class="question" style="display:none">
         <p> In the next step you will provide a valid email, please click on Next</p>
-        <form action="#" th:action="@{/emailRequest/3}" method="get">
+        <form action="#" th:action="@{/emailRequest}" method="get">
+					<input type="hidden" name="type_id" value="3" />	
           <div class="next_div">
             <button type="submit"> Next </button>
           </div>

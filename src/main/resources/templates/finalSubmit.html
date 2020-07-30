@@ -11,7 +11,7 @@
 		<header th:replace="general::header"></header>
 		
 		<main class="public-questions-wrapper">
-			<h2>Final Submission Page</h2>
+			<h2>Submit Report</h2>
 			
 			<div th:if="${errors}">
 				<div th:replace="general::errors(${errors})"></div>
@@ -20,8 +20,6 @@
 			<div th:if="${messages}">
 				<div th:replace="general::messages(${messages})"></div>
 			</div>
-
-			<a class="m-b-10" th:href="@{/incident/{id}(id=${incident.id})}">Back to Incident Details</a>
 			
 			<form
 				action="#"
@@ -30,12 +28,12 @@
 				method="get">
 
 				<fieldset>
-					<p>Your report is complete. After your request is submitted, you will receive an email with a link to verify your email address. Your report will be reviewed after this final step has occurred. Reports not validated within 24 hours will not be processed by the system.</p>
-
-					<p>If you want to review your data one more time before you submit your request, use the 'Related Incident Link' above to review your data and edit your information. If you believe that the data is accurate click the 'Submit' button below to submit your request.</p>
-
-					<p> If necessary, you will be contacted via email or phone in regard to this request. If approved, you will receive an email with the case number for your report. If denied, you will receive an email with a reason for the denial.</p>
+					<p>Your report is ready to be submitted. After submission you will receive an email with a link to verify. Your report will be reviewed. Reports not verified within 24 hours Will not be processed by the system.</p>
 					
+					<p> If approved, you will receive an email with the case number for your report. If denied, you will receive an email with a reason for the denial.</p>
+					<p>If you need to review you report one more time click on 
+						<a class="m-b-10" th:href="@{/incident/{id}(id=${incident.id})}">Incident Details</a>
+					</p>
 					<input type="submit" value="Submit" />
 				</fieldset>
 			</form>

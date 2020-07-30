@@ -62,6 +62,8 @@ public class Incident extends TopModel implements java.io.Serializable{
     private String zip;
 
     private String details;
+
+		private String evidence;
 		
     private Character invalidAddress;
 		
@@ -131,6 +133,7 @@ public class Incident extends TopModel implements java.io.Serializable{
 										String state,
 										String zip,
 										String details,
+										String evidence,
 										Character invalidAddress,
 										String dateDescription,
 										Date endDate,
@@ -155,6 +158,7 @@ public class Incident extends TopModel implements java.io.Serializable{
 				this.state = state;
 				this.zip = zip;
 				this.details = details;
+				this.evidence = evidence;
 				this.invalidAddress = invalidAddress;
 				this.dateDescription = dateDescription;
 				this.endDate = endDate;
@@ -335,6 +339,15 @@ public class Incident extends TopModel implements java.io.Serializable{
 						this.details = val.trim();
 				
     }
+    public String getEvidence() {
+				return evidence;
+    }
+
+    public void setEvidence(String val) {
+				if(val != null && !val.trim().isEmpty())
+						this.evidence = val.trim();
+				
+    }		
 
     public Character getInvalidAddress() {
 				return invalidAddress;
@@ -348,6 +361,10 @@ public class Incident extends TopModel implements java.io.Serializable{
     public boolean hasValidAddress(){
 				return this.invalidAddress == null;
     }
+    @Transient
+    public boolean hasEvidenceInfo(){
+				return this.evidence != null && !this.evidence.isEmpty();
+    }		
     @Transient
     public boolean isVehicleRequired(){
 				boolean ret = false;

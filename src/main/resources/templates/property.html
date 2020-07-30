@@ -21,18 +21,6 @@
 				<div th:insert="general::messages(${messages})"></div>
 			</div>
 			
-			<p>The following are the details about this item.</p>
-
-			<ul>
-				<li>Check the info entered so far</li>
-				<li>If you want to change some of the data click on 'Edit' button below.</li>
-				<li>You amy also delete this record if you think it is irrelevant, by clicking to 'Delete' button in the bottom of thepage</li>
-				<li>If the data are correct, click on 'Back to incident' link below to continue.</li>
-			</ul>
-
-			<h2>Related incident</h2>
-			<a th:href="@{/incident/{id}(id=${property.incident.id})}">Back to Incident</a>
-
 			<ul style="padding: 0">
 				<li>
 					<strong>Brand Info:</strong>
@@ -62,9 +50,8 @@
 				<li>
 					<a th:href="@{/property/edit/{id}(id=${property.id})}">Edit</a>
 				</li>
-
 				<li>
-					<a th:href="@{/property/delete/{id}(id=${property.id})}">Delete</a>
+					<a th:href="@{/incident/{id}(id=${property.incident.id})}">Back to Incident</a>
 				</li>
 			</ul>
 		</main>

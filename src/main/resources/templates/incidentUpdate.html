@@ -131,8 +131,12 @@
 		
 				<label for="details_id" class="required">Incident Details</label>
 
-				<textarea th:field="${incident.details}" id="details_id" rows="3" cols="60" required="required"
-					placeholder="Incident Details"></textarea>
+				<textarea th:field="${incident.details}" id="details_id" rows="3" cols="60" required="required" placeholder="Incident Details">
+				</textarea>
+				<label for="evidence_id">Evidence Left Behind</label>
+				
+				<textarea th:field="${incident.evidence}" id="evidence_id" rows="3" cols="60" placeholder="e.g. blood, shoe prints, finger prints,..">
+				</textarea>
 
 				<p>If you have incident images available, please mark the checkbox below. When you click 'Next' you will have the chance to upload the images.</p>
 								

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PathVariable;
 import javax.servlet.http.HttpSession;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -46,38 +47,62 @@ public class WebController extends TopController{
 				getMessagesAndErrorsFromSession(session, model);
 				return "intro_questions";
     }
-    @RequestMapping(value = "/introTheft")
-    public String introTheft(Model model,
+    @RequestMapping("/introTheft/{type_id}")
+    public String introTheft(@PathVariable("type_id") int type_id,
+														 Model model,
 														 HttpSession session) {
 				getMessagesAndErrorsFromSession(session, model);
+				model.addAttribute("type_id", type_id);
 				return "theft_questions";
     }
-    @RequestMapping(value = "/introTheftFromVehicle")
+		
+		/** not needed anymore
+    @RequestMapping("/introTheftFromVehicle")
     public String introTheftFromVehicle(Model model,
 																				HttpSession session) {
 				getMessagesAndErrorsFromSession(session, model);
 				return "theftFromVehicle_questions";
-    }    
-    @RequestMapping(value = "/introVandal")
+    }
+		*/
+    @RequestMapping("/introFraud")
+    public String introFraud(Model model,
+														 HttpSession session) {
+				getMessagesAndErrorsFromSession(session, model);
+				model.addAttribute("type_id", 6); // fraud is 6 in incident_types table
+				// we do not have special questions for fraud right now
+				// so we go to email page directly
+				return "email_questions";
+    }   		
+    @RequestMapping("/introVandal")
     public String introVandal(Model model,
 															HttpSession session) {
 				getMessagesAndErrorsFromSession(session, model);
 				return "vandal_questions";
     }       
-    @RequestMapping(value = "/introLost")
+    @RequestMapping("/introLost")
     public String introLost(Model model,
 														HttpSession session) {
 				getMessagesAndErrorsFromSession(session, model);
 				return "lost_questions";
     }
-    @RequestMapping(value = "/introEmail")
+    @RequestMapping("/introEmail")
     public String introEmails(@RequestParam(required = true) int type_id,
 															Model model,
 															HttpSession session) {
 				getMessagesAndErrorsFromSession(session, model);
 				model.addAttribute("type_id", type_id);
 				return "email_questions";
-    }    
+    }
+    @RequestMapping("/emailRequest")
+    public String emailRequest(@RequestParam(required=true) int type_id,
+															 Model model,
+															 HttpSession session
+															 ){
+				getMessagesAndErrorsFromSession(session, model);
+        model.addAttribute("type_id", type_id);	
+				return "email_questions";
+
+    }		
     private User findUserFromSession(HttpSession session){
 				User user = null;
 				User user2 = getUserFromSession(session);

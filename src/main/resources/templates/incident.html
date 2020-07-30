@@ -12,8 +12,6 @@
 <body>
 	<header th:replace="general::header"></header>
 
-	
-
 	<main class="public-questions-wrapper">
 		<h2>View Incident</h2>
 
@@ -25,70 +23,47 @@
 			<div th:replace="general::messages(${messages})"></div>
 		</div>
 		
-		<p>Incident details, if you notice any incident information need to be changed click on <a th:href="@{/incident/edit/{id}(id=${incident.id})}">Edit</a> link and do your changes.</p>
-
 		<ul class="button-group">
-			<li th:if="${incident.hasPersonList()}">
+			<li>
 				<input type="button" th:attr="onclick=|window.location.href='${hostPath}/person/add/${incident.id}'|"
-					value="Add Another Person" />
+					value="Add Person" />
 			</li>
 		
-			<li th:unless="${incident.hasPersonList()}">
-				<input type="button" th:attr="onclick=|window.location.href='${hostPath}/person/add/${incident.id}'|"
-					value="Add person" />
-			</li>
-		
-			<li th:if="${incident.hasPropertyList()}">
+			<li>
 				<input type="button" th:attr="onclick=|window.location.href='${hostPath}/property/add/${incident.id}'|"
-					value="Add another property" />
+					value="Add Property" />
 			</li>
 		
-			<li th:unless="${incident.hasPropertyList()}">
-				<input type="button" th:attr="onclick=|window.location.href='${hostPath}/property/add/${incident.id}'|"
-					value="Add property" />
-			</li>
-		
-			<li th:if="${incident.hasVehicleList()}">
+			<li>
 				<input type="button" th:attr="onclick=|window.location.href='${hostPath}/vehicle/add/${incident.id}'|"
-					value="Add another vehicle" />
+					value="Add Vehicle" />
 			</li>
 		
-			<li th:unless="${incident.hasVehicleList()}">
-				<input type="button" th:attr="onclick=|window.location.href='${hostPath}/vehicle/add/${incident.id}'|"
-					value="Add vehicle" />
-			</li>
-		
-			<li th:if="${incident.hasMediaList()}">
+			<li>
 				<input type="button" th:attr="onclick=|window.location.href='${hostPath}/media/add/${incident.id}'|"
-					value="Upload anther image" />
-			</li>
-		
-			<li th:unless="${incident.hasMediaList()}">
-				<input type="button" th:attr="onclick=|window.location.href='${hostPath}/media/add/${incident.id}'|"
-					value="Upload image" />
+					value="Upload Image" />
 			</li>
 		</ul>
-
-		<div th:if="${incident.canBeSubmitted()}">
-			<p>Now you can add other persons, property(ies), vehicle(s) and incident images by clicking the corresponding button below.</p>
-		</div>
-
+		<p>
+			If you notice any incident information need change click on the corresponding Edit link.
+		</p>
 		<div th:if="${incident.canBeSubmitted()}">
 			<ul>
 				<li>The incident is ready to be submitted.</li>
-				<li>If submitted no more changes can be made</li>
-				<li>Review your request again to make sure everything is correct</li>
+				<li>Once submitted, no changes can be made.</li>
+				<li>Review your report to be sure everything is correct.</li>
 				<li>If no further changes are needed click on the 'Final Submit Page' button</li>
 			</ul>
 		</div>
 
 		<h2>Incident General Info</h2>
-		<div th:replace="incidentView::incident(${incident})"></div>
-
+		<div>
+			<div th:replace="incidentView::incident(${incident})"></div>
+			 <a th:href="@{/incident/edit/{id}(id=${incident.id})}">Edit Incident</a> 
+		</div>
 		<div th:if="${incident.hasPersonList()}">
 			<div th:insert="personsShort::persons(${incident.persons})"></div>
 		</div>
-		
 		<div th:if="${incident.hasPropertyList()}">
 			<div th:insert="propertiesShort::properties(${incident.properties},${incident.totalValueFr})"></div>
 		</div>

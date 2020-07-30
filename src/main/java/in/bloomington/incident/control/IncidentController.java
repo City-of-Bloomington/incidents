@@ -55,7 +55,15 @@ public class IncidentController extends TopController{
 
     final static Logger logger = LoggerFactory.getLogger(IncidentController.class);		
     final static List<String> entryTypes =
-				new ArrayList<>(Arrays.asList("Unlocked vehicle", "Broke window","Pried window","Pried door","Other specify"));
+				new ArrayList<>(Arrays.asList(
+																			"Broke window",
+																			"Damaged window",
+																			"Damaged door",
+																			"Pried window",
+																			"Pried door",
+																			"Unlocked door",
+																			"Unlocked vehicle",
+																			"Other specify"));
     @Autowired
     IncidentService incidentService;		
     @Autowired
@@ -161,16 +169,7 @@ public class IncidentController extends TopController{
 				return "redirect:/incidentStart/"+incident.getId();
 
     }
-    @RequestMapping("/emailRequest/{type_id}")
-    public String emailRequest(@PathVariable("type_id") int type_id,
-															 Model model,
-															 HttpServletRequest req
-															 ){
-				HttpSession session = req.getSession(true);
-        model.addAttribute("type_id", type_id);	
-				return "email_questions";
 
-    }
     @GetMapping("/incidentStart/{id}")
     public String startIncident(@PathVariable("id") int id,
 																Model model,

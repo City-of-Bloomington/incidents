@@ -22,18 +22,6 @@
 			</div>
 
 			<fieldset>
-				<p>The following are the details about this person.</p>
-				
-				<ul>
-					<li>Check the info entered so far</li>
-					<li>If you want to change some of the data click on 'Edit' button below.</li>
-					<li>You amy also delete this record if you think it is irrelevant.</li>
-					<li>If the data are correct, click on 'Back to incident' link below to continue.</li>
-				</ul>
-
-				<h3>Related incident</h3>
-				<a th:href="@{/incident/{id}(id=${person.incident.id})}">Back to Incident</a>
-
 				<ul style="padding: 0;">
 					<li>
 						<strong>Involvement of this person to this incident as:</strong>
@@ -107,9 +95,8 @@
 					<li>
 						<a th:href="@{/person/edit/{id}(id=${person.id})}">Edit</a>
 					</li>
-
 					<li>
-						<a th:href="@{/person/delete/{id}(id=${person.id})}">Delete</a>
+						<a th:href="@{/incident/{id}(id=${person.incident.id})}">Back to Incident</a>
 					</li>
 				</ul>
 			</fieldset>
