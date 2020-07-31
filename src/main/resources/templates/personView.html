@@ -24,87 +24,60 @@
 		</div>
 		<fieldset>
 			<caption>View Person</caption>
-			<p>
-				The following are the details about this person.
-			</p>
-			<dl>
-				<dt>Related incident</dt>
-				<dd><a th:href="@{/incidentView/{id}(id=${person.incident.id})}">Back to Incident</a>
-				</dd>
-				<dt>
-					<label>Involvement Category: </label>
-				</dt>
-				<dd>
-					<span th:text="${person.personType}"></span>
-				</dd>
-				<dt>
-					Name:
-				</dt>
-				<dd>
-					<span th:text="${person.fullname}"></span>
-				</dd>
-				<dt>Address: </dt>
-				<dd>
-					<span th:text="${person.address}"></span>
-				</dd>
-				<dt>*City, State Zipcode: </dt>
-				<dd>
-					<span th:text="${person.cityStateZip}"></span>
-				</dd>
-				<dt>Phone(s): </dt>
-				<dd>
-					<span th:text="${person.phones}"></span>
-				</dd>
-				<dt>Email(s): </dt>
-				<dd>
-					<span th:text="${person.emails}"></span>
-				</dd>
-				<dt>Date of Birth: </dt>
-				<dd>
-					<span th:text="${person.dobStr}"></span>
-				</dd>
-				<!-- some space -->
-				<dt> &nbsp;</dt>
-				<dt> Note: the following fields are optional but helpful</dt>
-				<dt>Driver License Number:
-				</dt>
-				<dd>
-					<span th:text="${person.dln}"></span>
-				</dd>
-				<dt>Social Security Number:
-				</dt>
-				<dd>
-					<span th:text="${person.ssnLastFour}"></span>
-				</dd>
-				<dt>Height & Weight:
-				</dt>
-				<dd>
-					<span th:text="${person.heightAndWeight}"></span>
-				</dd>
-				<dt>Sex & Race:
-				</dt>
-				<dd>
-					<span th:text="${person.sexAndRace}"></span>
-				</dd>
-				<dt>Gender:
-				</dt>
-				<dd>
-					<span th:text="${person.gender}"></span>
-				</dd>
-				<dt>Ethnicity:
-				</dt>
-				<dd>
-					<span th:text="${person.ethnicity}"></span>
-				</dd>				
-				<dt>Occupation:
-				</dt>
-				<dd>
-					<span th:text="${person.occupation}"></span>
-				</dd>
-			</dl>
-		</fieldset>
+			<div th:fragment="person(${person})">			
+				<ul style="padding: 0;">
+					<li>
+						<strong>Involvement:</strong>
+						<span th:text="${personType}"></span>
+					</li>
+					<li>
+						<strong>Name:</strong>
+						<span th:text="${person.fullname}"></span>
+					</li>
+					<li>
+						<strong>Address:</strong>
+						<span th:text="${person.address}"></span>
+					</li>
+					<li>
+						<strong>City, State Zipcode:</strong>
+						<span th:text="${person.cityStateZip}"> </span>
+					</li>
+					<li>
+						<strong>Phone(s):</strong>
+						<span th:text="${person.phones}"></span>
+					</li>
+					<li>
+						<strong>Email(s):</strong>
+						<span th:text="${person.emails}"></span>
+					</li>
+					<li>
+						<strong>Date of Birth:</strong>
+						<span th:text="${person.dobStr}"></span>
+					</li>
+					
+					<li th:if="${person.hasDlnAndSsn()}">
+						<span th:text="${person.dlnAndSsn}"></span>
+					</li>
+					<li th:if="${person.hasHeightAndWeight()}">
+						<span th:text="${person.heightAndWeight}"></span>
+					</li>
+					<li th:if="${person.hasSexAndGender()}">
+						<span th:text="${person.sexAndGender}"></span>
+					</li>
+					<li th:if="${person.hasRaceAndEthnicity()}">
+						<span th:text="${person.raceAndEthnicity}"></span>
+					</li>
+					<li>
+						<strong>Occupation:</strong>
+						<span th:text="${person.occupation}"></span>
+					</li>
+					<li>
+						<strong>Incident:</strong>
+						<span><a th:href="@{/incidentView/{id}(id=${person.incident.id})}">Back to Incident</a></span>
+					</li>
+				</ul>
+			</div>				
+		</fielset>
 	</main>
-	
 </body>
-
 </htmL>

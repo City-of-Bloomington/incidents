@@ -9,10 +9,8 @@
   <head th:replace="general::head('Person')"></head>
   <body>
 		<header th:replace="general::header"></header>
-		
 		<main class="public-questions-wrapper">
 			<h2>Person Info</h2>
-			
 			<div th:if="${errors}">
 				<div th:insert="general::errors(${errors})"></div>
 			</div>
@@ -20,85 +18,18 @@
 			<div th:if="${messages}">
 				<div th:insert="general::messages(${messages})"></div>
 			</div>
-
 			<fieldset>
-				<ul style="padding: 0;">
-					<li>
-						<strong>Involvement of this person to this incident as:</strong>
-						<span th:text="${personType}"></span>
-					</li>
-
-					<li>
-						<strong>Name:</strong>
-						<span th:text="${person.fullname}"></span>
-					</li>
-
-					<li>
-						<strong>Address:</strong>
-						<span th:text="${person.address}"></span>
-					</li>
-
-					<li>
-						<strong>City, State Zipcode:</strong>
-						<span th:text="${person.cityStateZip}"> </span>
-					</li>
-
-					<li>
-						<strong>Phone(s):</strong>
-						<span th:text="${person.phones}"></span>
-					</li>
-
-					<li>
-						<strong>Email(s):</strong>
-						<span th:text="${person.emails}"></span>
-					</li>
-
-					<li>
-						<strong>Date of Birth:</strong>
-						<span th:text="${person.dobStr}"></span>
-					</li>
-
-					<li>
-						<strong>Note: the following fields below are optional but helpful</strong>
-					</li>
-
-					<li>
-						<strong>Driver License Number:</strong>
-						<span th:text="${person.dln}"></span>
-					</li>
-
-					<li>
-						<strong>Social Security Number:</strong>
-						<span th:text="${person.ssnLastFour}"></span>
-					</li>
-
-					<li>
-						<strong>Race:</strong>
-						<span th:text="${person.race}"></span>
-					</li>
-
-					<li>
-						<strong>Height & Weight:</strong>
-						<span th:text="${person.heightAndWeight}"></span>
-					</li>
-
-					<li>
-						<strong>Sex & Race:</strong>
-						<span th:text="${person.sexAndRace}"></span>
-					</li>
-
-					<li>
-						<strong>Occupation:</strong>
-						<span th:text="${person.occupation}"></span>
-					</li>
-
+				<caption>View Person</caption>
+				<div th:insert="personView::person(${person})">
+					<ul>
 					<li>
 						<a th:href="@{/person/edit/{id}(id=${person.id})}">Edit</a>
 					</li>
 					<li>
 						<a th:href="@{/incident/{id}(id=${person.incident.id})}">Back to Incident</a>
 					</li>
-				</ul>
+				</ul>						
+				</div>
 			</fieldset>
 		</main>
   </body>

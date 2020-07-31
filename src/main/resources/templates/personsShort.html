@@ -17,38 +17,20 @@
     <div th:if="${messages}">
       <div th:insert="general::messages(${messages})"></div>			
 		</div>
-								
     <div th:fragment="persons(persons)">
-			<h2>Reported Person(s)</h2>
+			<h2>Reported People</h2>
       <div th:switch="${persons}">
 				<h4 th:case="null">No person found </h4>
 				<div th:case="*">
-					<ul th:each="person : ${persons}" style="padding: 0;">
-						<li>
-							<strong>Person Category:</strong>
-							<span th:text="${person.personType}"></span>
-						</li>
-						
-						<li>
-							<strong>Full Name:</strong>
-							<span th:text="${person.fullname}"></span>
-						</li>
-						
-						<li>
-							<strong>Address:</strong>
-							<span th:text="${person.fullAddress}"></span>
-						</li>
-						
-						<li>
-							<strong>Contact:</strong>
-							<span th:text="${person.contactInfo}"></span>
-						</li>
-						<li>
-							<span>
-								<a th:href="@{/person/edit/{id}(id=${person.id})}">Edit</a>
-							</span>
-						</li>
-					</ul>
+					<div th:each="person : ${persons}">
+						<div th:replace="personView::person(${person})">
+							<li>
+								<span>
+									<a th:href="@{/person/edit/{id}(id=${person.id})}">Edit</a>
+								</span>
+							</li>							
+						</div>
+					</div>
 				</div>      
       </div>
     </div>

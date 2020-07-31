@@ -66,7 +66,6 @@ public class Person extends TopModel implements java.io.Serializable{
     String dln;
     Date dob;
     String ssn;
-    String race; // enum('Caucasion','Hispanic','African American','Native American','Asian','Other')
     Integer heightFeet;
     Integer heightInch;
     String weight;
@@ -165,7 +164,11 @@ public class Person extends TopModel implements java.io.Serializable{
     public void setIncident(Incident incident) {
 				this.incident = incident;
     }
-
+		@Transient
+		public boolean hasPersonType(){
+				return personType != null;
+		}
+				
     public PersonType getPersonType() {
 				return personType;
     }
@@ -567,6 +570,58 @@ public class Person extends TopModel implements java.io.Serializable{
 				}
 				return ret;
     }
+		@Transient
+		public boolean hasSexAndGender(){
+				return !((sex == null || sex.isEmpty()) && (gender == null || gender.isEmpty())); 
+		}
+    @Transient
+    public String getSexAndGender(){
+				String ret = "";
+				if(sex != null && !sex.isEmpty()){
+						ret = "Sex: "+sex;
+				}
+				if(gender != null && !gender.isEmpty()){
+						if(!ret.isEmpty()) ret += ", Gender: ";
+						ret += gender;
+				}
+				return ret;
+    }
+		@Transient
+		public boolean hasRaceAndEthnicity(){
+				return !(raceType == null && (ethnicity == null || ethnicity.isEmpty())); 
+		}
+    @Transient
+    public String getRaceAndEthnicity(){
+				String ret = "";
+				if(raceType != null){
+						ret += "Race: "+raceType.getName();
+				}
+				if(ethnicity != null && !ethnicity.isEmpty()){
+						if(!ret.isEmpty()) ret += ", Ethnicity: ";
+						ret += ethnicity;
+				}
+				return ret;
+    }
+		@Transient
+		public boolean hasDlnAndSsn(){
+				return !((dln == null || dln.isEmpty()) && (ssn == null || ssn.isEmpty())); 
+		}
+		@Transient
+		public String getDlnAndSsn(){
+				String ret = "";
+				if(dln != null && !dln.isEmpty()){
+						ret = "DLN: "+dln;
+				}
+				if(ssn != null && !ssn.isEmpty()){
+						if(!ret.isEmpty()) ret += ", SSN: ";
+						ret += getSsnLastFour();
+				}
+				return ret;
+		}
+		@Transient
+		public boolean hasHeightAndWeight(){
+				return !(heightFeet == null && weight == null); 
+		}		
     @Transient
     public String getHeightAndWeight(){
 				String ret = "";
@@ -652,8 +707,8 @@ public class Person extends TopModel implements java.io.Serializable{
     @Transient
     public String getRaceAndSex(){
 				String ret = "";
-				if(race != null)
-						ret += race;
+				if(raceType != null)
+						ret += raceType;
 				if(sex != null){
 						if(!ret.equals("")) ret += ", ";
 						ret += sex;
