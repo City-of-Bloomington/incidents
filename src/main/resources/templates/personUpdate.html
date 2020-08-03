@@ -33,8 +33,8 @@
 						</option>
 					</select>
 					<dl>
-						<dt><label>Incident:</label></dt>
-						<dd><a th:href="@{/incident/{id}(id=${person.incident.id})}">Back to Incident Page</a>
+						<dd><label>Incident: </label>
+						 <a th:href="@{/incident/{id}(id=${person.incident.id})}">Back to Incident Page</a>
 						</dd>
 						<dt><label class="required"> *Full Name: </label>
 						</dt>
@@ -46,7 +46,7 @@
 							<input type="text" th:field="${person.lastname}" id="lastname_id" size="30" required="required"
 								placeholder="Last Name" />
 							<label for="suffix_id">Suffix</label>
-							<input type="text" th:field="${person.suffix}" id="suffix_id" size="6" placeholder="Suffix" />(Jr, Sr)
+							<input type="text" th:field="${person.suffix}" id="suffix_id" size="6" placeholder="Jr, Sr, .." />
 						</dd>
 						<dt><label for="address_id" class="required">*Address: </label></dt>
 						<dd>
@@ -67,23 +67,28 @@
 							<input type="text" th:field="${person.zip}" id="zip_id" size="10" required="required" maxlength="10"
 								placeholder="Zip code" />
 						</dd>
-						<dt><label for="phone_type_id" class="required">*Primary phone: </label></dt>
-						<dd>
-							<select id="phone_type_id" th:field="${person.phoneType}">
-								<option th:each="r : ${phoneTypes}" th:value="${r}" th:text="${r}">
-								</option>
-							</select>
-							<input type="text" th:field="${person.phone}" id="phone" size="10" required="required" maxlength="30"
-								placeholder="Phone #" />
-							<label for="phone_type_id2">Secondary Phone:</label>
-							<select id="phone_type_id2" th:field="${person.phoneType2}">
-								<option th:each="r : ${phoneTypes}" th:value="${r}" th:text="${r}">
-								</option>
-							</select>
-							<input type="text" th:field="${person.phone2}" id="phone2" size="10" maxlength="30" placeholder="Phone #" />
-						</dd>
-						<dt><label for="email2_id">Another Email: </label></dt>
-						<dd>
+						<dt>
+							<label for="phone_type_id" class="required">*Primary phone: </label></dt>
+						
+						<select id="phone_type_id" th:field="${person.phoneType}">
+							<option th:each="r : ${phoneTypes}" th:value="${r}" th:text="${r}">
+							</option>
+						</select>
+					</label>
+				</dt>
+				<dd>
+					<input type="text" th:field="${person.phone}" id="phone" size="10" required="required" maxlength="30"
+								 placeholder="Phone #" />
+					<label for="phone_type_id2">Secondary Phone: 
+						<select id="phone_type_id2" th:field="${person.phoneType2}">
+							<option th:each="r : ${phoneTypes}" th:value="${r}" th:text="${r}">
+							</option>
+						</select>
+					</label>
+					<input type="text" th:field="${person.phone2}" id="phone2" size="10" maxlength="30" placeholder="Phone #" />
+				</dd>
+				<dt><label for="email2_id">Another Email: </label></dt>
+				<dd>
 							<input type="text" th:field="${person.email2}" id="email2_id" size="70" maxlength="80" placeholder="Email" />
 						</dd>
 						<dt><label for="dob_mm" class="required">*Date of Birth: </label></dt>

@@ -15,7 +15,7 @@
 	</header>
 
 	<main class="staff">
-		<h2>Property (Item)</h2>
+		<h2>Property Details</h2>
 		<div th:if="${errors}">
 			<div th:insert="general::errors(${errors})"></div>
 		</div>
@@ -23,13 +23,21 @@
 			<div th:insert="general::messages(${messages})"></div>
 		</div>
 		<p>
-			The following are the details about this item.
+			Property Details.
 		</p>
 		<table>
 			<tr>
-				<td>Related incident</td>
+				<td>Incident</td>
 				<td><a th:href="@{/incidentView/{id}(id=${property.incident.id})}">Back to Incident</a></td>
 			</tr>
+			<tr th:if="${property.hasDamageTypeInfo()}">
+				<td>
+					<label>Damage Type</label>
+				</td>
+				<td>
+					<span th:text="${property.damageType}"></span>
+				</td>
+			</tr>			
 			<tr>
 				<td>
 					<label>Brand Info</label>
@@ -38,14 +46,7 @@
 					<span th:text="${property.brandInfo}"></span>
 				</td>
 			</tr>
-			<tr>
-				<td>
-					<label>Damage Type</label>
-				</td>
-				<td>
-					<span th:text="${property.damageType}"></span>
-				</td>
-			</tr>
+
 			<tr>
 				<td>
 					<label>Value</label>

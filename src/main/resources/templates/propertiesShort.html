@@ -22,11 +22,10 @@
 				<h4 th:case="null">No properties found</h4>
 				<div th:case="*">
 					<ul th:each="one : ${properties}" style="padding: 0;">
-						<li>
+						<li th:if="${one.hasDamageTypeInfo()}">
 							<strong>Damage Type:</strong>
 							<span th:text="${one.damageType}"></span>
 						</li>
-						
 						<li>
 							<strong>Description:</strong>
 							<span th:text="${one.info}"></span>
@@ -37,7 +36,7 @@
 						</li>
 						<li>
 							<span>
-								<a th:href="@{/property/edit/{id}(id=${property.id})}">Edit</a>
+								<a th:href="@{/property/edit/{id}(id=${one.id})}">Edit Property</a>
 							</span>
 						</li>
 						<li>

@@ -28,14 +28,14 @@
 		<fieldset>
 			<legend>Incident General Info</legend>
 			<div th:fragment="incident(incident)">
+				<div class="m-b-10" th:if="${incident.hasStatusInfo()}">
+					<label>Status: </label>
+					<span th:text="${incident.status}"> </span>
+				</div>
+				
 				<div class="m-b-10">
 					<label> Incident Type:</label>
 					<span th:text="${incident.incidentType}"> </span>
-				</div>
-
-				<div class="m-b-10">
-					<label>Status:</label>
-					<span th:text="${incident.status}"> </span>
 				</div>
 
 				<div class="m-b-10">

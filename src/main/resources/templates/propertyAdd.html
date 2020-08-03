@@ -35,15 +35,14 @@
 			<input type="hidden" id="balance_id" th:field="${property.balance}" />
 			<input type="hidden" id="max_total_id" th:field="${property.maxTotalValue}" />
 		
-			<label> Related incident </label>
-			<a th:href="@{/incident/{id}(id=${property.incident.id})}">Back to Incident</a>
+			<label> Incident: <a th:href="@{/incident/{id}(id=${property.incident.id})}">Back to Incident</a> </label>
 		
 			<div th:if="${damageTypes}">
 				<label class="required">*Problem Type</label>
-				<ul class="menu">
-					<li class="menu" th:each="r : ${damageTypes}">
+				<ul class="button-group">
+					<li th:each="r : ${damageTypes}">
 						<input type="radio" th:field="${property.damageType}" th:value="${r.id}" required="required" />
-						<label th:text="${r.name}"></label>
+						<span th:text="${r.name}"></span>
 					</li>
 				</ul>
 			</div>

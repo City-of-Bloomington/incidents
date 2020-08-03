@@ -20,31 +20,31 @@
       <div th:fragment="properties(properties,totalBalance)">
       <h2>Properties</h2>
       <div th:switch="${properties}">
-	<h2 th:case="null">No properties found</h2>
-	<div th:case="*">
-	  <table>
-	    <thead>
-	      <tr>
-		<th>Damage Type</th>
-		<th>Description</th>
-		<th>Value</th>
-		<th>More Details</th>
-	      </tr>
-	    </thead>
-	    <tbody>
-	      <tr th:each="one : ${properties}">
-		<td th:text="${one.damageType}"></td>
-		<td th:text="${one.info}"></td>
-		<td th:text="${one.valueFr}">&#36;</td>
-		<td><a th:href="@{/propertyView/{id}(id=${one.id})}">Details</a></td>
-	      </tr>
-	      <tr>
-		<td colspan="2">Total</td><td th:text="${totalBalance}"></td>
-		<td>&nbsp;</td>
-	      </tr>	      
-	    </tbody>
-	  </table>
-	</div>      
+				<h2 th:case="null">No properties found</h2>
+				<div th:case="*">
+					<table>
+						<thead>
+							<tr>
+								<th>Damage Type</th>
+								<th>Description</th>
+								<th>Value</th>
+								<th>More Details</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="one : ${properties}">
+								<td th:text="${one.damageType}"></td>
+								<td th:text="${one.info}"></td>
+								<td th:text="${one.valueFr}">&#36;</td>
+								<td><a th:href="@{/propertyView/{id}(id=${one.id})}">Details</a></td>
+							</tr>
+							<tr>
+								<td colspan="2">Total</td><td th:text="${totalBalance}"></td>
+								<td>&nbsp;</td>
+							</tr>	      
+						</tbody>
+					</table>
+				</div>      
       </div>
     </div>
   </body>

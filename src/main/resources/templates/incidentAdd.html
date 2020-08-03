@@ -26,8 +26,6 @@
 		<p th:insert="general::incidentInstructions"></p>
 
 		<p>* indicated required fields</p>
-		<p>Incident Type: <strong><span th:text="${incident.incidentType}"></span></strong>.</p>
-		
 		<form
 			action="#"
 			th:action="@{/incidentNext/{id}(id=${incident.id})}"
@@ -107,10 +105,7 @@
 			
 			<fieldset>
 				<legend>Incident Details</legend>
-				<div>
-					<label>Incident Type:</label>
-					<span th:text="${incident.incidentType}"></span>
-				</div>
+				<p><strong>Incident Type: </strong> <span th:text="${incident.incidentType}"> </span> </p>				
 
 				<div th:if="${incident.showGainedEntry()}">
 					<!-- we do not show these fields for lost or vandal cases -->
@@ -127,7 +122,7 @@
 					<textarea th:field="${incident.otherEntry}" id="other_entry" rows="3" cols="60" placeholder="Other entry details"></textarea>
 					<!-- end gained entry section -->
 				</div>
-				
+
 				<label for="details_id" class="required">*Incident Details</label>
 				<textarea th:field="${incident.details}" id="details_id" rows="3" cols="60" required="reguired"
 									placeholder="Incident Details"></textarea>

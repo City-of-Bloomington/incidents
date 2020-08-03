@@ -28,7 +28,7 @@
 				<ul style="padding: 0;">
 					<li>
 						<strong>Involvement:</strong>
-						<span th:text="${personType}"></span>
+						<span th:text="${person.personType}"></span>
 					</li>
 					<li>
 						<strong>Name:</strong>
@@ -70,10 +70,6 @@
 					<li>
 						<strong>Occupation:</strong>
 						<span th:text="${person.occupation}"></span>
-					</li>
-					<li>
-						<strong>Incident:</strong>
-						<span><a th:href="@{/incidentView/{id}(id=${person.incident.id})}">Back to Incident</a></span>
 					</li>
 				</ul>
 			</div>				

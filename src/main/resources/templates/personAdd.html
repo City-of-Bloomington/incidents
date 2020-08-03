@@ -45,10 +45,10 @@
 					<option th:each="r : ${personTypes}" th:value="${r.id}" th:text="${r.name}">
 					</option>
 				</select>
-
-				<p>Incident:</p>
-				<a th:href="@{/incident/{id}(id=${person.incident.id})}">Back to Incident Page</a>
 				
+				<p><strong> Incident: </strong>
+						<a th:href="@{/incident/{id}(id=${person.incident.id})}">Back to Incident Page</a>
+				</p>
 				<label for="firstname_id" class="required">*First Name</label>
 				<input type="text" th:field="${person.firstname}" id="firstname_id" size="30" required="required"
 					placeholder="First Name" />
@@ -61,8 +61,7 @@
 					placeholder="Last Name" />
 
 				<label for="suffix_id"> Suffix</label>
-				<input type="text" th:field="${person.suffix}" id="suffix_id" size="6" placeholder="Suffix" />(Jr, Sr)
-
+				<input type="text" th:field="${person.suffix}" id="suffix_id" size="6" placeholder="Jr, Sr, .." />
 				<label for="address_id" class="required">*Address: </label>
 				<input type="text" th:field="${person.address}" id="address_id" size="70" required="required" placeholder="Address" />
 
@@ -77,26 +76,28 @@
 				<input type="text" th:field="${person.zip}" id="zip_id" size="10" required="required" maxlength="10"
 					placeholder="Zip code" />
 					
-				<label for="phone_type_id" class="required">*Primary phone: </label>
-				<select id="phone_type_id" th:field="${person.phoneType}">
-					<option th:each="r : ${phoneTypes}" th:value="${r}" th:text="${r}">
-					</option>
-				</select>
-
+				<label for="phone_type_id" class="required">*Primary phone: 
+					<select id="phone_type_id" th:field="${person.phoneType}">
+						<option th:each="r : ${phoneTypes}" th:value="${r}" th:text="${r}">
+						</option>
+					</select>
+				</label>
 				<input type="text" th:field="${person.phone}" id="phone" size="20" required="required" maxlength="30"
 					placeholder="Phone number" />
 
-				<label for="phone_type_id2">Another Phone: </label>
-				<select id="phone_type_id2" th:field="${person.phoneType2}">
-					<option th:each="r : ${phoneTypes}" th:value="${r}" th:text="${r}">
-					</option>
-				</select>
-
+				<label for="phone_type_id2">Another Phone: 
+					<select id="phone_type_id2" th:field="${person.phoneType2}">
+						<option th:each="r : ${phoneTypes}" th:value="${r}" th:text="${r}">
+						</option>
+					</select>
+				</label>
 				<input type="text" th:field="${person.phone2}" id="phone2" size="20" maxlength="30" placeholder="Phone number" />
 
 				<label for="email2">Another Email: </label>
 				<input type="text" th:field="${person.email2}" id="email2" size="70" maxlength="80" placeholder="Another Email" />
-			
+				<label for="dob_id" class="required">*Date of Birth: </label>
+				<input type="date" th:field="${person.dobStr}" id="dob_id" value="" size="15" placeholder="mm/dd/yyyy" />
+				<!--
 				<label for="dob_mm" class="required">*Date of Birth: </label>
 				<select id="dob_mm" th:field="${person.dobMonth}" required="required">
 					<option value="">Month</option>
@@ -113,7 +114,7 @@
 					</option>
 				</select>
 				<input type="text" th:field="${person.dobYear}" id="dob_year" size="4" required="required" maxlength="4" placeholder="Year" />(mm/dd/yyyy)
-				
+				-->
 				<label for="dln_id">Driver License Number: </label>
 				<input type="text" th:field="${person.dln}" id="dln_id" size="20" maxlength="20" placeholder="DLN" />
 				

@@ -24,12 +24,10 @@
 				<div th:case="*">
 					<div th:each="person : ${persons}">
 						<div th:replace="personView::person(${person})">
-							<li>
-								<span>
-									<a th:href="@{/person/edit/{id}(id=${person.id})}">Edit</a>
-								</span>
-							</li>							
 						</div>
+						<div>
+							<a th:href="@{/person/edit/{id}(id=${person.id})}">Edit Person</a>
+						</div>							
 					</div>
 				</div>      
       </div>

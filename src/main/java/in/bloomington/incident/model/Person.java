@@ -335,7 +335,17 @@ public class Person extends TopModel implements java.io.Serializable{
 				if(val != null && !val.isEmpty())
 						this.dln = val;
     }
-
+		@Transient
+		public void setDobStr(String val){
+				if(val != null && !val.equals("")){
+						System.err.println(" dob "+val);
+						try{
+								dob = Helper.dfDate.parse(val); // yyyy-mm-dd format
+						}catch(Exception ex){
+								System.err.println(" "+ex);
+						}
+				}
+		}
     public Date getDob() {
 				if(dob == null
 					 && dobYear != null

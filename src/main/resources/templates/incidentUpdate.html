@@ -23,7 +23,7 @@
 		<p th:insert="general::incidentInstructions">
 		</p>
 		<p> *indicated required fields</p>
-		<p>Incident Type <span th:text="${incident.incidentType}"> </span> </p>
+
 		<form action="#" th:action="@{/incident/update/{id}(id=${incident.id})}" th:object="${incident}"
 			onsubmit="return verifyIncidentInput()" method="post">
 			<input type="hidden" th:field="${incident.email}" />
@@ -108,11 +108,7 @@
 
 			<fieldset>
 				<legend>Incident Details</legend>
-
-				<div>
-					<label>Incident Type:</label>
-					<span th:text="${incident.incidentType}"></span>
-				</div>
+				<p><strong>Incident Type: </strong> <span th:text="${incident.incidentType}"> </span> </p>	
 				<div th:if="${incident.showGainedEntry()}">
 					<!-- we do not show these fields for lost or vandal cases -->
 					<label for="entry_type">Identify how entry was gained to commit the theft.</label>

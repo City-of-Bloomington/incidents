@@ -89,8 +89,7 @@
     </a>
     
     <a th:href="@{/}" title="Incident Reporting" class="app-name">
-      Incident Reporting</a>
-    
+      Bloomington Police Department Incident Reporting</a>
     <nav id="navigation" role="navigation" aria-labelledby="navigation">
       <ul>
         <li>
@@ -116,6 +115,17 @@
         </ul>
       </details>
     </nav>
+		<br />
+		<div>
+			<ul class="button-group">
+				<li>
+					<input type="button" th:attr="onclick=|window.location.href='@{/search/received}'|" value="Received" />
+				</li>
+				<li>
+					<input type="button" th:attr="onclick=|window.location.href='@{/search/confirmed}'|" value="Confirmed" />
+				</li>				
+			</ul>
+		</div>
   </div>
 
   <div th:fragment="emailFields">
@@ -170,7 +180,6 @@
 		</p>
     <ul>
 			<li>You are able to add multiple pieces of property, however, you can only add one piece of property at a time </li>
-      <li>Total value Should not exceed $2000</li>
 			<li>If you are reporting damage to a vehicle, please give the description and value of the damage in the vehicle screen.</li>
     </ul>
   </div>

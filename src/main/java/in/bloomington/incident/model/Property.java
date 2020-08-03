@@ -90,7 +90,11 @@ public class Property extends TopModel implements java.io.Serializable{
 						damageType = val;
 				}
     }
-				
+		@Transient
+		public boolean hasDamageTypeInfo(){
+				return damageType != null;
+		}
+		
     public int getId() {
 				return id;
     }
