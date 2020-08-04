@@ -45,7 +45,7 @@ public class UserController extends TopController{
 						return ret;
 				}
         model.addAttribute("users", userService.getAll());
-        return "users";
+        return "staff/users";
     }
     @GetMapping("/user/new")
     public String newUser(Model model) {
@@ -58,7 +58,7 @@ public class UserController extends TopController{
 				List<Role> roles = roleService.getAll();
 				if(roles != null)
 						model.addAttribute("roles", roles);						
-        return "userAdd";
+        return "staff/userAdd";
     }     
     @PostMapping("/user/add")
     public String addUser(@Valid User user, BindingResult result, Model model) {
@@ -67,14 +67,14 @@ public class UserController extends TopController{
 						return ret;
 				}
         if (result.hasErrors()) {
-            return "userAdd";
+            return "staff/userAdd";
         }
         userService.save(user);
 				addMessage("Added Successfully");
 				logger.debug("New user added "+user);
         model.addAttribute("users", userService.getAll());
 				model.addAttribute("messages", messages);				
-        return "users";
+        return "staff/users";
     }
 
     @GetMapping("/user/edit/{id}")
@@ -92,13 +92,13 @@ public class UserController extends TopController{
 						logger.error(" "+ex);
 						model.addAttribute("users", userService.getAll());
 						model.addAttribute("errors", errors);
-						return "users";
+						return "staff/users";
 				}
 				List<Role> roles = roleService.getAll();
 				if(roles != null)
 						model.addAttribute("roles", roles);				
 				model.addAttribute("user", user);
-				return "userUpdate";
+				return "staff/userUpdate";
     }
     @PostMapping("/user/update/{id}")
     public String updateUser(@PathVariable("id") int id, @Valid User user, 
@@ -111,7 +111,7 @@ public class UserController extends TopController{
 						String error = Helper.extractErrors(result);
 						addError("Error update user "+error);
 						user.setId(id);
-						return "userUpdate";
+						return "staff/userUpdate";
 				}
 				addMessage("Updated Successfully");
 				userService.update(user);
@@ -120,7 +120,7 @@ public class UserController extends TopController{
 				if(roles != null)
 						model.addAttribute("roles", roles);
 				model.addAttribute("messages", messages);
-				return "users";
+				return "staff/users";
     }
 		
     @GetMapping("/user/delete/{id}")
@@ -144,7 +144,7 @@ public class UserController extends TopController{
 				else if(hasErrors()){
 						model.addAttribute("errors", errors);
 				}
-				return "users";
+				return "staff/users";
     }
 		private User findUserFromSession(HttpSession session){
 				User user = null;
@@ -162,7 +162,7 @@ public class UserController extends TopController{
 				if(!user.isAdmin()){
 						addMessage("you can not access");
 						addMessagesAndErrorsToSession(session);
-						return "redirect:staff";
+						return "redirect:/staff";
 				}
 				return "";
 		}

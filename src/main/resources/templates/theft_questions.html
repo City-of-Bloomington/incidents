@@ -24,32 +24,18 @@
   <main class="public-questions-wrapper">
     <div>
       <h2>Incident Reporting (continue)</h2>
-      <p>Please answer the following theft questions carefully to create your report.</p>
+      <p>Please answer the following theft question carefully to create your report.</p>
     </div>
-    
     <div id="questions">
-      <div class="question" style="display:none">
-        <p>1.Was there unlawful entry to a building or dwelling made during this incident?
-        </p>
-        <form>
-          <ul>
-            <li><input class="option" type="radio" name="question2"
-                value="Stop. Please contact us at 812-339-4477 to make this report." />Yes
-            </li>
-            <li> <input class="option" type="radio" name="question2" value="Next" />No
-            </li>
-          </ul>
-        </form>
-      </div>
       <div class="question" style="display:none" id="lastQuestion">
-        <p>2. Is the stolen property a firearm, vehicle or license plate?
+        <p>1. Is the stolen property a firearm, vehicle or license plate?
         </p>
         <form>
           <ul>
-            <li> <input class="option" type="radio" name="question3"
+            <li> <input class="option" type="radio" name="question1"
                 value="Stop. Please contact us at 812-339-4477 to make this report." />Yes
             </li>
-            <li> <input class="option" type="radio" name="question3" value="Next" />No
+            <li> <input class="option" type="radio" name="question1" value="Next" />No
             </li>
           </ul>
         </form>
@@ -65,8 +51,9 @@
       <div id="finalStep" class="question" style="display:none">
         <p> In the next step you will provide a valid email, please click on Next </p>
         <form action="#" th:action="@{/emailRequest/}" method="get">
-					<input type="hidden" name="type_id" th:value="${type_id}" />					
-          <button type="submit" class="next-button"> Next </button>
+					<input type="hidden" name="type_id" th:value="${type_id}" />
+					
+          <p> Click on <button type="submit" class="next-button"> Next </button> to continue </p>
         </form>
       </div>
     </div>

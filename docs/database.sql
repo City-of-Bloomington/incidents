@@ -460,5 +460,29 @@ old role_actions;
  insert into incident_types values(6,'Fraud');
  alter table incidents modify entry_type enum('Unlocked vehicle','Broke window','Pried window','Pried door','Other specify','Damaged window','Damaged door','Unlocked door');
  alter table incidents add evidence text after details;
- 
- 
+
+;;
+;; added on 8/4/2020
+;;
+  create table fraud_types(                                                          id int unsigned auto_increment primary key,                                     name varchar(50)                                                                )engine=InnoDB;
+
+insert into fraud_types values
+(1,'Identity Theft'),
+(2,'Banking Scam'),
+(3,'Telephone Scam'),
+(4,'Grant Scam'),
+(5,'Investment Scam'),
+(6,'Lottery Scam'),
+(7,'Sweepstake Scam'),
+(8,'Charity Scam'),
+(9,'Pyramid or Ponzi Scheme'),
+(10,'Census-Related Fraud'),
+(11,'Movers Fraud'),
+(12,'Rental Scam'),
+(13,'IRS Imposter Scam'),
+(14,'Phishing or Vishing Scam'),
+(15,'Internet Fraud'),
+(16,'Ransomware'),
+(17,'Other Specify');
+
+  create table frauds(                                                              id int unsigned auto_increment primary key,                                     incident_id int unsigned NOT NULL,                                              fraud_type_id int unsigned,                                                     other_type varchar(80),                                                         identity_used text,                                                             account_used text,                                                              amount_taken decimal(12,2),                                                     details text,                                                                  foreign key(incident_id) references incidents(id),                              foreign key(fraud_type_id) references fraud_types(id)                           )engine=InnoDB;

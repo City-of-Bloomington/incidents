@@ -122,7 +122,7 @@
 				  <dt> <label for="race_id">Race: </label></dt>
 				  <dd>
 				    <select id="race_id" th:field="${person.raceType}" >
-				      <option value="">Race</option>
+				      <option value="">Pick Race</option>
 				      <option th:each="r : ${raceTypes}"
 					      th:value="${r.id}"
 					      th:text="${r.name}">
@@ -151,7 +151,7 @@
 				  <dt><label for="sex_id">Sex:</label></dt>
 				  <dd>
 				    <select id="sex_id" th:field="${person.sex}" >
-				      <option value="">Sex</option>
+				      <option value="">Pick Sex</option>
 				      <option th:each="r : ${sexTypes}"
 					      th:value="${r}"
 					      th:text="${r}">
@@ -163,7 +163,7 @@
 					</dt>
 					<dd>
 						<select id="gender_id" th:field="${person.gender}">
-							<option value="">Gender</option>
+							<option value="">Pick Gender</option>
 							<option th:each="r : ${genderTypes}" th:value="${r}" th:text="${r}">
 							</option>
 						</select>
@@ -173,7 +173,7 @@
 					</dt>
 					<dd>
 						<select id="eth_id" th:field="${person.ethnicity}">
-							<option value="">Ethnicity</option>
+							<option value="">Pick Ethnicity</option>
 							<option th:each="r : ${ethnicityTypes}" th:value="${r}" th:text="${r}">
 							</option>
 						</select>

@@ -32,24 +32,24 @@ public class CarDamageTypeController extends TopController{
 		@GetMapping("/carDamageTypes")
     public String getAll(Model model) {
         model.addAttribute("types", carDamageTypeService.getAll());
-        return "carDamageTypes";
+        return "staff/carDamageTypes";
     }
 		@GetMapping("/carDamageType/new")
     public String newDamageType(Model model) {
 				CarDamageType type = new CarDamageType();
         model.addAttribute("type", type);
-        return "carDamageTypeAdd";
+        return "staff/carDamageTypeAdd";
     }     
     @PostMapping("/carDamageType/add")
     public String addDamageType(@Valid CarDamageType carDamageType, BindingResult result, Model model) {
         if (result.hasErrors()) {
-            return "addCarDamageType";
+            return "staff/addCarDamageType";
         }
         carDamageTypeService.save(carDamageType);
 				addMessage("Added Successfully");
         model.addAttribute("types", carDamageTypeService.getAll());
 				model.addAttribute("messages", messages);				
-        return "carDamageTypes";
+        return "staff/carDamageTypes";
     }
 
 		@GetMapping("/carDamageType/edit/{id}")
@@ -62,26 +62,26 @@ public class CarDamageTypeController extends TopController{
 						addError("Invalid carDamage type Id");
 						model.addAttribute("types", carDamageTypeService.getAll());
 						model.addAttribute("errors", errors);
-						return "carDamageTypes";
+						return "staff/carDamageTypes";
 				}
 				model.addAttribute("type", type);
 				if(hasMessages()){
 						model.addAttribute("messages", messages);		
 				}
-				return "carDamageTypeUpdate";
+				return "staff/carDamageTypeUpdate";
 		}
 		@PostMapping("/carDamageType/update/{id}")
 		public String updateCarDamageType(@PathVariable("id") int id, @Valid CarDamageType type, 
 														 BindingResult result, Model model) {
 				if (result.hasErrors()) {
 						type.setId(id);
-						return "carDamageTypeUpdate";
+						return "staff/carDamageTypeUpdate";
 				}
 				addMessage("Updated Successfully");
 				carDamageTypeService.update(type);
 				model.addAttribute("types", carDamageTypeService.getAll());				
 				model.addAttribute("messages", messages);
-				return "carDamageTypes";
+				return "staff/carDamageTypes";
 		}
 		
 		@GetMapping("/carDamageType/delete/{id}")
@@ -102,7 +102,7 @@ public class CarDamageTypeController extends TopController{
 						model.addAttribute("errors", errors);
 				}
 					 
-				return "carDamageTypes";
+				return "staff/carDamageTypes";
 		}
 		
 }

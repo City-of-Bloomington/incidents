@@ -77,7 +77,8 @@ public class WebController extends TopController{
     public String introVandal(Model model,
 															HttpSession session) {
 				getMessagesAndErrorsFromSession(session, model);
-				return "vandal_questions";
+				model.addAttribute("type_id", 2); // vandalism is 2 
+				return "email_questions";
     }       
     @RequestMapping("/introLost")
     public String introLost(Model model,

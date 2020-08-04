@@ -36,7 +36,6 @@ public class PersonTypeController extends TopController{
 		@Autowired
     UserService userService;
 		
-		
 		@GetMapping("/personTypes")
     public String getAll(Model model) {
 				String ret = canUserAccess(session);
@@ -44,7 +43,7 @@ public class PersonTypeController extends TopController{
 						return ret;
 				}
         model.addAttribute("types", personTypeService.getAll());
-        return "personTypes";
+        return "staff/personTypes";
     }
 		@GetMapping("/personType/new")
     public String newPersonType(Model model) {
@@ -54,7 +53,7 @@ public class PersonTypeController extends TopController{
 				}
 				PersonType personType = new PersonType();
         model.addAttribute("type", personType);
-        return "personTypeAdd";
+        return "staff/personTypeAdd";
     }     
     @PostMapping("/personType/add")
     public String addPersonType(@Valid PersonType personType, BindingResult result, Model model) {
@@ -63,13 +62,13 @@ public class PersonTypeController extends TopController{
 						return ret;
 				}
         if (result.hasErrors()) {
-            return "addPersonType";
+            return "staff/addPersonType";
         }
         personTypeService.save(personType);
 				addMessage("Added Successfully");
         model.addAttribute("types", personTypeService.getAll());
 				model.addAttribute("messages", messages);				
-        return "personTypes";
+        return "staff/personTypes";
     }
 
 		@GetMapping("/personType/edit/{id}")
@@ -86,13 +85,13 @@ public class PersonTypeController extends TopController{
 						addError("Invalid person type Id");
 						model.addAttribute("types", personTypeService.getAll());
 						model.addAttribute("errors", errors);
-						return "personTypes";
+						return "staff/personTypes";
 				}
 				model.addAttribute("type", type);
 				if(hasMessages()){
 						model.addAttribute("messages", messages);				
 				}
-				return "personTypeUpdate";
+				return "staff/personTypeUpdate";
 		}
 		@PostMapping("/personType/update/{id}")
 		public String updatePersonType(@PathVariable("id") int id,
@@ -106,13 +105,13 @@ public class PersonTypeController extends TopController{
 						String error = Helper.extractErrors(result);
 						addError(error);
 						type.setId(id);
-						return "personTypeUpdate";
+						return "staff/personTypeUpdate";
 				}
 				addMessage("Updated Successfully");
 				personTypeService.save(type);
 				model.addAttribute("types", personTypeService.getAll());				
 				model.addAttribute("messages", messages);
-				return "personTypes";
+				return "staff/personTypes";
 		}
 		
 		@GetMapping("/personType/delete/{id}")
@@ -136,7 +135,7 @@ public class PersonTypeController extends TopController{
 						model.addAttribute("errors", errors);
 				}
 					 
-				return "personTypes";
+				return "staff/personTypes";
 		}
 		private User findUserFromSession(HttpSession session){
 				User user = null;

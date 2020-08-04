@@ -43,7 +43,7 @@ public class DamageTypeController extends TopController{
 						return ret;
 				}				
         model.addAttribute("types", damageTypeService.getAll());
-        return "damageTypes";
+        return "staff/damageTypes";
     }
 		@GetMapping("/damageType/new")
     public String newDamageType(Model model) {
@@ -53,7 +53,7 @@ public class DamageTypeController extends TopController{
 				}
 				DamageType damageType = new DamageType();
         model.addAttribute("type", damageType);
-        return "damageTypeAdd";
+        return "staff/damageTypeAdd";
     }     
     @PostMapping("/damageType/add")
     public String addDamageType(@Valid DamageType damageType, BindingResult result, Model model) {
@@ -62,13 +62,13 @@ public class DamageTypeController extends TopController{
 						return ret;
 				}
         if (result.hasErrors()) {
-            return "addDamageType";
+            return "staff/addDamageType";
         }
         damageTypeService.save(damageType);
 				addMessage("Added Successfully");
         model.addAttribute("types", damageTypeService.getAll());
 				model.addAttribute("messages", messages);				
-        return "damageTypes";
+        return "staff/damageTypes";
     }
 
 		@GetMapping("/damageType/edit/{id}")
@@ -85,13 +85,13 @@ public class DamageTypeController extends TopController{
 						addError("Invalid damage type Id");
 						model.addAttribute("types", damageTypeService.getAll());
 						model.addAttribute("errors", errors);
-						return "damageTypes";
+						return "staff/damageTypes";
 				}
 				model.addAttribute("type", type);
 				if(hasErrors()){
 						model.addAttribute("errors", errors);
 				}
-				return "dDamageTypeUpdate";
+				return "staff/damageTypeUpdate";
 		}
 		@PostMapping("/damageType/update/{id}")
 		public String updateDamageType(@PathVariable("id") int id,
@@ -103,13 +103,13 @@ public class DamageTypeController extends TopController{
 				}
 				if (result.hasErrors()) {
 						type.setId(id);
-						return "damageTypeUpdate";
+						return "staff/damageTypeUpdate";
 				}
 				addMessage("Updated Successfully");
 				damageTypeService.update(type);
 				model.addAttribute("types", damageTypeService.getAll());				
 				model.addAttribute("messages", messages);
-				return "damageTypes";
+				return "staff/damageTypes";
 		}
 		
 		@GetMapping("/damageType/delete/{id}")
@@ -133,7 +133,7 @@ public class DamageTypeController extends TopController{
 						model.addAttribute("errors", errors);
 				}
 					 
-				return "damageTypes";
+				return "staff/damageTypes";
 		}
 		private User findUserFromSession(HttpSession session){
 				User user = null;

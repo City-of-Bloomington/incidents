@@ -125,6 +125,7 @@
 				<select
 					id="race_id"
 					th:field="${person.raceType}">
+					<option value="">Pick Race</option>
 					<option th:each="r : ${raceTypes}" th:value="${r.id}" th:text="${r.name}">
 					</option>
 				</select>
@@ -149,19 +150,19 @@
 				<input type="text" th:field="${person.weight}" id="weight_id" size="3" placeholder="weight lb" />
 				<label for="sex_id">Sex:</label>
 				<select id="sex_id" th:field="${person.sex}">
-					<option value="">Sex</option>
+					<option value="">Pick Sex</option>
 					<option th:each="r : ${sexTypes}" th:value="${r}" th:text="${r}">
 					</option>
 				</select>
 				<label for="gender_id">Gender:</label>
 				<select id="gender_id" th:field="${person.gender}">
-					<option value="">Gender</option>
+					<option value="">Pick Gender</option>
 					<option th:each="r : ${genderTypes}" th:value="${r}" th:text="${r}">
 					</option>
 				</select>
 				<label for="eth_id">Ethnicity:</label>
 				<select id="eth_id" th:field="${person.ethnicity}">
-					<option value="">Ethnicity</option>
+					<option value="">Pick Ethnicity</option>
 					<option th:each="r : ${ethnicityTypes}" th:value="${r}" th:text="${r}">
 					</option>
 				</select>				

@@ -47,7 +47,7 @@ public class RoleController extends TopController{
 						return ret;
 				}
         model.addAttribute("roles", roleService.getAll());
-        return "roles";
+        return "staff/roles";
     }
     @GetMapping("/role/new")
     public String newRole(Model model
@@ -61,7 +61,7 @@ public class RoleController extends TopController{
 				List<Action> actions = actionService.getAll();
 				if(actions != null)
 						model.addAttribute("actions", actions);
-        return "roleAdd";
+        return "staff/roleAdd";
     }     
     @PostMapping("/role/add")
     public String addRole(@Valid Role role,
@@ -73,13 +73,13 @@ public class RoleController extends TopController{
 						return ret;
 				}
         if (result.hasErrors()) {
-            return "roleAdd";
+            return "staff/roleAdd";
         }
         roleService.save(role);
 				addMessage("Added Successfully");
         model.addAttribute("roles", roleService.getAll());
 				model.addAttribute("messages", messages);				
-        return "roles";
+        return "staff/roles";
     }
 
     @GetMapping("/role/edit/{id}")
@@ -98,13 +98,13 @@ public class RoleController extends TopController{
 						addError("Invalid role Id");
 						model.addAttribute("roles", roleService.getAll());
 						model.addAttribute("errors", errors);
-						return "roles";
+						return "staff/roles";
 				}
 				model.addAttribute("role", role);
 				List<Action> actions = actionService.getAll();
 				if(actions != null)
 						model.addAttribute("actions", actions);
-				return "roleUpdate";
+				return "staff/roleUpdate";
     }
     @PostMapping("/role/update/{id}")
     public String updateRole(@PathVariable("id") int id,
@@ -118,13 +118,13 @@ public class RoleController extends TopController{
 				}
 				if (result.hasErrors()) {
 						role.setId(id);
-						return "roleUpdate";
+						return "staff/roleUpdate";
 				}
 				addMessage("Updated Successfully");
 				roleService.save(role);
 				model.addAttribute("roles", roleService.getAll());				
 				model.addAttribute("messages", messages);
-				return "roles";
+				return "staff/roles";
     }
 		
     @GetMapping("/role/delete/{id}")
@@ -149,7 +149,7 @@ public class RoleController extends TopController{
 						model.addAttribute("errors", errors);
 				}
 					 
-				return "roles";
+				return "staff/roles";
     }
 		private User findUserFromSession(HttpSession session){
 				User user = null;

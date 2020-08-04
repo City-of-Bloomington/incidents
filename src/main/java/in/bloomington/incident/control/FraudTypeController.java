@@ -20,115 +20,112 @@ import org.springframework.web.bind.annotation.PathVariable;
 import javax.validation.Valid;
 // import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestParam;
-import in.bloomington.incident.service.RaceTypeService;
+import in.bloomington.incident.service.FraudTypeService;
 import in.bloomington.incident.service.UserService;
-import in.bloomington.incident.model.RaceType;
+import in.bloomington.incident.model.FraudType;
 import in.bloomington.incident.model.User;
-import in.bloomington.incident.utils.Helper;
+
 
 @Controller
-public class RaceTypeController extends TopController{
+public class FraudTypeController extends TopController{
 
 		@Autowired
-		RaceTypeService raceTypeService;
+		FraudTypeService fraudTypeService;
 		@Autowired 
     private HttpSession session;
 		@Autowired
     UserService userService;
 		
-		
-		@GetMapping("/raceTypes")
+		@GetMapping("/fraudTypes")
     public String getAll(Model model) {
 				String ret = canUserAccess(session);
 				if(!ret.isEmpty()){
 						return ret;
-				}
-        model.addAttribute("types", raceTypeService.getAll());
-        return "staff/raceTypes";
+				}				
+        model.addAttribute("types", fraudTypeService.getAll());
+        return "staff/fraudTypes";
     }
-		@GetMapping("/raceType/new")
-    public String newRaceType(Model model) {
+		@GetMapping("/fraudType/new")
+    public String newFraudType(Model model) {
 				String ret = canUserAccess(session);
 				if(!ret.isEmpty()){
 						return ret;
 				}
-				RaceType raceType = new RaceType();
-        model.addAttribute("type", raceType);
-        return "staff/raceTypeAdd";
+				FraudType fraudType = new FraudType();
+        model.addAttribute("type", fraudType);
+        return "staff/fraudTypeAdd";
     }     
-    @PostMapping("/raceType/add")
-    public String addRaceType(@Valid RaceType raceType, BindingResult result, Model model) {
+    @PostMapping("/fraudType/add")
+    public String addFraudType(@Valid FraudType fraudType, BindingResult result, Model model) {
 				String ret = canUserAccess(session);
 				if(!ret.isEmpty()){
 						return ret;
 				}
         if (result.hasErrors()) {
-            return "staff/addRaceType";
+            return "staff/addFraudType";
         }
-        raceTypeService.save(raceType);
+        fraudTypeService.save(fraudType);
 				addMessage("Added Successfully");
-        model.addAttribute("types", raceTypeService.getAll());
+        model.addAttribute("types", fraudTypeService.getAll());
 				model.addAttribute("messages", messages);				
-        return "staff/raceTypes";
+        return "staff/fraudTypes";
     }
 
-		@GetMapping("/raceType/edit/{id}")
+		@GetMapping("/fraudType/edit/{id}")
 		public String showEditForm(@PathVariable("id") int id, Model model) {
 				String ret = canUserAccess(session);
 				if(!ret.isEmpty()){
 						return ret;
 				}
-				RaceType type = null;
+				FraudType type = null;
 				try{
-						type = raceTypeService.findById(id);
+						type = fraudTypeService.findById(id);
 						
 				}catch(Exception ex){
-						addError("Invalid race type Id");
-						model.addAttribute("types", raceTypeService.getAll());
+						addError("Invalid fraud type Id");
+						model.addAttribute("types", fraudTypeService.getAll());
 						model.addAttribute("errors", errors);
-						return "staff/raceTypes";
+						return "staff/fraudTypes";
 				}
 				model.addAttribute("type", type);
-				if(hasMessages()){
-						model.addAttribute("messages", messages);				
+				if(hasErrors()){
+						model.addAttribute("errors", errors);
 				}
-				return "staff/raceTypeUpdate";
+				return "staff/fraudTypeUpdate";
 		}
-		@PostMapping("/raceType/update/{id}")
-		public String updateRaceType(@PathVariable("id") int id,
-																	 @Valid RaceType type, 
+		@PostMapping("/fraudType/update/{id}")
+		public String updateFraudType(@PathVariable("id") int id,
+																	 @Valid FraudType type, 
 																	 BindingResult result, Model model) {
 				String ret = canUserAccess(session);
 				if(!ret.isEmpty()){
 						return ret;
 				}
 				if (result.hasErrors()) {
-						String error = Helper.extractErrors(result);
-						addError(error);
 						type.setId(id);
-						return "staff/raceTypeUpdate";
+						return "staff/fraudTypeUpdate";
 				}
 				addMessage("Updated Successfully");
-				raceTypeService.save(type);
-				model.addAttribute("types", raceTypeService.getAll());				
+				fraudTypeService.update(type);
+				model.addAttribute("types", fraudTypeService.getAll());				
 				model.addAttribute("messages", messages);
-				return "staff/raceTypes";
+				return "staff/fraudTypes";
 		}
 		
-		@GetMapping("/raceType/delete/{id}")
-		public String deleteRaceType(@PathVariable("id") int id, Model model) {
+		@GetMapping("/fraudType/delete/{id}")
+		public String deleteFraudType(@PathVariable("id") int id, Model model) {
 				String ret = canUserAccess(session);
 				if(!ret.isEmpty()){
 						return ret;
 				}
 				try{
-						RaceType type = raceTypeService.findById(id);
-						raceTypeService.delete(id);
+						FraudType type = fraudTypeService.findById(id);
+						fraudTypeService.delete(id);
 						addMessage("Deleted Succefully");
 				}catch(Exception ex){
-						addError("Invalid raceType ID "+id);
+						addError("Invalid fraudType ID "+id);
 				}
-				model.addAttribute("types", raceTypeService.getAll());
+				model.addAttribute("types", fraudTypeService.getAll());
 				if(hasMessages()){
 						model.addAttribute("messages", messages);
 				}
@@ -136,7 +133,7 @@ public class RaceTypeController extends TopController{
 						model.addAttribute("errors", errors);
 				}
 					 
-				return "staff/raceTypes";
+				return "staff/fraudTypes";
 		}
 		private User findUserFromSession(HttpSession session){
 				User user = null;
@@ -145,7 +142,7 @@ public class RaceTypeController extends TopController{
 						user = userService.findById(user2.getId());
 				}
 				return user;
-    }		
+    }
 		private String canUserAccess(HttpSession session){
 				User user = findUserFromSession(session);
 				if(user == null){

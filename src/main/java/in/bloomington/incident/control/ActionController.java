@@ -47,7 +47,7 @@ public class ActionController extends TopController{
 						return ret;
 				}				
         model.addAttribute("actions", actionService.getAll());
-        return "actions";
+        return "staff/actions";
     }
     @GetMapping("/action/new")
     public String newAction(Model model) {
@@ -57,7 +57,7 @@ public class ActionController extends TopController{
 				}
 				Action action = new Action();
         model.addAttribute("action", action);
-        return "actionAdd";
+        return "staff/actionAdd";
     }     
     @PostMapping("/action/add")
     public String addAction(@Valid Action action, BindingResult result, Model model) {
@@ -67,14 +67,14 @@ public class ActionController extends TopController{
 				}
         if (result.hasErrors()) {
 						logger.error(" Error creating new action ");
-            return "addAction";
+            return "staff/addAction";
         }
         actionService.save(action);
 				addMessage("Added Successfully");
 				logger.debug("Action added successfully");
         model.addAttribute("actions", actionService.getAll());
 				model.addAttribute("messages", messages);				
-        return "actions";
+        return "staff/actions";
     }
 
     @GetMapping("/action/edit/{id}")
@@ -92,10 +92,10 @@ public class ActionController extends TopController{
 						model.addAttribute("actions", actionService.getAll());
 						model.addAttribute("errors", errors);
 						logger.error("Exception getting action ="+id+" "+ex);
-						return "actions";
+						return "staff/actions";
 				}
 				model.addAttribute("action", action);
-				return "actionUpdate";
+				return "staff/actionUpdate";
     }
     @PostMapping("/action/update/{id}")
     public String updateAction(@PathVariable("id") int id,
@@ -108,13 +108,13 @@ public class ActionController extends TopController{
 				if (result.hasErrors()) {
 						action.setId(id);
 						logger.error("Error update action ="+id);						
-						return "updateAction";
+						return "staff/updateAction";
 				}
 				addMessage("Updated Successfully");
 				actionService.update(action);
 				model.addAttribute("actions", actionService.getAll());				
 				model.addAttribute("messages", messages);
-				return "actions";
+				return "staff/actions";
     }
 		
     @GetMapping("/action/delete/{id}")
@@ -139,7 +139,7 @@ public class ActionController extends TopController{
 						model.addAttribute("errors", errors);
 				}
 					 
-				return "actions";
+				return "staff/actions";
     }
 		private User findUserFromSession(HttpSession session){
 				User user = null;
@@ -157,7 +157,7 @@ public class ActionController extends TopController{
 				if(!user.isAdmin()){
 						addMessage("you can not access");
 						addMessagesAndErrorsToSession(session);
-						return "redirect:staff";
+						return "redirect:/staff"; // redirect:staff
 				}
 				return "";
 		}

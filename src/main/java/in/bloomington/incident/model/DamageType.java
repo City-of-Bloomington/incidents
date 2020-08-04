@@ -46,45 +46,45 @@ public class DamageType implements java.io.Serializable{
     }
 		
     public DamageType(int id, @NotNull(message = "Damage type may not be null") String name, Character inactive) {
-	super();
-	this.id = id;
-	this.name = name;
-	this.inactive = inactive;
+				super();
+				this.id = id;
+				this.name = name;
+				this.inactive = inactive;
     }
 
 
 
     public int getId() {
-	return id;
+				return id;
     }
 
     public void setId(int id) {
-	this.id = id;
+				this.id = id;
     }
 
     public String getName() {
-	return name;
+				return name;
     }
     public Character getInactive() {
-	return inactive;
+				return inactive;
     }
     public void setName(String val) {
-	if(val != null)	
-	this.name = val;
+				if(val != null)	
+						this.name = val;
     }
     public void setInactive(Character val) {
-	if(val != null)
-	    this.inactive = val;
+				if(val != null)
+						this.inactive = val;
     }
     @Transient
     public boolean isActive(){
-	return inactive == null || !Character.isLetter(inactive);
+				return inactive == null || !Character.isLetter(inactive);
     }
     @Override
     public boolean equals(Object obj) { 
           
-	if(this == obj) 
-	    return true; 
+				if(this == obj) 
+						return true; 
 				
         if(obj == null || obj.getClass()!= this.getClass()) 
             return false; 
@@ -94,13 +94,13 @@ public class DamageType implements java.io.Serializable{
     }
     @Override
     public int hashCode(){ 
-	int ret = 29;
+				int ret = 29;
         return ret += this.id; 
     }
 
     @Override
     public String toString() {
-	return name;
+				return name;
     } 	
 		
 }

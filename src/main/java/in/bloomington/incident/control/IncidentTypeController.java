@@ -44,7 +44,7 @@ public class IncidentTypeController extends TopController{
 						return ret;
 				}
         model.addAttribute("types", incidentTypeService.getAll());
-        return "incidentTypes";
+        return "staff/incidentTypes";
     }
     @GetMapping("/incidentType/new")
     public String newIncidentType(Model model) {
@@ -54,7 +54,7 @@ public class IncidentTypeController extends TopController{
 				}
 				IncidentType incidentType = new IncidentType();
         model.addAttribute("type", incidentType);
-        return "incidentTypeAdd";
+        return "staff/incidentTypeAdd";
     }     
     @PostMapping("/incidentType/add")
     public String addIncidentType(@Valid IncidentType incidentType, BindingResult result, Model model) {
@@ -63,13 +63,13 @@ public class IncidentTypeController extends TopController{
 						return ret;
 				}
         if (result.hasErrors()) {
-            return "addIncidentType";
+            return "staff/addIncidentType";
         }
         incidentTypeService.save(incidentType);
 				addMessage("Added Successfully");
         model.addAttribute("types", incidentTypeService.getAll());
 				model.addAttribute("messages", messages);				
-        return "incidentTypes";
+        return "staff/incidentTypes";
     }
 
     @GetMapping("/incidentType/edit/{id}")
@@ -86,10 +86,10 @@ public class IncidentTypeController extends TopController{
 						addError("Invalid incident type Id");
 						model.addAttribute("types", incidentTypeService.getAll());
 						model.addAttribute("errors", errors);
-						return "incidentTypes";
+						return "staff/incidentTypes";
 				}
 				model.addAttribute("type", type);
-				return "incidentTypeUpdate";
+				return "staff/incidentTypeUpdate";
     }
     @PostMapping("/incidentType/update/{id}")
     public String updateIncidentType(@PathVariable("id") int id, @Valid IncidentType type, 
@@ -100,13 +100,13 @@ public class IncidentTypeController extends TopController{
 				}
 				if (result.hasErrors()) {
 						type.setId(id);
-						return "incidentTypeUpdate";
+						return "staff/incidentTypeUpdate";
 				}
 				addMessage("Updated Successfully");
 				incidentTypeService.save(type);
 				model.addAttribute("types", incidentTypeService.getAll());				
 				model.addAttribute("messages", messages);
-				return "incidentTypes";
+				return "staff/incidentTypes";
     }
 		
     @GetMapping("/incidentType/delete/{id}")
@@ -131,7 +131,7 @@ public class IncidentTypeController extends TopController{
 						model.addAttribute("errors", errors);
 				}
 					 
-				return "incidentTypes";
+				return "staff/incidentTypes";
     }
 		// 
 		private User findUserFromSession(HttpSession session){
@@ -150,7 +150,7 @@ public class IncidentTypeController extends TopController{
 				if(!user.isAdmin()){
 						addMessage("you can not access");
 						addMessagesAndErrorsToSession(session);
-						return "redirect:staff";
+						return "redirect:/staff";
 				}
 				return "";
 		}		
