@@ -281,8 +281,13 @@ public class IncidentController extends TopController{
 								addMessage("You need to add a person");
 								addMessagesAndErrorsToSession(session);	    
 								return "redirect:/person/add/"+id;
-						}	
-						if(!incident.hasPropertyList()){
+						}
+						if(incident.isFraudRelated() && !incident.hasFraudList()){
+								addMessage("You need to add fraud info");
+								addMessagesAndErrorsToSession(session);	    
+								return "redirect:/fraud/add/"+id;
+						}
+						if(!incident.isFraudRelated() && !incident.hasPropertyList()){
 								addMessage("You need to add a property");
 								addMessagesAndErrorsToSession(session);	    
 								return "redirect:/property/add/"+id;

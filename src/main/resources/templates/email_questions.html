@@ -29,9 +29,15 @@
     <div id="finalStep" class="question" style="display:none">
       <form action="#" th:action="@{/initialStart}" onsubmit="return verifyConfirm();" method="post">
         <input type="hidden" name="type_id" th:value="${type_id}" />
-        <div th:replace="general::reportSteps"></div>
+				<div th:unless="${type_id == 6}">
+					<div th:replace="general::reportSteps">
+					</div>
+				</div>
+				<div th:if="${type_id == 6}">
+					<div th:replace="general::reportStepsForFraud">
+					</div>
+				</div>				
         <div th:replace="general::emailFields"></div>
-        
         <div class="next_div">
           <p> Click on <button type="submit" class="next-button"> Next </button> to continue </p>
         </div>

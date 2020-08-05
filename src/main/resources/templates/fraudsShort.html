@@ -1,0 +1,48 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--
+ - @copyright Copyright (C) 2014-2015 City of Bloomington, Indiana. All rights reserved.
+ - @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
+ - @author W. Sibo <sibow@bloomington.in.gov>
+ -
+ -->
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head th:replace="general::head('Properties')"></head>
+  <body>
+    <header th:replace="general::header">
+    </header>		
+    <div th:if="${errors}">
+      <div th:insert="general::errors(${errors})"></div>			
+    </div>
+    <div th:if="${messages}">
+      <div th:insert="general::messages(${messages})"></div>			
+    </div>				
+    <div th:fragment="properties(properties,totalBalance)">
+      <h2>Reported Frauds/Scams</h2>
+      <div th:switch="${frauds}">
+				<h4 th:case="null">No fraud/scam found</h4>
+				<div th:case="*">
+					<ul th:each="one : ${frauds}" style="padding: 0;">
+						<li th:if="${one.hasFraudTypeInfo()}">
+							<strong>Fraud Type:</strong>
+							<span th:text="${one.fraudType}"></span>
+						</li>
+						<li>
+							<strong>Details:</strong>
+							<span th:text="${one.info}"></span>
+						</li>
+						<li>
+							<strong>Amount Taken:</strong>
+							<span th:text="${one.amountTakenFr}"></span>
+						</li>
+						<li>
+							<span>
+								<a th:href="@{/fraud/edit/{id}(id=${one.id})}">Edit Fraud/Scam</a>
+							</span>
+						</li>
+					</ul>
+				</div>      
+      </div>
+    </div>
+  </body>
+</htmL>
+		

@@ -69,6 +69,10 @@ public class IncidentType implements java.io.Serializable{
 				return name != null && name.indexOf("Lost") > -1;
     }
     @Transient
+    public boolean isFraudRelated(){
+				return name != null && name.indexOf("Fraud") > -1;
+    }		
+    @Transient
     public boolean isVandalRelated(){
 				return name != null && name.indexOf("Vandal") > -1;
     }		

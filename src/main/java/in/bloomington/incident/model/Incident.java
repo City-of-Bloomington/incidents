@@ -114,6 +114,10 @@ public class Incident extends TopModel implements java.io.Serializable{
 
     @OneToMany
     @JoinColumn(name="incident_id",insertable=false, updatable=false)		
+    private List<Fraud> frauds;
+		
+    @OneToMany
+    @JoinColumn(name="incident_id",insertable=false, updatable=false)		
     private List<Media> medias;
 
     @OneToMany
@@ -145,7 +149,8 @@ public class Incident extends TopModel implements java.io.Serializable{
 										List<Property> properties,
 										List<Vehicle> vehicles,
 										List<ActionLog> actionLogs,
-										List<Media> medias
+										List<Media> medias,
+										List<Fraud> frauds
 										) {
 				super();
 				this.id = id;
@@ -171,6 +176,7 @@ public class Incident extends TopModel implements java.io.Serializable{
 				this.vehicles = vehicles;
 				setActionLogs(actionLogs);
 				this.medias = medias;
+				this.frauds = frauds;
     }
 
     public int getId() {
@@ -409,9 +415,14 @@ public class Incident extends TopModel implements java.io.Serializable{
     public boolean isVandalRelated(){
 				return incidentType != null && incidentType.isVandalRelated();
     }
+		
     @Transient
     public boolean isNotVandalRelated(){
 				return !isVandalRelated();
+    }
+		@Transient
+    public boolean isFraudRelated(){
+				return incidentType != null && incidentType.isFraudRelated();
     }
 		// entry gained is not required for lost property or vandalism
     @Transient
@@ -546,15 +557,21 @@ public class Incident extends TopModel implements java.io.Serializable{
     public List<Property> getProperties(){
 				return this.properties;
     }
+    public void setProperties(List<Property> properties){
+				this.properties = properties;
+    }
     public List<Person> getPersons(){
 				return this.persons;
     }		
     public void setPersons(List<Person> vals){
 				this.persons = vals;
-    }		
-    public void setProperties(List<Property> properties){
-				this.properties = properties;
     }
+    public List<Fraud> getFrauds(){
+				return this.frauds;
+    }		
+    public void setFrauds(List<Fraud> vals){
+				this.frauds = vals;
+    }				
     public List<Vehicle> getVehicles(){
 				return this.vehicles;
     }
@@ -616,12 +633,6 @@ public class Incident extends TopModel implements java.io.Serializable{
     @Transient
     public boolean hasNextAction(){
 				getStatus();
-				/**
-					 if(lastAction != null && !(lastAction.isProcessed()
-				   || lastAction.isRejected())){
-					 return true;
-					 }
-				*/
 				if(lastAction != null && lastAction.hasNextstep()){
 						return true;
 				}
@@ -671,7 +682,10 @@ public class Incident extends TopModel implements java.io.Serializable{
     public boolean canBeChanged(){
 				return !hasActionLogs() || hasEmailActionLogOnly();
     }    
-				
+    @Transient
+    public boolean hasFraudList(){
+				return frauds != null && frauds.size() > 0;
+    }				
     @Transient
     public boolean hasPersonList(){
 				return persons != null && persons.size() > 0;

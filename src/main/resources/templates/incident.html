@@ -29,16 +29,18 @@
 					value="Add Person" />
 			</li>
 		
-			<li>
+			<li th:if="${!incident.isFraudRelated()}">
 				<input type="button" th:attr="onclick=|window.location.href='${hostPath}/property/add/${incident.id}'|"
 					value="Add Property" />
 			</li>
-		
-			<li>
+			<li th:if="${!incident.isFraudRelated()}">		
 				<input type="button" th:attr="onclick=|window.location.href='${hostPath}/vehicle/add/${incident.id}'|"
 					value="Add Vehicle" />
 			</li>
-		
+			<li th:if="${incident.isFraudRelated()}">
+				<input type="button" th:attr="onclick=|window.location.href='${hostPath}/fraud/add/${incident.id}'|"
+					value="Add Fraud/Scam" />
+			</li>		
 			<li>
 				<input type="button" th:attr="onclick=|window.location.href='${hostPath}/media/add/${incident.id}'|"
 					value="Upload Image" />
@@ -71,7 +73,9 @@
 		<div th:if="${incident.hasVehicleList()}">
 			<div th:insert="vehiclesShort::vehicles(${incident.vehicles})"></div>
 		</div>
-		
+		<div th:if="${incident.hasFraudList()}">
+			<div th:insert="fraudsShort::frauds(${incident.frauds})"></div>
+		</div>
 		<div th:if="${incident.hasMediaList()}">
 			<div th:insert="medias::medias(${incident.medias})"></div>
 		</div>

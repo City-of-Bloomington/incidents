@@ -290,7 +290,7 @@ public class Property extends TopModel implements java.io.Serializable{
     }
     @Override
     public String toString() {
-				String ret = "Item ["+getInfo()+"]";
+				String ret = "Property: ["+getInfo()+"]";
 				return ret;
     } 		
 

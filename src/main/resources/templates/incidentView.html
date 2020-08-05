@@ -89,6 +89,10 @@
 		<div th:if="${incident.hasVehicleList()}">
 			<div th:insert="vehiclesView::vehicles(${incident.vehicles})"></div>
 		</div>
+
+		<div th:if="${incident.hasFraudList()}">
+			<div th:insert="fraudsView::frauds(${incident.frauds})"></div>
+		</div>
 		
 		<div th:if="${incident.hasMediaList()}">
 			<div th:insert="mediasView::medias(${incident.medias})"></div>

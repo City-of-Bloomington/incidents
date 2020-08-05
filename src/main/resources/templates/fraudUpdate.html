@@ -1,0 +1,60 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--
+ - @copyright Copyright (C) 2014-2015 City of Bloomington, Indiana. All rights reserved.
+ - @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
+ - @author W. Sibo <sibow@bloomington.in.gov>
+ -
+ -->
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head th:replace="general::head('Properties')"></head>
+
+<body>
+	<header th:replace="general::header"></header>
+
+	<div th:if="${errors}">
+		<div th:insert="general::errors(${errors})"></div>
+	</div>
+	
+	<div th:if="${messages}">
+		<div th:insert="general::messages(${messages})"></div>
+	</div>
+
+	<main class="public-questions-wrapper">
+		<h2>Add Fraud/Scam Details</h2>
+		<p>*Indicate required fields</p>
+
+		<form
+			action="#"
+				th:action="@{/fraud/update/{id}(id=${fraud.id})}"
+				th:object="${fraud}"
+				method="post">
+		
+			<input type="hidden" th:field="${fraud.incident}" />
+		
+			<label> Incident: <a th:href="@{/incident/{id}(id=${fraud.incident.id})}">Back to Incident</a> </label>
+			<label class="required">*Fraud/Scam Type</label>
+			<ul>
+				<li th:each="r : ${fraudTypes}">
+					<input type="radio" th:field="${fraud.fraudType}" th:value="${r.id}" required="required" />
+					<span th:text="${r.name}"></span>
+					</li>
+			</ul>
+			<label for="otherType">Other type:</label>
+			<input type="text" th:field="${fraud.otherType}" id="otherType" placeholder="Specify other fraud type" />
+			<label for="identityUsed">Identity Used</label>
+			<input type="text" th:field="${fraud.identityUsed}" id="identityUsed" placeholder="Identity Used" />
+		
+			<label for="accountUsed">Account Used</label>
+			<input type="text" th:field="${fraud.accountUsed}" id="accountUsed" placeholder="Account Used" />
+			<label for="amountTaken">Amount Taken ($)</label>
+			<input type="text" th:field="${fraud.amountTaken}" id="amountTaken" placeholder="Amount taken in dddd.dd format" />
+					
+			<label for="details" class="required">*Fraud/Scam Details</label>
+			<textarea th:field="${fraud.details}" id="details" placeholder="Fraud or scam details" rows="5" cols="50" required="required">
+			</textarea>
+			<input type="submit" value="Save Changes" />			
+		</form>
+	</main>
+</body>
+</htmL>
