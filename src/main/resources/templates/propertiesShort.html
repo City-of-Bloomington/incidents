@@ -16,7 +16,7 @@
     <div th:if="${messages}">
       <div th:insert="general::messages(${messages})"></div>			
     </div>				
-    <div th:fragment="properties(properties,totalBalance)">
+    <div th:fragment="properties(properties,totalBalance,hostPath)">
       <h2>Reported Properties</h2>
       <div th:switch="${properties}">
 				<h4 th:case="null">No properties found</h4>
@@ -38,6 +38,12 @@
 							<span>
 								<a th:href="@{/property/edit/{id}(id=${one.id})}">Edit Property</a>
 							</span>
+							<ul class="button-group">
+								<li>
+									<input type="button" th:attr="onclick=|window.location.href='${hostPath}/property/edit/${one.id}'|"
+												 value="Edit Property" />
+								</li>
+							</ul>							
 						</li>
 						<li>
 							<strong>Total Reported Properties Value: </strong>

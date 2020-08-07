@@ -32,19 +32,19 @@
 					<label>Status: </label>
 					<span th:text="${incident.status}"> </span>
 				</div>
-				
+				<br />
 				<div class="m-b-10">
-					<label> Incident Type:</label>
+					<label><strong> Incident Type: </strong></label>
 					<span th:text="${incident.incidentType}"> </span>
 				</div>
-
+				<br />
 				<div class="m-b-10">
-					<label>Reporter Email:</label>
+					<label><strong> Reporter Email: </strong></label>
 					<span th:text="${incident.email}"> </span>
 				</div>
 
 				<div class="m-b-10">
-					<label>Report Date & Time:</label>
+					<label>Report Date & Time: </label>
 					<span th:text="${incident.receivedStr}"> </span>
 				</div>
 
@@ -54,17 +54,17 @@
 				</div>
 		
 				<div class="m-b-10">
-					<label>Incident address:</label>
+					<label>Incident address: </label>
 					<span th:text="${incident.addressInfo}"> </span>
 				</div>
 				
 				<div class="m-b-10" th:if="${incident.hasAccessInfo()}">
-					<label>Entry access:</label>
+					<label>Entry access: </label>
 					<span th:text="${incident.entryInfo}"></span>
 				</div>
 				
 				<div class="m-b-10">
-					<label>Incident Details:</label>
+					<label>Incident Details: </label>
 					<span th:text="${incident.details}"></span>
 				</div>
 				<div class="m-b-10" th:if="${incident.hasEvidenceInfo()}">
@@ -74,10 +74,6 @@
 			</div>
 		</fieldset>
 
-		<div class="button-group">
-
-		</div>
-		
 		<div th:if="${incident.hasPersonList()}">
 			<div th:insert="personsView::persons(${incident.persons})"></div>
 		</div>

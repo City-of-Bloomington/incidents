@@ -38,18 +38,15 @@ public class FraudType implements java.io.Serializable{
     private int id;
     @NotNull(message = "Fraud type may not be null")
     private String name;
-    private Character inactive;
-    //
 		
     public FraudType(){
 
     }
 		
-    public FraudType(int id, @NotNull(message = "Damage type may not be null") String name, Character inactive) {
+    public FraudType(int id, @NotNull(message = "Damage type may not be null") String name) {
 				super();
 				this.id = id;
 				this.name = name;
-				this.inactive = inactive;
     }
 
 
@@ -65,20 +62,9 @@ public class FraudType implements java.io.Serializable{
     public String getName() {
 				return name;
     }
-    public Character getInactive() {
-				return inactive;
-    }
     public void setName(String val) {
 				if(val != null)	
 						this.name = val;
-    }
-    public void setInactive(Character val) {
-				if(val != null)
-						this.inactive = val;
-    }
-    @Transient
-    public boolean isActive(){
-				return inactive == null || !Character.isLetter(inactive);
     }
     @Override
     public boolean equals(Object obj) { 

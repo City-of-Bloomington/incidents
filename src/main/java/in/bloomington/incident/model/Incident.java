@@ -661,7 +661,11 @@ public class Incident extends TopModel implements java.io.Serializable{
 						addError("Person information are required");
 						return false;
 				}
-				if(!hasPropertyList()){
+				if(isFraudRelated() && !hasFraudList()){
+						addError("You need to add fraud/scam information");
+						return false;
+				}
+				if(!isFraudRelated() && !hasPropertyList()){
 						addError("You need to add property information");
 						return false;
 				}

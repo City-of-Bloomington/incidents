@@ -175,7 +175,7 @@ public class Fraud extends TopModel implements java.io.Serializable{
 						}
 						ret += " Account used: "+accountUsed;
 				}
-				if(details != null && details.isEmpty()){
+				if(details != null && !details.isEmpty()){
 						if(!ret.isEmpty()){
 								ret += ", ";
 						}

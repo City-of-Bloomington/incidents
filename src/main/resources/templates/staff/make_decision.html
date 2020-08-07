@@ -15,6 +15,7 @@
   </header>
 
   <main class="staff">
+		
     <h2>Incident</h2>
     <div th:if="${errors}">
       <div th:insert="general::errors(${errors})"></div>
@@ -33,6 +34,9 @@
     <div th:if="${incident.hasPropertyList()}">
       <div th:insert="propertiesView::properties(${incident.properties},${incident.totalValueFr})"></div>
     </div>
+			<div th:if="${incident.hasFraudList()}">
+				<div th:insert="fraudsView::frauds(${incident.frauds})"></div>			
+			</div>		
     <div th:if="${incident.hasVehicleList()}">
       <div th:insert="vehiclesView::vehicles(${incident.vehicles})"></div>
     </div>

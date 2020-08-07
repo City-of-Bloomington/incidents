@@ -33,13 +33,16 @@
 			<input type="hidden" th:field="${fraud.incident}" />
 		
 			<label> Incident: <a th:href="@{/incident/{id}(id=${fraud.incident.id})}">Back to Incident</a> </label>
-			<label class="required">*Fraud/Scam Type</label>
-			<ul>
-				<li th:each="r : ${fraudTypes}">
-					<input type="radio" th:field="${fraud.fraudType}" th:value="${r.id}" required="required" />
-					<span th:text="${r.name}"></span>
-					</li>
-			</ul>
+			<label class="required" for="fraudType">*Fraud/Scam Type</label>
+			<select
+				id="fraudType"
+				th:field="${fraud.fraudType}"
+				required="required">
+				<option value="">Pick Fraud/Scam type</option>
+				<option th:each="r : ${fraudTypes}" th:value="${r.id}" th:text="${r.name}">
+				</option>
+			</select>
+
 			<label for="otherType">Other type:</label>
 			<input type="text" th:field="${fraud.otherType}" id="otherType" placeholder="Specify other fraud type" />
 			<label for="identityUsed">Identity Used</label>

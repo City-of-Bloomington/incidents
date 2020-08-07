@@ -21,35 +21,33 @@
     <div th:fragment="incidents(incidents)">
       <h3>Incidents</h3>
       <div th:switch="${incidents}">
-	<h4 th:case="null">No incidents found</h4>
-	<div th:case="*">
-	  <table>
-	    <thead>
-	      <tr>
-		<th>ID</th>
-		<th>Status</th>
-		<th>Incident Type</th>
-		<th>Received</th>
-		<th>Incident Date & Time</th>
-		<th>Address </th>
-		<th>Details </th>
-		<th>More Details</th>
-	      </tr>
-	    </thead>
-	    <tbody>
-	      <tr th:each="one : ${incidents}">
-		<td th:text="${one.id}"></td>
-		<td th:text="${one.status}"></td>		
-		<td th:text="${one.incidentType}"></td>		
-		<td th:text="${one.receivedStr}"></td>
-		<td th:text="${one.dateTimeInfo}"></td>
-		<td th:text="${one.address}"></td>
-		<td th:text="${one.details}"></td>
-		<td><a th:href="@{/incidentView/{id}(id=${one.id})}">More Details</a></td>
-	      </tr>
-	    </tbody>
-	  </table>
-	</div>      
+				<h4 th:case="null">No incidents found</h4>
+				<div th:case="*">
+					<table>
+						<thead>
+							<tr>
+								<th>ID</th>
+								<th>Status</th>
+								<th>Incident Type</th>
+								<th>Received</th>
+								<th>Incident Date & Time</th>
+								<th>Address </th>
+								<th>Details </th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="one : ${incidents}">
+								<td th:text="${one.id}"></td>
+								<td><a th:href="@{/incidentView/{id}(id=${one.id})}" th:text="${incident.id}"></a></td>								
+								<td th:text="${one.status}"></td>		
+								<td th:text="${one.incidentType}"></td>		
+								<td th:text="${one.receivedStr}"></td>
+								<td th:text="${one.dateTimeInfo}"></td>
+								<td th:text="${one.address}"></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>      
       </div>
     </div>
   </body>

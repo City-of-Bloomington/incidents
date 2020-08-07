@@ -17,7 +17,7 @@
     <div th:if="${messages}">
       <div th:insert="general::messages(${messages})"></div>			
 		</div>
-    <div th:fragment="persons(persons)">
+    <div th:fragment="persons(persons,hostPath)">
 			<h2>Reported People</h2>
       <div th:switch="${persons}">
 				<h4 th:case="null">No person found </h4>
@@ -25,9 +25,12 @@
 					<div th:each="person : ${persons}">
 						<div th:replace="personView::person(${person})">
 						</div>
-						<div>
-							<a th:href="@{/person/edit/{id}(id=${person.id})}">Edit Person</a>
-						</div>							
+						<ul class="button-group">
+							<li>
+								<input type="button" th:attr="onclick=|window.location.href='${hostPath}/person/edit/${person.id}'|"
+											 value="Edit Person" />
+							</li>
+						</ul>
 					</div>
 				</div>      
       </div>

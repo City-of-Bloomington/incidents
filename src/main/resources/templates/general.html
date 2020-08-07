@@ -107,27 +107,34 @@
         <ul class="menu">
           <li class="menu"><a th:href="@{/search/received}">Received</a></li>
           <li class="menu"><a th:href="@{/search/confirmed}">Confirmed</a></li>
-          <li class="menu"><a th:href="@{/search/approved}">Approved</a></li>
-          <li class="menu"><a th:href="@{/search/incomplete}">Incomplete</a></li>
-          <li class="menu"><a th:href="@{/search}">Search </a></li>
           <li class="menu"><a th:href="@{/report}">Stats Reports </a></li>
           <li class="menu"><a th:href="@{/settings}">Settings</a></li>
         </ul>
       </details>
     </nav>
 		<br />
-		<div>
-			<ul class="button-group">
-				<li>
-					<input type="button" th:attr="onclick=|window.location.href='@{/search/received}'|" value="Received" />
-				</li>
-				<li>
-					<input type="button" th:attr="onclick=|window.location.href='@{/search/confirmed}'|" value="Confirmed" />
-				</li>				
-			</ul>
-		</div>
-  </div>
-
+		<br />
+	</div>
+	<div th:fragment="staffMenu">
+		<ul class="button-group">
+			<li>
+				<input type="button" th:attr="onclick=|window.location.href='@{/search/received}'|" value="Received" />
+			</li>
+			<li>
+				<input type="button" th:attr="onclick=|window.location.href='@{/search/confirmed}'|" value="Confirmed" />
+			</li>
+      <li>
+				<input type="button" th:attr="onclick=|window.location.href='@{/search/approved}'|" value="Approved" />
+			</li>
+      <li>
+				<input type="button" th:attr="onclick=|window.location.href='@{/search/incomplete}'|" value="Incomplete" />
+			</li>
+      <li>
+				<input type="button" th:attr="onclick=|window.location.href='@{/search}'|" value="Search" />
+			</li>
+		</ul>
+	</div>
+	
   <div th:fragment="emailFields">
     <p>Please provide a valid email address. If you do not have a valid email address, please ask a relative to do the report for you.</p>
 

@@ -55,15 +55,6 @@ public class PersonController extends TopController{
     RaceTypeService raceTypeService;
 		
     //
-		/**
-    private List<String> raceTypes = 
-				new ArrayList<>(Arrays.asList("Caucasion",
-																			"Hispanic",
-																			"African American",
-																			"Native American",
-																			"Asian",
-																			"Other"));
-		*/
     private List<String> phoneTypes = 
 				new ArrayList<>(Arrays.asList("Cell","Home","Work"));
     private List<String> personTitles =
@@ -156,7 +147,7 @@ public class PersonController extends TopController{
         personService.save(person);
 				addMessage("Saved Succefully");
 				addMessagesAndErrorsToSession(session);
-				return "redirect:/property/add/"+incident.getId(); 
+				return "redirect:/incident/"+incident.getId(); 
     }
     
     @GetMapping("/person/{id}")

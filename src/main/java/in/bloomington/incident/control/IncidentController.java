@@ -331,7 +331,6 @@ public class IncidentController extends TopController{
 						return "redirect:/error";
 				}
 				if(incident.canBeSubmitted()){
-						addMessage("this is final page");
 						model.addAttribute("incident", incident);
 						handleErrorsAndMessages(model);	
 						return "finalSubmit";

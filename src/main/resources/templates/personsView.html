@@ -20,37 +20,17 @@
       <div th:insert="general::messages(${messages})"></div>			
     </div>						
     <div th:fragment="persons(persons)">
+			<h2>Reported People</h2>
       <div th:switch="${persons}">
 				<h4 th:case="null">No person found </h4>
 				<div th:case="*">
-					<fieldset><caption>Reported People</caption>
-						<ul style="padding: 0;" th:each="person : ${persons}">
-							<li>
-								<strong>Involvement: </strong>
-								<span th:if="${person.hasPersonType()}">
-									<span th:text="${person.personType}"> </span>
-								</span>
-							</li>
-							<li>
-								<strong>Full Name </strong>
-								<span th:text="${person.fullname}"></span>							
-							</li>
-							<li>
-								<strong>Address </strong>
-								<span th:text="${person.fullAddress}"></span>
-							</li>
-							<li>
-								<strong>Contact </strong>
-								<span th:text="${person.contactInfo}"></span>
-							</li>
-							<li>
-								<span><a th:href="@{/personView/{id}(id=${person.id})}">More Details</a></span>		
-							</li>
-						</ul>
-					</fieldset>
-				</div>      
-      </div>
-    </div>
+					<div th:each="person : ${persons}">
+						<div th:replace="personView::person(${person})">
+						</div>
+					</div>      
+				</div>
+			</div>
+		</div>
   </body>
 </htmL>
 		

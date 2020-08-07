@@ -61,28 +61,33 @@
 		<h2>Incident General Info</h2>
 		<div>
 			<div th:replace="incidentView::incident(${incident})"></div>
-			 <a th:href="@{/incident/edit/{id}(id=${incident.id})}">Edit Incident</a> 
-		</div>
-		<div th:if="${incident.hasPersonList()}">
-			<div th:insert="personsShort::persons(${incident.persons})"></div>
-		</div>
-		<div th:if="${incident.hasPropertyList()}">
-			<div th:insert="propertiesShort::properties(${incident.properties},${incident.totalValueFr})"></div>
-		</div>
+			<ul class="button-group">
+				<li>
+					<input type="button" th:attr="onclick=|window.location.href='${hostPath}/incident/edit/${incident.id}'|"
+					value="Edit Incident" />
+				</li>
+			</ul>
+			<div th:if="${incident.hasPersonList()}">
+				<div th:insert="personsShort::persons(${incident.persons},${hostPath})"></div>
+			</div>
+			<div th:if="${incident.hasPropertyList()}">
+				<div th:insert="propertiesShort::properties(${incident.properties},${incident.totalValueFr},${hostPath})"></div>
+			</div>
 		
-		<div th:if="${incident.hasVehicleList()}">
-			<div th:insert="vehiclesShort::vehicles(${incident.vehicles})"></div>
-		</div>
-		<div th:if="${incident.hasFraudList()}">
-			<div th:insert="fraudsShort::frauds(${incident.frauds})"></div>
-		</div>
-		<div th:if="${incident.hasMediaList()}">
-			<div th:insert="medias::medias(${incident.medias})"></div>
-		</div>
-
-		<div class="next_div" th:if="${incident.canBeSubmitted()}">
-			<input type="button" th:attr="onclick=|window.location.href='${hostPath}/incident/finalPage/${incident.id}'|"
-				value="Final Submit Page" />
+			<div th:if="${incident.hasVehicleList()}">
+				<div th:insert="vehiclesShort::vehicles(${incident.vehicles},${hostPath})"></div>
+			</div>
+			<div th:if="${incident.hasFraudList()}">
+				<div th:insert="fraudsShort::frauds(${incident.frauds},${hostPath})"></div>			
+			</div>
+			<div th:if="${incident.hasMediaList()}">
+				<div th:insert="medias::medias(${incident.medias})"></div>
+			</div>
+			
+			<div class="next_div" th:if="${incident.canBeSubmitted()}">
+				<input type="button" th:attr="onclick=|window.location.href='${hostPath}/incident/finalPage/${incident.id}'|"
+							 value="Final Submit Page" />
+			</div>
 		</div>
 	</main>
 </body>

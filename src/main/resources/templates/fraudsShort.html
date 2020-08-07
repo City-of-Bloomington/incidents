@@ -16,14 +16,14 @@
     <div th:if="${messages}">
       <div th:insert="general::messages(${messages})"></div>			
     </div>				
-    <div th:fragment="properties(properties,totalBalance)">
+    <div th:fragment="frauds(frauds, hostPath)">
       <h2>Reported Frauds/Scams</h2>
       <div th:switch="${frauds}">
 				<h4 th:case="null">No fraud/scam found</h4>
 				<div th:case="*">
 					<ul th:each="one : ${frauds}" style="padding: 0;">
 						<li th:if="${one.hasFraudTypeInfo()}">
-							<strong>Fraud Type:</strong>
+							<strong>Fraud/Scam Type:</strong>
 							<span th:text="${one.fraudType}"></span>
 						</li>
 						<li>
@@ -35,9 +35,12 @@
 							<span th:text="${one.amountTakenFr}"></span>
 						</li>
 						<li>
-							<span>
-								<a th:href="@{/fraud/edit/{id}(id=${one.id})}">Edit Fraud/Scam</a>
-							</span>
+							<ul class="button-group">
+								<li>
+									<input type="button" th:attr="onclick=|window.location.href='${hostPath}/fraud/edit/${one.id}'|"
+												 value="Edit Fraud/Scam" />
+								</li>
+							</ul>
 						</li>
 					</ul>
 				</div>      

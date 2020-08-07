@@ -27,14 +27,18 @@
 				th:object="${incident}"
 				method="get">
 
-				<fieldset>
+				<fieldset><legend>Final Submit Page</legend>
 					<p>Your report is ready to be submitted. After submission you will receive an email with a link to verify. Your report will be reviewed. Reports not verified within 24 hours Will not be processed by the system.</p>
 					
 					<p> If approved, you will receive an email with the case number for your report. If denied, you will receive an email with a reason for the denial.</p>
-					<p>If you need to review you report one more time click on 
-						<a class="m-b-10" th:href="@{/incident/{id}(id=${incident.id})}">Incident Details</a>
+					<p>If you need to review your report one more time click on 
+						<a class="m-b-10" th:href="@{/incident/{id}(id=${incident.id})}">Review report details</a>
 					</p>
-					<input type="submit" value="Submit" />
+					<ul class="button-group">
+						<li>
+						<input type="submit" value="Submit Report" />
+						</li>
+					</ul>
 				</fieldset>
 			</form>
 		</main>
