@@ -15,7 +15,16 @@
   </header>
 
   <main class="staff">
+		<div th:replace="general::staffMenu">
+		</div>
     <h2>Settings</h2>
+		<div th:if="${errors}">
+			<div th:insert="general::errors(${errors})"></div>
+		</div>
+		<div th:if="${messages}">
+			<div th:insert="general::messages(${messages})"></div>
+		</div>
+		
     <ul>
       <li><a th:href="@{/addressInput}">Address Check</a></li>
       <li><a th:href="@{/users}">Users</a></li>

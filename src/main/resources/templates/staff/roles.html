@@ -11,8 +11,9 @@
     <header>
       <div th:replace="general::header-staff"></div>
     </header>
-    
     <main class="staff">
+			<div th:replace="general::staffMenu">
+			</div>
       <h4>User Roles</h4>
       
       <div th:if="${errors}">
@@ -22,12 +23,15 @@
       <div th:if="${messages}">
         <div th:insert="general::messages(${messages})"></div>
       </div>
-      <p><a href="/role/new">Add New Role</a></p>
-      
+			<ul class="button-group">
+				<li>
+					<input type="button" th:attr="onclick=|window.location.href='@{/role/new}'|"
+								 value="Add New User Role" />
+				</li>
+			</ul>	      
       <div th:switch="${roles}">
         <h4 th:case="null">No roles found </h4>
         <div th:case="*">
-          <h2>User Roles </h2>
           <table>
             <thead>
               <tr>

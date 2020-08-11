@@ -486,3 +486,14 @@ insert into fraud_types values
 (17,'Other Specify');
 
   create table frauds(                                                              id int unsigned auto_increment primary key,                                     incident_id int unsigned NOT NULL,                                              fraud_type_id int unsigned,                                                     other_type varchar(80),                                                         identity_used text,                                                             account_used text,                                                              amount_taken decimal(12,2),                                                     details text,                                                                  foreign key(incident_id) references incidents(id),                              foreign key(fraud_type_id) references fraud_types(id)                           )engine=InnoDB;
+
+
+;;
+;; addresses info are taken from City of Bloomington master addreess Database
+;; address_id and subunit_id are master address ids
+;;
+create table addresses(                                                            id int unsigned auto_increment primary key,                                     name varchar(80) not null,                                                      latitude decimal(15,10),                                                        longitude decimal(15,10),                                                       city varchar(80),                                                               state varchar(2),                                                               zipcode varchar(15),                                                            jurisdiction varchar(80),                                                       address_id int unsigned,                                                        subunit_id int unsigned                                                         )engine=InnoDB;
+
+  alter table incidents add address_id int unsigned after date;
+  alter table add foriegn key(address_id) references addresses(id);
+  insert into addresses (id,name,city,state,zipcode) select 0,address,city,'IN',zipcode from incidents;

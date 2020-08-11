@@ -11,52 +11,57 @@
   <body>
     <header>
       <div th:replace="general::header-staff"></div>
-    </header>       
-    <div th:if="${errors}">
-      <div th:insert="general::errors(${errors})"></div>			
-    </div>
-    <div th:if="${messages}">
+    </header>
+		<main class="staff">
+			<div th:replace="general::staffMenu">
+			</div>      
+			<h2>Edit Action</h2>		
+			<div th:if="${errors}">
+				<div th:insert="general::errors(${errors})"></div>			
+			</div>
+			<div th:if="${messages}">
       <div th:insert="general::messages(${messages})"></div>			
-    </div>						
-    <h2>Edit Action</h2>
-    <form action="#"
-	  th:action="@{/action/update/{id}(id=${action.id})}"
-	  th:object="${action}"
-	  method="post">
-      <table>
-	<tr>
-	  <td>
-	    <label for="name">Name</label>
-	  </td>
-	  <td>
-	    <input type="text" th:field="${action.name}" id="name" placeholder="Actio name"/>
-	      <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
-	    </td>
-	</tr>
-	<tr>
-	  <td>
-	    <label for="description">Description</label>
-	  </td>
-	  <td>				
-	    <input type="text" th:field="${action.description}" id="description" placeholder="Description" />
-	    <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></span>
-	  </td>
-	</tr>
-	<tr>
-	  <td>		
-	    <label for="workflow">Workflow Step</label>
-	  </td>
-	  <td>
-	    <input type="text" th:field="${action.workflow_step}" id="workflow" placeholder="Workflow Step" />
-	    <span th:if="${#fields.hasErrors('workflow_step')}" th:errors="*{workflow_step}"></span>
-	  </td>
-	</tr>
-	<tr>
-	  <td>
-	    <input type="submit" value="Update Action" />
-	  </td>
-	</tr>
-      </table>
-    </form>
+			</div>						
+			
+			<form action="#"
+						th:action="@{/action/update/{id}(id=${action.id})}"
+						th:object="${action}"
+						method="post">
+				<table>
+					<tr>
+						<td>
+							<label for="name">Name</label>
+						</td>
+						<td>
+							<input type="text" th:field="${action.name}" id="name" placeholder="Actio name"/>
+							<span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<label for="description">Description</label>
+						</td>
+						<td>				
+							<input type="text" th:field="${action.description}" id="description" placeholder="Description" />
+							<span th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></span>
+						</td>
+					</tr>
+					<tr>
+						<td>		
+							<label for="workflow">Workflow Step</label>
+						</td>
+						<td>
+							<input type="text" th:field="${action.workflow_step}" id="workflow" placeholder="Workflow Step" />
+							<span th:if="${#fields.hasErrors('workflow_step')}" th:errors="*{workflow_step}"></span>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<input type="submit" value="Update Action" />
+						</td>
+					</tr>
+				</table>
+			</form>
+		</main>
   </body>
 </html>

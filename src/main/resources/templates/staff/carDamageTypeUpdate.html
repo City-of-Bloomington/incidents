@@ -14,6 +14,9 @@
     </header>
 
     <main class="staff">
+			<div th:replace="general::staffMenu">
+			</div>			    
+
       <h2>Edit Vehicle Damage Type</h2>
     
       <div th:if="${errors}">

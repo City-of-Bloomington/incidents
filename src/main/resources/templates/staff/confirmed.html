@@ -11,8 +11,9 @@
     <header>
       <div th:replace="general::header-staff"></div>
     </header>
-		
 		<main class="staff">
+			<div th:replace="general::staffMenu">
+			</div>
       <h2>Confirmed Incidents</h2>
 			
 			<div th:if="${errors}">

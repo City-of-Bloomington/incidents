@@ -10,34 +10,38 @@
   <body>
     <header>
       <div th:replace="general::header-staff"></div>
-    </header>        
-    <div th:if="${errors}">
-      <div th:replace="general::errors(${errors})"></div>			
-    </div>
-    <div th:if="${messages}">
-      <div th:replace="general::messages(${messages})"></div>			
-    </div>			
-    <h2>Edit Fraud Type</h2>
-    <form action="#"
-	  th:action="@{/fraudType/update/{id}(id=${type.id})}"
-	  th:object="${type}"
-	  method="post">
-      <table>
-				<tr>
-					<td>
-						<label for="name">Type Name</label>
-					</td>
-					<td>
-						<input type="text" th:field="${type.name}" id="name" placeholder="Fraud Type Name" />
-						<span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<input type="submit" value="Update" />
-					</td>
-				</tr>
-      </table>
-    </form>
+    </header>
+		<main class="staff">
+			<div th:replace="general::staffMenu">
+			</div>
+			<h2>Edit Fraud Type</h2>			
+			<div th:if="${errors}">
+				<div th:replace="general::errors(${errors})"></div>			
+			</div>
+			<div th:if="${messages}">
+				<div th:replace="general::messages(${messages})"></div>			
+			</div>			
+			<form action="#"
+						th:action="@{/fraudType/update/{id}(id=${type.id})}"
+						th:object="${type}"
+						method="post">
+				<table>
+					<tr>
+						<td>
+							<label for="name">Type Name</label>
+						</td>
+						<td>
+							<input type="text" th:field="${type.name}" id="name" placeholder="Fraud Type Name" />
+							<span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<input type="submit" value="Update" />
+						</td>
+					</tr>
+				</table>
+			</form>
+		</main>
   </body>
 </html>

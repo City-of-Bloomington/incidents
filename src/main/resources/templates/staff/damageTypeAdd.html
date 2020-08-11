@@ -10,33 +10,37 @@
   <body>
     <header>
       <div th:replace="general::header-staff"></div>
-    </header>       
-    <div th:if="${errors}">
-      <div th:insert="general::errors(${errors})"></div>			
-    </div>
-    <div th:if="${messages}">
-      <div th:insert="general::messages(${messages})"></div>			
-    </div>					
-    <h2>New Damage Type</h2>
-    <form action="#"
-	  th:action="@{/damageType/add}"
-	  th:object="${type}" method="post">
-      <table>
-	<tr>
-	  <td>
-	    <label for="name">Name</label>
-	  </td>
-	  <td>
-	    <input type="text" th:field="${type.name}" id="name" placeholder="Damage type" />
-	    <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
-	  </td>
-	</tr>
-	<tr>
-	  <td>		
-	    <input type="submit" value="Add Damage Type" />
-	  </td>
-	  </tr>
-      </table>
-    </form>
+    </header>
+		<main class="staff">
+			<div th:replace="general::staffMenu">
+			</div>		
+			<div th:if="${errors}">
+				<div th:insert="general::errors(${errors})"></div>			
+			</div>
+			<div th:if="${messages}">
+				<div th:insert="general::messages(${messages})"></div>			
+			</div>					
+			<h2>New Damage Type</h2>
+			<form action="#"
+						th:action="@{/damageType/add}"
+						th:object="${type}" method="post">
+				<table>
+					<tr>
+						<td>
+							<label for="name">Name</label>
+						</td>
+						<td>
+							<input type="text" th:field="${type.name}" id="name" placeholder="Damage type" />
+							<span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+						</td>
+					</tr>
+					<tr>
+						<td>		
+							<input type="submit" value="Add Damage Type" />
+						</td>
+					</tr>
+				</table>
+			</form>
+		</main>
   </body>
 </htmL>

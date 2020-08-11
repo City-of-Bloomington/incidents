@@ -12,7 +12,9 @@
       <div th:replace="general::header-staff"></div>
     </header>
 		
-		<main class="staff"></main>
+		<main class="staff">
+			<div th:replace="general::staffMenu">
+			</div>			
       <h2>Approved Incidents</h2>
       <div th:if="${errors}">
 				<div th:insert="general::errors(${errors})"></div>			

@@ -123,6 +123,13 @@ public class Incident extends TopModel implements java.io.Serializable{
     @OneToMany
     @JoinColumn(name="incident_id",insertable=false, updatable=false)
     private List<ActionLog> actionLogs;
+
+		/**
+    @NotNull(message = "Address is required")		
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "address_id")
+    Address address;
+		*/
 		
     public Incident(){
 				super();
