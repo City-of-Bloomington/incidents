@@ -124,12 +124,11 @@ public class Incident extends TopModel implements java.io.Serializable{
     @JoinColumn(name="incident_id",insertable=false, updatable=false)
     private List<ActionLog> actionLogs;
 
-		/**
-    @NotNull(message = "Address is required")		
-    @ManyToOne(fetch = FetchType.EAGER)
+    @NotNull(message = "Address is required")
+		@OneToOne(fetch = FetchType.EAGER)
+    // @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "address_id")
-    Address address;
-		*/
+    Address addressObj;
 		
     public Incident(){
 				super();
@@ -152,12 +151,14 @@ public class Incident extends TopModel implements java.io.Serializable{
 										String otherEntry,
 										Character haveMedia,
 										String email,
+										Address addressObj,
 										List<Person> persons,										
 										List<Property> properties,
 										List<Vehicle> vehicles,
 										List<ActionLog> actionLogs,
 										List<Media> medias,
 										List<Fraud> frauds
+										
 										) {
 				super();
 				this.id = id;
@@ -184,6 +185,7 @@ public class Incident extends TopModel implements java.io.Serializable{
 				setActionLogs(actionLogs);
 				this.medias = medias;
 				this.frauds = frauds;
+				this.addressObj = addressObj;
     }
 
     public int getId() {
@@ -342,6 +344,15 @@ public class Incident extends TopModel implements java.io.Serializable{
 						this.zip = val.trim();
 			 
     }
+		public Address getAddressObj() {
+				return addressObj;
+    }
+
+    public void setAddressObj(Address val) {
+				if(val != null)
+						this.addressObj = val;
+			 
+    }		
 
     public String getDetails() {
 				return details;
@@ -394,6 +405,10 @@ public class Incident extends TopModel implements java.io.Serializable{
 				}
 				return false;
     }
+		@Transient
+		public boolean hasAddressObj(){
+				return addressObj != null;
+		}
     public String getDateDescription() {
 				return dateDescription;
     }

@@ -30,13 +30,13 @@ import javax.persistence.ConstructorResult;
 import javax.persistence.ColumnResult;
 
 @SqlResultSetMapping(name="ResultMapping", classes={
-	@ConstructorResult(
-			   targetClass=IncidentStats.class,
-			   columns={
-			       @ColumnResult(name="name", type=String.class),
-			       @ColumnResult(name="total", type=Integer.class),
-			   }
-			   )
+				@ConstructorResult(
+													 targetClass=IncidentStats.class,
+													 columns={
+															 @ColumnResult(name="name", type=String.class),
+															 @ColumnResult(name="total", type=Integer.class),
+													 }
+													 )
     }
     )
 
@@ -61,84 +61,84 @@ public class Action implements java.io.Serializable{
     }
 
     public Action(int id, @NotNull String name, String description, Integer workflowStep, Integer nextstep, List<Role> roles) {
-	super();
-	this.id = id;
-	this.name = name;
-	this.description = description;
-	this.workflowStep = workflowStep;
-	this.nextstep = nextstep;
-	this.roles = roles;
+				super();
+				this.id = id;
+				this.name = name;
+				this.description = description;
+				this.workflowStep = workflowStep;
+				this.nextstep = nextstep;
+				this.roles = roles;
     }
 
     public int getId() {
-	return id;
+				return id;
     }
 
     public void setId(int id) {
-	this.id = id;
+				this.id = id;
     }
 
     @Transient
     public Integer getObjId(){
-	return new Integer(id);
+				return new Integer(id);
     }
     public String getName() {
-	return name;
+				return name;
     }
 
     public void setName(String name) {
-	this.name = name;
+				this.name = name;
     }
 
     public String getDescription() {
-	return description;
+				return description;
     }
 
     public void setDescription(String description) {
-	this.description = description;
+				this.description = description;
     }
 
     public Integer getWorkflowStep() {
-	return workflowStep;
+				return workflowStep;
     }
 
     public void setNextstep(Integer val) {
-	this.nextstep = val;
+				this.nextstep = val;
     }
     public Integer getNextstep(){
-	return nextstep;
+				return nextstep;
     }
     @Transient
     public boolean hasNextstep(){
-	return nextstep != null && nextstep > 0;
+				return nextstep != null && nextstep > 0;
     }
     public void setWorkflowStep(Integer workflowStep) {
-	this.workflowStep = workflowStep;
+				this.workflowStep = workflowStep;
     }    
     public void setRoles(List<Role> roles) {
-	this.roles = roles;
+				this.roles = roles;
     }
     @Transient
     private boolean hasRoles(){
-	return roles != null && roles.size() > 0;
+				return roles != null && roles.size() > 0;
     }
     @Transient
     public boolean isApproved(){
-	return name != null && name.equals("approved");
+				return name != null && name.equals("approved");
     }		
     @Transient
     public boolean isRejected(){
-	return name != null && name.equals("rejected");
+				return name != null && name.equals("rejected");
     }
     @Transient
     public boolean isProcessed(){
-	return name != null && name.equals("processed");
+				return name != null && name.equals("processed");
     }				
     @Override
     public boolean equals(Object obj) { 
           
-	if(this == obj) 
-	    return true; 
+				if(this == obj) 
+						return true; 
 				
         if(obj == null || obj.getClass()!= this.getClass()) 
             return false; 
@@ -148,13 +148,13 @@ public class Action implements java.io.Serializable{
     }
     @Override
     public int hashCode(){ 
-	int ret = 29;
+				int ret = 29;
         return ret += this.id; 
     }
 
     @Override
     public String toString() {
-	return name;
+				return name;
     } 	
 		
 }

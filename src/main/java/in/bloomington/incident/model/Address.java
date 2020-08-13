@@ -1,0 +1,207 @@
+package in.bloomington.incident.model;
+/**
+ * @copyright Copyright (C) 2014-2015 City of Bloomington, Indiana. All rights reserved.
+ * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
+ * @author W. Sibo <sibow@bloomington.in.gov>
+ *
+ */
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OrderBy;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.persistence.Transient;
+import javax.validation.constraints.NotNull;
+
+
+@Entity
+@Table(name = "addresses")
+public class Address implements java.io.Serializable{
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+    @NotNull(message = "Role name may not be null")
+    private String name;
+		private Double latitude;
+		private Double longitude;
+		private String city;
+		private String state;
+		private String zipcode;
+		private String jurisdiction;
+		private Integer addressId;
+		private Integer subunitId;
+		private Character invalidAddress;
+    public Address(){
+
+    }
+		
+    public Address(int id,
+									 @NotNull(message = "Address text is required") String name,
+									 Double latitude,
+									 Double longitude,
+									 String city,
+									 String state,
+									 String zipcode,
+									 String jurisdiction,
+									 Integer addressId,
+									 Integer subunitId,
+									 Character invalidAddress
+									 ) {
+				super();
+				this.id = id;
+				this.name = name;
+				this.latitude = latitude;
+				this.longitude = longitude;
+				this.city = city;
+				this.state = state;
+				this.zipcode = zipcode;
+				this.jurisdiction = jurisdiction;
+				this.addressId = addressId;
+				this.subunitId = subunitId;
+				this.invalidAddress = invalidAddress;
+    }
+
+
+
+    public int getId() {
+				return id;
+    }
+
+    public void setId(int id) {
+				this.id = id;
+    }
+
+    public String getName() {
+				return name;
+    }
+
+    public void setName(String name) {
+				this.name = name;
+    }
+    public Double getLatitude() {
+				return latitude;
+    }
+
+    public void setLatitude(Double val) {
+				this.latitude = val;
+    }
+    public Double getLongitude() {
+				return longitude;
+    }
+
+    public void setLongitude(Double val) {
+				this.longitude = val;
+    }
+		
+    public String getCity() {
+				return city;
+    }
+
+    public void setCity(String val) {
+				this.city = val;
+    }
+    public String getState() {
+				return state;
+    }
+
+    public void setState(String val) {
+				this.state = val;
+    }
+    public String getZipcode() {
+				return zipcode;
+    }
+
+    public void setZipcode(String val) {
+				this.zipcode = val;
+    }
+    public String getJurisdiction() {
+				return jurisdiction;
+    }
+
+    public void setJurisdiction(String val) {
+				this.jurisdiction = val;
+    }
+    public Integer getAddressId() {
+				return addressId;
+    }
+
+    public void setSubunitId(Integer val) {
+				this.subunitId = val;
+    }
+    public Integer getSubunitId() {
+				return subunitId;
+    }
+
+    public void setAddressId(Integer val) {
+				this.addressId = val;
+    }
+    public Character getInvalidAddress() {
+				return invalidAddress;
+    }
+
+    public void setInvalidAddress(Character val) {
+				this.invalidAddress = val;
+    }
+		@Transient
+		public boolean isValid(){
+				return invalidAddress == null;
+		}
+		@Transient
+		public boolean isInvalid(){
+				return invalidAddress != null;
+		}		
+		@Transient
+		public String getInfo(){
+				String ret = name;
+				if(city != null && !city.isEmpty()){
+						ret +=", "+city;
+				}
+				if(state != null && !state.isEmpty()){
+						ret +=", "+state;
+				}
+				if(zipcode != null && !zipcode.isEmpty()){
+						ret +=" "+zipcode;
+				}
+				return ret;
+		}
+    public boolean equals(Object obj) { 
+          
+				if(this == obj) 
+						return true; 
+				
+        if(obj == null || obj.getClass()!= this.getClass()) 
+            return false; 
+				
+        Address one = (Address) obj; 
+        return one.getId() == this.getId();
+    }
+    @Override
+    public int hashCode(){ 
+				int ret = 29;
+        return ret += this.id; 
+    }
+
+    @Override
+    public String toString() {
+				return name;
+    } 	
+		
+}

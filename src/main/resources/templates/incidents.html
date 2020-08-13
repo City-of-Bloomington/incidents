@@ -37,13 +37,13 @@
 						</thead>
 						<tbody>
 							<tr th:each="one : ${incidents}">
-								<td th:text="${one.id}"></td>
-								<td><a th:href="@{/incidentView/{id}(id=${one.id})}" th:text="${incident.id}"></a></td>								
+								<td><a th:href="@{/incidentView/{id}(id=${one.id})}" th:text="${one.id}"></a></td>								
 								<td th:text="${one.status}"></td>		
 								<td th:text="${one.incidentType}"></td>		
 								<td th:text="${one.receivedStr}"></td>
 								<td th:text="${one.dateTimeInfo}"></td>
 								<td th:text="${one.address}"></td>
+								<td th:text="${one.details}"></td>								
 							</tr>
 						</tbody>
 					</table>

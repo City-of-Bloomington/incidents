@@ -115,7 +115,7 @@ public class IncompleteController extends TopController{
 				return back;
     }
     
-    @GetMapping("/staff/incompleteOptions")
+    @GetMapping("/incompleteOptions")
     public String incompleteOptions(Model model,
 																		HttpSession session
 																		) {
@@ -145,7 +145,7 @@ public class IncompleteController extends TopController{
 				}
         return "staff/incompleteOptions";
     }    
-    @GetMapping("/staff/incompleteAction")
+    @GetMapping("/incompleteAction")
     public String incompleteAction(@RequestParam String action,
 																	 Model model,
 																	 HttpSession session
@@ -189,7 +189,7 @@ public class IncompleteController extends TopController{
 								addError(back);
 						}
 				}
-        return "redirect:/search/incomplete";
+        return "staff/incompleteOptions";
     }
     private String sendSubmissionEmails(List<Incident> all){
 				String messages = "";

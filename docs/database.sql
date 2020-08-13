@@ -492,8 +492,18 @@ insert into fraud_types values
 ;; addresses info are taken from City of Bloomington master addreess Database
 ;; address_id and subunit_id are master address ids
 ;;
-create table addresses(                                                            id int unsigned auto_increment primary key,                                     name varchar(80) not null,                                                      latitude decimal(15,10),                                                        longitude decimal(15,10),                                                       city varchar(80),                                                               state varchar(2),                                                               zipcode varchar(15),                                                            jurisdiction varchar(80),                                                       address_id int unsigned,                                                        subunit_id int unsigned                                                         )engine=InnoDB;
-
+create table addresses(                                                            id int unsigned auto_increment primary key,                                     name varchar(80) not null,                                                      latitude decimal(15,10),                                                        longitude decimal(15,10),                                                       city varchar(80),                                                               state varchar(2),                                                               zipcode varchar(15),                                                            jurisdiction varchar(80),                                                       address_id int unsigned,                                                        subunit_id int unsigned,                                                        invalid_address char(1)                                                         )engine=InnoDB;
+			 
   alter table incidents add address_id int unsigned after date;
-  alter table add foriegn key(address_id) references addresses(id);
-  insert into addresses (id,name,city,state,zipcode) select 0,address,city,'IN',zipcode from incidents;
+  alter table incidents add foreign key(address_id) references addresses(id);
+;;
+;; populating addresses table from incidents is done though ImportController class
+;;
+;; after import is done in Production the following columns should be drop
+;;
+;; alter table incidents drop column address;
+;; alter table incidents drop column city;
+;; alter table incidents drop column zip;
+;; alter table incidents drop column state;
+;; alter table incidents drop column invalid_address
+;;

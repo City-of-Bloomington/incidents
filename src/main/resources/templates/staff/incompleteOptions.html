@@ -24,7 +24,7 @@
 		<div th:if="${messages}">
 			<div th:insert="general::messages(${messages})"></div>
 		</div>
-		<form action="#" th:action="@{/staff/incompleteAction}" method="get">
+		<form action="#" th:action="@{/incompleteAction}" method="get">
 			<fieldset>
 				<p>Please select one of the action below.
 					If the action is already scheduled, no need to reschedule again </p>

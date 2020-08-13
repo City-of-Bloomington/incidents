@@ -31,9 +31,10 @@ import org.slf4j.LoggerFactory;
 //
 import in.bloomington.incident.util.AddressCheck;
 import in.bloomington.incident.model.Item;
+import in.bloomington.incident.model.Address;
+import in.bloomington.incident.service.AddressService;
 
 
-// @RestController
 @Controller
 public class AddressController extends TopController{
 
@@ -41,31 +42,91 @@ public class AddressController extends TopController{
 
     @Autowired
     AddressCheck addressCheck;
-    /**
-    @GetMapping(value = "/addressService", produces = "application/json")
-    public String addressService(@RequestParam("term") String term, Locale locale, Model model){
-        String json = "";
-        if (term != null && term.length() > 2) {
-            List<Item> addresses = null; //addressService.getList(term);
-            if (addresses != null && addresses.size() > 0) {
-                json = buildJson(addresses);
-            }
+    @Autowired
+    AddressService addressService;
+
+		    @PostMapping("/address/add")
+    public String addressAdd(@Valid Address address, BindingResult result, Model model) {
+        if (result.hasErrors()) {
+						logger.error(" Error creating new action ");
+            return "staff/addAction";
         }
-        return json;
+        addressService.save(address);
+				addMessage("Added Successfully");
+				logger.debug("Address added successfully");
+        // model.addAttribute("actions", actionService.getAll());
+				model.addAttribute("messages", messages);				
+        return "redirect:address/"+address.getId();
     }
+    @PostMapping("/address/update/{id}")
+    public String addressUpdate(@PathVariable("id") int id,
+															 @Valid Address address, 
+															 BindingResult result, Model model) {
+				if (result.hasErrors()) {
+						address.setId(id);
+						logger.error("Error update address = "+id);						
+						return "updateAddress";
+				}
+				addMessage("Updated Successfully");
+				addressService.update(address);
+				model.addAttribute("messages", messages);
+				return "redirect:address/"+id;
+    }
+    @GetMapping("/address/edit/{id}")
+    public String addressEdit(@PathVariable("id") int id, Model model) {
+				Address address = null;
+				try{
+						address = addressService.findById(id);
+						
+				}catch(Exception ex){
+						addError("Invalid address Id"+id);
+						model.addAttribute("errors", errors);
+						logger.error("Exception getting address ="+id+" "+ex);
+						return "address/"+id;
+				}
+				model.addAttribute("address", address);
+				return "addressUpdate";
+    }
+    @GetMapping("/address/{id}")
+    public String addressView(@PathVariable("id") int id, Model model) {
+				Address address = null;
+				try{
+						address = addressService.findById(id);
+						
+				}catch(Exception ex){
+						addError("Invalid address Id"+id);
+						model.addAttribute("errors", errors);
+						logger.error("Exception getting address ="+id+" "+ex);
+						return "address/"+id;
+				}
+				model.addAttribute("address", address);
+				return "addressView";
+    }				
+    /**
+			 @GetMapping(value = "/addressService", produces = "application/json")
+			 public String addressService(@RequestParam("term") String term, Locale locale, Model model){
+			 String json = "";
+			 if (term != null && term.length() > 2) {
+			 List<Item> addresses = null; //addressService.getList(term);
+			 if (addresses != null && addresses.size() > 0) {
+			 json = buildJson(addresses);
+			 }
+			 }
+			 return json;
+			 }
     */
     @CrossOrigin(origins = "https://bloomington.in.gov")
     @GetMapping("/addressInput")
     public String addressInput(HttpServletRequest req,
-			       Model model) {
-	model.addAttribute("messages","Enter your address");
+															 Model model) {
+				model.addAttribute("messages","Enter your address");
         return "addressInput";
     }
     @CrossOrigin(origins = "https://bloomington.in.gov")
     @GetMapping("/addressWindow")
     public String addressWindow(HttpServletRequest req,
-			       Model model) {
-	model.addAttribute("messages","Enter your address");
+																Model model) {
+				model.addAttribute("messages","Enter your address");
         return "addressWindow";
     }    
     
@@ -128,96 +189,96 @@ public class AddressController extends TopController{
        Latitude: 39.29821949
        Longitude: -86.65094971
        
-     */
+		*/
     @PostMapping("/addressCheck")
     public String addressCheck(@RequestParam("address") String address,
-			       @RequestParam("latitude") Double latitude,
-			       @RequestParam("longitude") Double longitude,
-			       Model model
-			       ) {
-	// in compus
-	String addr = "275 N Jordan AVE";
-	double lati = 	39.16840902;
-	double longi = -86.51670272;
+															 @RequestParam("latitude") Double latitude,
+															 @RequestParam("longitude") Double longitude,
+															 Model model
+															 ) {
+				// in compus
+				String addr = "275 N Jordan AVE";
+				double lati = 	39.16840902;
+				double longi = -86.51670272;
 
-	// String project = "4269"; // lat long projection
-	// boolean answer = addressCheck.isInIUCompus(lati, longi);
-	// System.err.println(" answer "+answer);
-	// not in compus, in city
-	addr = "932 N Fairview ST";
-	lati  =  39.17613466;
-	longi = -86.54085991;
-	// not in compus, not in city
-	//
-	// addr = "3304 S Rogers ST";
-	// lati = 39.12822405;
-	// longi = -86.53897868;
-	//
-	// Ellettsville
-	//
-	addr = "5352 N Monica CT";
-	lati = 39.22739223;
-	longi =  -86.59904201;
-	//
-	// Stinesville
-	addr = "8357 N Market ST";
-	lati = 39.29821949;
-	longi = -86.65094971;	
+				// String project = "4269"; // lat long projection
+				// boolean answer = addressCheck.isInIUCompus(lati, longi);
+				// System.err.println(" answer "+answer);
+				// not in compus, in city
+				addr = "932 N Fairview ST";
+				lati  =  39.17613466;
+				longi = -86.54085991;
+				// not in compus, not in city
+				//
+				// addr = "3304 S Rogers ST";
+				// lati = 39.12822405;
+				// longi = -86.53897868;
+				//
+				// Ellettsville
+				//
+				addr = "5352 N Monica CT";
+				lati = 39.22739223;
+				longi =  -86.59904201;
+				//
+				// Stinesville
+				addr = "8357 N Market ST";
+				lati = 39.29821949;
+				longi = -86.65094971;	
 	
-	boolean answer = addressCheck.isInIUPDLayer(lati, longi);
-	String msg = "";
-	System.err.println(" answer "+answer);
-	if(answer)
-	    msg = "In IU Compus PD ";
-	else
-	    msg = "Not in IU Compus";
-	answer = addressCheck.isInCityPDLayer(lati, longi);
-	System.err.println(" answer "+answer);
-	if(answer)
-	    msg += " In City BPD area ";
-	else
-	    msg += " Not in City BPD area ";
-	model.addAttribute("address",addr);
-	model.addAttribute("latitude", lati);
-	model.addAttribute("longitude", longi);
-	model.addAttribute("msg", msg);
+				boolean answer = addressCheck.isInIUPDLayer(lati, longi);
+				String msg = "";
+				System.err.println(" answer "+answer);
+				if(answer)
+						msg = "In IU Compus PD ";
+				else
+						msg = "Not in IU Compus";
+				answer = addressCheck.isInCityPDLayer(lati, longi);
+				System.err.println(" answer "+answer);
+				if(answer)
+						msg += " In City BPD area ";
+				else
+						msg += " Not in City BPD area ";
+				model.addAttribute("address",addr);
+				model.addAttribute("latitude", lati);
+				model.addAttribute("longitude", longi);
+				model.addAttribute("msg", msg);
         return "addressInfo";
     }
     /**
-       // ESPG = 2966 for state coordinate
-       // lat long coordinate is ESPG = 4269
-       // bloomington boundary name publicgis:BloomingtonMunicipalBoundary
-       // for IU compus name publicgis:IUCampusArea
+		 // ESPG = 2966 for state coordinate
+		 // lat long coordinate is ESPG = 4269
+		 // bloomington boundary name publicgis:BloomingtonMunicipalBoundary
+		 // for IU compus name publicgis:IUCampusArea
      // You can check within which polygon, if any, your point
      // is by using Contains filter.
      // we need to use layers to such as 
      propertyName=publicgis:IUCampusArea
      propertyName=publicgis:BloomingtonMunicipalBoundary
      
-    <wfs:GetFeature service="WFS" version="1.0.0"
-      outputFormat="GML2"
-      xmlns:topp="http://www.openplans.org/topp"
-      xmlns:wfs="http://www.opengis.net/wfs"
-      xmlns="http://www.opengis.net/ogc"
-      xmlns:gml="http://www.opengis.net/gml"
-      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-      xsi:schemaLocation="http://www.opengis.net/wfs
-                          http://schemas.opengis.net/wfs/1.0.0/WFS-basic.xsd">
-      <wfs:Query typeName="topp:states">
-        <Filter>
-          <Contains>
-            <PropertyName>the_geom</PropertyName>
-              <gml:Point srsName="http://www.opengis.net/gml/srs/epsg.xml#4326">
-                <gml:coordinates>-74.817265,40.5296504</gml:coordinates>
-              </gml:Point>
-            </Contains>
-          </Filter>
-      </wfs:Query>
-    </wfs:GetFeature>
-    //
-    // for get
-    //
-    http://localhost:8080/geoserver/wfs?service=WFS&request=GetFeature&version=1.0.0&typeName=topp:states&outputFormat=GML2&FILTER=%3CFilter%20xmlns=%22http://www.opengis.net/ogc%22%20xmlns:gml=%22http://www.opengis.net/gml%22%3E%3CContains%3E%3CPropertyName%3Ethe_geom%3C/PropertyName%3E%3Cgml:Point%20srsName=%22EPSG:4326%22%3E%3Cgml:coordinates%3E-74.817265,40.5296504%3C/gml:coordinates%3E%3C/gml:Point%3E%3C/Contains%3E%3C/Filter%3E
+		 <wfs:GetFeature service="WFS" version="1.0.0"
+		 outputFormat="GML2"
+		 xmlns:topp="http://www.openplans.org/topp"
+		 xmlns:wfs="http://www.opengis.net/wfs"
+		 xmlns="http://www.opengis.net/ogc"
+		 xmlns:gml="http://www.opengis.net/gml"
+		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://www.opengis.net/wfs
+		 http://schemas.opengis.net/wfs/1.0.0/WFS-basic.xsd">
+		 <wfs:Query typeName="topp:states">
+		 <Filter>
+		 <Contains>
+		 <PropertyName>the_geom</PropertyName>
+		 <gml:Point srsName="http://www.opengis.net/gml/srs/epsg.xml#4326">
+		 <gml:coordinates>-74.817265,40.5296504</gml:coordinates>
+		 </gml:Point>
+		 </Contains>
+		 </Filter>
+		 </wfs:Query>
+		 </wfs:GetFeature>
+		 //
+		 // for get
+		 //
+		 http://localhost:8080/geoserver/wfs?service=WFS&request=GetFeature&version=1.0.0&typeName=topp:states&outputFormat=GML2&FILTER=%3CFilter%20xmlns=%22http://www.opengis.net/ogc%22%20xmlns:gml=%22http://www.opengis.net/gml%22%3E%3CContains%3E%3CPropertyName%3Ethe_geom%3C/PropertyName%3E%3Cgml:Point%20srsName=%22EPSG:4326%22%3E%3Cgml:coordinates%3E-74.817265,40.5296504%3C/gml:coordinates%3E%3C/gml:Point%3E%3C/Contains%3E%3C/Filter%3E
     
     */
     private String buildJson(List<Item> ones){

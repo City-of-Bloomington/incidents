@@ -87,15 +87,15 @@ public class UploadController extends TopController{
     @GetMapping("/media/add/{id}")
     public String mediaForm(@PathVariable("id") int id, Model model)
     {
-	try{
-	    Incident incident = incidentService.findById(id);
-	    model.addAttribute("incident_id", id);
-	    return "mediaAdd";
-	}catch(Exception ex){
-	    addError("invalid incident "+id);
-	    System.err.println(""+ ex);
-	}
-	return "redirect:/incident/"+id;
+				try{
+						Incident incident = incidentService.findById(id);
+						model.addAttribute("incident_id", id);
+						return "mediaAdd";
+				}catch(Exception ex){
+						addError("invalid incident "+id);
+						System.err.println(""+ ex);
+				}
+				return "redirect:/incident/"+id;
     }		
     // delete by id
     @GetMapping("/media/delete/{id}")
@@ -104,7 +104,7 @@ public class UploadController extends TopController{
         Media media  = mediaService.findById(id);
         Incident     incident       = media.getIncident();
         mediaService.delete(id);
-	addMessage("Attachment deleted successfully");
+				addMessage("Attachment deleted successfully");
         return 
             "redirect:/incident/" + incident.getId();
 
@@ -113,20 +113,20 @@ public class UploadController extends TopController{
 
     @PostMapping("/media/save")
     public String doUploadAndSave(@RequestParam("file" ) MultipartFile file,
-				  @RequestParam("incident_id"   ) int  incident_id,
-				  @RequestParam("notes") String  notes
-				  ){
+																	@RequestParam("incident_id"   ) int  incident_id,
+																	@RequestParam("notes") String  notes
+																	){
         String fileName = null;
         if (file == null || file.isEmpty()) {
-	    addMessage("Please select a file to upload");
+						addMessage("Please select a file to upload");
             return "redirect:media/add" + incident_id;
         }
         String oldFileName  = file.getOriginalFilename();
-	if(oldFileName.contains("..")){
-	    addError("file name should not have relative directory");
-	    return "redirect:media/add/" + incident_id;
-	}
-	String mimeType = file.getContentType();
+				if(oldFileName.contains("..")){
+						addError("file name should not have relative directory");
+						return "redirect:media/add/" + incident_id;
+				}
+				String mimeType = file.getContentType();
         String ret_str   = "";
         int    year      = Helper.getCurrentYear();
         String file_ext  = Helper.getFileExtensionFromName(oldFileName);
@@ -142,20 +142,20 @@ public class UploadController extends TopController{
                 addError(back);
                 logger.error(back);
             }
-	    else{
-		Path path = Paths.get(dirPath + newName);
-		Files.write(path, bytes);
-		Media one = new Media();
-		one.setFileName   (newName   );
-		one.setOldFileName(oldFileName  );
-		one.setNotes      (notes     );
-		one.setYear(year);
-		one.setMimeType(mimeType);
-		Incident incident = incidentService.findById(incident_id);
-		one.setIncident(incident);
-		mediaService.save(one);
-		addMessage("Uploaded Successfully");
-	    }
+						else{
+								Path path = Paths.get(dirPath + newName);
+								Files.write(path, bytes);
+								Media one = new Media();
+								one.setFileName   (newName   );
+								one.setOldFileName(oldFileName  );
+								one.setNotes      (notes     );
+								one.setYear(year);
+								one.setMimeType(mimeType);
+								Incident incident = incidentService.findById(incident_id);
+								one.setIncident(incident);
+								mediaService.save(one);
+								addMessage("Uploaded Successfully");
+						}
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -190,12 +190,12 @@ public class UploadController extends TopController{
 
     @RequestMapping(value = "/media/image/{id}")
     public void picture(HttpServletResponse response, @PathVariable int id) {
-	Media media = mediaService.findById(id);
-	int year = media.getYear();
-	String fullPath    = storagePath + "/"+year + "/" + media.getFileName();
-	File  imageFile        = new File(fullPath);
+				Media media = mediaService.findById(id);
+				int year = media.getYear();
+				String fullPath    = storagePath + "/"+year + "/" + media.getFileName();
+				File  imageFile        = new File(fullPath);
         response.setContentType(media.getMimeType());
-	int size = (int)FileUtils.sizeOf(imageFile);
+				int size = (int)FileUtils.sizeOf(imageFile);
         response.setContentLength(size);
         try {
             InputStream is = new FileInputStream(imageFile);
@@ -203,7 +203,7 @@ public class UploadController extends TopController{
         } catch(IOException e) {
             System.err.println("Could not show picture "+e);
         }
-     }
+		}
 		
     String genNewFileName(String file_ext){
         return UUID.randomUUID().toString() + '.' + file_ext;
