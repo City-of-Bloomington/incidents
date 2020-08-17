@@ -20,66 +20,34 @@
     <p> *indicated required fields</p>		
     <form action="#"
 					th:action="@{/addressCheck}"
+					th:object="${address}"
 					method="post">
+			<input type="hidden" th:field="${address.type_id}" />			
       <fieldset><legend>Location of Incident</legend>
-				<dl>
-					<dt>
-						<label for="addr_id" class="required">*Address where the incident occured</label>
-					</dt>
-					<dd>
-						<input type="text" name="address" id="addr_id" value="" size="60" placeholder="Address" required="required" />
-						<button onclick='popwit("./addressWindow","_blank");return false;'>Look up Address</button>
-					</dd>
-					<dt>
-						<label>Master Address Id </label>
-					</dt>
-					<dd>
-						<input type="text" name="maAddressId" id="address_id" readonly="true"/>
-					</dd>
-					<dt>
-						<label for="latitude">Latitude</label>
-					</dt>
-					<dd>
-						<input type="text" value="" name="latitude" id="latitude" size="20" readonly="readonly"/>
-					</dd>
-					<dt>
-						<label for="longitude">Longitude</label>
-					</dt>
-					<dd>
-						<input type="text" value="" name="longitude" id="longitude" size="20" readonly="readonly"/>
-					</dd>
-					<dt>
-						<label for="city" class="required">*City</label>
-					</dt>
-					<dd>
-						<input type="text" value="" name="city" id="city" size="60" placeholder="city" />
-					</dd>
-					<dt>
-						<label for="jurisdiction">Jurisdiction</label>
-					</dt>
-					<dd>
-						<input type="text" value="" name="jurisdiction" id="jurisdiction" size="60" placeholder="Jurisdiction" />
-					</dd>
-					
-					<dt>
-						<label for="zip" class="required">*Zip Code</label>
-					</dt>
-					<dd>
-						<input type="text" value="" name="zip" id="zip" size="10" placeholder="Zip code" />
-					</dd>
-					<dt>
-						<label for="state">State</label>
-					</dt>
-					<dd>
-						<input type="text" value="" name="state" id="state" size="2" placeholder="State" />
-					</dd>	  
-				</dl>
+				<p>To add the address, use the 'Look up Address' button, a popup window will open where you enter the address, then pick the right address from the list.</p>				
+				<label for="addr_id" class="required">*Address where the incident occured</label>
+				<input type="text" th:field="${address.name}" id="addr_id" size="60" placeholder="address" required="required" />
+				<button th:attr="onclick=|popwit('${hostPath}/addressWindow','_blank');return false;|">Look up Address</button>						
+				<label>Master Address Id </label>
+				<input type="text" th:field="${address.addressId}" id="addressId" readonly="readonly"/>
+				<label>Master Address Subunit Id </label>
+				<input type="text" th:field="${address.subunitId}" value="" id="subunitId" readonly="readonly"/>
+				<label for="latitude">Latitude</label>
+				<input type="text" th:field="${address.latitude}" id="latitude" size="20" readonly="readonly"/>
+				<label for="longitude">Longitude</label>
+				<input type="text" th:field="${address.longitude}" id="longitude" size="20" readonly="readonly"/>
+				<label for="city" class="required">*City</label>
+				<input type="text" th:field="${address.city}" id="city" size="60" placeholder="city" />
+				<label for="jurisdiction">Jurisdiction</label>
+				<input type="text" th:field="${address.jurisdiction}" id="jurisdiction" size="60" placeholder="Jurisdiction" />
+				<label for="zip">Zip Code</label>
+				<input type="text" th:field="${address.zipcode}" id="zip" size="10" placeholder="Zip code" />
+				<label for="state">State</label>
+				<input type="text" th:field="${address.state}" id="state" size="2" placeholder="State" />
       </fieldset>
-      <dl>
-				<dd>
-					<input type="submit" value="Next" />
-				</dd>
-      </dl>
+			<div class="next_div">
+				<input type="submit" value="Next" />
+			</div>
     </form>
   </body>
 </html>

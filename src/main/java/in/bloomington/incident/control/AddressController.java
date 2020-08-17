@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.beans.factory.annotation.Value;
 import javax.validation.Valid;
 import org.springframework.web.bind.annotation.RequestParam;
 //
@@ -33,6 +34,7 @@ import in.bloomington.incident.util.AddressCheck;
 import in.bloomington.incident.model.Item;
 import in.bloomington.incident.model.Address;
 import in.bloomington.incident.service.AddressService;
+import in.bloomington.incident.utils.Helper;
 
 
 @Controller
@@ -44,12 +46,24 @@ public class AddressController extends TopController{
     AddressCheck addressCheck;
     @Autowired
     AddressService addressService;
-
-		    @PostMapping("/address/add")
+		
+    @Value( "${incident.defaultcity}" )
+    private String defaultCity;
+    @Value( "${incident.defaultjurisdiction}" )
+    private String defaultJurisdiction;    
+    @Value( "${incident.defaultstate}" )
+    private String defaultState;		
+    @Value( "${incident.zipcodes}" )
+    private List<String> zipCodes;
+    @Value("${server.servlet.context-path}")
+    private String hostPath; // incidents in production
+		
+		/**
+		@PostMapping("/address/add")
     public String addressAdd(@Valid Address address, BindingResult result, Model model) {
         if (result.hasErrors()) {
 						logger.error(" Error creating new action ");
-            return "staff/addAction";
+            return "addressInput";
         }
         addressService.save(address);
 				addMessage("Added Successfully");
@@ -58,6 +72,7 @@ public class AddressController extends TopController{
 				model.addAttribute("messages", messages);				
         return "redirect:address/"+address.getId();
     }
+		*/
     @PostMapping("/address/update/{id}")
     public String addressUpdate(@PathVariable("id") int id,
 															 @Valid Address address, 
@@ -116,20 +131,65 @@ public class AddressController extends TopController{
 			 }
     */
     @CrossOrigin(origins = "https://bloomington.in.gov")
-    @GetMapping("/addressInput")
-    public String addressInput(HttpServletRequest req,
-															 Model model) {
-				model.addAttribute("messages","Enter your address");
-        return "addressInput";
-    }
-    @CrossOrigin(origins = "https://bloomington.in.gov")
     @GetMapping("/addressWindow")
     public String addressWindow(HttpServletRequest req,
 																Model model) {
 				model.addAttribute("messages","Enter your address");
         return "addressWindow";
-    }    
-    
+    }    		
+    @CrossOrigin(origins = "https://bloomington.in.gov")
+    @GetMapping("/addressInput/{type_id}")
+    public String addressInput(@PathVariable("type_id") int type_id,
+															 Model model) {
+				Address address = new Address();
+				address.setType_id(type_id);
+				model.addAttribute("address", address);
+				model.addAttribute("hostPath", hostPath);
+        return "addressInput";
+    }
+
+    @PostMapping("/addressCheck")
+    public String addressCheck(@Valid Address address,
+															 BindingResult result,
+															 Model model
+															 ) {
+				boolean pass = true;
+        if (result.hasErrors()) {
+						addError(Helper.extractErrors(result));
+						pass = false;
+        }
+				if(!address.verifyAddress(defaultCity,
+																	defaultJurisdiction,
+																	defaultState,
+																	zipCodes)){
+						pass = false;						
+						addError(address.getErrorInfo());
+				}
+				if(pass && addressCheck.isInIUPDLayer(address.getLatitude(),
+																							address.getLongitude())){
+						pass = false;
+						addError("This address is in IU Police Department district");
+				}
+				if(pass){ //Success: save and go to next, email questions
+						/**
+						 * first we need to check if this address exist
+						 */
+						//TODO check if address exist
+						/**
+						 * if not then we save
+						 */
+						addressService.save(address);
+						// next go to email request
+						model.addAttribute("type_id", address.getType_id());
+						model.addAttribute("address_id", address.getId());						
+						return "email_questions";
+				}
+				// no pass then we send the user to address input again with error message
+				model.addAttribute("address", address);
+				model.addAttribute("errors", errors);
+				return "addressInput";
+				
+		}
     /**
        list of addresses to try
 
@@ -190,8 +250,8 @@ public class AddressController extends TopController{
        Longitude: -86.65094971
        
 		*/
-    @PostMapping("/addressCheck")
-    public String addressCheck(@RequestParam("address") String address,
+    @PostMapping("/addressCheckOld")
+    public String addressCheckOld(@RequestParam("address") String address,
 															 @RequestParam("latitude") Double latitude,
 															 @RequestParam("longitude") Double longitude,
 															 Model model

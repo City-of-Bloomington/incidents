@@ -29,7 +29,7 @@
 			<input type="hidden" th:field="${incident.email}" />
 			<input type="hidden" th:field="${incident.receivedStr}" />
 			<input type="hidden" th:field="${incident.incidentType} " />
-			<input type="hidden" th:field="${incident.oldAddress} " />
+			<input type="hidden" th:field="${incident.address} " />
 			<fieldset>
 				<legend>Incident Date and Time: </legend>
 				<p>eg. I went to bed at 11:00PM on Saturday, August 8th. When I woke up on Sunday around 6:00AM, I noticed my car window was smashed with a rock.
@@ -58,52 +58,7 @@
 			
 			<fieldset>
 				<legend>Location of Incident</legend>
-				<p>If you want to change the address, use 'Look up Address' button</p>
-
-				<label for="addr_id" class="required">Address where the incident occured</label>
-
-				
-				<input type="text" th:field="${incident.address}" id="addr_id" size="60" placeholder="Address"
-					readonly="readonly" />
-				<button th:attr="onclick=|popwit('${hostPath}/addressWindow','_blank');return false;|">Look up
-					Address</button>
-
-					
-				<label for="latitude">Latitude</label>
-
-				
-				<input type="text" th:field="${incident.latitude}" id="latitude" size="20" readonly="readonly" />
-
-				
-				<label for="longitude">Longitude</label>
-
-				
-				<input type="text" th:field="${incident.longitude}" id="longitude" size="20" readonly="readonly" />
-
-				
-				<label for="city" class="required">*City</label>
-
-				
-				<input type="text" th:field="${incident.city}" id="city" />
-
-				
-				<label for="jurisdiction">Jurisdiction</label>
-
-				
-				<input type="text" th:field="${incident.jurisdiction}" id="jurisdiction" size="60" placeholder="Jurisdiction"
-					readonly="readonly" />
-
-					
-				<label for="zip" class="required">*Zip Code</label>
-
-				
-				<input type="text" th:field="${incident.zip}" id="zip" size="10" placeholder="Zip code" readonly="readonly" />
-
-				
-				<label for="state" class="required">State</label>
-
-				
-				<input type="text" th:field="${incident.state}" id="state" readonly="readonly" size="2" />
+				<span th:text="${incident.address.info}"></span>
 			</fieldset>
 
 			<fieldset>

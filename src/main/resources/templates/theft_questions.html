@@ -49,10 +49,9 @@
       </div>
     
       <div id="finalStep" class="question" style="display:none">
-        <p> In the next step you will provide a valid email, please click on Next </p>
-        <form action="#" th:action="@{/emailRequest/}" method="get">
-					<input type="hidden" name="type_id" th:value="${type_id}" />
-					
+        <p> In the next step you will provide a valid incident address, please click on Next </p>
+				<form action="#" th:action="@{/addressInput/{type_id}(type_id=${type_id})}" method="get">
+
           <p> Click on <button type="submit" class="next-button"> Next </button> to continue </p>
         </form>
       </div>

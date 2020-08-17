@@ -54,18 +54,19 @@ public class Incident extends TopModel implements java.io.Serializable{
 
     private Date date;
 
+		/**
     private String address;
 
     private String city;
     private String state;
 
     private String zip;
-
+		*/
     private String details;
 
 		private String evidence;
 		
-    private Character invalidAddress;
+    // private Character invalidAddress;
 		
     private String dateDescription;
 
@@ -128,7 +129,7 @@ public class Incident extends TopModel implements java.io.Serializable{
 		@OneToOne(fetch = FetchType.EAGER)
     // @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "address_id")
-    Address addressObj;
+    Address address;
 		
     public Incident(){
 				super();
@@ -138,20 +139,22 @@ public class Incident extends TopModel implements java.io.Serializable{
 										IncidentType incidentType,
 										Date received,
 										Date date,
+										/*
 										String address,
 										String city,										
 										String state,
 										String zip,
+										*/
 										String details,
 										String evidence,
-										Character invalidAddress,
+										//  Character invalidAddress,
 										String dateDescription,
 										Date endDate,
 										String entryType,
 										String otherEntry,
 										Character haveMedia,
 										String email,
-										Address addressObj,
+										Address address,
 										List<Person> persons,										
 										List<Property> properties,
 										List<Vehicle> vehicles,
@@ -166,13 +169,15 @@ public class Incident extends TopModel implements java.io.Serializable{
 				this.incidentType = incidentType;
 				this.received = received;
 				this.date = date;
+				/*
 				this.address = address;
 				this.city = city;				
 				this.state = state;
 				this.zip = zip;
+				*/
 				this.details = details;
 				this.evidence = evidence;
-				this.invalidAddress = invalidAddress;
+				// this.invalidAddress = invalidAddress;
 				this.dateDescription = dateDescription;
 				this.endDate = endDate;
 				this.entryType = entryType;
@@ -185,7 +190,7 @@ public class Incident extends TopModel implements java.io.Serializable{
 				setActionLogs(actionLogs);
 				this.medias = medias;
 				this.frauds = frauds;
-				this.addressObj = addressObj;
+				this.address = address;
     }
 
     public int getId() {
@@ -301,7 +306,8 @@ public class Incident extends TopModel implements java.io.Serializable{
 				}
 				return ret;
     }
-				
+
+		/*
     public String getAddress() {
 				return address;
     }
@@ -344,13 +350,14 @@ public class Incident extends TopModel implements java.io.Serializable{
 						this.zip = val.trim();
 			 
     }
-		public Address getAddressObj() {
-				return addressObj;
+		*/
+		public Address getAddress() {
+				return address;
     }
 
-    public void setAddressObj(Address val) {
+    public void setAddress(Address val) {
 				if(val != null)
-						this.addressObj = val;
+						this.address = val;
 			 
     }		
 
@@ -372,7 +379,7 @@ public class Incident extends TopModel implements java.io.Serializable{
 						this.evidence = val.trim();
 				
     }		
-
+		/*
     public Character getInvalidAddress() {
 				return invalidAddress;
     }
@@ -380,11 +387,12 @@ public class Incident extends TopModel implements java.io.Serializable{
     public void setInvalidAddress(Character val) {
 				this.invalidAddress = val;
     }
-		
+
     @Transient
     public boolean hasValidAddress(){
 				return this.invalidAddress == null;
     }
+		*/		
     @Transient
     public boolean hasEvidenceInfo(){
 				return this.evidence != null && !this.evidence.isEmpty();
@@ -397,6 +405,7 @@ public class Incident extends TopModel implements java.io.Serializable{
 				}
 				return ret;
     }
+		/*
     @Transient
     public boolean isAddressChanged(){
 				if(address == null || address.isEmpty()) return true;
@@ -405,9 +414,10 @@ public class Incident extends TopModel implements java.io.Serializable{
 				}
 				return false;
     }
+		*/
 		@Transient
-		public boolean hasAddressObj(){
-				return addressObj != null;
+		public boolean hasAddress(){
+				return address != null;
 		}
     public String getDateDescription() {
 				return dateDescription;
@@ -477,16 +487,9 @@ public class Incident extends TopModel implements java.io.Serializable{
     @Transient
     public String getCityStateZip(){
 				String ret = "";
-				if(city != null)
-						ret += city;
-				if(state != null){
-						if(!ret.equals("")) ret += ", ";
-						ret += state;
+				if(hasAddress()){
+						ret = address.getCityStateZip();
 				}
-				if(zip != null){
-						if(!ret.equals("")) ret += " ";
-						ret += zip;
-				}				
 				return ret;
     }
 				
@@ -807,6 +810,10 @@ public class Incident extends TopModel implements java.io.Serializable{
     }
     @Transient
     public String getAddressInfo(){
+				if(hasAddress()){
+						return address.getInfo();
+				}
+				/**
 				String ret = address;
 				if(city != null && !city.isEmpty()){
 						if(!ret.isEmpty()) ret += " ";
@@ -820,7 +827,8 @@ public class Incident extends TopModel implements java.io.Serializable{
 						if(!ret.isEmpty()) ret += " ";
 						ret += zip;
 				}
-				return ret;
+				*/
+				return "";
     }
     @Transient
     public String getEntryInfo(){
@@ -856,16 +864,8 @@ public class Incident extends TopModel implements java.io.Serializable{
 				return "Incident " + id;
     }
     @Transient
-    public boolean verifyAll(
-														 String default_city,
-														 String default_jurisdiction,
-														 String default_state,
-														 List<String> default_zip_codes){
+    public boolean verifyAll(){
 				boolean ret = verifyTimes();
-				ret = ret && verifyAddressInfo(default_city,
-																			 default_jurisdiction,
-																			 default_state,
-																			 default_zip_codes);
 				ret = ret && verifyDetails();
 				return ret;
     }
@@ -910,7 +910,8 @@ public class Incident extends TopModel implements java.io.Serializable{
 				}
 				return ret;
     }
-				
+
+		/**
     @Transient
     public boolean verifyAddressInfo(String default_city,
 																		 String default_jurisdiction,
@@ -957,5 +958,5 @@ public class Incident extends TopModel implements java.io.Serializable{
 				}
 				return true;
     }
-						
+		*/						
 }

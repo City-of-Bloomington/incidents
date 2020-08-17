@@ -54,13 +54,9 @@
 				</div>
 		
 				<div class="m-b-10">
-					<label>Incident address: </label>
-					<span th:text="${incident.addressInfo}"> </span>
+					<label>Incident location: </label>
+					<span th:text="${incident.address.info}"> </span>
 				</div>
-				<div class="m-b-10" th:if="${incident.hasAddressObj()}">
-					<label>Incident address (obj): </label>
-					<span th:text="${incident.addressObj.info}"> </span>
-				</div>				
 				<div class="m-b-10" th:if="${incident.hasAccessInfo()}">
 					<label>Entry access: </label>
 					<span th:text="${incident.entryInfo}"></span>

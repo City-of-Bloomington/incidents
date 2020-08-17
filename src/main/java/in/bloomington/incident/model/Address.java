@@ -33,7 +33,7 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "addresses")
-public class Address implements java.io.Serializable{
+public class Address extends TopModel implements java.io.Serializable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -49,6 +49,11 @@ public class Address implements java.io.Serializable{
 		private Integer addressId;
 		private Integer subunitId;
 		private Character invalidAddress;
+		//
+		// temporary place holder for incident type_id
+		//
+		@Transient
+		private Integer type_id;
     public Address(){
 
     }
@@ -161,6 +166,14 @@ public class Address implements java.io.Serializable{
 				this.invalidAddress = val;
     }
 		@Transient
+		public void setType_id(Integer val){
+				type_id = val;
+		}
+		@Transient
+		public Integer getType_id(){
+				return type_id;
+		}
+		@Transient
 		public boolean isValid(){
 				return invalidAddress == null;
 		}
@@ -202,6 +215,66 @@ public class Address implements java.io.Serializable{
     @Override
     public String toString() {
 				return name;
-    } 	
+    }
+		@Transient
+		public String getCityStateZip(){
+				String ret = "";
+				if(city != null && !city.isEmpty()){
+						ret += city;
+				}
+				if(state != null && !state.isEmpty()){
+						if(!ret.isEmpty()) ret +=", ";
+						ret += state;
+				}
+				if(zipcode != null && !zipcode.isEmpty()){
+						if(!ret.isEmpty()) ret +=", ";
+						ret += zipcode;
+				}				
+				return ret;
+		}
+    @Transient
+    public boolean verifyAddress(String default_city,
+																 String default_jurisdiction,
+																 String default_state,
+																 List<String> default_zip_codes){
+				if(name == null || name.trim().isEmpty()){
+						addError("Address is required");
+						return false;
+				}
+				else if(city == null || city.isEmpty()){
+						addError("City is required");
+						return false;
+				}
+				else if(!city.equals(default_city)){
+						addError("Invalid city "+city+", verify your address or contact the related Police Department" );
+						return false;
+				}
+				else if(state == null || state.isEmpty()){
+						addError("State is required");
+						return false;
+				}
+				else if(!state.equals(default_state)){
+						addError("Invalid state "+state);
+						return false;
+				}
+				else if(jurisdiction != null && !jurisdiction.equals(default_jurisdiction)){
+						addError("Your address is not in "+default_jurisdiction+" jurisdiction, verify your address or contact the related Police Department ");
+						return false;
+				}
+				else if(zipcode == null || zipcode.equals("")){
+						addError("Zip code is required");
+						return false;
+				}
+				else if(zipcode != null && !zipcode.equals("")){
+						for(String str:default_zip_codes){
+								if(zipcode.equals(str)){
+										return true;
+								}
+						}
+						addError("invalid zipcode "+zipcode);
+						return false;
+				}
+				return true;
+    }		
 		
 }

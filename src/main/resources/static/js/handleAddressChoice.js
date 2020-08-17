@@ -1,12 +1,12 @@
 var handleAddressChoice = function (chosenAddress) {
     let address_id   = 'address_id',
-				// subunit_id   = 'subunit_id',
+				subunit_id   = 'subunit_id',
 				// location_id = 'location_id',
-				addressInput = document.getElementById(address_id),
+				addressInput = document.getElementById(addressId),
 				addressInput2 = document.getElementById('addr_id'),
 				zip = document.getElementById('zip'),
 				city = document.getElementById("city"),
-				// subunitInput = document.getElementById(subunit_id),
+				subunitInput = document.getElementById(subunitId),
 				// locationId  = document.getElementById(location_id),
 				latitude  = document.getElementById('latitude'),
 				longitude  = document.getElementById('longitude'),
@@ -26,7 +26,7 @@ var handleAddressChoice = function (chosenAddress) {
     if (chosenAddress.subunit) {
 				latitude.value=chosenAddress.subunit.latitude;
 				longitude.value=chosenAddress.subunit.longitude;
-        // subunitInput.value = chosenAddress.subunit.id;
+        subunitInput.value = chosenAddress.subunit.id;
 				// locationId.value=chosenAddress.subunit.location_id ? chosenAddress.subunit.location_id:'';
         // display.innerHTML += ' ' + chosenAddress.subunit.type_code
 				//    +  ' ' + chosenAddress.subunit.identifier;
@@ -42,12 +42,12 @@ var handleAddressChoice2 = function (chosenAddress) {
     let address_id   = 'address_id',
 				// subunit_id   = 'subunit_id',
 				// location_id = 'location_id',
-				// addressInput = window.opener.document.getElementById(address_id),
+				addressInput = window.opener.document.getElementById('addressId'),
 				addressInput2 = window.opener.document.getElementById('addr_id'),
 				zip = window.opener.document.getElementById('zip'),
 				city = window.opener.document.getElementById("city"),
 				state = window.opener.document.getElementById("state"),
-				// subunitInput = document.getElementById(subunit_id),
+				subunitInput = window.opener.document.getElementById('subunitId'),
 				// locationId  = document.getElementById(location_id),
 				latitude  = window.opener.document.getElementById('latitude'),
 				longitude  = window.opener.document.getElementById('longitude'),
@@ -68,7 +68,8 @@ var handleAddressChoice2 = function (chosenAddress) {
     if (chosenAddress.subunit) {
 				latitude.value=chosenAddress.subunit.latitude;
 				longitude.value=chosenAddress.subunit.longitude;
-        // subunitInput.value = chosenAddress.subunit.id;
+        subunitInput.value = chosenAddress.subunit.id;
+				addressInput.value = chosenAddress.id;;
 				// locationId.value=chosenAddress.subunit.location_id ? chosenAddress.subunit.location_id:'';
         // display.innerHTML += ' ' + chosenAddress.subunit.type_code
 				//    +  ' ' + chosenAddress.subunit.identifier;
@@ -78,6 +79,7 @@ var handleAddressChoice2 = function (chosenAddress) {
 				latitude.value = chosenAddress.latitude;
 				longitude.value = chosenAddress.longitude;
 				addressInput2.value = chosenAddress.streetAddress;
+				addressInput.value = chosenAddress.id;;
     }
 };
 

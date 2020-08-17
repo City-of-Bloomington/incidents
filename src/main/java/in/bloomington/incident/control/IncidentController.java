@@ -38,17 +38,18 @@ import in.bloomington.incident.service.ActionService;
 import in.bloomington.incident.service.ActionLogService;
 import in.bloomington.incident.service.RequestService;
 import in.bloomington.incident.service.UserService;
-
+import in.bloomington.incident.service.AddressService;
 import in.bloomington.incident.model.Incident;
 import in.bloomington.incident.model.IncidentType;
 import in.bloomington.incident.model.Action;
+import in.bloomington.incident.model.Address;
 import in.bloomington.incident.model.ActionLog;
 import in.bloomington.incident.model.Person;
 import in.bloomington.incident.model.Request;
 import in.bloomington.incident.model.User;
 import in.bloomington.incident.utils.Helper;
 import in.bloomington.incident.utils.EmailHelper;
-import in.bloomington.incident.util.AddressCheck;
+// import in.bloomington.incident.utils.AddressCheck;
 
 @Controller
 public class IncidentController extends TopController{
@@ -75,13 +76,16 @@ public class IncidentController extends TopController{
     @Autowired
     RequestService requestService;
     @Autowired
-    UserService userService;    
+    UserService userService;
+    @Autowired
+		AddressService addressService;		
     @Autowired
     private JavaMailSender mailSender;
-    @Autowired
-    AddressCheck addressCheck;
+    // @Autowired
+    // AddressCheck addressCheck;
     
     private Environment env;
+		/**
     @Value( "${incident.defaultcity}" )
     private String defaultCity;
     @Value( "${incident.defaultjurisdiction}" )
@@ -90,6 +94,7 @@ public class IncidentController extends TopController{
     private String defaultState;		
     @Value( "${incident.zipcodes}" )
     private List<String> zipCodes;
+		*/
     @Value("${incident.email.sender}")
     private String email_sender;
     @Value("${incident.application.name}")
@@ -99,9 +104,7 @@ public class IncidentController extends TopController{
     @Value("${server.servlet.context-path}")
     private String hostPath; // incidents in production
 
-    public List<String> getAllZipCodes(){
-				return zipCodes;
-    }
+		/**
     public List<String> getAllCities(){
 				List<String> allCities = new ArrayList<>();
 				if(defaultCity != null){
@@ -116,10 +119,12 @@ public class IncidentController extends TopController{
 				}
 				return allStates;
     }
+		*/
     @RequestMapping("/initialStart")
     public String initialNext(@RequestParam(required = true) String email,
 															@RequestParam(required = true) String email2,
-															@RequestParam(required = true) int type_id,				    
+															@RequestParam(required = true) int type_id,
+															@RequestParam(required = true) int address_id,
 															Model model,
 															HttpServletRequest req
 															){
@@ -145,10 +150,12 @@ public class IncidentController extends TopController{
 						return "redirect:/introEmail?type_id="+type_id;
 				}
 				IncidentType type = incidentTypeService.findById(type_id);
+				Address address = addressService.findById(address_id);
 				Incident incident = new Incident();
 				incident.setEmail(email);
 				incident.setReceivedNow();
 				incident.setIncidentType(type);
+				incident.setAddress(address);
 				incidentService.save(incident);
 				//
 				// this is the only place we are adding
@@ -195,9 +202,9 @@ public class IncidentController extends TopController{
 				}
         model.addAttribute("incident", incident);
 				model.addAttribute("entryTypes", entryTypes);
-				model.addAttribute("allZipCodes", getAllZipCodes());
-				model.addAttribute("allStates", getAllStates());
-				model.addAttribute("allCities", getAllCities());
+				// model.addAttribute("allZipCodes", getAllZipCodes());
+				// model.addAttribute("allStates", getAllStates());
+				// model.addAttribute("allCities", getAllCities());
 				model.addAttribute("hostPath", hostPath);
 				handleErrorsAndMessages(model);
         return "incidentAdd";
@@ -205,7 +212,8 @@ public class IncidentController extends TopController{
     @PostMapping("/incidentNext/{id}")
     public String incidentNext(@PathVariable("id") int id,
 															 @Valid Incident incident,
-															 BindingResult result, Model model,
+															 BindingResult result,
+															 Model model,
 															 HttpSession session
 															 ) {
 				boolean pass = true;
@@ -215,23 +223,22 @@ public class IncidentController extends TopController{
         }
 				incident.setId(id);
 				if(incident.canBeChanged()){	
-						if(!incident.verifyAll(defaultCity,
-																	 defaultJurisdiction,
-																	 defaultState,
-																	 zipCodes)){
+						if(!incident.verifyAll()){
 								addError(incident.getErrorInfo());
 								pass = false;
 						}
+						/**
 						if(pass && addressCheck.isInIUPDLayer(incident.getLatitude(),
 																									incident.getLongitude())){
 								pass = false;
 								addError("This address is in IU Police Department district");
 						}
+						*/
 						if(!pass){
 								model.addAttribute("entryTypes", entryTypes);
-								model.addAttribute("allZipCodes", getAllZipCodes());
-								model.addAttribute("allStates", getAllStates());
-								model.addAttribute("allCities", getAllCities());
+								// model.addAttribute("allZipCodes", getAllZipCodes());
+								// model.addAttribute("allStates", getAllStates());
+								// model.addAttribute("allCities", getAllCities());
 								model.addAttribute("hostPath", hostPath);
 								handleErrorsAndMessages(model);
 								return "incidentAdd";
@@ -491,9 +498,9 @@ public class IncidentController extends TopController{
 				if(incident.canBeChanged()){
 						model.addAttribute("incident", incident);
 						model.addAttribute("entryTypes", entryTypes);
-						model.addAttribute("allZipCodes", getAllZipCodes());
-						model.addAttribute("allStates", getAllStates());
-						model.addAttribute("allCities", getAllCities());
+						// model.addAttribute("allZipCodes", getAllZipCodes());
+						// model.addAttribute("allStates", getAllStates());
+						// model.addAttribute("allCities", getAllCities());
 						model.addAttribute("hostPath",hostPath);
 						getMessagesAndErrorsFromSession(session, model);
 						// handleErrorsAndMessages(model);
@@ -524,20 +531,19 @@ public class IncidentController extends TopController{
 				}
 				if(incident.canBeChanged()){
 						boolean pass = true;
-						if(!incident.verifyAll(defaultCity,
-																	 defaultJurisdiction,
-																	 defaultState,
-																	 zipCodes)){
+						if(!incident.verifyAll()){
 								addError(incident.getErrorInfo());
 								addMessagesAndErrorsToSession(session);		
 								pass = false;
 						}
+						/**
 						if(pass && incident.isAddressChanged() &&
 							 addressCheck.isInIUPDLayer(incident.getLatitude(),
-																					incident.getLongitude())){
-								pass = false;
+							 incident.getLongitude())){
+							 pass = false;
 								addError("This address is in IU Police Department district");
 						}
+						*/
 						if(!pass){
 								return "redirect:/incident/edit/"+incident.getId();
 						}

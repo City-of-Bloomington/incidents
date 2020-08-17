@@ -38,7 +38,7 @@ public class WebController extends TopController{
     public String indexStart(Model model,
 														 HttpSession session) {
 				getMessagesAndErrorsFromSession(session, model);
-				return "redirect:/introStart"; 
+				return "intro_questions";
     }
     
     @RequestMapping(value = "/introStart")
@@ -55,30 +55,21 @@ public class WebController extends TopController{
 				model.addAttribute("type_id", type_id);
 				return "theft_questions";
     }
-		
-		/** not needed anymore
-    @RequestMapping("/introTheftFromVehicle")
-    public String introTheftFromVehicle(Model model,
-																				HttpSession session) {
-				getMessagesAndErrorsFromSession(session, model);
-				return "theftFromVehicle_questions";
-    }
-		*/
+
     @RequestMapping("/introFraud")
     public String introFraud(Model model,
 														 HttpSession session) {
 				getMessagesAndErrorsFromSession(session, model);
-				model.addAttribute("type_id", 6); // fraud is 6 in incident_types table
+				// model.addAttribute("type_id", 6); // fraud is 6 in incident_types table
 				// we do not have special questions for fraud right now
 				// so we go to email page directly
-				return "email_questions";
+				return "redirect:/addressInput/6";				
     }   		
     @RequestMapping("/introVandal")
     public String introVandal(Model model,
 															HttpSession session) {
 				getMessagesAndErrorsFromSession(session, model);
-				model.addAttribute("type_id", 2); // vandalism is 2 
-				return "email_questions";
+				return "redirect:/addressInput/2";
     }       
     @RequestMapping("/introLost")
     public String introLost(Model model,
@@ -86,14 +77,7 @@ public class WebController extends TopController{
 				getMessagesAndErrorsFromSession(session, model);
 				return "lost_questions";
     }
-    @RequestMapping("/introEmail")
-    public String introEmails(@RequestParam(required = true) int type_id,
-															Model model,
-															HttpSession session) {
-				getMessagesAndErrorsFromSession(session, model);
-				model.addAttribute("type_id", type_id);
-				return "email_questions";
-    }
+
     @RequestMapping("/emailRequest")
     public String emailRequest(@RequestParam(required=true) int type_id,
 															 Model model,
@@ -102,7 +86,6 @@ public class WebController extends TopController{
 				getMessagesAndErrorsFromSession(session, model);
         model.addAttribute("type_id", type_id);	
 				return "email_questions";
-
     }		
     private User findUserFromSession(HttpSession session){
 				User user = null;

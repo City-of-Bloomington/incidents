@@ -499,11 +499,11 @@ create table addresses(                                                         
 ;;
 ;; populating addresses table from incidents is done though ImportController class
 ;;
-;; after import is done in Production the following columns should be drop
+;; after import is done in Production the following columns should be dropped
 ;;
-;; alter table incidents drop column address;
-;; alter table incidents drop column city;
-;; alter table incidents drop column zip;
-;; alter table incidents drop column state;
-;; alter table incidents drop column invalid_address
+alter table incidents drop column address;
+alter table incidents drop column city;
+alter table incidents drop column zip;
+alter table incidents drop column state;
+alter table incidents drop column invalid_address
 ;;
