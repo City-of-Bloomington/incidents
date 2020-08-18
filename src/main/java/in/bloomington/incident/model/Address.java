@@ -180,7 +180,11 @@ public class Address extends TopModel implements java.io.Serializable{
 		@Transient
 		public boolean isInvalid(){
 				return invalidAddress != null;
-		}		
+		}
+		@Transient
+		public boolean hasData(){
+				return name != null && !name.isEmpty();
+		}
 		@Transient
 		public String getInfo(){
 				String ret = name;

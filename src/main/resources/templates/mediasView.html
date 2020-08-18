@@ -12,7 +12,7 @@
       <div th:replace="general::header-staff"></div>
     </header>  
     <div th:fragment="mediasView(medias)">
-      <h4>Uploaded Images</h4>
+      <h2>Uploaded Images</h2>
       <div th:switch="${medias}">
 	<h2 th:case="null">No files found</h2>
 	<div th:case="*">

@@ -41,7 +41,8 @@
       <div th:if="${incident.hasActionLogs()}">
         <div th:insert="actionLogs::actionLogs(${incident.actionLogs})"></div>
       </div>
-      <h3>Update Incident Status</h3>
+      <h2>Incident Status</h2>
+			<p><strong> Update Status</strong></p>
       <form action="#" th:action="@{/process/final}" th:object="${actionLog}" method="post">
         <input type="hidden" th:field="${actionLog.incident}" />
         <table>

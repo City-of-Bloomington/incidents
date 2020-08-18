@@ -55,88 +55,88 @@ public class ActionLog implements java.io.Serializable{
 
     }
     public ActionLog(int id,
-		     Incident incident,
-		     Date date,
-		     Action action,
-		     User user,
-		     String comments) {
-	super();
-	this.id = id;
-	this.incident = incident;
-	this.date = date;
-	this.action = action;
-	this.user = user;
-	this.comments = comments;
+										 Incident incident,
+										 Date date,
+										 Action action,
+										 User user,
+										 String comments) {
+				super();
+				this.id = id;
+				this.incident = incident;
+				this.date = date;
+				this.action = action;
+				this.user = user;
+				this.comments = comments;
     }
     public int getId() {
-	return id;
+				return id;
     }
     public void setId(int id) {
-	this.id = id;
+				this.id = id;
     }
     public Incident getIncident() {
-	return incident;
+				return incident;
     }
     public void setIncident(Incident incident) {
-	this.incident = incident;
+				this.incident = incident;
     }
     public Date getDate() {
-	return date;
+				return date;
     }
     public void setDate(Date date) {
-	this.date = date;
+				this.date = date;
     }
     public String getDateStr(){
-	String ret = "";
-	if(date != null){
-	    try{
-		ret = Helper.dfTime.format(date);
-	    }catch(Exception ex){
+				String ret = "";
+				if(date != null){
+						try{
+								ret = Helper.dfDateTime.format(date);
+						}catch(Exception ex){
 
-	    }	    
-	}
-	return ret;
+						}	    
+				}
+				return ret;
     }
     public Action getAction() {
-	return action;
+				return action;
     }
     public void setAction(Action action) {
-	this.action = action;
+				this.action = action;
     }
     public User getUser() {
-	return user;
+				return user;
     }
     public void setUser(User user) {
-	this.user = user;
+				this.user = user;
     }
     public String getComments() {
-	return comments;
+				return comments;
     }
     public void setComments(String comments) {
-	this.comments = comments;
+				this.comments = comments;
     }
     @Transient
     public void setDateNow(){
-	date = new Date();
+				date = new Date();
     }
     @Transient
     public void setCaseNumber(String val){    
-	if(val != null)
-	    caseNumber = val;
+				if(val != null)
+						caseNumber = val;
     }
     @Transient
     public String getCaseNumber(){    
-	return caseNumber;
+				return caseNumber;
     }
     @Transient
     public boolean hasCaseNumber(){
-	return caseNumber != null && !caseNumber.isEmpty();
+				return caseNumber != null && !caseNumber.isEmpty();
     }
     @Override
     public boolean equals(Object obj) { 
           
-	if(this == obj) 
-	    return true; 
+				if(this == obj) 
+						return true; 
 				
         if(obj == null || obj.getClass()!= this.getClass()) 
             return false; 
@@ -146,12 +146,12 @@ public class ActionLog implements java.io.Serializable{
     }
     @Override
     public int hashCode(){ 
-	int ret = 37;
+				int ret = 37;
         return ret += this.id; 
     }
     @Override
     public String toString() {
-	return "ActionLog [id=" + id + "]";
+				return "ActionLog [id=" + id + "]";
     } 	
 		
 }

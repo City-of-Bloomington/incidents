@@ -21,6 +21,7 @@
     <form action="#"
 					th:action="@{/addressCheck}"
 					th:object="${address}"
+					onsubmit="return verifyAddress()"
 					method="post">
 			<input type="hidden" th:field="${address.type_id}" />			
       <fieldset><legend>Location of Incident</legend>

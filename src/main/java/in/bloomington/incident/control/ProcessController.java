@@ -83,15 +83,18 @@ public class ProcessController extends TopController{
 				if(user == null ){
 						return "redirect:/login";
 				}	
-				ActionLog actionLog = new ActionLog();
+
 				List<Action> actions = null;
 				try{
 						incident = incidentService.findById(id);
-						actionLog.setIncident(incident);
 						actions = getNextActions(incident);
+						if(actions != null && actions.size() > 0){
+								ActionLog actionLog = new ActionLog();
+								actionLog.setIncident(incident);								
+								model.addAttribute("actionLog", actionLog);
+								model.addAttribute("actions", actions);
+						}						
 						model.addAttribute("incident", incident);
-						model.addAttribute("actionLog", actionLog);
-						model.addAttribute("actions", actions);
 				}catch(Exception ex){
 						logger.error("Error no incident "+id+" not found "+ex);
 						addError("Invalid incident ID "+id);

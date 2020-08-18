@@ -106,6 +106,15 @@ function verifyIncidentInput(){
 				$('#end_time').focus();
 				return false;
     }    
+    var details = $('#details_id').val();
+    if(details === ''){
+				alert ('Please provide incident details');
+				$('#detail_id').focus();
+				return false;
+    }    
+    return true;
+}
+function verifyAddress(){
     var addr = $('#addr_id').val();
     if(addr === ''){
 				alert ('Please provide incident address');
@@ -137,13 +146,7 @@ function verifyIncidentInput(){
 				alert ('Please provide zip code');
 				return false;
     }
-    var details = $('#details_id').val();
-    if(details === ''){
-				alert ('Please provide incident details');
-				$('#detail_id').focus();
-				return false;
-    }    
-    return true;
+		return true;
 }
 function popup(mylink, windowTitle) { 
     if (! window.focus)return true;

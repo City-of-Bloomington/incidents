@@ -288,7 +288,7 @@ insert into actions select * from statuses;
 
 ;;
 ;; incomplete incidents are those started but not submitted
-   create or Replace view incident_incomplete AS                                  select i.id from incidents i where i.address is not null and i.details is not null and 0 = (select count(*) from action_logs l where l.incident_id=i.id);
+   create or Replace view incident_incomplete AS                                  select i.id from incidents i where i.address_id is not null and i.details is not null and 0 = (select count(*) from action_logs l where l.incident_id=i.id);
 ;;
 ;; for import, first we do clean up
 ;;
@@ -492,10 +492,11 @@ insert into fraud_types values
 ;; addresses info are taken from City of Bloomington master addreess Database
 ;; address_id and subunit_id are master address ids
 ;;
-create table addresses(                                                            id int unsigned auto_increment primary key,                                     name varchar(80) not null,                                                      latitude decimal(15,10),                                                        longitude decimal(15,10),                                                       city varchar(80),                                                               state varchar(2),                                                               zipcode varchar(15),                                                            jurisdiction varchar(80),                                                       address_id int unsigned,                                                        subunit_id int unsigned,                                                        invalid_address char(1)                                                         )engine=InnoDB;
+create table addresses(                                                            id int unsigned auto_increment primary key,                                     name varchar(80) not null unique,                                                      latitude decimal(15,10),                                                        longitude decimal(15,10),                                                       city varchar(80),                                                               state varchar(2),                                                               zipcode varchar(15),                                                            jurisdiction varchar(80),                                                       address_id int unsigned,                                                        subunit_id int unsigned,                                                        invalid_address char(1)                                                         )engine=InnoDB;
 			 
   alter table incidents add address_id int unsigned after date;
   alter table incidents add foreign key(address_id) references addresses(id);
+	alter table addresses add constraint unique(name);
 ;;
 ;; populating addresses table from incidents is done though ImportController class
 ;;

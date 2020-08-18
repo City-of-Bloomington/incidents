@@ -47,36 +47,43 @@
     <div th:if="${incident.hasActionLogs()}">
       <div th:insert="actionLogs::actionLogs(${incident.actionLogs})"></div>
     </div>
-    <h3>Update Incident Status</h3>
-    <form action="#" th:action="@{/staff/decision}" th:object="${actionLog}" method="post">
-      <input type="hidden" th:field="${actionLog.incident}" />
-      <table>
-        <tr>
-          <td>Set Status</td>
-          <td>
-            <select th:field="${actionLog.action}" id="ation_id">
-              <option th:each="r : ${actions}" th:value="${r.id}" th:text="${r.description}">
+		<h2>Incident Status</h2>		
+		<div th:if="${actionLog}">
+			<h3>Update Status</h3>
+			<form action="#" th:action="@{/staff/decision}" th:object="${actionLog}" method="post">
+				<input type="hidden" th:field="${actionLog.incident}" />
+				<table>
+					<tr>
+						<td>Set Status</td>
+						<td>
+							<select th:field="${actionLog.action}" id="ation_id">
+								<option th:each="r : ${actions}" th:value="${r.id}" th:text="${r.description}">
               </option>
-            </select>
-          </td>
-        </tr>
-        <tr>
-          <td>Case Number</td>
-          <td>
-            <input th:field="${actionLog.caseNumber}" size="10" maxlength="20" />
-          </td>
-        </tr>
-        <tr>
-          <td>Comments</td>
-          <td><textarea th:field="${actionLog.comments}" rows="5" cols="50"></textarea></td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>
-            <input type="submit" value="Submit" />
-          </td>
-        </tr>
-    </form>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td>Case Number</td>
+						<td>
+							<input th:field="${actionLog.caseNumber}" size="10" maxlength="20" />
+						</td>
+					</tr>
+					<tr>
+						<td>Comments</td>
+						<td><textarea th:field="${actionLog.comments}" rows="5" cols="50"></textarea></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td>
+							<input type="submit" value="Submit" />
+						</td>
+					</tr>
+				</table>				
+			</form>
+		</div>
+		<div th:unless="${actionLog}">
+			<p> Incomplete (not submitted nor confirmed), no further actions can be done</p>
+		</div>
   </main>
 </body>
 

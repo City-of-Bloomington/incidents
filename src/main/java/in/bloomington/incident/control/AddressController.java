@@ -174,11 +174,20 @@ public class AddressController extends TopController{
 						/**
 						 * first we need to check if this address exist
 						 */
-						//TODO check if address exist
-						/**
-						 * if not then we save
-						 */
-						addressService.save(address);
+						List<Address> addresses = addressService.findDistinctAddressByName(address.getName());
+						
+						if(addresses == null || addresses.size() == 0){
+								/**
+								 * if not then we save
+								 */
+								addressService.save(address);								
+						}
+						else{
+								// if exist we update 
+								Address addr = addresses.get(0);
+								address.setId(addr.getId());
+								addressService.update(address);								
+						}
 						// next go to email request
 						model.addAttribute("type_id", address.getType_id());
 						model.addAttribute("address_id", address.getId());						

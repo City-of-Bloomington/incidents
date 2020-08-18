@@ -59,9 +59,12 @@ public class AddressServiceImpl implements AddressService {
 		private List<Address> changeToList(Iterable<Address> it){
 				if(it == null)
 						return null;
-				List<Address> all = new ArrayList<>();
+				List<Address> all = null; 
 				for(Address one:it){
-						all.add(one);
+						if(one != null && one.hasData()){
+								if(all == null) all = new ArrayList<>();
+								all.add(one);
+						}
 				}
 				return all;	
 		}

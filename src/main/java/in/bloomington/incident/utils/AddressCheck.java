@@ -94,18 +94,18 @@ public class AddressCheck{
 						connection.setDoOutput(true);
 						// connection.setUseCaches(true);
 						connection.setRequestMethod("POST");
-	    
+						//
 						// Set Headers
 						connection.setRequestProperty("Accept", "application/xml");
 						connection.setRequestProperty("Content-Type", "application/xml");
-	    
+						//
 						// Write XML
 						OutputStream outputStream = connection.getOutputStream();
 						byte[] bytes = xmlStr.getBytes("UTF-8");
 						outputStream.write(bytes);
 						outputStream.flush();
 						outputStream.close();
-	    
+						//
 						// Read XML
 						InputStream inputStream = connection.getInputStream();
 						byte[] res = new byte[2048];
@@ -119,6 +119,7 @@ public class AddressCheck{
 						System.out.println("Response: " + back);
 				}catch(Exception ex){
 						System.err.println(" "+ex);
+						back += ex;
 				}
 				return back;
     }
@@ -128,6 +129,11 @@ public class AddressCheck{
 				String typeName="publicgis:IUPDPoliceDistrict";
 				String xmlStr = buildXmlString(lat, longi, typeName);
 				String back = isInTheLayer(xmlStr);
+				//
+				//temporary till the geoserver is fixed, we are check for the exception
+				//
+				if(back != null && back.indexOf("IOException") > -1)
+						return true;
 				return (back != null  && back.indexOf("Polygon") > -1);
     }
     public boolean isInCityPDLayer(double lat,
