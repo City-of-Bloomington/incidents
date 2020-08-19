@@ -50,95 +50,99 @@ public class Media implements java.io.Serializable{
     }
 
     public Media(int id, Incident incident, @NotNull String file_name, String old_file_name, Integer year,
-		 String mime_type, String notes) {
-	super();
-	this.id = id;
-	this.incident = incident;
-	this.fileName = file_name;
-	this.oldFileName = old_file_name;
-	this.year = year;
-	this.mimeType = mimeType;
-	this.notes = notes;
+								 String mime_type, String notes) {
+				super();
+				this.id = id;
+				this.incident = incident;
+				this.fileName = file_name;
+				this.oldFileName = old_file_name;
+				this.year = year;
+				this.mimeType = mimeType;
+				this.notes = notes;
     }
 
     public int getId() {
-	return id;
+				return id;
     }
 
     public void setId(int id) {
-	this.id = id;
+				this.id = id;
     }
 
     public Incident getIncident() {
-	return incident;
+				return incident;
     }
 
     public void setIncident(Incident incident) {
-	this.incident = incident;
+				this.incident = incident;
     }
 
     public String getFileName() {
-	return fileName;
+				return fileName;
     }
 
     public void setFileName(String val) {
-	if(val != null && !val.isEmpty())				
-	    this.fileName = val;
+				if(val != null && !val.isEmpty())				
+						this.fileName = val;
     }
 
     public String getOldFileName() {
-	return oldFileName;
+				return oldFileName;
     }
 
     public void setOldFileName(String val) {
-	if(val != null && !val.isEmpty())
-	    this.oldFileName = val;
+				if(val != null && !val.isEmpty())
+						this.oldFileName = val;
     }
 
     public Integer getYear() {
-	return year;
+				return year;
     }
 
     public void setYear(Integer year) {
-	this.year = year;
+				this.year = year;
     }
 
     public String getMimeType() {
-	return mimeType;
+				return mimeType;
     }
 
     public void setMimeType(String mime_type) {
-	this.mimeType = mime_type;
+				this.mimeType = mime_type;
     }
 
     public String getNotes() {
-	return notes;
+				return notes;
     }
 
     public void setNotes(String notes) {
-	this.notes = notes;
+				this.notes = notes;
     }
+		@Transient
+		public boolean hasNotes(){
+				return notes != null && !notes.isEmpty();
+		}
     @Transient
     public String getInfo(){
-	String ret = "";
-	if(fileName != null){
-	    ret = "name:"+fileName;
-	}
-	if(year != null){
-	    if(!ret.isEmpty()) ret += " ";
-	    ret += "year:"+year;
-	}
-	if(mimeType != null){
-	    if(!ret.isEmpty()) ret += " ";
-	    ret += "type:"+mimeType;
-	}
-	return ret;
+				String ret = "";
+				if(fileName != null){
+						ret = "name:"+fileName;
+				}
+				if(year != null){
+						if(!ret.isEmpty()) ret += " ";
+						ret += "year:"+year;
+				}
+				if(mimeType != null){
+						if(!ret.isEmpty()) ret += " ";
+						ret += "type:"+mimeType;
+				}
+				return ret;
     }
     @Override
     public boolean equals(Object obj) { 
           
-	if(this == obj) 
-	    return true; 
+				if(this == obj) 
+						return true; 
 				
         if(obj == null || obj.getClass()!= this.getClass()) 
             return false; 
@@ -148,12 +152,12 @@ public class Media implements java.io.Serializable{
     }
     @Override
     public int hashCode(){ 
-	int ret = 29;
+				int ret = 29;
         return ret += this.id; 
     }
 
     @Override
     public String toString() {
-	return "Media [" + id + ", " + oldFileName + "]";
+				return "Media [" + id + ", " + oldFileName + "]";
     } 			
 }

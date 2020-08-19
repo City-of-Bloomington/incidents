@@ -62,32 +62,32 @@ public class Vehicle extends TopModel implements java.io.Serializable{
     double maxTotalValue = 0;
     
     public Vehicle(int id,
-		   in.bloomington.incident.model.@NotNull(message = "Incident is required") Incident incident,
-		   CarDamageType carDamageType,
-		   String make,
-		   String model,
-		   Integer year,
-		   String color,
-		   String plateNumber,
-		   String state,
-		   Integer plateYear,
-		   String owner,
-		   String description,
-		   Double value) {
-	super();
-	this.id = id;
-	Incident = incident;
-	this.carDamageType = carDamageType;
-	this.make = make;
-	this.model = model;
-	this.year = year;
-	this.color = color;
-	this.plateNumber = plateNumber;
-	this.state = state;
-	this.plateYear = plateYear;
-	this.owner = owner;
-	this.description = description;
-	this.value = value;
+									 in.bloomington.incident.model.@NotNull(message = "Incident is required") Incident incident,
+									 CarDamageType carDamageType,
+									 String make,
+									 String model,
+									 Integer year,
+									 String color,
+									 String plateNumber,
+									 String state,
+									 Integer plateYear,
+									 String owner,
+									 String description,
+									 Double value) {
+				super();
+				this.id = id;
+				Incident = incident;
+				this.carDamageType = carDamageType;
+				this.make = make;
+				this.model = model;
+				this.year = year;
+				this.color = color;
+				this.plateNumber = plateNumber;
+				this.state = state;
+				this.plateYear = plateYear;
+				this.owner = owner;
+				this.description = description;
+				this.value = value;
     }
 
 
@@ -98,270 +98,294 @@ public class Vehicle extends TopModel implements java.io.Serializable{
 
 
     public int getId() {
-	return id;
+				return id;
     }
 
 
     public void setId(int id) {
-	this.id = id;
+				this.id = id;
     }
 
 
     public Incident getIncident() {
-	return Incident;
+				return Incident;
     }
 
 
     public void setIncident(Incident incident) {
-	Incident = incident;
+				Incident = incident;
     }
 
 
     public CarDamageType getCarDamageType() {
-	return carDamageType;
+				return carDamageType;
     }
 
 
     public void setCarDamageType(CarDamageType val) {
-	if(val != null)
-	    this.carDamageType = val;
+				if(val != null)
+						this.carDamageType = val;
     }
 
 
     public String getMake() {
-	return make;
+				return make;
     }
 
 
     public void setMake(String val) {
-	if(val != null && !val.isEmpty())
-	    this.make = val;
+				if(val != null && !val.isEmpty())
+						this.make = val;
     }
 
 
     public String getModel() {
-	return model;
+				return model;
     }
 
 
     public void setModel(String val) {
-	if(val != null && !val.isEmpty())
-	    this.model = val;
+				if(val != null && !val.isEmpty())
+						this.model = val;
     }
 
 
     public Integer getYear() {
-	return year;
+				return year;
     }
 
 
     public void setYear(Integer val) {
-	if(val != null)
-	    this.year = val;
+				if(val != null)
+						this.year = val;
     }
     public double getBalance() {
-	return balance;
+				return balance;
     }
 
     public void setBalance(Double val) {
-	if(val != null)
-	    this.balance = val;
+				if(val != null)
+						this.balance = val;
     }
     public double getOldValue() {
-	return oldValue;
+				return oldValue;
     }
 
     public void setOldValue(Double val) {
-	if(val != null)
-	    this.oldValue = val;
+				if(val != null)
+						this.oldValue = val;
     }
     public double getMaxTotalValue() {
-	return maxTotalValue;
+				return maxTotalValue;
     }
     public void setMaxTotalValue(Double val) {
-	if(val != null)
-	    this.maxTotalValue = val;
+				if(val != null)
+						this.maxTotalValue = val;
     }
     @Transient
     public boolean verifyMaxTotal(){
-	boolean ret = true;
-	if(value != null){
-	    double total = balance+value-oldValue;
-	    if(total > maxTotalValue){
-		addError(total +" total value exceeds max total of  "+maxTotalValue);
-		ret = false;
-	    }
-	}
-	return ret;
+				boolean ret = true;
+				if(maxTotalValue == 0) return true; // case no limit
+				if(value != null){
+						double total = balance+value-oldValue;
+						if(total > maxTotalValue){
+								addError(total +" total value exceeds max total of  "+maxTotalValue);
+								ret = false;
+						}
+				}
+				return ret;
     }
     @Transient
     public boolean verify(){
-	boolean ret = true;
-	String str = getCarInfo();
-	if(str.isEmpty()){
-	    addError("No identification of the vehicle is provided");
-	    ret = false;
-	}
-	if(!verifyMaxTotal()){
-	    ret = false;
-	}
-	return ret;
+				boolean ret = true;
+				String str = getCarInfo();
+				if(str.isEmpty()){
+						addError("No identification of the vehicle is provided");
+						ret = false;
+				}
+				if(!verifyMaxTotal()){
+						ret = false;
+				}
+				return ret;
     }    
     @Transient
     public String getMakeInfo(){
-	String ret = "";
-	if(make != null && !make.isEmpty()){
-	    ret = make;
-	}
-	if(model != null && !model.isEmpty()){
-	    if(!ret.isEmpty()) ret += " ";
-	    ret += model;
-	}
-	if(year != null){
-	    if(!ret.isEmpty()) ret += " ";
-	    ret += year;
-	}
-	return ret;				
-
+				String ret = "";
+				if(make != null && !make.isEmpty()){
+						ret = "Make: "+make;
+				}
+				if(model != null && !model.isEmpty()){
+						if(!ret.isEmpty()) ret += ", ";
+						ret += "Model: "+model;
+				}
+				if(year != null){
+						if(!ret.isEmpty()) ret += ", ";
+						ret += "Year: "+year;
+				}
+				if(color != null && !color.isEmpty()){
+						if(!ret.isEmpty()) ret += ", ";
+						ret += "Color: "+color;
+				}
+				return ret;				
     }
+		@Transient
+		public boolean hasMakeInfo(){
+				String ret = getMakeInfo();
+				return !ret.isEmpty();
+		}
     @Transient
     public String getPlateInfo(){
-	String ret = "";
-	if(state != null){
-	    ret = state;
-	}
-	if(plateYear != null){
-	    if(!ret.isEmpty()) ret += " ";
-	    ret += plateYear;
-	}				
-	if(plateNumber != null && !plateNumber.isEmpty()){
-	    if(!ret.isEmpty()) ret += " ";
-	    ret += plateNumber;
-	}
-	return ret;				
-    }				
-
+				String ret = "";
+				if(state != null){
+						ret = "State: "+state;
+				}
+				if(plateYear != null){
+						if(!ret.isEmpty()) ret += ", ";
+						ret += "Plate Year: "+plateYear;
+				}				
+				if(plateNumber != null && !plateNumber.isEmpty()){
+						if(!ret.isEmpty()) ret += ", ";
+						ret += "Plate #: "+plateNumber;
+				}
+				return ret;				
+    }
+		@Transient
+		public boolean hasPlateInfo(){
+				String ret = getPlateInfo();
+				return !ret.isEmpty();
+		}
 
     public String getColor() {
-	return color;
+				return color;
     }
 
 
     public void setColor(String val) {
-	if(val != null && !val.isEmpty())
-	    this.color = val;
+				if(val != null && !val.isEmpty())
+						this.color = val;
     }
 
 
     public String getPlateNumber() {
-	return plateNumber;
+				return plateNumber;
     }
 
 
     public void setPlateNumber(String val) {
-	if(val != null && !val.isEmpty())
-	    this.plateNumber = val;
+				if(val != null && !val.isEmpty())
+						this.plateNumber = val;
     }
 
 
     public String getState() {
-	return state;
+				return state;
     }
 
 
     public void setState(String val) {
-	if(val != null && !val.isEmpty())
-	    this.state = val;
+				if(val != null && !val.isEmpty())
+						this.state = val;
     }
 
 
     public Integer getPlateYear() {
-	return plateYear;
+				return plateYear;
     }
 
 
     public void setPlateYear(Integer val) {
-	if(val != null)
-	    this.plateYear = val;
+				if(val != null)
+						this.plateYear = val;
     }
 
 
     public String getOwner() {
-	return owner;
+				return owner;
     }
 
 
     public void setOwner(String val) {
-	this.owner = val;
+				this.owner = val;
     }
-
+		@Transient
+		public boolean hasOwner(){
+				return owner != null && !owner.isEmpty();
+		}		
 
     public String getDescription() {
-	return description;
+				return description;
     }
+		@Transient
+		public boolean hasDescription(){
+				return description != null && !description.isEmpty();
+		}
     
     public Double getValue() {
-	return value;
+				return value;
     }
+		@Transient
+		public boolean hasValue(){
+				return value != null && value > 0;
+		}
     @Transient
     public String getValueFr() {
-	String str = "";
-	if(value != null){
-	    try{
-		str = Helper.curFr.format(value);
-	    }catch(Exception ex){
-		System.err.println(value+" "+ex);
-	    }
-	}
-	return str;
+				String str = "";
+				if(value != null){
+						try{
+								str = Helper.curFr.format(value);
+						}catch(Exception ex){
+								System.err.println(value+" "+ex);
+						}
+				}
+				return str;
     }		
 
     public void setValue(Double value) {
-	if(value != null)
-	    this.value = value;
+				if(value != null)
+						this.value = value;
     }
 
     public void setDescription(String val) {
-	if(val != null && !val.isEmpty())
-	    this.description = val;
+				if(val != null && !val.isEmpty())
+						this.description = val;
     }
     @Transient
     public String getCarInfo(){
-	String ret = "";
-	String str = getMakeInfo();
-	if(!str.isEmpty()){
-	    ret = "Make: "+str;
-	}
-	str = getPlateInfo();
-	if(!str.isEmpty()){
-	    if(!ret.isEmpty()) ret += ", ";
-	    ret += "Plate: "+str;
-	}
-	if(color != null && !color.isEmpty()){
-	    if(!ret.isEmpty()) ret += ", ";
-	    ret += "Color: "+color;
-	}				
-	if(owner != null && !owner.isEmpty()){
-	    if(!ret.isEmpty()) ret += ", ";
-	    ret += "Owner: "+owner;
-	}
-	if(value != null && value > 0){
-	    if(!ret.isEmpty()) ret += ", ";
-	    ret += "Value: $"+value;
-	}
-	if(description != null && !description.isEmpty()){
-	    if(!ret.isEmpty()) ret += ", ";
-	    ret += description;
-	}
-	return ret;
+				String ret = "";
+				String str = getMakeInfo();
+				if(!str.isEmpty()){
+						ret = "Make: "+str;
+				}
+				str = getPlateInfo();
+				if(!str.isEmpty()){
+						if(!ret.isEmpty()) ret += ", ";
+						ret += "Plate: "+str;
+				}
+				if(color != null && !color.isEmpty()){
+						if(!ret.isEmpty()) ret += ", ";
+						ret += "Color: "+color;
+				}				
+				if(owner != null && !owner.isEmpty()){
+						if(!ret.isEmpty()) ret += ", ";
+						ret += "Owner: "+owner;
+				}
+				if(value != null && value > 0){
+						if(!ret.isEmpty()) ret += ", ";
+						ret += "Value: $"+value;
+				}
+				if(description != null && !description.isEmpty()){
+						if(!ret.isEmpty()) ret += ", ";
+						ret += description;
+				}
+				return ret;
     }
 				
 
     @Override
     public boolean equals(Object obj) { 
           
-	if(this == obj) 
-	    return true; 
+				if(this == obj) 
+						return true; 
 				
         if(obj == null || obj.getClass()!= this.getClass()) 
             return false; 
@@ -372,16 +396,16 @@ public class Vehicle extends TopModel implements java.io.Serializable{
 		
     @Override
     public int hashCode(){ 
-	int ret = 31;
+				int ret = 31;
         ret += this.id;
-	return ret;
+				return ret;
     }
 
 
     @Override
     public String toString() {
-	return "Vehicle [make=" + make + ", model=" + model + ", year=" + year + ", color=" + color
-	    + ", plateNumber=" + plateNumber + "]";
+				return "Vehicle [make=" + make + ", model=" + model + ", year=" + year + ", color=" + color
+						+ ", plateNumber=" + plateNumber + "]";
     } 
 
 		

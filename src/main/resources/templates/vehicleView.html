@@ -20,53 +20,16 @@
       <div th:insert="general::messages(${messages})"></div>			
     </div>			
     <p>
-      The following are the details about this vehicle.
+     Vehicle Details.
     </p>
-    <table>
-      <tr>
-	<td>Related incident</td>
-	<td><a th:href="@{/incidentView/{id}(id=${vehicle.incident.id})}">Back to Incident</a></td>							
-      </tr>
-      <tr>
-	<td>
-	  <label>Damage Type</label>
-	</td>
-	<td>
-	  <span th:text="${vehicle.carDamageType}"></span>
-	</td>
-      </tr>
-      <tr>
-	<td>
-	  <label>Make, Model Info</label>
-	</td>
-	<td>
-	  <span th:text="${vehicle.makeInfo}"></span>
-	</td>
-      </tr>
-      <tr>
-	<td>
-	  <label>Plate Info</label>
-	</td>
-	<td>
-	  <span th:text="${vehicle.plateInfo}"></span>
-	</td>
-      </tr>
-      <tr>
-	<td>
-	  <label for="owener">Owner</label>
-	</td>
-	<td>
-	  <span th:text="${vehicle.owner}"></span>
-	</td>
-      </tr>					
-      <tr>
-	<td>
-	  <label for="description">Description</label>
-	</td>
-	<td>				
-	  <span th:text="${vehicle.description}"></span>
-	</td>
-      </tr>
-    </table>
+		<ul>
+			<li><a th:href="@{/incidentView/{id}(id=${vehicle.incident.id})}">Back to Incident</a></li>							
+			<li>Damage Type: <span th:text="${vehicle.carDamageType}"></span></li>
+			<li th:if="${vehicle.hasMakeInfo()}"><span th:text="${vehicle.makeInfo}"></span></li>
+			<li th:if="${vehicle.hasPlateInfo()}"><span th:text="${vehicle.plateInfo}"></span></li>
+			<li th:if="${vehicle.hasOwner()}"><span th:text="${'Owner: '+vehicle.owner}"></span></li>
+			<li th:if="${vehicle.hasValue()}"><span th:text="${'Value: '+vehicle.valueFr}"></span></li>
+			<li th:if="${vehicle.hasDescription()}"><span th:text="${'Description: '+vehicle.description}"></span></li>	
+		</ul>
   </body>
 </htmL>

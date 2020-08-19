@@ -21,30 +21,15 @@
     <h2>Incident log history</h2>
     <div th:fragment="actionLogs(actionLogs)">
       <div th:switch="${actionLogs}">
-	<h2 th:case="null">No logs found</h2>
-	<div th:case="*">
-	  <h2>Action History</h2>
-          <table>
-            <thead>
-              <tr>
-		<th>ID</th>							
-		<th>Action</th>
-		<th>Date & Time</th>
-		<th>User</th>
-		<th>Comments</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr th:each="one : ${actionLogs}">
-		<td th:text="${one.id}"></td>
-		<td th:text="${one.action}"></td>
-		<td th:text="${one.dateStr}"></td>
-		<td th:text="${one.user == null? '': one.user}"></td>		
-		<td th:text="${one.comments}"></td>
-	      </tr>
-            </tbody>
-          </table>
-	</div>      
+				<h2 th:case="null">No logs found</h2>
+				<div th:case="*">
+					<h2>Action History</h2>
+					<ul th:each="one : ${actionLogs}">
+						<li th:text="${one.action.toString()+', '+one.dateStr}"></li>
+						<li th:if="${one.hasUserInfo()}"><span th:text="|By: ${one.user}|"></span></li>
+						<li th:if="${one.hasCommentsInfo()}"><span th:text="|Comments: ${one.comments}|"></span></li>						
+					</ul>
+				</div>      
       </div>
     </div>
   </body>

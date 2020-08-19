@@ -11,28 +11,17 @@
     <header>
       <div th:replace="general::header-staff"></div>
     </header>  
-    <div th:fragment="mediasView(medias)">
+    <div th:fragment="medias(medias)">
       <h2>Uploaded Images</h2>
       <div th:switch="${medias}">
-	<h2 th:case="null">No files found</h2>
-	<div th:case="*">
-	  <table>
-	    <thead>
-	      <tr>
-		<th>File Name</th>
-		<th>Description</th>
-		<th>Show Image</th>
-	      </tr>
-	    </thead>
-	    <tbody>
-	      <tr th:each="one : ${medias}">
-		<td><a th:href="@{/media/download/{id}(id=${one.id})}"><span th:text="${one.oldFileName}"></span></a></td>
-		<td th:text="${one.notes}"></td>
-		<td><a th:href="@{/media/image/{id}(id=${one.id})}" onclick="return popup(this, 'image')">Show Image</a></td>		
-	      </tr>
-	    </tbody>
-	  </table>
-	</div>      
+				<h2 th:case="null">No files found</h2>
+				<div th:case="*">
+					<ul th:each="one : ${medias}">
+						<li>Download: <a th:href="@{/media/download/{id}(id=${one.id})}"><span th:text="${one.oldFileName}"></span></a></li>
+						<li th:if="${one.hasNotes()}"><span th:text="${'Notes: '+one.notes}"></span></li>
+						<li><a th:href="@{/media/image/{id}(id=${one.id})}" onclick="return popup(this, 'image')">Click to show</a></li>		
+					</ul>
+				</div>      
       </div>
     </div>
   </body>

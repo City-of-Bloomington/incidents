@@ -154,7 +154,10 @@ public class Action implements java.io.Serializable{
 
     @Override
     public String toString() {
-				return name;
+				if(name == null || name.isEmpty()) {
+						return name;
+				}
+				return name.substring(0, 1).toUpperCase() + name.substring(1);
     } 	
 		
 }

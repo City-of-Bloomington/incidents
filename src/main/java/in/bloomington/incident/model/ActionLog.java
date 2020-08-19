@@ -90,7 +90,7 @@ public class ActionLog implements java.io.Serializable{
 				String ret = "";
 				if(date != null){
 						try{
-								ret = Helper.dfDateTime.format(date);
+								ret = Helper.dft.format(date);
 						}catch(Exception ex){
 
 						}	    
@@ -109,12 +109,20 @@ public class ActionLog implements java.io.Serializable{
     public void setUser(User user) {
 				this.user = user;
     }
+		@Transient
+		public boolean hasUserInfo(){
+				return user != null;
+		}
     public String getComments() {
 				return comments;
     }
     public void setComments(String comments) {
 				this.comments = comments;
     }
+		@Transient
+		public boolean hasCommentsInfo(){
+				return comments != null && !comments.isEmpty();
+		}
     @Transient
     public void setDateNow(){
 				date = new Date();
@@ -151,7 +159,7 @@ public class ActionLog implements java.io.Serializable{
     }
     @Override
     public String toString() {
-				return "ActionLog [id=" + id + "]";
+				return "Action Log [id=" + id + "]";
     } 	
 		
 }

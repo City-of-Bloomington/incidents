@@ -25,28 +25,9 @@
       <div th:insert="general::messages(${messages})"></div>
     </div>
     <fieldset>
-      <legend>Incident General Info</legend>
-      <div th:replace="incidentView::incident(${incident})">
+      <div th:replace="incidentView::incidentView(${incident})">
       </div>
     </fieldset>
-    <div th:if="${incident.hasPersonList()}">
-      <div th:insert="personsView::persons(${incident.persons})"></div>
-    </div>
-    <div th:if="${incident.hasPropertyList()}">
-      <div th:insert="propertiesView::properties(${incident.properties},${incident.totalValueFr})"></div>
-    </div>
-			<div th:if="${incident.hasFraudList()}">
-				<div th:insert="fraudsView::frauds(${incident.frauds})"></div>			
-			</div>		
-    <div th:if="${incident.hasVehicleList()}">
-      <div th:insert="vehiclesView::vehicles(${incident.vehicles})"></div>
-    </div>
-    <div th:if="${incident.hasMediaList()}">
-      <div th:insert="mediasView::mediasView(${incident.medias})"></div>
-    </div>
-    <div th:if="${incident.hasActionLogs()}">
-      <div th:insert="actionLogs::actionLogs(${incident.actionLogs})"></div>
-    </div>
 		<h2>Incident Status</h2>		
 		<div th:if="${actionLog}">
 			<h3>Update Status</h3>

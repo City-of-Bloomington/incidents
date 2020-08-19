@@ -184,6 +184,10 @@ public class Property extends TopModel implements java.io.Serializable{
 						this.owner = val;
     }
 
+		@Transient
+		public boolean hasOwner(){
+				return owner != null && !owner.isEmpty();
+		}
     public String getDescription() {
 				return description;
     }
@@ -192,7 +196,10 @@ public class Property extends TopModel implements java.io.Serializable{
 				if(val != null && !val.isEmpty())
 						this.description = val;
     }
-
+		@Transient
+		public boolean hasDescription(){
+				return description != null && !description.isEmpty();
+		}
     public Incident getIncident() {
 				return incident;
     }
@@ -204,28 +211,33 @@ public class Property extends TopModel implements java.io.Serializable{
     public String getBrandInfo(){
 				String ret = "";
 				if(brand != null && !brand.isEmpty()){
-						ret = brand;
+						ret = "Brand: "+brand;
 				}
 				if(model != null && !model.isEmpty()){
-						if(!ret.isEmpty()) ret += " ";
-						ret += model;
+						if(!ret.isEmpty()) ret += ", ";
+						ret += "Model: "+model;
 				}
 				if(serialNum != null && !serialNum.isEmpty()){
-						if(!ret.isEmpty()) ret += " ";
-						ret += serialNum;
+						if(!ret.isEmpty()) ret += ", ";
+						ret += "Serial #: "+serialNum;
 				}				
 				return ret;
     }
+		@Transient
+		public boolean hasBrandInfo(){
+				String ret = getBrandInfo();
+				return !ret.isEmpty();
+		}
     @Transient
     public String getInfo(){
 				String ret = getBrandInfo();
 				if(description != null && !description.isEmpty()){
 						if(!ret.isEmpty()){
-								ret += " ";
+								ret += ", ";
 						}
 						ret += description;
 				}
-				if(owner != null && !owner.isEmpty()){
+				if(hasOwner()){
 						if(!ret.isEmpty()){
 								ret += ", ";
 						}

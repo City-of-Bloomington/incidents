@@ -18,27 +18,20 @@
       <div th:insert="general::messages(${messages})"></div>			
     </div>			
       <div th:fragment="vehicles(vehicles)">
-      <h2>Incident Vehicle(s) </h2>
+      <h2>Vehicle(s) </h2>
       <div th:switch="${vehicles}">
-	<h2 th:case="null">No vehicle found</h2>
-	<div th:case="*">
-	  <table>
-	    <thead>
-	      <tr>
-		<td>Damage Type</td>
-		<td>Description</td>
-		<td>More Details</td>
-	      </tr>
-	    </thead>
-	    <tbody>
-	      <tr th:each="one : ${vehicles}">
-		<td th:text="${one.carDamageType}"></td>
-		<td th:text="${one.carInfo}"></td>
-		<td><a th:href="@{/vehicleView/{id}(id=${one.id})}">Details</a></td>
-	      </tr>
-	    </tbody>
-	  </table>
-	</div>      
+				<h2 th:case="null">No vehicle found</h2>
+				<div th:case="*">
+					<ul th:each="one: ${vehicles}">
+						<li th:text="${'Damage Type: '+one.carDamageType.name}"></li>
+						<li th:if="${one.hasMakeInfo()}"><span th:text="${one.makeInfo}"></span></li>
+						<li th:if="${one.hasPlateInfo()}"><span th:text="${one.plateInfo}"></span></li>
+						<li th:if="${one.hasOwner()}"><span th:text="${'Owner: '+one.owner}"></span></li>
+						<li th:if="${one.hasValue()}"><span th:text="${'Value: '+one.valueFr}"></span></li>
+						<li th:if="${one.hasDescription()}"><span th:text="${'Description: '+one.description}"></span></li>						
+						<li><a th:href="@{/vehicleView/{id}(id=${one.id})}">Details</a></li>
+					</ul>
+				</div>      
       </div>
     </div>
   </body>

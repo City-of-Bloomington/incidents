@@ -13,7 +13,6 @@
 	<header>
 		<div th:replace="general::header-staff"></div>
 	</header>
-
 	<main class="staff">
 		<h2>Property Details</h2>
 		<div th:if="${errors}">
@@ -23,57 +22,25 @@
 			<div th:insert="general::messages(${messages})"></div>
 		</div>
 		<p>
-			Property Details.
+			Property Details
 		</p>
-		<table>
-			<tr>
-				<td>Incident</td>
-				<td><a th:href="@{/incidentView/{id}(id=${property.incident.id})}">Back to Incident</a></td>
-			</tr>
-			<tr th:if="${property.hasDamageTypeInfo()}">
-				<td>
-					<label>Damage Type</label>
-				</td>
-				<td>
-					<span th:text="${property.damageType}"></span>
-				</td>
-			</tr>			
-			<tr>
-				<td>
-					<label>Brand Info</label>
-				</td>
-				<td>
-					<span th:text="${property.brandInfo}"></span>
-				</td>
-			</tr>
-
-			<tr>
-				<td>
-					<label>Value</label>
-				</td>
-				<td>$
-					<span th:text="${property.value}"></span>
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<label for="owener">Owner</label>
-				</td>
-				<td>
-					<span th:text="${property.owner}"></span>
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<label for="description">Description</label>
-				</td>
-				<td>
-					<span th:text="${property.description}"></span>
-				</td>
-			</tr>
-		</table>
+		<ul>
+			<li>Incident: <a th:href="@{/incidentView/{id}(id=${property.incident.id})}">Back to Incident</a></li>
+			<li th:if="${property.hasDamageTypeInfo()}">
+					<span th:text="${'Damage Type: '+property.damageType}"></span>
+			</li>
+			<li th:if="${property.hasBrandInfo()}">
+				<span th:text="${property.brandInfo}"></span>
+			</li>
+			<li th:text="${'Value: '+property.valueFr}"></li>
+			<li th:if="${property.hasOwner()}">
+				<span th:text="${'Owner: '+property.owner}"></span>
+			</li>
+			<li th:if="${property.hasDescription()}">
+				<span th:text="${'Description: '+property.description}"></span>
+			</li>
+		</ul>
 	</main>
-
 </body>
 
 </htmL>
