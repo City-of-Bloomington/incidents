@@ -54,7 +54,7 @@
 				<li>The incident is ready to be submitted.</li>
 				<li>Once submitted, no changes can be made.</li>
 				<li>Review your report to be sure everything is correct.</li>
-				<li>If no further changes are needed click on the 'Final Submit Page' button</li>
+				<li>If no further changes are needed click on the 'Next Final Submit Page' button</li>
 			</ul>
 		</div>
 
@@ -86,7 +86,7 @@
 			
 			<div class="next_div" th:if="${incident.canBeSubmitted()}">
 				<input type="button" th:attr="onclick=|window.location.href='${hostPath}/incident/finalPage/${incident.id}'|"
-							 value="Final Submit Page" />
+							 value="Next Final Submit Page" />
 			</div>
 		</div>
 	</main>

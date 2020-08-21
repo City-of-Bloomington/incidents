@@ -35,9 +35,6 @@
 							<span th:text="${one.valueFr}"></span>
 						</li>
 						<li>
-							<span>
-								<a th:href="@{/property/edit/{id}(id=${one.id})}">Edit Property</a>
-							</span>
 							<ul class="button-group">
 								<li>
 									<input type="button" th:attr="onclick=|window.location.href='${hostPath}/property/edit/${one.id}'|"

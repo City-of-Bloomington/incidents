@@ -31,7 +31,6 @@
 								<th>Incident Type</th>
 								<th>Received</th>
 								<th>Incident Date & Time</th>
-								<th>Address </th>
 								<th>Details </th>
 							</tr>
 						</thead>
@@ -41,8 +40,8 @@
 								<td th:text="${one.status}"></td>		
 								<td th:text="${one.incidentType}"></td>		
 								<td th:text="${one.receivedStr}"></td>
+								<td th:text="${one.address.info}"></td>								
 								<td th:text="${one.dateTimeInfo}"></td>
-								<td th:text="${one.address.info}"></td>
 								<td th:text="${one.details}"></td>								
 							</tr>
 						</tbody>

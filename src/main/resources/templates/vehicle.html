@@ -27,44 +27,42 @@
       <li>If the data are correct, click on 'Back to incident' link below to continue </li>
     </ul>
     <dl>
-      <dt>Related incident</dt>
+      <dt>Incident</dt>
       <dd><a th:href="@{/incident/{id}(id=${vehicle.incident.id})}">Back to Incident</a></dd>							
       <dt>
-	<label>Damage Type</label>
+				<label>Damage Type</label>
       </dt>
       <dd>
-	<span th:text="${vehicle.carDamageType}"></span>
+				<span th:text="${vehicle.carDamageType}"></span>
+      </dd>
+      <dt>
+				<label>Make, Model Info</label>
+      </dt>
+      <dd>
+				<span th:text="${vehicle.makeInfo}"></span>
       </dd>
       
       <dt>
-	<label>Make, Model Info</label>
+				<label>Plate Info</label>
       </dt>
       <dd>
-	<span th:text="${vehicle.makeInfo}"></span>
+				<span th:text="${vehicle.plateInfo}"></span>
       </dd>
       
       <dt>
-	<label>Plate Info</label>
+				<label for="owener">Owner</label>
       </dt>
       <dd>
-	<span th:text="${vehicle.plateInfo}"></span>
+				<span th:text="${vehicle.owner}"></span>
       </dd>
       
       <dt>
-	<label for="owener">Owner</label>
-      </dt>
-      <dd>
-	<span th:text="${vehicle.owner}"></span>
-      </dd>
-      
-      <dt>
-	<label for="description">Description</label>
+				<label for="description">Description</label>
       </dt>
       <dd>				
-	<span th:text="${vehicle.description}"></span>
+				<span th:text="${vehicle.description}"></span>
       </dd>
       <dd><a th:href="@{/vehicle/edit/{id}(id=${vehicle.id})}">Edit</a> 
-      <a th:href="@{/vehicle/delete/{id}(id=${vehicle.id})}">Delete</a></dd>
-    </dl>
+     </dl>
   </body>
 </htmL>
