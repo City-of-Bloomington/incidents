@@ -200,9 +200,9 @@ public class ProcessController extends TopController{
 						}
 				}
 				else {
-						addMessage("You do not have enough privileges ");
+						addMessage("You do not have approve or reject role ");
 						addMessagesAndErrorsToSession(session);
-						return "redirect:/staff/staff_intro";
+						return "redirect:/staff";
 				}
 				addMessagesAndErrorsToSession(session);
 				return "redirect:/search/confirmed";	    
@@ -218,11 +218,18 @@ public class ProcessController extends TopController{
 				if(user == null){
 						return "redirect:/login";
 				}
-				Email email = new Email();
-				email.populateEmail(incident, "reject");
-				model.addAttribute("email", email);
-				getMessagesAndErrorsFromSession(session, model);
-				return "staff/rejectForm";
+				if(user.canApprove()){				
+						Email email = new Email();
+						email.populateEmail(incident, "reject");
+						model.addAttribute("email", email);
+						getMessagesAndErrorsFromSession(session, model);
+						return "staff/rejectForm";
+				}
+				else{
+						addMessage("You do not have approve or reject role ");
+						addMessagesAndErrorsToSession(session);
+						return "redirect:/staff";
+				}
     }
     //login staff
     @PostMapping("/rejectEmail")
@@ -239,18 +246,24 @@ public class ProcessController extends TopController{
 				if(user == null){
 						return "redirect:/login";
 				}
-				email.setSender(email_sender);
-				//
-				// send the email
-				//
-				EmailHelper emailer = new EmailHelper(mailSender, email);
-				String back = emailer.send();
-				//
-				// we may need add email to email logs
-				//
-				// back to main staff page
-				return "staff/staff_intro";
-	
+				if(user.canApprove()){
+						email.setSender(email_sender);
+						//
+						// send the email
+						//
+						EmailHelper emailer = new EmailHelper(mailSender, email);
+						String back = emailer.send();
+						//
+						// we may need add email to email logs
+						//
+						// back to main staff page
+						return "staff";
+				}
+				else{
+						addMessage("You do not have approve or reject role ");
+						addMessagesAndErrorsToSession(session);
+						return "redirect:/staff";
+				}	
     }
     // process of adding case number to complete incident actions
     @PostMapping("/process/final")
@@ -298,7 +311,7 @@ public class ProcessController extends TopController{
 						addMessage("Saved Successfully");				
 						model.addAttribute("messages", messages);
 						addMessagesAndErrorsToSession(session);
-						return "redirect:/search/approved";
+								return "redirect:/search/approved";
 				}
 				else{
 						addMessage("You do not have enough privileges ");
@@ -343,9 +356,6 @@ public class ProcessController extends TopController{
 				ret = emailer.send();
 				return ret;
     }
-
-
-    
     /**
      * find next action in workflow steps compare to the last
      * action (if any)

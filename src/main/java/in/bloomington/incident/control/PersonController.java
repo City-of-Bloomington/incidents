@@ -84,6 +84,11 @@ public class PersonController extends TopController{
 						addMessagesAndErrorsToSession(session);
 						return "redirect:/incident/"+incident_id;
 				}
+				if(!verifySession(session, ""+incident_id)){				
+						addMessage("No more changes can be made ");
+						addMessagesAndErrorsToSession(session);
+						return "redirect:/";
+				}							
 				Person person = new Person();				
 				List<PersonType> personTypes = personTypeService.getAll();
 				List<RaceType> raceTypes = raceTypeService.getAll();				
@@ -128,7 +133,13 @@ public class PersonController extends TopController{
 						addMessage("No more changes can be made");
 						addMessagesAndErrorsToSession(session);
 						return "redirect:/";
-				}	
+				}
+				int incident_id = incident.getId();
+				if(!verifySession(session, ""+incident_id)){				
+						addMessage("No more changes can be made ");
+						addMessagesAndErrorsToSession(session);
+						return "redirect:/";
+				}							
 				if(!person.verify()){
 						String error = person.getErrorInfo();
 						addError(error);
@@ -206,6 +217,12 @@ public class PersonController extends TopController{
 						addMessagesAndErrorsToSession(session);
 						return "redirect:/";	    
 				}
+				int incident_id = incident.getId();
+				if(!verifySession(session, ""+incident_id)){				
+						addMessage("No more changes can be made ");
+						addMessagesAndErrorsToSession(session);
+						return "redirect:/";
+				}							
 				List<PersonType> personTypes = personTypeService.getAll();
 				List<RaceType> raceTypes = raceTypeService.getAll();
 				model.addAttribute("person", person);
@@ -239,7 +256,13 @@ public class PersonController extends TopController{
 						addMessage("no more changes can be made");
 						addMessagesAndErrorsToSession(session);
 						return "redirect:/";	    
-				}	
+				}
+				int incident_id = incident.getId();
+				if(!verifySession(session, ""+incident_id)){				
+						addMessage("No more changes can be made ");
+						addMessagesAndErrorsToSession(session);
+						return "redirect:/";
+				}							
 				if(!person.verify()){
 						String error = person.getErrorInfo();
 						addError(error);
@@ -277,7 +300,13 @@ public class PersonController extends TopController{
 								addMessage("no more changes can be made");
 								addMessagesAndErrorsToSession(session);
 								return "redirect:/";	    
-						}		
+						}
+						int incident_id = incident.getId();
+						if(!verifySession(session, ""+incident_id)){				
+								addMessage("No more changes can be made ");
+								addMessagesAndErrorsToSession(session);
+								return "redirect:/";
+						}							
 						personService.delete(id);
 						addMessage("Deleted Succefully");
 				}catch(Exception ex){

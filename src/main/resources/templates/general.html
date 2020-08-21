@@ -102,13 +102,12 @@
       role="navigation dropdown"
       aria-label="navigation dropdown"
       class="navigation-dropdown">
-      <details>
-        <summary>Admin Menu</summary>
-        <ul class="menu">
-          <li class="menu"><a th:href="@{/search/received}">Received</a></li>
-          <li class="menu"><a th:href="@{/search/confirmed}">Confirmed</a></li>
-          <li class="menu"><a th:href="@{/report}">Stats Reports </a></li>
-          <li class="menu"><a th:href="@{/settings}">Settings</a></li>
+      <details th:if="${#session.getAttribute('user') != null}">
+        <summary th:text="${#session.getAttribute('user')}"></summary>
+				<ul class="menu">
+          <li class="menu" th:if="${#session.getAttribute('isAmin') != null}"><a th:href="@{/report}">Stats Reports </a></li>
+          <li class="menu" th:if="${#session.getAttribute('isAmin') != null}"><a th:href="@{/settings}">Settings</a></li>
+          <li class="menu"><a th:href="@{/logout}">Logout</a></li>					
         </ul>
       </details>
     </nav>
@@ -116,17 +115,17 @@
 		<br />
 	</div>
 	<div th:fragment="staffMenu">
-		<ul class="button-group">
+		<ul class="button-group" th:if="${#session.getAttribute('user') != null}">
 			<li>
 				<input type="button" th:attr="onclick=|window.location.href='@{/search/received}'|" value="Received" />
 			</li>
-			<li>
+			<li th:if="${#session.getAttribute('canApprove') != null}">
 				<input type="button" th:attr="onclick=|window.location.href='@{/search/confirmed}'|" value="Confirmed" />
 			</li>
-      <li>
+			<li th:if="${#session.getAttribute('canApprove') != null}">
 				<input type="button" th:attr="onclick=|window.location.href='@{/search/approved}'|" value="Approved" />
 			</li>
-      <li>
+			<li th:if="${#session.getAttribute('canProcess') != null}">				
 				<input type="button" th:attr="onclick=|window.location.href='@{/search/incomplete}'|" value="Incomplete" />
 			</li>
       <li>

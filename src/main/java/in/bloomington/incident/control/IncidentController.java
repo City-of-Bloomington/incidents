@@ -104,31 +104,15 @@ public class IncidentController extends TopController{
     @Value("${server.servlet.context-path}")
     private String hostPath; // incidents in production
 
-		/**
-    public List<String> getAllCities(){
-				List<String> allCities = new ArrayList<>();
-				if(defaultCity != null){
-						allCities.add(defaultCity);
-				}
-				return allCities;
-    }
-    public List<String> getAllStates(){
-				List<String> allStates = new ArrayList<>();
-				if(defaultState != null){
-						allStates.add(defaultState);
-				}
-				return allStates;
-    }
-		*/
+
     @RequestMapping("/initialStart")
     public String initialNext(@RequestParam(required = true) String email,
 															@RequestParam(required = true) String email2,
 															@RequestParam(required = true) int type_id,
 															@RequestParam(required = true) int address_id,
 															Model model,
-															HttpServletRequest req
+															HttpSession session
 															){
-				HttpSession session = req.getSession();
 				boolean emailProblem = false;
 				if(email == null || email.isEmpty() ||
 					 email2 == null || email2.isEmpty()){
@@ -181,13 +165,12 @@ public class IncidentController extends TopController{
     public String startIncident(@PathVariable("id") int id,
 																Model model,
 																RedirectAttributes redirectAttributes,
-																HttpServletRequest req
+																HttpSession session
 																) {
-				if(!Helper.verifySession(req, ""+id)){
-						/**
-							 System.err.println(" not in session ");
-							 addMessage(" not in session ");
-						*/
+				if(!verifySession(session, ""+id)){				
+						addMessage("No more changes can be made ");
+						addMessagesAndErrorsToSession(session);
+						return "redirect:/index";
 				}
 				Incident incident = null;
 				try{
@@ -221,6 +204,11 @@ public class IncidentController extends TopController{
 						addError(Helper.extractErrors(result));
 						pass = false;
         }
+				if(!verifySession(session, ""+id)){				
+						addMessage("No more changes can be made ");
+						addMessagesAndErrorsToSession(session);
+						return "redirect:/";
+				}
 				incident.setId(id);
 				if(incident.canBeChanged()){	
 						if(!incident.verifyAll()){
@@ -269,11 +257,10 @@ public class IncidentController extends TopController{
 															 HttpSession session
 															 ) {
 				Incident incident = null;
-				if(!Helper.verifySession(req, ""+id)){
-						/*
-							System.err.println(" not in session ");
-							addMessage("not in session ");
-						*/
+				if(!verifySession(session, ""+id)){
+						addMessage("no more changes can be made ");
+						addMessagesAndErrorsToSession(session);
+						return "redirect:/index";						
 				}
 				try{
 						incident = incidentService.findById(id);
@@ -325,9 +312,9 @@ public class IncidentController extends TopController{
 																		) {
 				Incident incident = null;
 				if(!verifySession(session, ""+id)){
-						/*
-							addMessage("not in session ");
-						*/
+						addMessage("no more changes can be made ");
+						addMessagesAndErrorsToSession(session);
+						return "redirect:/index";
 				}
 				try{
 						incident = incidentService.findById(id);
@@ -359,7 +346,9 @@ public class IncidentController extends TopController{
 																 ) {
 				HttpSession session = req.getSession();
 				if(!verifySession(session, ""+id)){
-						// addMessage("not in session ");
+						addMessage("no more changes can be made ");
+						addMessagesAndErrorsToSession(session);
+						return "redirect:/index";
 				}
 				Incident incident = null;
 				incident = incidentService.findById(id);
@@ -396,7 +385,8 @@ public class IncidentController extends TopController{
 						// the success submission and what to do next
 						// confirmation email
 						//
-						
+						session.removeAttribute("incident_ids");
+						session.invalidate();
 				}catch(Exception ex){
 						addError("Invalid incident Id "+id);
 						logger.error(errors+" "+ex);
@@ -483,7 +473,9 @@ public class IncidentController extends TopController{
 															 HttpSession session
 															 ) {
 				if(!verifySession(session, ""+id)){
-						// addMessage(" not in session ");
+						addMessage("no more changes can be made ");
+						addMessagesAndErrorsToSession(session);
+						return "redirect:/index";
 				}
 				Incident incident = null;
 				try{
@@ -527,7 +519,9 @@ public class IncidentController extends TopController{
 						return "updateIncident";
 				}
 				if(!verifySession(session, ""+id)){
-						// System.err.println(" not in session ");
+						addMessage("no more changes can be made ");
+						addMessagesAndErrorsToSession(session);
+						return "redirect:/index";
 				}
 				if(incident.canBeChanged()){
 						boolean pass = true;
@@ -562,11 +556,13 @@ public class IncidentController extends TopController{
     @GetMapping("/incident/delete/{id}")
     public String deleteIncident(@PathVariable("id") int id,
 																 Model model,
-																 HttpServletRequest req
+																 HttpSession session
 																 ) {
-				if(!Helper.verifySession(req, ""+id)){
-						// System.err.println(" not in session ");
-				}				
+				if(!verifySession(session, ""+id)){
+						addMessage("no more changes can be made ");
+						addMessagesAndErrorsToSession(session);
+						return "redirect:/index";
+				}
 				Incident incident = null;
 				try{
 						incident = incidentService.findById(id);
@@ -578,7 +574,6 @@ public class IncidentController extends TopController{
 						logger.error("Error delete incident "+id+" "+ex);
 						addError("Invalid incident ID "+id);
 				}
-				HttpSession session = req.getSession();
 				addMessagesAndErrorsToSession(session);
 				return "redirect:/index";
 

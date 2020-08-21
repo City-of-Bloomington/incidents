@@ -51,12 +51,24 @@ public class PropertyController extends TopController{
 
     @GetMapping("/property/add/{incident_id}")
     public String newProperty(@PathVariable("incident_id") int incident_id,
-															Model model) {
+															Model model,
+															HttpSession session) {
 				
 				Property property = new Property();
 				Incident incident = null;
+				incident = incidentService.findById(incident_id);
+				
 				try{
-						incident = incidentService.findById(incident_id);
+						if(incident == null || !incident.canBeChanged()){
+								addMessage("no more changes can be made");
+								addMessagesAndErrorsToSession(session);
+								return "redirect:/";	    
+						}
+						if(!verifySession(session, ""+incident_id)){				
+								addMessage("No more changes can be made ");
+								addMessagesAndErrorsToSession(session);
+								return "redirect:/";
+						}							
 						property.setIncident(incident);
 						property.setBalance(incident.getTotalValue());
 						property.setMaxTotalValue(maxTotalValue);
@@ -100,12 +112,24 @@ public class PropertyController extends TopController{
 								model.addAttribute("damageTypes", types);
 						handleErrorsAndMessages(model);
 						return "propertyAdd";						
+				}
+				int incident_id = property.getIncident().getId();
+				Incident incident = incidentService.findById(incident_id);
+				if(incident == null || !incident.canBeChanged()){
+						addMessage("no more changes can be made");
+						addMessagesAndErrorsToSession(session);
+						return "redirect:/";	    
+				}
+				if(!verifySession(session, ""+incident_id)){				
+						addMessage("No more changes can be made ");
+						addMessagesAndErrorsToSession(session);
+						return "redirect:/";
 				}				
+
         propertyService.save(property);
 				addMessage("Added Successfully");
 				addMessagesAndErrorsToSession(session);
-				int incident_id = property.getIncident().getId();
-				Incident incident = incidentService.findById(incident_id);
+
 				//
 				// next add vehicle if required
 				if(incident.isVehicleRequired() && !incident.hasVehicleList()){
@@ -123,9 +147,18 @@ public class PropertyController extends TopController{
 				try{
 						property = propertyService.findById(id);
 						incident = property.getIncident();
-						if(incident != null){
-								property.setBalance(incident.getTotalValue());
+						if(incident == null || !incident.canBeChanged()){
+								addMessage("no more changes can be made");
+								addMessagesAndErrorsToSession(session);
+								return "redirect:/";	    
 						}
+						int incident_id = incident.getId();
+						if(!verifySession(session, ""+incident_id)){				
+								addMessage("No more changes can be made ");
+								addMessagesAndErrorsToSession(session);
+								return "redirect:/";
+						}				
+						property.setBalance(incident.getTotalValue());
 						property.setMaxTotalValue(maxTotalValue);
 				}catch(Exception ex){
 						addError("Invalid property "+id);
@@ -164,10 +197,20 @@ public class PropertyController extends TopController{
 						handleErrorsAndMessages(model);
 						return "propertyUpdate";						
 				}
+				Incident incident = property.getIncident();
+				if(incident == null || !incident.canBeChanged()){
+						addMessage("no more changes can be made");
+						addMessagesAndErrorsToSession(session);
+						return "redirect:/";	    
+				}
+				int incident_id = incident.getId();
+				if(!verifySession(session, ""+incident_id)){				
+						addMessage("No more changes can be made ");
+						addMessagesAndErrorsToSession(session);
+						return "redirect:/";
+				}				
 				propertyService.save(property);
 				addMessage("Updated Successfully");
-				Incident incident = property.getIncident();
-				int incident_id = incident.getId();
 				addMessagesAndErrorsToSession(session);
 				// need redirect to incident
 				return "redirect:/incident/"+incident_id;
@@ -182,6 +225,17 @@ public class PropertyController extends TopController{
 				try{
 						Property property = propertyService.findById(id);
 						incident = property.getIncident();
+						if(incident == null || !incident.canBeChanged()){
+								addMessage("no more changes can be made");
+								addMessagesAndErrorsToSession(session);
+								return "redirect:/";	    
+						}
+						int incident_id = incident.getId();
+						if(!verifySession(session, ""+incident_id)){				
+								addMessage("No more changes can be made ");
+								addMessagesAndErrorsToSession(session);
+								return "redirect:/";
+						}				
 						propertyService.delete(id);
 						addMessage("Deleted Succefully");
 				}catch(Exception ex){

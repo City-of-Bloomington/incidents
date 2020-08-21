@@ -105,6 +105,15 @@ public class LoginController extends TopController{
 						return "redirect:/login";
 				}
 				session.setAttribute("user", user);
+				if(user.isAdmin()){
+						session.setAttribute("isAmin", "true");
+				}
+				if(user.canApprove()){
+						session.setAttribute("canApprove", "true");
+				}
+				if(user.canProcess()){
+						session.setAttribute("canProcess", "true");
+				}				
 				return "staff/staff_intro";
     }
     @GetMapping("/settings")

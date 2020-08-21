@@ -68,17 +68,17 @@
 				</li>
 			</ul>
 			<div th:if="${incident.hasPersonList()}">
-				<div th:insert="personsShort::persons(${incident.persons},${hostPath})"></div>
+				<div th:insert="persons::persons(${incident.persons},${hostPath})"></div>
 			</div>
 			<div th:if="${incident.hasPropertyList()}">
-				<div th:insert="propertiesShort::properties(${incident.properties},${incident.totalValueFr},${hostPath})"></div>
+				<div th:insert="properties::properties(${incident.properties},${incident.totalValueFr},${hostPath})"></div>
 			</div>
 		
 			<div th:if="${incident.hasVehicleList()}">
-				<div th:insert="vehiclesShort::vehicles(${incident.vehicles},${hostPath})"></div>
+				<div th:insert="vehicles::vehicles(${incident.vehicles},${hostPath})"></div>
 			</div>
 			<div th:if="${incident.hasFraudList()}">
-				<div th:insert="fraudsShort::frauds(${incident.frauds},${hostPath})"></div>			
+				<div th:insert="frauds::frauds(${incident.frauds},${hostPath})"></div>			
 			</div>
 			<div th:if="${incident.hasMediaList()}">
 				<div th:insert="medias::medias(${incident.medias})"></div>

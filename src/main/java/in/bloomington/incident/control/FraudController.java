@@ -55,6 +55,11 @@ public class FraudController extends TopController{
     public String addFraud(@PathVariable("incident_id") int incident_id,
 														Model model,
 														HttpSession session) {
+				if(!verifySession(session, ""+incident_id)){				
+						addMessage("No more changes can be made ");
+						addMessagesAndErrorsToSession(session);
+						return "redirect:/index";
+				}
 				Incident incident = null;
 				try{
 						incident = incidentService.findById(incident_id);
@@ -100,7 +105,13 @@ public class FraudController extends TopController{
 						addMessage("No more changes can be made");
 						addMessagesAndErrorsToSession(session);
 						return "redirect:/";
-				}	
+				}
+				int id = incident.getId();
+				if(!verifySession(session, ""+id)){				
+						addMessage("No more changes can be made ");
+						addMessagesAndErrorsToSession(session);
+						return "redirect:/index";
+				}
         fraudService.save(fraud);
 				addMessage("Saved Succefully");
 				addMessagesAndErrorsToSession(session);
@@ -163,6 +174,12 @@ public class FraudController extends TopController{
 						addMessagesAndErrorsToSession(session);
 						return "redirect:/";	    
 				}
+				int incident_id = incident.getId();
+				if(!verifySession(session, ""+incident_id)){				
+						addMessage("No more changes can be made ");
+						addMessagesAndErrorsToSession(session);
+						return "redirect:/";
+				}				
 				List<FraudType> fraudTypes = fraudTypeService.getAll();
 				model.addAttribute("fraud", fraud);
 				model.addAttribute("fraudTypes", fraudTypes);
@@ -189,7 +206,13 @@ public class FraudController extends TopController{
 						addMessage("no more changes can be made");
 						addMessagesAndErrorsToSession(session);
 						return "redirect:/";	    
-				}	
+				}
+				int incident_id = incident.getId();
+				if(!verifySession(session, ""+incident_id)){				
+						addMessage("No more changes can be made ");
+						addMessagesAndErrorsToSession(session);
+						return "redirect:/";
+				}							
 				fraudService.update(fraud);
 				addMessage("Updated Successfully");				
 				addMessagesAndErrorsToSession(session);
@@ -212,7 +235,13 @@ public class FraudController extends TopController{
 								addMessage("no more changes can be made");
 								addMessagesAndErrorsToSession(session);
 								return "redirect:/";	    
-						}		
+						}
+						int incident_id = incident.getId();
+						if(!verifySession(session, ""+incident_id)){				
+								addMessage("No more changes can be made ");
+								addMessagesAndErrorsToSession(session);
+								return "redirect:/";
+						}									
 						fraudService.delete(id);
 						addMessage("Deleted Succefully");
 				}catch(Exception ex){
