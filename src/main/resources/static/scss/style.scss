@@ -567,7 +567,8 @@ main {
     #questions {
       .question {
         p {
-          font-weight: 500;
+          font-weight: 600;
+          color: lighten($text-color, 5%);
         }
 
         form {
@@ -702,7 +703,9 @@ main {
       thead {
         tr {
           border-bottom: 1px solid $color-grey;
+
           th {
+            padding: 10px 0;
             text-align: left;
             font-weight: 500;
           }
@@ -716,6 +719,53 @@ main {
 
           &:nth-child(even) {
             background: lighten($color-grey, 10%);
+          }
+
+          td {
+            padding: 10px 0;
+          }
+        }
+      }
+    }
+
+    .button-group {
+      &.tab-style {
+        border-top: none;
+        border-bottom: 1px solid $color-grey;
+        padding: 0;
+        margin: 0 0 20px 0;
+        justify-content: flex-start;
+
+        li {
+          margin: 0 10px 0 0;
+
+          &:last-child {
+            margin: 0;
+          }
+
+          &:focus,
+          &:hover,
+          &.active {
+            input {
+              color: $color-blue;
+            }
+          }
+
+          input {
+            border-top: 1px solid $color-grey;
+            border-right: 1px solid $color-grey;
+            border-bottom: none;
+            border-left: 1px solid $color-grey;
+            background: white;
+            font-size: 16px;
+            padding: 12px 16px 8px;
+            font-weight: 600;
+            letter-spacing: 0.25px;
+            color: #8f8f8f;
+            border-top-left-radius: $radius-default;
+            border-top-right-radius: $radius-default;
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
           }
         }
       }

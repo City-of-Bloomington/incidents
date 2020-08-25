@@ -703,7 +703,8 @@ main.public-questions-wrapper p strong {
   font-weight: 500;
 }
 main.public-questions-wrapper #questions .question p {
-  font-weight: 500;
+  font-weight: 600;
+  color: #5c5c5c;
 }
 main.public-questions-wrapper #questions .question form ul {
   display: flex;
@@ -807,6 +808,7 @@ main.staff table thead tr {
   border-bottom: 1px solid #dbdbdb;
 }
 main.staff table thead tr th {
+  padding: 10px 0;
   text-align: left;
   font-weight: 500;
 }
@@ -816,6 +818,41 @@ main.staff table tbody tr {
 }
 main.staff table tbody tr:nth-child(even) {
   background: whitesmoke;
+}
+main.staff table tbody tr td {
+  padding: 10px 0;
+}
+main.staff .button-group.tab-style {
+  border-top: none;
+  border-bottom: 1px solid #dbdbdb;
+  padding: 0;
+  margin: 0 0 20px 0;
+  justify-content: flex-start;
+}
+main.staff .button-group.tab-style li {
+  margin: 0 10px 0 0;
+}
+main.staff .button-group.tab-style li:last-child {
+  margin: 0;
+}
+main.staff .button-group.tab-style li:focus input, main.staff .button-group.tab-style li:hover input, main.staff .button-group.tab-style li.active input {
+  color: #1e5aae;
+}
+main.staff .button-group.tab-style li input {
+  border-top: 1px solid #dbdbdb;
+  border-right: 1px solid #dbdbdb;
+  border-bottom: none;
+  border-left: 1px solid #dbdbdb;
+  background: white;
+  font-size: 16px;
+  padding: 12px 16px 8px;
+  font-weight: 600;
+  letter-spacing: 0.25px;
+  color: #8f8f8f;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
 }
 main #moreInfo {
   border-top: 1px solid #dbdbdb;
