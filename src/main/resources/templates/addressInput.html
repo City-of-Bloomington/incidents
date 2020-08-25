@@ -8,47 +8,115 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head th:replace="general::head('Incident')"></head>
   <body>
-    <header th:replace="general::header">
-    </header>
-    <h2>Address Input</h2>
-    <div th:if="${errors}">
-      <div th:replace="general::errors(${errors})"></div>			
-    </div>
-    <div th:if="${messages}">
-      <div th:replace="general::messages(${messages})"></div>			
-    </div>					
-    <p> *indicated required fields</p>		
-    <form action="#"
-					th:action="@{/addressCheck}"
-					th:object="${address}"
-					onsubmit="return verifyAddress()"
-					method="post">
-			<input type="hidden" th:field="${address.type_id}" />			
-      <fieldset><legend>Location of Incident</legend>
-				<p>To add the address, use the 'Look up Address' button, a popup window will open where you enter the address, then pick the right address from the list.</p>				
-				<label for="addr_id" class="required">*Address where the incident occured</label>
-				<input type="text" th:field="${address.name}" id="addr_id" size="60" placeholder="address" required="required" />
-				<button th:attr="onclick=|popwit('${hostPath}/addressWindow','_blank');return false;|">Look up Address</button>						
-				<label>Master Address Id </label>
-				<input type="text" th:field="${address.addressId}" id="addressId" readonly="readonly"/>
-				<label>Master Address Subunit Id </label>
-				<input type="text" th:field="${address.subunitId}" value="" id="subunitId" readonly="readonly"/>
-				<label for="latitude">Latitude</label>
-				<input type="text" th:field="${address.latitude}" id="latitude" size="20" readonly="readonly"/>
-				<label for="longitude">Longitude</label>
-				<input type="text" th:field="${address.longitude}" id="longitude" size="20" readonly="readonly"/>
-				<label for="city" class="required">*City</label>
-				<input type="text" th:field="${address.city}" id="city" size="60" placeholder="city" />
-				<label for="jurisdiction">Jurisdiction</label>
-				<input type="text" th:field="${address.jurisdiction}" id="jurisdiction" size="60" placeholder="Jurisdiction" />
-				<label for="zip">Zip Code</label>
-				<input type="text" th:field="${address.zipcode}" id="zip" size="10" placeholder="Zip code" />
-				<label for="state">State</label>
-				<input type="text" th:field="${address.state}" id="state" size="2" placeholder="State" />
-      </fieldset>
-			<div class="next_div">
-				<input type="submit" value="Next" />
-			</div>
-    </form>
+    <header th:replace="general::header"></header>
+    <main class="public-questions-wrapper">
+      <h2>Address Input</h2>
+      <div th:if="${errors}">
+        <div th:replace="general::errors(${errors})"></div>
+      </div>
+      <div th:if="${messages}">
+        <div th:replace="general::messages(${messages})"></div>
+      </div>
+      <p>*indicated required fields</p>
+      <form
+        action="#"
+        th:action="@{/addressCheck}"
+        th:object="${address}"
+        onsubmit="return verifyAddress()"
+        method="post"
+      >
+        <input type="hidden" th:field="${address.type_id}" />
+        <fieldset>
+          <legend>Location of Incident</legend>
+          <p>
+            To add the address, use the 'Look up Address' button, a popup window
+            will open where you enter the address, then pick the right address
+            from the list.
+          </p>
+          <label for="addr_id" class="required"
+            >*Address where the incident occured</label
+          >
+          <input
+            type="text"
+            th:field="${address.name}"
+            id="addr_id"
+            size="60"
+            placeholder="address"
+            required="required"
+          />
+          <button
+            th:attr="onclick=|popwit('${hostPath}/addressWindow','_blank');return false;|"
+          >
+            Look up Address
+          </button>
+          <label>Master Address Id </label>
+          <input
+            type="text"
+            th:field="${address.addressId}"
+            id="addressId"
+            readonly="readonly"
+          />
+          <label>Master Address Subunit Id </label>
+          <input
+            type="text"
+            th:field="${address.subunitId}"
+            value=""
+            id="subunitId"
+            readonly="readonly"
+          />
+          <label for="latitude">Latitude</label>
+          <input
+            type="text"
+            th:field="${address.latitude}"
+            id="latitude"
+            size="20"
+            readonly="readonly"
+          />
+          <label for="longitude">Longitude</label>
+          <input
+            type="text"
+            th:field="${address.longitude}"
+            id="longitude"
+            size="20"
+            readonly="readonly"
+          />
+          <label for="city" class="required">*City</label>
+          <input
+            type="text"
+            th:field="${address.city}"
+            id="city"
+            size="60"
+            placeholder="city"
+          />
+          <label for="jurisdiction">Jurisdiction</label>
+          <input
+            type="text"
+            th:field="${address.jurisdiction}"
+            id="jurisdiction"
+            size="60"
+            placeholder="Jurisdiction"
+          />
+          <label for="zip">Zip Code</label>
+          <input
+            type="text"
+            th:field="${address.zipcode}"
+            id="zip"
+            size="10"
+            placeholder="Zip code"
+          />
+          <label for="state">State</label>
+          <input
+            type="text"
+            th:field="${address.state}"
+            id="state"
+            size="2"
+            placeholder="State"
+          />
+        </fieldset>
+        <div class="next_div">
+          <input type="submit" value="Next" />
+        </div>
+      </form>
+    </main>
   </body>
 </html>
