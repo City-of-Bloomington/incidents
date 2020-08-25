@@ -1,54 +1,136 @@
-@import 'cob-design-sys-utils';
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500&display=swap');
+// inside /static/ :: sass --watch scss/style.scss:css/style.css
+@import "cob-design-sys-utils";
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500&display=swap");
 
-html, body, div, span, applet, object, iframe,
-h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-a, abbr, acronym, address, big, cite, code,
-del, dfn, em, img, ins, kbd, q, s, samp,
-small, strike, strong, sub, sup, tt, var,
-b, u, i, center,
-dl, dt, dd, ol, ul, li,
-fieldset, form, label, legend,
-table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed, 
-figure, figcaption, footer, header, hgroup, 
-menu, nav, output, ruby, section, summary,
-time, mark, audio, video {
-	margin: 0;
-	padding: 0;
-	border: 0;
-	font-size: 100%;
-	font: inherit;
-	vertical-align: baseline;
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
 }
 
 /* HTML5 display-role reset for older browsers */
-article, aside, details, figcaption, figure, 
-footer, header, hgroup, menu, nav, section {
-	display: block;
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+  display: block;
 }
 
 body {
-	line-height: 1;
+  line-height: 1;
 }
 
-ol, ul {
-	list-style: none;
+ol,
+ul {
+  list-style: none;
 }
 
-blockquote, q {
-	quotes: none;
+blockquote,
+q {
+  quotes: none;
 }
 
-blockquote:before, blockquote:after,
-q:before, q:after {
-	content: '';
-	content: none;
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+  content: "";
+  content: none;
 }
 
 table {
-	border-collapse: collapse;
-	border-spacing: 0;
+  border-collapse: collapse;
+  border-spacing: 0;
 }
 
 * {
@@ -83,7 +165,7 @@ header {
     &.app-name {
       border-left: 2px solid $color-grey;
       color: $text-color;
-      letter-spacing: -.5px;
+      letter-spacing: -0.5px;
       font-size: 16px;
       font-weight: 400;
       line-height: 21px;
@@ -115,25 +197,25 @@ header {
       flex-wrap: wrap;
 
       summary {
-      box-sizing: border-box;
-      z-index: 1;
-      position: relative;
-      will-change: transform;
-      transition: all .2s ease;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-      text-decoration: none;
-      margin: 0;
-      padding: 0 8px;
-      border: 0;
-      border-radius: 3px;
-      background: #1e5aae;
-      color: #fff;
-      font-weight: 600;
-      font-size: 16px;
-      font-family: IBM Plex Sans,Helvetica,Arial,sans-serif;
-      line-height: 1.6;
-      cursor: pointer;
+        box-sizing: border-box;
+        z-index: 1;
+        position: relative;
+        will-change: transform;
+        transition: all 0.2s ease;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        text-decoration: none;
+        margin: 0;
+        padding: 0 8px;
+        border: 0;
+        border-radius: 3px;
+        background: #1e5aae;
+        color: #fff;
+        font-weight: 600;
+        font-size: 16px;
+        font-family: IBM Plex Sans, Helvetica, Arial, sans-serif;
+        line-height: 1.6;
+        cursor: pointer;
       }
 
       ul {
@@ -155,7 +237,7 @@ header {
 
           &:hover,
           &:focus {
-            background: #f2f2f2
+            background: #f2f2f2;
           }
 
           a {
@@ -166,8 +248,8 @@ header {
             text-decoration: none;
             font-weight: 400;
             font-size: 14px;
-            font-family: IBM Plex Sans,Helvetica,Arial,sans-serif;
-            line-height: 1.3
+            font-family: IBM Plex Sans, Helvetica, Arial, sans-serif;
+            line-height: 1.3;
           }
         }
       }
@@ -175,7 +257,6 @@ header {
   }
 
   .navigation-dropdown {
-    
   }
 }
 
@@ -189,7 +270,7 @@ body {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: 'IBM Plex Sans', sans-serif;
+  font-family: "IBM Plex Sans", sans-serif;
 }
 
 body {
@@ -202,7 +283,6 @@ body {
     #modal-container {
       margin: 20px 0 0 0;
     }
-    
 
     .alert {
       margin: 10px 0;
@@ -223,7 +303,6 @@ body {
     }
 
     #searchResults {
-
       ul {
         margin: 0 0 10px 0;
         padding: 0;
@@ -281,7 +360,6 @@ body {
       border-bottom: 1px solid $color-grey;
     }
 
-
     &.login {
       background: $color-blue;
     }
@@ -294,7 +372,6 @@ body {
   box-sizing: border-box;
   margin: 0;
 }
-
 
 h1 {
   font-size: 30px;
@@ -317,12 +394,14 @@ h3 {
   line-height: 22px;
 }
 
-p, li {
+p,
+li {
   font-size: 16px;
   line-height: 20px;
 }
 
-ul, ol {
+ul,
+ol {
   padding: 0 0 0 20px;
   margin: 0 0 10px 0;
 
@@ -350,8 +429,8 @@ a {
 }
 
 form {
-
-  input, textarea {
+  input,
+  textarea {
     border: 1px solid $color-grey;
   }
 
@@ -432,7 +511,7 @@ form {
 @mixin clearfix {
   &:after {
     clear: both;
-    content: '';
+    content: "";
     display: table;
   }
 }
@@ -492,7 +571,6 @@ main {
         }
 
         form {
-
           ul {
             display: flex;
 
@@ -516,7 +594,6 @@ main {
         padding: 0;
 
         li {
-
           a {
             display: inline-block;
             background: $color-fern;
@@ -561,7 +638,7 @@ main {
       .body {
         padding: 20px;
       }
-      
+
       .form-group {
         margin: 0 0 20px 0;
       }
@@ -626,7 +703,6 @@ main {
         tr {
           border-bottom: 1px solid $color-grey;
           th {
-            
             text-align: left;
             font-weight: 500;
           }
@@ -641,7 +717,6 @@ main {
           &:nth-child(even) {
             background: lighten($color-grey, 10%);
           }
-
         }
       }
     }
