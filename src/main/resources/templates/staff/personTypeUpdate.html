@@ -7,41 +7,50 @@
  -->
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head th:replace="general::head('Person Type')"></head>
-  <body>
+  <body class="staff">
     <header>
       <div th:replace="general::header-staff"></div>
     </header>
-		<main class="staff">
-			<div th:replace="general::staffMenu">
-			</div>
-			<h2>Edit Person Type</h2>
-			<div th:if="${errors}">
-      <div th:insert="general::errors(${errors})"></div>			
-			</div>
-			<div th:if="${messages}">
-				<div th:insert="general::messages(${messages})"></div>			
-			</div>				
-			<form action="#"
-						th:action="@{/personType/update/{id}(id=${type.id})}"
-						th:object="${type}"
-						method="post">
-				<table>
-					<tr>
-						<td>
-							<label for="name">Type Name</label>
-						</td>
-						<td>
-							<input type="text" th:field="${type.name}" id="name" placeholder="Damage Type Name" />
-							<span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<input type="submit" value="Update" />
-						</td>
-					</tr>
-				</table>
-			</form>
-		</main>
+    <main class="staff">
+      <div th:replace="general::staffMenu"></div>
+      <h2>Edit Person Type</h2>
+      <div th:if="${errors}">
+        <div th:insert="general::errors(${errors})"></div>
+      </div>
+      <div th:if="${messages}">
+        <div th:insert="general::messages(${messages})"></div>
+      </div>
+      <form
+        action="#"
+        th:action="@{/personType/update/{id}(id=${type.id})}"
+        th:object="${type}"
+        method="post"
+      >
+        <table>
+          <tr>
+            <td>
+              <label for="name">Type Name</label>
+            </td>
+            <td>
+              <input
+                type="text"
+                th:field="${type.name}"
+                id="name"
+                placeholder="Damage Type Name"
+              />
+              <span
+                th:if="${#fields.hasErrors('name')}"
+                th:errors="*{name}"
+              ></span>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <input type="submit" value="Update" />
+            </td>
+          </tr>
+        </table>
+      </form>
+    </main>
   </body>
 </html>

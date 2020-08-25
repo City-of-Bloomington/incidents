@@ -1,4 +1,3 @@
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 
 <!--
@@ -10,58 +9,85 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head th:replace="general::head('New Workflow Action')"></head>
-  <body>
+  <body class="staff">
     <header>
       <div th:replace="general::header-staff"></div>
     </header>
-		<main class="staff">
-			<div th:replace="general::staffMenu">
-			</div>		
-			<div th:if="${errors}">
-				<div th:repalce="general::errors(${errors})"></div>			
-			</div>
-			<div th:if="${messages}">
-				<div th:replace="general::messages(${messages})"></div>			
-			</div>				
-			<h2>New Action</h2>
-			<form action="#"
-						th:action="@{/action/add}"
-						th:object="${action}" method="post">
-				<table>
-					<tr>
-						<td>
-							<label for="name">Name</label>
-						</td>
-						<td>
-							<input type="text" th:field="${action.name}" id="name" placeholder="Action name" />
-							<span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<label for="description">Description</label>
-						</td>
-						<td>				
-							<input type="text" th:field="${action.description}" id="description" placeholder="Description" />
-							<span th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></span>
-						</td>
-					</tr>
-					<tr>
-						<td>		
-							<label for="workflow">Workflow Step</label>
-						</td>
-						<td>
-							<input type="text" th:field="${action.workflow_step}" id="workflow" placeholder="Workflow step" /> (integer value)
-							<span th:if="${#fields.hasErrors('workflow_step')}" th:errors="*{workflow_step}"></span>
-						</td>
-					</tr>
-					<tr>
-						<td>		
-							<input type="submit" value="Add Action" />
-						</td>
-					</tr>
-				</table>
-			</form>
-		</main>
+    <main class="staff">
+      <div th:replace="general::staffMenu"></div>
+      <div th:if="${errors}">
+        <div th:repalce="general::errors(${errors})"></div>
+      </div>
+      <div th:if="${messages}">
+        <div th:replace="general::messages(${messages})"></div>
+      </div>
+      <h2>New Action</h2>
+      <form
+        action="#"
+        th:action="@{/action/add}"
+        th:object="${action}"
+        method="post"
+      >
+        <table>
+          <tr>
+            <td>
+              <label for="name">Name</label>
+            </td>
+            <td>
+              <input
+                type="text"
+                th:field="${action.name}"
+                id="name"
+                placeholder="Action name"
+              />
+              <span
+                th:if="${#fields.hasErrors('name')}"
+                th:errors="*{name}"
+              ></span>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <label for="description">Description</label>
+            </td>
+            <td>
+              <input
+                type="text"
+                th:field="${action.description}"
+                id="description"
+                placeholder="Description"
+              />
+              <span
+                th:if="${#fields.hasErrors('description')}"
+                th:errors="*{description}"
+              ></span>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <label for="workflow">Workflow Step</label>
+            </td>
+            <td>
+              <input
+                type="text"
+                th:field="${action.workflow_step}"
+                id="workflow"
+                placeholder="Workflow step"
+              />
+              (integer value)
+              <span
+                th:if="${#fields.hasErrors('workflow_step')}"
+                th:errors="*{workflow_step}"
+              ></span>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <input type="submit" value="Add Action" />
+            </td>
+          </tr>
+        </table>
+      </form>
+    </main>
   </body>
-</htmL>
+</html>

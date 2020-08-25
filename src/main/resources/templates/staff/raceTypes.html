@@ -7,51 +7,58 @@
  -->
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head th:replace="general::head('Race Type')"></head>
-  <body>
+  <body class="staff">
     <header>
       <div th:replace="general::header-staff"></div>
     </header>
     <br />
-		<main class="staff">
-			<div th:replace="general::staffMenu">
-			</div>
-			<h2>Race Types</h2>
-			<div th:if="${errors}">
-				<div th:insert="general::errors(${errors})"></div>			
-			</div>
-			<div th:if="${messages}">
-				<div th:insert="general::messages(${messages})"></div>			
-			</div>						
-			<ul class="button-group">
-				<li>
-					<input type="button" th:attr="onclick=|window.location.href='@{/raceType/new}'|"
-								 value="Add New Race Type" />
-				</li>
-			</ul>	
-			<div th:switch="${types}">
-				<h4 th:case="null">No types found </h4>
-				<div th:case="*">
-					<table>
-						<thead>
-							<tr>
-              <th>ID</th>							
-              <th>Name</th>
-              <th>Edit</th>
-              <th>Delete</th>
-            </tr>
-						</thead>
-						<tbody>
-							<tr th:each="type : ${types}">
-								<td th:text="${type.id}"></td>
-								<td th:text="${type.name}"></td>
-								<td><a th:href="@{/raceType/edit/{id}(id=${type.id})}">Edit</a></td>
-								<td><a th:href="@{/raceType/delete/{id}(id=${type.id})}">Delete</a></td>
-							</tr>
-						</tbody>
-					</table>
-				</div>      
-			</div>
-		</main>
+    <main class="staff">
+      <div th:replace="general::staffMenu"></div>
+      <h2>Race Types</h2>
+      <div th:if="${errors}">
+        <div th:insert="general::errors(${errors})"></div>
+      </div>
+      <div th:if="${messages}">
+        <div th:insert="general::messages(${messages})"></div>
+      </div>
+      <ul class="button-group">
+        <li>
+          <input
+            type="button"
+            th:attr="onclick=|window.location.href='@{/raceType/new}'|"
+            value="Add New Race Type"
+          />
+        </li>
+      </ul>
+      <div th:switch="${types}">
+        <h4 th:case="null">No types found</h4>
+        <div th:case="*">
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Edit</th>
+                <th>Delete</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr th:each="type : ${types}">
+                <td th:text="${type.id}"></td>
+                <td th:text="${type.name}"></td>
+                <td>
+                  <a th:href="@{/raceType/edit/{id}(id=${type.id})}">Edit</a>
+                </td>
+                <td>
+                  <a th:href="@{/raceType/delete/{id}(id=${type.id})}"
+                    >Delete</a
+                  >
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
   </body>
-</htmL>
-		
+</html>
