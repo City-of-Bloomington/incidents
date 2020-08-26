@@ -85,16 +85,7 @@ public class IncidentController extends TopController{
     // AddressCheck addressCheck;
     
     private Environment env;
-		/**
-    @Value( "${incident.defaultcity}" )
-    private String defaultCity;
-    @Value( "${incident.defaultjurisdiction}" )
-    private String defaultJurisdiction;    
-    @Value( "${incident.defaultstate}" )
-    private String defaultState;		
-    @Value( "${incident.zipcodes}" )
-    private List<String> zipCodes;
-		*/
+
     @Value("${incident.email.sender}")
     private String email_sender;
     @Value("${incident.application.name}")
@@ -157,10 +148,17 @@ public class IncidentController extends TopController{
 				}
 				ids.add(""+incident.getId());
 				session.setAttribute("incident_ids", ids);
-				return "redirect:/incidentStart/"+incident.getId();
+				//
+				// return "redirect:/incidentStart/"+incident.getId();
+				//
+				model.addAttribute("incident", incident);
+				model.addAttribute("entryTypes", entryTypes);
+				model.addAttribute("hostPath", hostPath);
+				handleErrorsAndMessages(model);
+        return "incidentAdd";
 
     }
-
+		/**
     @GetMapping("/incidentStart/{id}")
     public String startIncident(@PathVariable("id") int id,
 																Model model,
@@ -185,13 +183,11 @@ public class IncidentController extends TopController{
 				}
         model.addAttribute("incident", incident);
 				model.addAttribute("entryTypes", entryTypes);
-				// model.addAttribute("allZipCodes", getAllZipCodes());
-				// model.addAttribute("allStates", getAllStates());
-				// model.addAttribute("allCities", getAllCities());
 				model.addAttribute("hostPath", hostPath);
 				handleErrorsAndMessages(model);
         return "incidentAdd";
     }
+		*/
     @PostMapping("/incidentNext/{id}")
     public String incidentNext(@PathVariable("id") int id,
 															 @Valid Incident incident,
@@ -215,24 +211,19 @@ public class IncidentController extends TopController{
 								addError(incident.getErrorInfo());
 								pass = false;
 						}
-						/**
-						if(pass && addressCheck.isInIUPDLayer(incident.getLatitude(),
-																									incident.getLongitude())){
-								pass = false;
-								addError("This address is in IU Police Department district");
-						}
-						*/
 						if(!pass){
 								model.addAttribute("entryTypes", entryTypes);
-								// model.addAttribute("allZipCodes", getAllZipCodes());
-								// model.addAttribute("allStates", getAllStates());
-								// model.addAttribute("allCities", getAllCities());
 								model.addAttribute("hostPath", hostPath);
+								model.addAttribute("incident", incident);
 								handleErrorsAndMessages(model);
 								return "incidentAdd";
 						}
 						incidentService.update(incident);
-						// check if incident have persons
+						//
+						// this redirect will decide the next step
+						//
+						return "redirect:/incident/"+id;
+						/**
 						if(incident.hasPersonList()){
 								model.addAttribute("incident", incident);
 								model.addAttribute("hostPath", hostPath);
@@ -241,6 +232,7 @@ public class IncidentController extends TopController{
 						else{
 								return "redirect:/person/add/"+id;
 						}
+						*/
 				}
 				else {
 						addMessage("no more changes can be made");

@@ -16,7 +16,7 @@
 	<main class="staff">	
 		<div th:replace="general::staffMenu">
 			</div>			
-		<h3>View Incident</h3>
+		<h2>View Incident</h2>
 
 		<div th:if="${errors}">
 			<div th:insert="general::errors(${errors})"></div>
@@ -27,7 +27,6 @@
 		</div>
 		<div th:fragment="incidentView(incident)">				
 		<fieldset>
-			<legend>Incident</legend>
 			<div th:fragment="incident(incident)">						
 				<div class="m-b-10" th:if="${incident.hasStatusInfo()}">
 					<label>Status: </label>
