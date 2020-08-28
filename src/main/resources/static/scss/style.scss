@@ -408,6 +408,10 @@ ol {
   li {
     margin: 0 0 10px 0;
 
+    input {
+      width: auto;
+    }
+
     strong {
       color: darken($text-color, 15%);
     }
@@ -705,7 +709,7 @@ main {
           border-bottom: 1px solid $color-grey;
 
           th {
-            padding: 10px 0;
+            padding: 10px;
             text-align: left;
             font-weight: 500;
           }
@@ -722,7 +726,7 @@ main {
           }
 
           td {
-            padding: 10px 0;
+            padding: 10px;
           }
         }
       }
@@ -737,7 +741,7 @@ main {
         justify-content: flex-start;
 
         li {
-          margin: 0 10px 0 0;
+          margin: 0 10px -1px 0;
 
           &:last-child {
             margin: 0;
@@ -746,7 +750,11 @@ main {
           &:focus,
           &:hover,
           &.active {
+            background: white;
+            color: $color-blue;
+
             input {
+              background: white;
               color: $color-blue;
             }
           }

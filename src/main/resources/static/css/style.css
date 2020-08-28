@@ -610,6 +610,10 @@ ul li,
 ol li {
   margin: 0 0 10px 0;
 }
+ul li input,
+ol li input {
+  width: auto;
+}
 ul li strong,
 ol li strong {
   color: #292929;
@@ -808,7 +812,7 @@ main.staff table thead tr {
   border-bottom: 1px solid #dbdbdb;
 }
 main.staff table thead tr th {
-  padding: 10px 0;
+  padding: 10px;
   text-align: left;
   font-weight: 500;
 }
@@ -820,7 +824,7 @@ main.staff table tbody tr:nth-child(even) {
   background: whitesmoke;
 }
 main.staff table tbody tr td {
-  padding: 10px 0;
+  padding: 10px;
 }
 main.staff .button-group.tab-style {
   border-top: none;
@@ -830,12 +834,17 @@ main.staff .button-group.tab-style {
   justify-content: flex-start;
 }
 main.staff .button-group.tab-style li {
-  margin: 0 10px 0 0;
+  margin: 0 10px -1px 0;
 }
 main.staff .button-group.tab-style li:last-child {
   margin: 0;
 }
+main.staff .button-group.tab-style li:focus, main.staff .button-group.tab-style li:hover, main.staff .button-group.tab-style li.active {
+  background: white;
+  color: #1e5aae;
+}
 main.staff .button-group.tab-style li:focus input, main.staff .button-group.tab-style li:hover input, main.staff .button-group.tab-style li.active input {
+  background: white;
   color: #1e5aae;
 }
 main.staff .button-group.tab-style li input {
