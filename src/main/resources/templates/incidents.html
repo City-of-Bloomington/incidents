@@ -19,7 +19,7 @@
       <div th:insert="general::messages(${messages})"></div>			
     </div>						
     <div th:fragment="incidents(incidents)">
-      <h3>Incidents</h3>
+      <h2>Incidents</h2>
       <div th:switch="${incidents}">
 				<h4 th:case="null">No incidents found</h4>
 				<div th:case="*">
@@ -30,6 +30,7 @@
 								<th>Status</th>
 								<th>Incident Type</th>
 								<th>Received</th>
+								<th>Address</th>
 								<th>Incident Date & Time</th>
 								<th>Details </th>
 							</tr>
@@ -40,7 +41,7 @@
 								<td th:text="${one.status}"></td>		
 								<td th:text="${one.incidentType}"></td>		
 								<td th:text="${one.receivedStr}"></td>
-								<td th:text="${one.address.info}"></td>								
+								<td th:text="${one.addressInfo}"></td>								
 								<td th:text="${one.dateTimeInfo}"></td>
 								<td th:text="${one.details}"></td>								
 							</tr>

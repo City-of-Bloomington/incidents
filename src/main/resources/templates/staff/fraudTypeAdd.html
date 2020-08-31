@@ -12,7 +12,7 @@
       <div th:replace="general::header-staff"></div>
     </header>
     <main class="staff">
-      <div th:replace="general::staffMenu"></div>
+      <div th:replace="general::staffMenu('Settings')"></div>
       <h2>New Fraud Type</h2>
       <div th:if="${errors}">
         <div th:insert="general::errors(${errors})"></div>

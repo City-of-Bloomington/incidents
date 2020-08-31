@@ -13,7 +13,7 @@
       <div th:replace="general::header-staff"></div>
     </header> 
     <main class="staff">
-			<div th:replace="general::staffMenu">
+			<div th:replace="general::staffMenu('Settings')">
 			</div>
       <h2>Workflow Actions</h2>
       <div th:if="${errors}">

@@ -13,7 +13,7 @@
     </header>
     <br />
     <main class="staff">
-      <div th:replace="general::staffMenu"></div>
+      <div th:replace="general::staffMenu('Settings')"></div>
       <h2>Race Types</h2>
       <div th:if="${errors}">
         <div th:insert="general::errors(${errors})"></div>

@@ -14,7 +14,7 @@
 		<div th:replace="general::header-staff"></div>
 	</header>
 	<main class="staff">
-		<div th:replace="general::staffMenu">
+		<div th:replace="general::staffMenu('Incomplete')">
 		</div>
 		<h2>Incomplete Incidents (Not Submitted)</h2>
 		<div th:if="${errors}">

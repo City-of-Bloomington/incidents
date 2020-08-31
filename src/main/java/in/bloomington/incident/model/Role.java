@@ -53,66 +53,66 @@ public class Role implements java.io.Serializable{
     }
 		
     public Role(int id, @NotNull(message = "Role name may not be null") String name, List<User> users, List<Action> actions) {
-	super();
-	this.id = id;
-	this.name = name;
-	this.users = users;
-	this.actions = actions;
+				super();
+				this.id = id;
+				this.name = name;
+				this.users = users;
+				this.actions = actions;
     }
 
 
 
     public int getId() {
-	return id;
+				return id;
     }
 
     public void setId(int id) {
-	this.id = id;
+				this.id = id;
     }
 
     public String getName() {
-	return name;
+				return name;
     }
 
     public void setName(String name) {
-	this.name = name;
+				this.name = name;
     }
     public List<User> getUsers(){
-	return users;
+				return users;
     }
     public void setUsers(List<User> ones){
-	users = ones;
+				users = ones;
     }
     public List<Action> getActions(){
-	return actions;
+				return actions;
     }
     public void setActions(List<Action> actions){
-	actions = actions;
+				actions = actions;
     }
     @Transient
     public boolean hasAssignedActions(){
-	return actions != null && actions.size() > 0;
+				return actions != null && actions.size() > 0;
     }
     @Transient
     public String getActionsInfo(){
-	String ret = "";
-	if(hasAssignedActions()){
-	    for(Action one:actions){
-		if(!ret.equals("")) ret += ", ";
-		ret += one;
-	    }
-	}
-	return ret;
+				String ret = "";
+				if(hasAssignedActions()){
+						for(Action one:actions){
+								if(!ret.equals("")) ret += ", ";
+								ret += one;
+						}
+				}
+				return ret;
     }
     @Transient
     public boolean isAdmin(){
-	return name.indexOf("Admin") > -1;
+				return name.indexOf("Admin") > -1;
     }				
     @Override
     public boolean equals(Object obj) { 
           
-	if(this == obj) 
-	    return true; 
+				if(this == obj) 
+						return true; 
 				
         if(obj == null || obj.getClass()!= this.getClass()) 
             return false; 
@@ -122,13 +122,13 @@ public class Role implements java.io.Serializable{
     }
     @Override
     public int hashCode(){ 
-	int ret = 29;
+				int ret = 29;
         return ret += this.id; 
     }
 
     @Override
     public String toString() {
-	return name;
+				return name;
     } 	
 		
 }

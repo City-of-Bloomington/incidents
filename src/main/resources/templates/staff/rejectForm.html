@@ -12,7 +12,7 @@
 <body class="staff">
 	<header th:replace="general::header"></header>
 	<main class="staff">
-		<div th:replace="general::staffMenu">
+		<div th:replace="general::staffMenu('Confirmed')">
 		</div>
 		<h2>Compose Rejection Email</h2>
 		<div th:if="${errors}">

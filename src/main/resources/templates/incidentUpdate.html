@@ -29,7 +29,9 @@
 			<input type="hidden" th:field="${incident.email}" />
 			<input type="hidden" th:field="${incident.receivedStr}" />
 			<input type="hidden" th:field="${incident.incidentType} " />
-			<input type="hidden" th:field="${incident.address} " />
+			<div th:if="${incident.hasAddress()}">
+				<input type="hidden" th:field="${incident.address} " />
+			</div>
 			<fieldset>
 				<legend>Incident Date and Time: </legend>
 				<p>eg. I went to bed at 11:00PM on Saturday, August 8th. When I woke up on Sunday around 6:00AM, I noticed my car window was smashed with a rock.
@@ -56,9 +58,9 @@
 					<textarea th:field="${incident.dateDescription}" id="date_description" rows="3" cols="60"></textarea>
 			</fieldset>
 			
-			<fieldset>
+			<fieldset th:if="${incident.hasAddress()}">
 				<legend>Location of Incident</legend>
-				<span th:text="${incident.address.info}"></span>
+				<span th:text="${incident.addressInfo}"></span>
 			</fieldset>
 
 			<fieldset>
@@ -88,14 +90,7 @@
 				
 				<textarea th:field="${incident.evidence}" id="evidence_id" rows="3" cols="60" placeholder="e.g. blood, shoe prints, finger prints,..">
 				</textarea>
-				<!--
-				<p>If you have incident images available, please mark the checkbox below. When you click 'Next' you will have the chance to upload the images.</p>
-								
-				<input type="checkbox" th:field="${incident.haveMedia}"
-					th:checked="${incident.haveMedia}?'checked'" value="y" />
-					
-				<p>Yes, I have incident images I would like to upload.</p>
-				-->
+
 			</fieldset>
 
 			<input type="submit" value="Save Changes" />

@@ -54,14 +54,6 @@ public class Incident extends TopModel implements java.io.Serializable{
 
     private Date date;
 
-		/**
-    private String address;
-
-    private String city;
-    private String state;
-
-    private String zip;
-		*/
     private String details;
 
 		private String evidence;
@@ -126,8 +118,8 @@ public class Incident extends TopModel implements java.io.Serializable{
     private List<ActionLog> actionLogs;
 
     @NotNull(message = "Address is required")
-		@OneToOne(fetch = FetchType.EAGER)
-    // @ManyToOne(fetch = FetchType.EAGER)
+		// @OneToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "address_id")
     Address address;
 		
@@ -139,15 +131,8 @@ public class Incident extends TopModel implements java.io.Serializable{
 										IncidentType incidentType,
 										Date received,
 										Date date,
-										/*
-										String address,
-										String city,										
-										String state,
-										String zip,
-										*/
 										String details,
 										String evidence,
-										//  Character invalidAddress,
 										String dateDescription,
 										Date endDate,
 										String entryType,
@@ -169,15 +154,8 @@ public class Incident extends TopModel implements java.io.Serializable{
 				this.incidentType = incidentType;
 				this.received = received;
 				this.date = date;
-				/*
-				this.address = address;
-				this.city = city;				
-				this.state = state;
-				this.zip = zip;
-				*/
 				this.details = details;
 				this.evidence = evidence;
-				// this.invalidAddress = invalidAddress;
 				this.dateDescription = dateDescription;
 				this.endDate = endDate;
 				this.entryType = entryType;
@@ -307,50 +285,6 @@ public class Incident extends TopModel implements java.io.Serializable{
 				return ret;
     }
 
-		/*
-    public String getAddress() {
-				return address;
-    }
-
-    public void setAddress(String address) {
-				if(address != null && !address.isEmpty())
-						this.address = address.trim();
-    }
-    public void setOldAddress(String val) {
-				if(val != null && !val.isEmpty())
-						this.oldAddress = val.trim();
-    }
-    public String getOldAddress(){
-				return address;
-    }
-	
-    public String getCity() {
-				return city;
-    }
-
-    public void setCity(String city) {
-				if(city != null && !city.isEmpty())
-						this.city = city.trim();
-    }
-    public String getState() {
-				return state;
-    }
-
-    public void setState(String state) {
-				if(state != null && !state.isEmpty())
-						this.state = state.trim();
-    }
-
-    public String getZip() {
-				return zip;
-    }
-
-    public void setZip(String val) {
-				if(val != null && !val.isEmpty())
-						this.zip = val.trim();
-			 
-    }
-		*/
 		public Address getAddress() {
 				return address;
     }
@@ -380,14 +314,6 @@ public class Incident extends TopModel implements java.io.Serializable{
 				
     }		
 		/*
-    public Character getInvalidAddress() {
-				return invalidAddress;
-    }
-
-    public void setInvalidAddress(Character val) {
-				this.invalidAddress = val;
-    }
-
     @Transient
     public boolean hasValidAddress(){
 				return this.invalidAddress == null;
@@ -405,16 +331,7 @@ public class Incident extends TopModel implements java.io.Serializable{
 				}
 				return ret;
     }
-		/*
-    @Transient
-    public boolean isAddressChanged(){
-				if(address == null || address.isEmpty()) return true;
-				if(id > 0 && address != null && oldAddress != null){
-						return !address.equals(oldAddress);
-				}
-				return false;
-    }
-		*/
+
 		@Transient
 		public boolean hasAddress(){
 				return address != null;
@@ -810,25 +727,11 @@ public class Incident extends TopModel implements java.io.Serializable{
     }
     @Transient
     public String getAddressInfo(){
+				String ret = "";
 				if(hasAddress()){
-						return address.getInfo();
+						ret += address.getInfo();
 				}
-				/**
-				String ret = address;
-				if(city != null && !city.isEmpty()){
-						if(!ret.isEmpty()) ret += " ";
-						ret += city;
-				}
-				if(state != null && !state.isEmpty()){
-						if(!ret.isEmpty()) ret += ", ";
-						ret += state;
-				}
-				if(zip != null && !zip.isEmpty()){
-						if(!ret.isEmpty()) ret += " ";
-						ret += zip;
-				}
-				*/
-				return "";
+				return ret;
     }
     @Transient
     public String getEntryInfo(){
@@ -911,52 +814,4 @@ public class Incident extends TopModel implements java.io.Serializable{
 				return ret;
     }
 
-		/**
-    @Transient
-    public boolean verifyAddressInfo(String default_city,
-																		 String default_jurisdiction,
-																		 String default_state,
-																		 List<String> default_zip_codes){
-				if(isAddressChanged()){
-						if(address == null || address.trim().equals("")){
-								addError("Address is required");
-								return false;
-						}
-						else if(city == null || city.equals("")){
-								addError("City is required");
-								return false;
-						}
-						else if(!city.equals(default_city)){
-								addError("Invalid city "+city+", verify your address or contact the related Police Department" );
-								return false;
-						}
-						else if(state == null || state.equals("")){
-								addError("State is required");
-								return false;
-						}
-						else if(!state.equals(default_state)){
-								addError("Invalid state "+state);
-								return false;
-						}
-						else if(jurisdiction != null && !jurisdiction.equals(default_jurisdiction)){
-								addError("Your address is not in "+default_jurisdiction+" jurisdiction, verify your address or contact the related Police Department ");
-								return false;
-						}
-						else if(zip == null || zip.equals("")){
-								addError("Zip code is required");
-								return false;
-						}
-						else if(zip != null && !zip.equals("")){
-								for(String str:default_zip_codes){
-										if(zip.equals(str)){
-												return true;
-										}
-								}
-								addError("invalid zipcode "+zip);
-								return false;
-						}
-				}
-				return true;
-    }
-		*/						
 }

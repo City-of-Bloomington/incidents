@@ -23,8 +23,8 @@ public class SearchServiceImpl implements SearchService {
 
     @Override
     public List<Incident> find(Search search){
-	List<Incident> all = repository.find(search);
-	return all;
+				List<Incident> all = repository.find(search);
+				return all;
     }
 
 }

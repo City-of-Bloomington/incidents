@@ -220,7 +220,7 @@ public class SearchController extends TopController{
 				}
         model.addAttribute("incidents", incidents);
 				model.addAttribute("messages", getMessages());				
-        return "incidents";
+        return "staff/searchResult";
     }    
     private User findUserFromSession(HttpSession session){
 				User user = null;
