@@ -74,6 +74,14 @@ public class ProcessController extends TopController{
     private HttpSession session;
 
     //
+		@GetMapping("/staff")
+    public String staff(HttpSession session) {
+				User user = findUserFromSession(session);
+				if(user == null ){
+						return "redirect:/login";
+				}       
+				return "staff/staff_intro";
+    }
     @GetMapping("/staff/{id}")
     public String staffIncident(@PathVariable("id") int id,
 																Model model
@@ -191,7 +199,7 @@ public class ProcessController extends TopController{
 										addMessage("Email sent successfully ");
 										// handleErrorsAndMessages(model);
 										getMessagesAndErrorsFromSession(session, model);
-										return "staff/staff_intro";
+										return "redirect:/staff";
 								}
 								else if(action.isRejected()){
 										addMessagesAndErrorsToSession(session);
@@ -228,7 +236,7 @@ public class ProcessController extends TopController{
 				else{
 						addMessage("You do not have approve or reject role ");
 						addMessagesAndErrorsToSession(session);
-						return "redirect:/staff";
+						return "redirect:/staff";	   
 				}
     }
     //login staff
@@ -257,7 +265,7 @@ public class ProcessController extends TopController{
 						// we may need add email to email logs
 						//
 						// back to main staff page
-						return "staff";
+						return "redirect:/staff";
 				}
 				else{
 						addMessage("You do not have approve or reject role ");
@@ -316,7 +324,7 @@ public class ProcessController extends TopController{
 				else{
 						addMessage("You do not have enough privileges ");
 						addMessagesAndErrorsToSession(session);
-						return "redirect:/staff/staff_intro";
+						return "redirect:/staff";
 				}
     }        
     

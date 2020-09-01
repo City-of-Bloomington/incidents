@@ -522,14 +522,6 @@ public class IncidentController extends TopController{
 								addMessagesAndErrorsToSession(session);		
 								pass = false;
 						}
-						/**
-						if(pass && incident.isAddressChanged() &&
-							 addressCheck.isInIUPDLayer(incident.getLatitude(),
-							 incident.getLongitude())){
-							 pass = false;
-								addError("This address is in IU Police Department district");
-						}
-						*/
 						if(!pass){
 								return "redirect:/incident/edit/"+incident.getId();
 						}

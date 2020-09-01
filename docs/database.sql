@@ -268,8 +268,8 @@ insert into actions select * from statuses;
 
 ;;
 ;; received but not confirmed
-;;
-  create or Replace view incident_received AS                                  select i.id from incidents i,action_logs l where l.incident_id=i.id and l.action_id = 2 and l.action_id in (select max(l2.action_id) from action_logs l2 where l2.incident_id=i.id);
+;; modified
+  create or Replace view incident_received AS                                  select i.id from incidents i,action_logs l where l.incident_id=i.id and l.action_id = 2 and l.action_id in (select max(l2.action_id) from action_logs l2 where l2.incident_id=i.id) order by i.id desc;
 
 ;;
 ;; confirmed
@@ -279,16 +279,18 @@ insert into actions select * from statuses;
 ;; approved
      create or Replace view incident_approved AS                                     select i.id from incidents i,action_logs l where l.incident_id=i.id and l.action_id = 4 and l.action_id in (select max(l2.action_id) from action_logs l2 where l2.incident_id=i.id);				 
 ;;
-;; rejected
+;; rejected (not used)
 ;;
-    create or Replace view incident_rejected AS                                   select i.id from incidents i,action_logs l where l.incident_id=i.id and l.action_id = 5 and l.action_id in (select max(l2.action_id) from action_logs l2 where l2.incident_id=i.id);
+    create or Replace view incident_rejected AS                                   select i.id from incidents i,action_logs l where l.incident_id=i.id and l.action_id = 5 and l.action_id in (select max(l2.action_id) from action_logs l2 where l2.incident_id=i.id) order by i.id desc;
 ;;
 ;; processed
      create or Replace view incident_processed AS                                    select i.id from incidents i,action_logs l where l.incident_id=i.id and l.action_id = 6 and l.action_id in (select max(l2.action_id) from action_logs l2 where l2.incident_id=i.id);
 
 ;;
 ;; incomplete incidents are those started but not submitted
-   create or Replace view incident_incomplete AS                                  select i.id from incidents i where i.address_id is not null and i.details is not null and 0 = (select count(*) from action_logs l where l.incident_id=i.id);
+;; modified 
+   create or Replace view incident_incomplete AS                                  select i.id from incidents i where i.address_id is not null and i.details is not null and 0 = (select count(*) from action_logs l where l.incident_id=i.id) order by i.id desc;
+
 ;;
 ;; for import, first we do clean up
 ;;

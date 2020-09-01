@@ -24,7 +24,8 @@
         th:object="${address}"
         onsubmit="return verifyAddress()"
         method="post"
-      >
+				>
+				<!-- type_id here is a temporary place holder for incident type that was selected  before address -->
         <input type="hidden" th:field="${address.type_id}" />
         <fieldset>
           <legend>Location of Incident</legend>
@@ -86,7 +87,8 @@
             th:field="${address.city}"
             id="city"
             size="60"
-            placeholder="city"
+            placeholder="City"
+						readonly="readonly"
           />
           <label for="jurisdiction">Jurisdiction</label>
           <input
@@ -95,6 +97,7 @@
             id="jurisdiction"
             size="60"
             placeholder="Jurisdiction"
+						readonly="readonly"
           />
           <label for="zip">Zip Code</label>
           <input
@@ -103,6 +106,7 @@
             id="zip"
             size="10"
             placeholder="Zip code"
+						readonly="readonly"
           />
           <label for="state">State</label>
           <input
@@ -111,6 +115,7 @@
             id="state"
             size="2"
             placeholder="State"
+						readonly="readonly"
           />
         </fieldset>
         <div class="next_div">

@@ -14,22 +14,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import javax.servlet.http.HttpSession;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import in.bloomington.incident.model.User;
-import in.bloomington.incident.service.UserService;
 
 @Controller
 public class WebController extends TopController{
 
-    @Autowired
-    UserService userService;       
-    @RequestMapping(value = "/staff")
-    public String staff(HttpSession session) {
-				User user = findUserFromSession(session);
-				if(user == null ){
-						return "redirect:/login";
-				}       
-				return "staff";
-    }
+
     @RequestMapping(value = "/")
     public String index() {
 				return "redirect:/introStart";
@@ -86,13 +75,6 @@ public class WebController extends TopController{
 				getMessagesAndErrorsFromSession(session, model);
         model.addAttribute("type_id", type_id);	
 				return "email_questions";
-    }		
-    private User findUserFromSession(HttpSession session){
-				User user = null;
-				User user2 = getUserFromSession(session);
-				if(user2 != null){
-						user = userService.findById(user2.getId());
-				}
-				return user;
-    }    
+    }
+
 }
