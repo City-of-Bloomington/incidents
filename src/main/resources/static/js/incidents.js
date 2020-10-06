@@ -170,35 +170,6 @@ $(document).ready(function () {
     }, "appendTo", ".autocomplete-wrapper");
 });
 
-
-
-// $('#addr_id').autocomplete({
-//     source: function (request, response) {
-//         $.getJSON("https://outlaw.bloomington.in.gov/incidents/addressService?term=" + request.term, function (data) {
-//             response($.map(data.dealers, function (value, key) {
-//                 return {
-//                     label: value,
-//                     value: key
-//                 };
-//             }));
-//         });
-//     },
-//     select: function (event, ui) {
-//         if (ui.item) {
-//             $("#addressId").val(ui.item.address_id);
-//             // $("#name").val(ui.item.streetAddress);
-//             $("#latitude").val(ui.item.latitude);
-//             $("#longitude").val(ui.item.longitude);
-//             $("#city").val(ui.item.city);
-//             $("#zip").val(ui.item.zip);
-//             $("#state").val(ui.item.state);
-//             $("#jurisdiction").val(ui.item.jurisdiction_name);
-//         }
-//     },
-//     minLength: 2,
-//     delay: 100
-// });
-
 function popup(mylink, windowTitle) { 
     if (! window.focus)return true;
     var href;
@@ -207,6 +178,3 @@ function popup(mylink, windowTitle) {
     window.open(href, windowTitle, 'width=500,height=400,scrollbars=yes'); 
     return false; 
 }
-
-
-
