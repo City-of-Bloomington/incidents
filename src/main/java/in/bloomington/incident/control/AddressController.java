@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.beans.factory.annotation.Value;
 import javax.validation.Valid;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -147,7 +148,16 @@ public class AddressController extends TopController{
 				model.addAttribute("hostPath", hostPath);
         return "addressInput";
     }
-
+		// for testing purpose
+    // @CrossOrigin(origins = "https://bloomington.in.gov")
+    @GetMapping("/addressTest")
+    public String addressTest(Model model) {
+				Address address = new Address();
+				address.setType_id(1);
+				model.addAttribute("address", address);
+        return "addressTest";				
+    }
+		//
     @PostMapping("/addressCheck")
     public String addressCheck(@Valid Address address,
 															 BindingResult result,
@@ -177,12 +187,14 @@ public class AddressController extends TopController{
 						List<Address> addresses = addressService.findDistinctAddressByName(address.getName());
 						
 						if(addresses == null || addresses.size() == 0){
+								System.err.println(" find address by name not found ");
 								/**
 								 * if not then we save
 								 */
 								addressService.save(address);								
 						}
 						else{
+								System.err.println(" find address by name found "+addresses.size());
 								// if exist we update 
 								Address addr = addresses.get(0);
 								address.setId(addr.getId());
@@ -363,4 +375,51 @@ public class AddressController extends TopController{
         return json;
     }
 		
+}
+
+@RestController
+class AddressServiceController
+{
+    @Autowired
+    private AddressService addressService;
+
+    @GetMapping(value = "/addressService", produces = "application/json")
+    public String addressService(@RequestParam("term") String term,
+																 Model model)
+    {
+        String json = "";
+				System.err.println(" term "+term);
+        if (term != null && term.length() > 5) {
+            List<Address>addrs = addressService.findByNameContaining(term);
+            if (addrs != null && addrs.size() > 0) {
+                json = buildJson(addrs, term);
+                System.err.println(json);
+            }
+        }
+        return json;
+    }
+
+    private String buildJson(List<Address> ones, String term)
+    {
+        String    json = "";
+        JSONArray jArr = new JSONArray();
+        for (Address one : ones) {
+            JSONObject jObj = new JSONObject();
+            jObj.put("value",       one.getName());
+            jObj.put("address_id",  one.getAddressId());
+            jObj.put("streetAddress",  one.getName());
+            jObj.put("city", one.getCity());
+            jObj.put("state", one.getState());
+            jObj.put("zip", one.getZipcode());
+						jObj.put("latitude", one.getLatitude());
+						jObj.put("longitude",one.getLongitude());
+            jObj.put("jurisdiction_name",   "Bloomington");
+						if(one.getSubunitId() != null){
+								jObj.put("subunit_id",  one.getSubunitId());
+						}
+            jArr.put(jObj);
+        }
+        json = jArr.toString();
+        return json;
+    }
 }

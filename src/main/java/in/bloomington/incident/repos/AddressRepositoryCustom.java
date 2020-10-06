@@ -11,11 +11,13 @@ import java.util.Map.Entry;
 import org.springframework.data.repository.Repository;
 import in.bloomington.incident.model.Address;
 
-
-public interface AddressRepositoryCustom extends Repository<Address, Integer> {
+public interface AddressRepositoryCustom extends Repository<Address, Integer>{
 
 		// Enables the distinct flag for the query		
 		List<Address> findDistinctAddressByName(String name);
+		List<Address> findByNameContaining(String name);		
+		// addressId is master address id
+		// subunitId is master address subunit id
 		List<Address> findDistinctAddressByAddressId(Integer addressId);
 		List<Address> findDistinctAddressByAddressIdAndSubunitId(Integer addressId, Integer subunitId);
 

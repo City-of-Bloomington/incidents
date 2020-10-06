@@ -56,6 +56,10 @@ public class AddressServiceImpl implements AddressService {
 				Iterable<Address> it = repository.findDistinctAddressByAddressIdAndSubunitId(addressId, subunitId);
 				return changeToList(it);	
 		}
+		public List<Address> findByNameContaining(String name){
+				Iterable<Address> it = repository.findByNameContaining(name);
+				return changeToList(it);	
+		}
 		private List<Address> changeToList(Iterable<Address> it){
 				if(it == null)
 						return null;

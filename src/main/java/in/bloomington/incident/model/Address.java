@@ -158,6 +158,7 @@ public class Address extends TopModel implements java.io.Serializable{
     public void setAddressId(Integer val) {
 				this.addressId = val;
     }
+
     public Character getInvalidAddress() {
 				return invalidAddress;
     }

@@ -10,7 +10,7 @@
   <body>
     <header th:replace="general::header"></header>
     <main class="public-questions-wrapper">
-      <h2>Address Input</h2>
+      <h2>Address Input Test</h2>
       <div th:if="${errors}">
         <div th:replace="general::errors(${errors})"></div>
       </div>
@@ -34,9 +34,7 @@
             will open where you enter the address, then pick the right address
             from the list.
           </p>
-          <label for="addr_id" class="required"
-            >*Address where the incident occured</label
-																									>
+          <label for="addr_id">Address where the incident occured</label>
 					<div class="form-group">
 						<input
 							type="text"
@@ -47,17 +45,11 @@
 							required="required"
 							/>
 					</div>
-          <button
-            th:attr="onclick=|popwit('${hostPath}/addressWindow','_blank');return false;|"
-          >
-            Look up Address
-          </button>
           <label>Master Address Id </label>
           <input
             type="text"
             th:field="${address.addressId}"
             id="addressId"
-            readonly="readonly"
           />
           <label>Master Address Subunit Id </label>
           <input
@@ -65,7 +57,6 @@
             th:field="${address.subunitId}"
             value=""
             id="subunitId"
-            readonly="readonly"
           />
           <label for="latitude">Latitude</label>
           <input
@@ -73,7 +64,6 @@
             th:field="${address.latitude}"
             id="latitude"
             size="20"
-            readonly="readonly"
           />
           <label for="longitude">Longitude</label>
           <input
@@ -81,7 +71,6 @@
             th:field="${address.longitude}"
             id="longitude"
             size="20"
-            readonly="readonly"
           />
           <label for="city" class="required">*City</label>
           <input
@@ -90,7 +79,6 @@
             id="city"
             size="60"
             placeholder="City"
-						readonly="readonly"
           />
           <label for="jurisdiction">Jurisdiction</label>
           <input
@@ -99,7 +87,6 @@
             id="jurisdiction"
             size="60"
             placeholder="Jurisdiction"
-						readonly="readonly"
           />
           <label for="zip">Zip Code</label>
           <input
@@ -108,7 +95,6 @@
             id="zip"
             size="10"
             placeholder="Zip code"
-						readonly="readonly"
           />
           <label for="state">State</label>
           <input
@@ -117,7 +103,6 @@
             id="state"
             size="2"
             placeholder="State"
-						readonly="readonly"
           />
         </fieldset>
         <div class="next_div">

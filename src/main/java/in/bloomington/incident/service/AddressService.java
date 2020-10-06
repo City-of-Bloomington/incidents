@@ -18,5 +18,6 @@ public interface AddressService{
 		public List<Address> findDistinctAddressByName(String name);
 		public List<Address> findDistinctAddressByAddressId(Integer addressId);
 		public List<Address> findDistinctAddressByAddressIdAndSubunitId(Integer addressId, Integer subunitId);
+		public List<Address> findByNameContaining(String str);
 		
 }

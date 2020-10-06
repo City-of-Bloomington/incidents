@@ -11,10 +11,16 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import org.apache.commons.io.IOUtils;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
+//
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.springframework.core.env.Environment;
 import org.springframework.beans.factory.annotation.Value;
 import org.slf4j.Logger;
@@ -50,6 +56,7 @@ public class AddressCheck{
     public AddressCheck(){
 
     }
+		
     public AddressCheck(Item val){
 				setAddress(val);
     }		
@@ -79,6 +86,21 @@ public class AddressCheck{
 				}
 				return false;
     }
+		public String findMatchedAddresses(String addrStr){
+				String back = "";
+				try{
+						HttpClient client = HttpClientBuilder.create().build();
+						HttpGet request = new HttpGet("https://bloomington.in.gov/master_address/locations?format=json;location="+addrStr);
+						request.addHeader("accept", "application/json");
+						HttpResponse response = client.execute(request);
+						String json = IOUtils.toString(response.getEntity().getContent());
+						System.err.println(" response json "+json);
+				}
+				catch(Exception ex){
+						System.err.println(" "+ex);
+				}
+				return back;
+		}
     public String isInTheLayer(String xmlStr){
 				String back = "";
 				System.err.println(" xml "+xmlStr);
@@ -123,6 +145,7 @@ public class AddressCheck{
 				}
 				return back;
     }
+		
     public boolean isInIUPDLayer(double lat,
 																 double longi){
 				// IU Compus
@@ -171,10 +194,11 @@ public class AddressCheck{
 						"</wfs:GetFeature>";
 				return xmlStr;
     }
-    /* 
+    /**
      * given certain address, find similar addresses in master_address app
      * we are going to use Cliff js addressChooser to pick the right address
      */
+		
     public String findSimilarAddr(){
 				//
 				String back = "";
@@ -276,6 +300,8 @@ public class AddressCheck{
 				}
 				return back;
     }
+
+		
 }
 
 		
