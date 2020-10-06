@@ -37,14 +37,16 @@
           <label for="addr_id" class="required"
             >*Address where the incident occured</label
 																									>
-					<div class="form-group">
+					<div class="form-group autocomplete-wrapper">
 						<input
 							type="text"
 							th:field="${address.name}"
 							id="addr_id"
 							size="60"
 							placeholder="address"
-							required="required"
+              required="required"
+              name="address"
+              autocomplete="nope"
 							/>
 					</div>
           <button
