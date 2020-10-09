@@ -11,6 +11,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
@@ -45,6 +47,9 @@ public class AddressCheck{
     private String geoUrl;
     // Lat Long projection 
     private String projection="4269";
+		// address service
+    @Value("${incident.master.addressService}")
+    private String masterAddressService;		
     //
     // for state plane coordinate 
     // uncomment if using state plane coordinate 
@@ -87,16 +92,30 @@ public class AddressCheck{
 				return false;
     }
 		public String findMatchedAddresses(String addrStr){
-				String back = "";
+				String back = "", json="";
 				try{
 						HttpClient client = HttpClientBuilder.create().build();
-						HttpGet request = new HttpGet("https://bloomington.in.gov/master_address/locations?format=json;location="+addrStr);
+						String encodedStr = URLEncoder.encode(addrStr, StandardCharsets.UTF_8.toString());
+						// "https://bloomington.in.gov/master_address/locations?format=json;location="+encodedStr);
+						HttpGet request = new HttpGet(masterAddressService+"?format=json;location="+encodedStr);
 						request.addHeader("accept", "application/json");
 						HttpResponse response = client.execute(request);
-						String json = IOUtils.toString(response.getEntity().getContent());
-						System.err.println(" response json "+json);
+						
+						String jsonStr = IOUtils.toString(response.getEntity().getContent());
+						// System.err.println(" response "+jsonStr);
+						JSONObject jsonObj = new JSONObject(jsonStr);
+						if(!jsonObj.isNull("locations")){
+								JSONArray jsonArr = jsonObj.getJSONArray("locations");
+								String str = jsonArr.toString();
+								json = str.replaceAll("streetAddress","value");
+								System.err.println(" json "+json);
+						}
+						if(json != null && !json.isEmpty()){
+								return json;
+						}
 				}
 				catch(Exception ex){
+						back += ex;
 						System.err.println(" "+ex);
 				}
 				return back;

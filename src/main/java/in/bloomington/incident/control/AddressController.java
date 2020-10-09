@@ -378,23 +378,35 @@ public class AddressController extends TopController{
 }
 
 @RestController
-class AddressServiceController
-{
+class AddressServiceController{
     @Autowired
     private AddressService addressService;
-
+    @Autowired
+    AddressCheck addressCheck;
+		//
     @GetMapping(value = "/addressService", produces = "application/json")
     public String addressService(@RequestParam("term") String term,
 																 Model model)
     {
         String json = "";
 				System.err.println(" term "+term);
-        if (term != null && term.length() > 5) {
-            List<Address>addrs = addressService.findByNameContaining(term);
-            if (addrs != null && addrs.size() > 0) {
-                json = buildJson(addrs, term);
-                System.err.println(json);
-            }
+        if (term != null && term.length() >= 5) {
+						// if term has at least two parts
+						String[] arr = term.split("\\s+");
+						if(arr.length >= 2){
+								/**
+								List<Address>addrs = addressService.findByNameContaining(term);
+								if (addrs != null && addrs.size() > 0) {
+										json = buildJson(addrs, term);
+										System.err.println(json);
+								}
+								*/
+								String back = addressCheck.findMatchedAddresses(term);
+								if(back.indexOf("Exception") == -1){
+										json = back;
+								}
+								System.err.println(back);
+						}
         }
         return json;
     }
@@ -413,10 +425,8 @@ class AddressServiceController
             jObj.put("zip", one.getZipcode());
 						jObj.put("latitude", one.getLatitude());
 						jObj.put("longitude",one.getLongitude());
-            jObj.put("jurisdiction_name",   "Bloomington");
-						if(one.getSubunitId() != null){
-								jObj.put("subunit_id",  one.getSubunitId());
-						}
+            jObj.put("jurisdiction_name","Bloomington");
+						jObj.put("subunit_id",  one.getSubunitId());
             jArr.put(jObj);
         }
         json = jArr.toString();

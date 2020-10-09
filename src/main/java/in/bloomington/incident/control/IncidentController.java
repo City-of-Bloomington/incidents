@@ -81,17 +81,11 @@ public class IncidentController extends TopController{
 		AddressService addressService;		
     @Autowired
     private JavaMailSender mailSender;
-    // @Autowired
-    // AddressCheck addressCheck;
-    
-    private Environment env;
-
+		//
     @Value("${incident.email.sender}")
     private String email_sender;
     @Value("${incident.application.name}")
     private String application_name;
-    @Value("${incident.address.checkurl}")    
-    private String address_check_url;
     @Value("${server.servlet.context-path}")
     private String hostPath; // incidents in production
 
