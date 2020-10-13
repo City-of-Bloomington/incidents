@@ -157,14 +157,20 @@ $(document).ready(function () {
         delay: 100,
         select: function (event, ui) {
             if (ui.item) {
-                // $("#addressId").val(ui.item.address_id);
+                $("#addressId").val(ui.item.address_id);
                 $("#name").val(ui.item.streetAddress);
-                // $("#latitude").val(ui.item.latitude);
-                // $("#longitude").val(ui.item.longitude);
+                $("#latitude").val(ui.item.latitude);
+                $("#longitude").val(ui.item.longitude);
                 $("#city").val(ui.item.city);
                 $("#zip").val(ui.item.zip);
                 $("#state").val(ui.item.state);
                 $("#jurisdiction").val(ui.item.jurisdiction_name);
+								if(ui.item.subunit_id){
+										$("#subunitId").val(ui.item.subunit_id);
+								}
+								else{
+										$("#subunitId").val('');
+								}
             }
         }
     }, "appendTo", ".autocomplete-wrapper");

@@ -29,15 +29,16 @@
         <input type="hidden" th:field="${address.type_id}" />
         <fieldset>
           <legend>Location of Incident</legend>
-          <p>
-            To add the address, use the 'Look up Address' button, a popup window
-            will open where you enter the address, then pick the right address
-            from the list.
-          </p>
+          <ul>
+            <li>To add your address in the field below, please start typing the address till you get a list of matching addresses then pick the right one.</li>
+						<li>Please note that City, Jurisdiction, Zip code and State fields are
+						automatically filled when you pick the right address.</li>
+          </ul>
           <label for="addr_id">Address where the incident occured</label>
 					<div class="form-group">
 						<input
 							type="text"
+							autocomplete="off"
 							th:field="${address.name}"
 							id="addr_id"
 							size="60"
@@ -45,34 +46,30 @@
 							required="required"
 							/>
 					</div>
-          <label>Master Address Id </label>
           <input
-            type="text"
+            type="hidden"
             th:field="${address.addressId}"
             id="addressId"
           />
-          <label>Master Address Subunit Id </label>
           <input
-            type="text"
+            type="hidden"
             th:field="${address.subunitId}"
             value=""
             id="subunitId"
           />
-          <label for="latitude">Latitude</label>
           <input
-            type="text"
+            type="hidden"
             th:field="${address.latitude}"
             id="latitude"
             size="20"
           />
-          <label for="longitude">Longitude</label>
           <input
-            type="text"
+            type="hidden"
             th:field="${address.longitude}"
             id="longitude"
             size="20"
           />
-          <label for="city" class="required">*City</label>
+          <label for="city">City</label>
           <input
             type="text"
             th:field="${address.city}"
