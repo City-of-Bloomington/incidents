@@ -5,6 +5,7 @@ web.xml
 target
 ansible/roles
 *.retry
+*.DS_Store
 
 # Eclipse directories
 .settings
