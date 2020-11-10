@@ -130,7 +130,6 @@ public class IncidentController extends TopController{
 				// this is the only place we are adding
 				// incident ID in the session
 				//
-
 				List<String> ids = null;
 				try{
 						ids = (List<String>) session.getAttribute("incident_ids");
@@ -152,36 +151,6 @@ public class IncidentController extends TopController{
         return "incidentAdd";
 
     }
-		/**
-    @GetMapping("/incidentStart/{id}")
-    public String startIncident(@PathVariable("id") int id,
-																Model model,
-																RedirectAttributes redirectAttributes,
-																HttpSession session
-																) {
-				if(!verifySession(session, ""+id)){				
-						addMessage("No more changes can be made ");
-						addMessagesAndErrorsToSession(session);
-						return "redirect:/index";
-				}
-				Incident incident = null;
-				try{
-						incident = incidentService.findById(id);
-				}catch(Exception ex){
-						addError("Invalid incident Id: "+id);
-						logger.error(errors+" "+ex);
-						model.addAttribute("errors", errors);
-						redirectAttributes.addFlashAttribute("errors",
-																								 "invalid incident " + id + "!");
-						return "redirect:/start";
-				}
-        model.addAttribute("incident", incident);
-				model.addAttribute("entryTypes", entryTypes);
-				model.addAttribute("hostPath", hostPath);
-				handleErrorsAndMessages(model);
-        return "incidentAdd";
-    }
-		*/
     @PostMapping("/incidentNext/{id}")
     public String incidentNext(@PathVariable("id") int id,
 															 @Valid Incident incident,

@@ -51,13 +51,13 @@
         <input type="hidden" th:field="${address.type_id}" />
         <fieldset>
           <legend>Location of Incident</legend>
-          <ul>
-            <li>To add your address in the field below, please start typing the address till you get a list of matching addresses then pick the right one.</li>
-						<li>Please note that City, Jurisdiction, Zip code and State fields are
-						automatically filled when you pick the right address.</li>
-          </ul>
+          <ol>
+            <li>To add the incident location address, start typing the street address in the 'Address' field below. A list of matching addresses will be populated, please select from the list the correct one for where the incident occured.</li>
+						<li><i>Please note that City, Jurisdiction, Zip code and State fields are
+						automatically filled when you pick the right address.</i></li>
+          </ol>
           <label for="addr_id" class="required">
-            *Address where the incident occured
+            Address where the incident occured
 					</label>
 					<div class="form-group autocomplete-wrapper">
 						<input

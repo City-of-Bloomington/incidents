@@ -44,15 +44,15 @@
 			</select>
 			<label for="otherType">Other type:</label>
 			<input type="text" th:field="${fraud.otherType}" id="otherType" placeholder="Specify other fraud type" />
-			<label for="identityUsed">Identity Used</label>
+			<label for="identityUsed">Identity used</label>
 			<input type="text" th:field="${fraud.identityUsed}" id="identityUsed" placeholder="Identity Used" />
 		
-			<label for="accountUsed">Account Used</label>
+			<label for="accountUsed">Account used</label>
 			<input type="text" th:field="${fraud.accountUsed}" id="accountUsed" placeholder="Account Used" />
-			<label for="amountTaken">Amount Taken ($)</label>
+			<label for="amountTaken">Amount taken ($)</label>
 			<input type="text" th:field="${fraud.amountTaken}" id="amountTaken" placeholder="Amount taken in dddd.dd format" />
 					
-			<label for="details" class="required">*Fraud/Scam Details</label>
+			<label for="details" class="required">*Fraud/Scam details</label>
 			<textarea th:field="${fraud.details}" id="details" placeholder="Fraud or scam details" rows="5" cols="50" required="required">
 			</textarea>
 			

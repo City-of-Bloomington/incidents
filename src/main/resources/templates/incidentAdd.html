@@ -12,7 +12,7 @@
     <header th:replace="general::header"></header>
 
     <main class="public-questions-wrapper">
-      <h2>Add Incident Details</h2>
+      <h2>Report Incident Details</h2>
 
       <div th:if="${errors}">
         <div th:replace="general::errors(${errors})"></div>
@@ -164,7 +164,7 @@
             id="evidence_id"
             rows="3"
             cols="60"
-            placeholder="e.g. blood, shoe prints, finger prints,.."
+            placeholder="e.g. blood, shoe prints, fingerprints,.."
           ></textarea>
         </fieldset>
 

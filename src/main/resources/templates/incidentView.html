@@ -34,22 +34,22 @@
 				</div>
 				<br />
 				<div class="m-b-10">
-					<label><strong> Incident Type: </strong></label>
+					<label><strong> Incident type: </strong></label>
 					<span th:text="${incident.incidentType}"> </span>
 				</div>
 				<br />
 				<div class="m-b-10">
-					<label><strong> Reporter Email: </strong></label>
+					<label><strong> Reporter email: </strong></label>
 					<span th:text="${incident.email}"> </span>
 				</div>
 				<br />
 				<div class="m-b-10">
-					<label>Report Date & Time: </label>
+					<label>Report date & time: </label>
 					<span th:text="${incident.receivedStr}"> </span>
 				</div>
 				<br />
 				<div class="m-b-10">
-					<label>Incident Date & time: </label>
+					<label>Incident date & time: </label>
 					<span th:text="${incident.dateTimeInfo}"> </span>
 				</div>
 				<br />
@@ -64,12 +64,12 @@
 				</div>
 				<br />
 				<div class="m-b-10">
-					<label>Incident Details: </label>
+					<label>Incident details: </label>
 					<span th:text="${incident.details}"></span>
 				</div>
 				<br />									
 				<div class="m-b-10" th:if="${incident.hasEvidenceInfo()}">
-					<label>Evidence Left Behind:</label>
+					<label>Evidence left behind:</label>
 					<span th:text="${incident.evidence}"></span>
 				</div>
 			</div>

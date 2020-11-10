@@ -22,7 +22,9 @@
 		<div th:if="${messages}">
 			<div th:replace="general::messages(${messages})"></div>
 		</div>
-		
+		<p>
+			If you need to add additional information relating to a person or upload supporting images, please use the links below
+		</p>
 		<ul class="button-group">
 			<li>
 				<input type="button" th:attr="onclick=|window.location.href='${hostPath}/person/add/${incident.id}'|"
@@ -51,10 +53,10 @@
 		</p>
 		<div th:if="${incident.canBeSubmitted()}">
 			<ul>
-				<li>The incident is ready to be submitted.</li>
-				<li>Once submitted, no changes can be made.</li>
-				<li>Review your report to be sure everything is correct.</li>
-				<li>If no further changes are needed click on the 'Next Final Submit Page' button</li>
+				<li>Review your incident report below.</li>
+				<li>Edit any information. Click on the corresponding edit link for that section to edit information.</li>
+				<li>Once your report has been submitted, no changes can be made.</li>
+				<li>If no further changes are needed, click on the 'Next Final Submit Page' at the bottom of this page.</li>
 			</ul>
 		</div>
 
