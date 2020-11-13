@@ -29,15 +29,16 @@ $(document).ready(function(){
 	    $('#next_div').hide();
 	    $('#moreInfo').hide();
 	    $('#lastQuestion').hide();
+
 	}	      
 	else if(answer != 'Next'){
 	    $('#next_div').hide();		  		  
-	    alert (answer); // stop no more
 	    $('#moreInfo').show();		  
 	}
 	else{
 	    $('#moreInfo').hide();
 	    $('#next_div').show();
+			$('#typeOptions').hide();
 	}
     })
     var totalQuestions = $('.questions').length;

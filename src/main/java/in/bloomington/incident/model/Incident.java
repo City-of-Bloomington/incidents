@@ -376,7 +376,7 @@ public class Incident extends TopModel implements java.io.Serializable{
 		// entry gained is not required for lost property or vandalism
     @Transient
     public boolean showGainedEntry(){
-				return !(isVandalRelated() || isLostRelated());
+				return !(isVandalRelated() || isLostRelated() || isFraudRelated());
     }				
     @Transient
     public boolean canEdit(){
