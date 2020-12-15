@@ -148,6 +148,43 @@ function verifyAddress(){
     }
 		return true;
 }
+function verifyFraudInput(){
+    var type = $('#fraudType option:selected').val();
+		if(type === ''){
+				alert ('Please select the fraud type');
+				$('#fraudType').focus();
+				return false;
+		}
+		var typeText = $('#fraudType option:selected').text();
+		if(type == 'Other Specify'){
+				otherType = $('#otherType').val();
+				if(otherType === ''){
+						alert ('Please specify other fraud type');
+						$('#otherType').focus();
+						return false;						
+				}
+		}
+		return true;
+}
+function handelRelatedFraud(){
+    var typeVal = $('#fraudType option:selected').val();
+		if(typeVal === ''){
+				return ;
+		}
+		if(typeVal == 1 || typeVal == 3 || typeVal == 4){
+				$('#personal').hide();
+				$('#account').show();				
+		}
+		else if(typeVal == 2 || typeVal == 5 || typeVal == 6){
+				$('#personal').show();
+				$('#account').hide();
+		}
+		else{ // for other
+				$('#personal').hide();
+				$('#account').hide();
+		}
+}
+		
 
 $(document).ready(function () {
     $("#addr_id").autocomplete({

@@ -27,8 +27,11 @@
 		<div th:insert="general::fraudInstructions">
 		</div>
 		
-		<form action="#" th:action="@{/fraud/save}" th:object="${fraud}"
-			method="post">
+		<form action="#"
+					th:action="@{/fraud/save}"
+					th:object="${fraud}"
+					onsubmit="return verifyFraudInput()"
+					method="post">
 		
 			<input type="hidden" th:field="${fraud.incident}" />
 		
@@ -37,21 +40,24 @@
 			<select
 				id="fraudType"
 				th:field="${fraud.fraudType}"
+				onchange="handelRelatedFraud()"
 				required="required">
-				<option value="">Pick Fraud/Scam type</option>
+				<option value="">Fraud/Scam type options</option>
 				<option th:each="r : ${fraudTypes}" th:value="${r.id}" th:text="${r.name}">
 				</option>
 			</select>
 			<label for="otherType">Other type:</label>
 			<input type="text" th:field="${fraud.otherType}" id="otherType" placeholder="Specify other fraud type" />
-			<label for="identityUsed">Identity used</label>
-			<input type="text" th:field="${fraud.identityUsed}" id="identityUsed" placeholder="Identity Used" />
-		
-			<label for="accountUsed">Account used</label>
-			<input type="text" th:field="${fraud.accountUsed}" id="accountUsed" placeholder="Account Used" />
-			<label for="amountTaken">Amount taken ($)</label>
-			<input type="text" th:field="${fraud.amountTaken}" id="amountTaken" placeholder="Amount taken in dddd.dd format" />
-					
+			<div id="personal" style="display:none">
+				<label for="identityUsed">Identity used</label>
+				<input type="text" th:field="${fraud.identityUsed}" id="identityUsed" placeholder="Identity Used" />
+			</div>
+			<div id="account" style="display:none">
+				<label for="accountUsed">Account used</label>
+				<input type="text" th:field="${fraud.accountUsed}" id="accountUsed" placeholder="Account Used" />
+				<label for="amountTaken">Amount taken ($)</label>
+				<input type="text" th:field="${fraud.amountTaken}" id="amountTaken" placeholder="Amount taken in dddd.dd format" />
+			</di>
 			<label for="details" class="required">*Fraud/Scam details</label>
 			<textarea th:field="${fraud.details}" id="details" placeholder="Fraud or scam details" rows="5" cols="50" required="required">
 			</textarea>

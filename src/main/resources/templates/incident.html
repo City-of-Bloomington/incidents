@@ -39,10 +39,12 @@
 				<input type="button" th:attr="onclick=|window.location.href='${hostPath}/vehicle/add/${incident.id}'|"
 					value="Add Vehicle" />
 			</li>
+			<!--
 			<li th:if="${incident.isFraudRelated()}">
 				<input type="button" th:attr="onclick=|window.location.href='${hostPath}/fraud/add/${incident.id}'|"
 					value="Add Fraud/Scam" />
-			</li>		
+			</li>
+			-->
 			<li>
 				<input type="button" th:attr="onclick=|window.location.href='${hostPath}/media/add/${incident.id}'|"
 					value="Upload Image" />
@@ -56,7 +58,7 @@
 				<li>Review your incident report below.</li>
 				<li>Edit any information. Click on the corresponding edit link for that section to edit information.</li>
 				<li>Once your report has been submitted, no changes can be made.</li>
-				<li>If no further changes are needed, click on the 'Next Final Submit Page' at the bottom of this page.</li>
+				<li>If no further changes are needed, click on the 'Next' at the bottom of this page.</li>
 			</ul>
 		</div>
 
@@ -88,7 +90,7 @@
 			
 			<div class="next_div" th:if="${incident.canBeSubmitted()}">
 				<input type="button" th:attr="onclick=|window.location.href='${hostPath}/incident/finalPage/${incident.id}'|"
-							 value="Next Final Submit Page" />
+							 value="Next" />
 			</div>
 		</div>
 	</main>

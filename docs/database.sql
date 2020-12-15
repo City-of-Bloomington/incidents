@@ -440,6 +440,13 @@ old role_actions;
 ;;
 ;; new tables
 ;;
+
+  insert into race_types values(1,'Black Non-Hisp'),                                                           (2,'Hamalian/Oth Pacific Hispanic'),                                            (3,'Hamalian/Oth Pacific Non-Hisp'),                                            (4,'Indian/Alaskan Natv Non-Hisp'),                                             (5,'Black Hispanic'),                                                           (6,'White Hispanci'),                                                           (7,'Indian/Alaskan Natv Hispanci'),                                             (8,'Asian Non-Hisp'),                                                           (9,'Asian Hispanic'),                                                           (10,'Unknown'),                                                                 (11,'White Non-Hisp');
+alter table persons drop foreign key persons_ibfk_3;
+;; do insert
+alter table persons add foreign key(race_type_id) references race_types(id);
+;;
+;; old ones
   insert into race_types values(1,'BLACK NON-HISP'),                                                           (2,'HAWAIIAN/OTH PACIFIC HISPANIC'),                                            (3,'HAWAIIAN/OTH PACIFIC NON-HISP'),                                            (4,'INDIAN/ALASKAN NATV NON-HISP'),                                             (5,'BLACK HISPANIC'),                                                           (6,'WHITE HISPANIC'),                                                           (7,'INDIAN/ALASKAN NATV HISPANIC'),                                             (8,'ASIAN NON-HISP'),                                                           (9,'ASIAN HISPANIC'),                                                           (10,'UNKOWN'),                                                                  (11,'WHITE NON-HISP');
 ;;
 ;; in persons table we need to change the field race enum to
@@ -467,7 +474,8 @@ old role_actions;
 ;; added on 8/4/2020
 ;;
   create table fraud_types(                                                          id int unsigned auto_increment primary key,                                     name varchar(50)                                                                )engine=InnoDB;
-
+/**
+// old 
 insert into fraud_types values
 (1,'Identity Theft'),
 (2,'Banking Scam'),
@@ -486,6 +494,23 @@ insert into fraud_types values
 (15,'Internet Fraud'),
 (16,'Ransomware'),
 (17,'Other Specify');
+
+*/
+ alter table frauds drop foreign key frauds_ibfk_2;
+ delete from fraud_types;
+
+insert into fraud_types values
+(1,'Credit Card Fraud'),
+(2,'Impersonation'),
+(3,'Welfare Fraud'),
+(4,'Wire Fraud'),
+(5,'Identity Theft'),
+(6,'Hacking/Computer Invasion'),
+(7,'Other Specify')
+;;
+;; if frauds table created before you may need to add the foreign key back
+;;
+ alter table frauds add foreign key(fraud_type_id) references fraud_types(id);
 
   create table frauds(                                                              id int unsigned auto_increment primary key,                                     incident_id int unsigned NOT NULL,                                              fraud_type_id int unsigned,                                                     other_type varchar(80),                                                         identity_used text,                                                             account_used text,                                                              amount_taken decimal(12,2),                                                     details text,                                                                  foreign key(incident_id) references incidents(id),                              foreign key(fraud_type_id) references fraud_types(id)                           )engine=InnoDB;
 
@@ -510,3 +535,39 @@ alter table incidents drop column zip;
 alter table incidents drop column state;
 alter table incidents drop column invalid_address
 ;;
+
+
+;;
+;; changes on 12/15
+ insert into person_types values(2,'Complainant');
+;;
+ alter table frauds drop foreign key frauds_ibfk_2;
+ delete from fraud_types;
+
+insert into fraud_types values
+(1,'Credit Card Fraud'),
+(2,'Impersonation'),
+(3,'Welfare Fraud'),
+(4,'Wire Fraud'),
+(5,'Identity Theft'),
+(6,'Hacking/Computer Invasion'),
+(7,'Other Specify')
+;;
+;; if frauds table created before you may need to add the foreign key back
+;;
+ alter table frauds add foreign key(fraud_type_id) references fraud_types(id);
+
+;;
+alter table persons drop foreign key persons_ibfk_3;
+;;
+;; delete old ones
+;;
+delete from race_types;
+;;
+;; do insert
+;;
+  insert into race_types values(1,'Black Non-Hisp'),                                                           (2,'Hamalian/Oth Pacific Hispanic'),                                            (3,'Hamalian/Oth Pacific Non-Hisp'),                                            (4,'Indian/Alaskan Natv Non-Hisp'),                                             (5,'Black Hispanic'),                                                           (6,'White Hispanci'),                                                           (7,'Indian/Alaskan Natv Hispanci'),                                             (8,'Asian Non-Hisp'),                                                           (9,'Asian Hispanic'),                                                           (10,'Unknown'),                                                                 (11,'White Non-Hisp');
+;;
+;; add back foreign key
+;;
+alter table persons add foreign key(race_type_id) references race_types(id);

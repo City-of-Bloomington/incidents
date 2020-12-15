@@ -85,29 +85,29 @@
 				<input type="text" th:field="${person.phone}" id="phone" size="20" required="required" maxlength="30"
 					placeholder="Phone number" />
 
-				<label for="phone_type_id2">Alternative phone: 
+				<label for="phone_type_id2">Alternate phone: 
 					<select id="phone_type_id2" th:field="${person.phoneType2}">
 						<option th:each="r : ${phoneTypes}" th:value="${r}" th:text="${r}">
 						</option>
 					</select>
 				</label>
-				<input type="text" th:field="${person.phone2}" id="phone2" size="20" maxlength="30" placeholder="Phone number" />
+				<input type="text" th:field="${person.phone2}" id="phone2" size="20" maxlength="30" placeholder="Alternate phone" />
 
-				<label for="email2">Alternative email: </label>
-				<input type="text" th:field="${person.email2}" id="email2" size="70" maxlength="80" placeholder="Another Email" />
+				<label for="email2">Alternate email: </label>
+				<input type="text" th:field="${person.email2}" id="email2" size="70" maxlength="80" placeholder="Alternate email" />
 				<label for="dob_id" class="required">*Date of birth: </label>
 				<input type="date" th:field="${person.dobStr}" id="dob_id" value="" size="15" placeholder="mm/dd/yyyy" />
-				<label for="dln_id">Driver license number: </label>
+				<label for="dln_id">Driver's License Number: </label>
 				<input type="text" th:field="${person.dln}" id="dln_id" size="20" maxlength="20" placeholder="DLN" />
 				
-				<label for="ssn_id">Social security number: </label>
+				<label for="ssn_id">Social Security Number: </label>
 				<input type="text" th:field="${person.ssn}" id="ssn_id" size="12" maxlength="12" placeholder="SSN" />
 				
 				<label for="race_id">Race:</label>
 				<select
 					id="race_id"
 					th:field="${person.raceType}">
-					<option value="">Pick race</option>
+					<option value="">Race options</option>
 					<option th:each="r : ${raceTypes}" th:value="${r.id}" th:text="${r.name}">
 					</option>
 				</select>
@@ -132,19 +132,19 @@
 				<input type="text" th:field="${person.weight}" id="weight_id" size="3" placeholder="weight lb" />
 				<label for="sex_id">Sex:</label>
 				<select id="sex_id" th:field="${person.sex}">
-					<option value="">Pick Sex</option>
+					<option value="">Sex options</option>
 					<option th:each="r : ${sexTypes}" th:value="${r}" th:text="${r}">
 					</option>
 				</select>
 				<label for="gender_id">Gender:</label>
 				<select id="gender_id" th:field="${person.gender}">
-					<option value="">Pick Gender</option>
+					<option value="">Gender options</option>
 					<option th:each="r : ${genderTypes}" th:value="${r}" th:text="${r}">
 					</option>
 				</select>
 				<label for="eth_id">Ethnicity:</label>
 				<select id="eth_id" th:field="${person.ethnicity}">
-					<option value="">Pick Ethnicity</option>
+					<option value="">Ethnicity options</option>
 					<option th:each="r : ${ethnicityTypes}" th:value="${r}" th:text="${r}">
 					</option>
 				</select>				
