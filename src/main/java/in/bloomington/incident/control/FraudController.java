@@ -179,7 +179,7 @@ public class FraudController extends TopController{
 						addMessage("No more changes can be made ");
 						addMessagesAndErrorsToSession(session);
 						return "redirect:/";
-				}				
+				}
 				List<FraudType> fraudTypes = fraudTypeService.getAll();
 				model.addAttribute("fraud", fraud);
 				model.addAttribute("fraudTypes", fraudTypes);

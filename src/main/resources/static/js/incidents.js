@@ -156,7 +156,7 @@ function verifyFraudInput(){
 				return false;
 		}
 		var typeText = $('#fraudType option:selected').text();
-		if(type == 'Other Specify'){
+		if(typeText == 'Other Specify'){
 				otherType = $('#otherType').val();
 				if(otherType === ''){
 						alert ('Please specify other fraud type');
@@ -172,16 +172,19 @@ function handelRelatedFraud(){
 				return ;
 		}
 		if(typeVal == 1 || typeVal == 3 || typeVal == 4){
+				$('#type_other').hide();
 				$('#personal').hide();
 				$('#account').show();				
 		}
 		else if(typeVal == 2 || typeVal == 5 || typeVal == 6){
+				$('#type_other').hide();
 				$('#personal').show();
 				$('#account').hide();
 		}
 		else{ // for other
-				$('#personal').hide();
-				$('#account').hide();
+				$('#type_other').show();
+				$('#personal').show();
+				$('#account').show();
 		}
 }
 		

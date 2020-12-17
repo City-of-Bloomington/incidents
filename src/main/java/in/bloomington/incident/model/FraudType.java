@@ -66,6 +66,18 @@ public class FraudType implements java.io.Serializable{
 				if(val != null)	
 						this.name = val;
     }
+		@Transient
+		public boolean isAccountRelated(){
+				return (id == 1 || id == 3 || id == 4);
+		}
+		@Transient
+		public boolean isPersonal(){
+				return (id == 2 || id == 5 || id == 6);
+		}
+		@Transient
+		public boolean isUnspecified(){
+				return (id == 7);
+		}		
     @Override
     public boolean equals(Object obj) { 
           

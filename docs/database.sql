@@ -571,3 +571,6 @@ delete from race_types;
 ;; add back foreign key
 ;;
 alter table persons add foreign key(race_type_id) references race_types(id);
+;;
+;; person type Complainant
+insert into person_types values(2,'Complainant');

@@ -8,6 +8,8 @@
 spring.application.name=incidents
 address.required.message=address is required
 server.servlet.context-path=/incidents
+;; session time max 120m
+server.servlet.session.timeout=120m
 spring.cache.type=NONE
 ;;
 ;; the following zipcodes, defaultCity and defualState 

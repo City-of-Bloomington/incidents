@@ -157,6 +157,27 @@ public class Fraud extends TopModel implements java.io.Serializable{
     public void setIncident(Incident incident) {
 				this.incident = incident;
     }
+		@Transient
+		public boolean isPersonal(){
+				if(fraudType != null){
+						return fraudType.isPersonal();
+				}
+				return false;
+		}
+		@Transient
+		public boolean isAccountRelated(){
+				if(fraudType != null){
+						return fraudType.isAccountRelated();
+				}
+				return false;
+		}		
+		@Transient
+		public boolean isUnspecified(){
+				if(fraudType != null){
+						return fraudType.isUnspecified();
+				}
+				return false;
+		}				
     @Transient
     public String getInfo(){
 				String ret = "";
