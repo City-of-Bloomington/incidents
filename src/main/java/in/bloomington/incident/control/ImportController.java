@@ -43,16 +43,25 @@ public class ImportController extends TopController{
     private String sql_username;		
 		@Value("${incident.dbdatasource.password}")
     private String sql_password;
-		String sqlUrlStr = "";
-		Connection con = null;
+
+		// this is needed for data import from the old app
+		@Value("${incident.oldDatabase.dbUrl}")
+    private String sql_url2;
+		@Value("${incident.oldDatabase.username}")
+    private String sql_username2;		
+		// @Value("${incident.dbdatasource.password2}")
+    private String sql_password2;
+		
+		String sqlUrlStr = "", sqlUrlStr2 = "";
+		Connection con = null, con2 = null;
 		//
 		// this operation is needed one time only to import all old addresses
 		// from the incidents table into addresses table and update the incidents
 		// address_id to related address Id from addresses table
 		// 
-    @GetMapping("/importAddresses")
+    @GetMapping("/importData")
     public String showImport(Model model) {
-        return "staff/import_addresses";
+        return "staff/import_data";
     }
     @GetMapping("/performImport")
     public String doImport(Model model) {
@@ -65,76 +74,375 @@ public class ImportController extends TopController{
 						addError(back);
 						model.addAttribute("errors", errors);
 				}
-        return "staff/import_addresses";
+        return "staff/import_result";
     }
-		private String doImport(){
+		private String cleanup(){
+				/**
+					 delete from fruads;
+					 delete from action_logs;
+					 delete from persons;
+					 delete from media;
+					 delete from properties;
+					 
+					 delete from requests;
+					 delete from vehicles;
+					 delete from incidents;
+					 delete from addresses;
+
+				 */
 				String back = "";
-				String qq = " select id,address,zip,invalid_address from incidents";
-				String qq2 = " select id from addresses where upper(name) like ?";
-				String qq3 = " insert into addresses (id,name,city,state,zipcode,invalid_address) values(?,?,'Bloomington','IN',?,?)";
-				String qq4 = " update incidents set address_id=? where id=? ";
-				PreparedStatement pstmt=null,pstmt2=null,pstmt3=null, pstmt4=null;
-				ResultSet rs, rs2;
+				String qq = "delete from frauds";
+				String qq2 = "delete from action_logs";
+				String qq3 = "delete from persons";
+				String qq4 = "delete from media";
+				String qq5 = "delete from properties";
+				String qq6 = "delete from requests";
+				String qq7 = "delete from vehicles";
+				String qq8 = "delete from incidents";
+				String qq9 = "delete from addresses";
+				
+				PreparedStatement pstmt=null,pstmt2=null,pstmt3=null,
+						pstmt4=null, pstmt5=null,pstmt6=null,pstmt7=null,
+						pstmt8=null,pstmt9=null;
+				
+				ResultSet rs=null;
 				databaseConnect();
 				try{
-						System.err.println(" url "+sqlUrlStr);
-						System.err.println(" qq "+qq);						
+						// addresses
+						System.err.println(" qq "+qq);
 						pstmt = con.prepareStatement(qq);
-						System.err.println(" qq2 "+qq2);
-						pstmt2 = con.prepareStatement(qq2);
-						System.err.println(" qq3 "+qq3);
-						pstmt3 = con.prepareStatement(qq3);
-						System.err.println(" qq4 "+qq4);
-						pstmt4 = con.prepareStatement(qq4);						
-						int jj=1;
-
-						rs = pstmt.executeQuery();
-						while(rs.next()){
-								String id = rs.getString(1);
-								String name = rs.getString(2);
-								String zip = rs.getString(3);
-								String invalid = rs.getString(4);
-								String address_id = "";
-								System.err.println(" addr: "+name);
-								if(name != null
-									 && !name.isEmpty()){
-										// let us check if we already have this address in addresses table
-										String addrCap = name.toUpperCase();
-										pstmt2.setString (1, addrCap);
-										rs2 = pstmt2.executeQuery();
-										qq = qq2;
-										if(rs2.next()){ 
-												address_id = rs2.getString(1);
-												pstmt4.setString(1, address_id);
-												pstmt4.setString(2, id);
-												pstmt4.executeUpdate();
-										}
-										else{
-												pstmt3.setInt(1, jj);
-												pstmt3.setString(2, name);
-												pstmt3.setString(3, zip);
-												if(invalid == null){
-														pstmt3.setNull(4,Types.CHAR);
-												}
-												else{
-														pstmt3.setString(4,"y");
-												}
-												pstmt3.executeUpdate();
-												// 
-												pstmt4.setInt(1, jj);
-												pstmt4.setString(2, id);
-												pstmt4.executeUpdate();
-												jj++;
-										}
-								}
-						}
-				}
-				catch(Exception ex){
-						System.err.println(ex);
-						back += ex;
+						pstmt.executeUpdate();
+						qq = qq2;
+						pstmt2 = con.prepareStatement(qq);
+						pstmt2.executeUpdate();
+						qq = qq3;
+						pstmt3 = con.prepareStatement(qq);
+						pstmt3.executeUpdate();
+						qq = qq4;
+						pstmt4 = con.prepareStatement(qq);
+						pstmt4.executeUpdate();
+						qq = qq5;
+						pstmt5 = con.prepareStatement(qq);
+						pstmt5.executeUpdate();
+						qq = qq6;
+						pstmt6 = con.prepareStatement(qq);
+						pstmt6.executeUpdate();
+						qq = qq7;
+						pstmt7 = con.prepareStatement(qq);
+						pstmt7.executeUpdate();
+						qq = qq8;
+						pstmt8 = con.prepareStatement(qq);
+						pstmt8.executeUpdate();
+						qq = qq9;
+						pstmt9 = con.prepareStatement(qq);
+						pstmt9.executeUpdate();
+				}catch(Exception ex){
+						back = ex+":"+qq;
+						System.err.println(back);
 				}
 				finally{
-						databaseDisconnect(pstmt, pstmt2, pstmt3, pstmt4);
+						databaseDisconnect(pstmt, pstmt2, pstmt3, pstmt4, pstmt5,
+															 pstmt6, pstmt7, pstmt8, pstmt9);
+				}
+				return back;
+
+		}
+		//
+		// imports addresses, incidents, action_logs
+		//
+		private String importOne(){
+				String back = "";
+				// we delete the test data
+				//
+				/**
+					 delete from frauds;
+					 delete from action_logs;
+					 delete from persons;
+					 delete from media;
+					 delete from properties;
+					 delete from requests;
+					 delete from vehicles;
+					 delete from incidents;
+					 delete from addresses;
+
+				 */
+				// addresses
+				String qs = " select id,address,zip,invalidAddress from incidents";
+				// rmeove unique key
+				String qqu = "alter table addresses drop index name ";
+				String qq = " insert into addresses (id,name,city,state,zipcode,invalid_address) values(?,?,'Bloomington','IN',?,?)";
+				//
+				// incidents FROM_UNIXTIME(received)
+				String qs2 = " select id,cfsNumber,incidentType_id,status_id,received,date,details,dateDescription,end_date,entry_type,other_entry,haveMedia,email from incidents";
+				String qq2 = "insert into incidents (id,case_number,incident_type_id,action_id, received,date,details,date_description,end_date, entry_type,other_entry,have_media,email) values(?,?,?,?,?, ?,?,?,?,?, ?,?,?)";
+				String qqu2 = "update incidents s set s.address_id = (select id from addresses a where a.id=s.id)";
+				//
+				// now do cleanup of addresses and add unique key
+				//
+				// find the dups and related id
+				// select s.id,upper(s.name) from addresses s where upper(s.name) = (select a.name from (select count(*),upper(name) name from addresses group by upper(name) having count(*) > 1) a );
+				// now select one from each list, update the rest with this one,
+				// update incidents set address_id = ? where address_id in ( );
+				// 
+				// delete from addresses where id in ( );
+				// alter table addresses add unique(name);
+				//
+				// actions  From_unixtime(date)
+				String qs3 = "select id,incident_id,date,status_id,user_id,comments from status_history";				
+				String qq3 = "insert into action_logs (id,incident_id,date,action_id,user_id,comments) values(?,?,?,?,?, ?)";
+				//
+				
+				PreparedStatement pstmt=null,pstmt2=null,pstmt3=null,
+						pstmt4=null, pstmt5=null,pstmt6=null;
+				ResultSet rs=null;
+				String qc =qs;
+				databaseConnect();
+				try{
+						// addresses
+						System.err.println(" qs "+qs);
+						pstmt = con2.prepareStatement(qs);
+						qc = qq;
+						System.err.println(" qq "+qq);
+						pstmt2 = con.prepareStatement(qq);
+						rs = pstmt.executeQuery();
+						while(rs.next()){
+								for(int jj=1;jj<5;jj++){
+										pstmt2.setString(jj, rs.getString(jj));
+								}
+								pstmt2.executeUpdate();
+						}
+						qc = qs2;
+						// incidents;
+						System.err.println(" qs "+qs2);
+						pstmt3 = con2.prepareStatement(qs2);
+						qc = qq2;
+						System.err.println(" qq "+qq2);
+						pstmt4 = con.prepareStatement(qq2);
+						rs = pstmt3.executeQuery();
+						while(rs.next()){
+								for(int jj=1;jj<14;jj++){
+										pstmt4.setString(jj, rs.getString(jj));
+								}
+								pstmt4.executeUpdate();
+						}
+						//
+						// actions
+						// some incidents are not there so we need to skip these
+						qc = qs3;
+						System.err.println(" qs "+qs3);
+						pstmt5 = con2.prepareStatement(qs3);
+						qc = qq3;
+						System.err.println(" qq "+qq3);
+						pstmt6 = con.prepareStatement(qq3);
+						rs = pstmt5.executeQuery();
+						while(rs.next()){
+								try{
+										for(int jj=1;jj<7;jj++){
+												pstmt6.setString(jj, rs.getString(jj));
+										}
+										pstmt6.executeUpdate();
+								}catch(Exception skip){
+										// we just ignore this
+								}
+						}
+				}catch(Exception ex){
+						back = ex+":"+qc;
+						System.err.println(back);
+				}
+				finally{
+						databaseDisconnect(pstmt, pstmt2, pstmt3, pstmt4, pstmt5, pstmt6);
+				}
+				return back;
+		}
+		//
+		// import media, requests
+		//
+		private String importTwo(){
+				String back = "";
+				// media
+				String qs = "select id,incident_id,name,old_file_name,year,mime_type,notes from media";
+				String qq = "insert into media (id,incident_id,file_name,old_file_name,year,mime_type,notes) values(?,?,?,?,?, ?,?)";
+				//
+				// requests
+				String qs2 ="select id,hash,confirmed,expires from requests";
+				String qq2 ="insert into requests (id,hash,confirmed,expires) values(?,?,?,?)";
+				String qc = qs;
+				PreparedStatement pstmt=null,pstmt2=null,pstmt3=null,
+						pstmt4=null, pstmt5=null,pstmt6=null;
+				ResultSet rs=null;
+				databaseConnect();
+				try{
+						// media
+						System.err.println(" qs "+qs);
+						pstmt = con2.prepareStatement(qs);
+						qc = qq;
+						System.err.println(" qq "+qq);
+						pstmt2 = con.prepareStatement(qq);
+						rs = pstmt.executeQuery();
+						while(rs.next()){
+								for(int jj=1;jj<8;jj++){
+										pstmt2.setString(jj, rs.getString(jj));
+								}
+								pstmt2.executeUpdate();
+						}
+						qc = qs2;
+						// requests
+						System.err.println(" qs "+qs2);
+						pstmt3 = con2.prepareStatement(qs2);
+						System.err.println(" qq "+qq2);
+						qc = qq2;
+						pstmt4 = con.prepareStatement(qq2);
+						rs = pstmt3.executeQuery();
+						while(rs.next()){
+								for(int jj=1;jj<5;jj++){
+										pstmt4.setString(jj, rs.getString(jj));
+								}
+								pstmt4.executeUpdate();
+						}
+						
+				}catch(Exception ex){
+						System.err.println(ex+": "+qc);
+						back = ex+": "+qc;
+				}
+				finally{
+						databaseDisconnect(pstmt, pstmt2, pstmt3, pstmt4, pstmt5, pstmt6);
+				}
+				return back;
+		}
+		private String importThree(){
+				String back = "";
+				//
+				// update persons
+				String qu = "update persons set title=null where title=''";
+				String qu2 = "update persons set phoneType=null where phoneType=''";
+				String qu3 =  "update persons set race=null where race=''";
+				// persons
+				String qs = "select id,incident_id,personType_id,title,firstname,lastname,midname,suffix,address,city,state,zip,phone,phone2,phoneType,email,email2,driverLicenseNumber,dateOfBirth,socialSecurityNumber,heightFeet,heightInch,weight,sex,occupation,reporter,race from persons";
+				// make sure to translate race to related id
+				String qq = "insert into persons (id,incident_id,person_type_id,title,firstname,lastname,midname,suffix,address,city,state,zip,phone,phone2,phone_type,email,email2,dln,dob,ssn,height_feet,height_inch,weight,sex,occupation,reporter,race_type_id) values(?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?,?,?,?, ?,?)";
+				PreparedStatement pstmt=null,pstmt2=null,pstmt3=null,
+						pstmt4=null, pstmt5=null,pstmt6=null;
+				ResultSet rs=null;
+				String qc = qs;
+				databaseConnect();
+				try{
+						System.err.println(" qu "+qu);
+						pstmt3 = con2.prepareStatement(qu);
+						pstmt3.executeUpdate();
+						System.err.println(" qu "+qu2);
+						pstmt4 = con2.prepareStatement(qu2);
+						pstmt4.executeUpdate();
+						System.err.println(" qu "+qu3);
+						pstmt5 = con2.prepareStatement(qu3);
+						pstmt5.executeUpdate();						
+						System.err.println(" qs "+qs);
+						pstmt = con2.prepareStatement(qs);
+						qc = qq;
+						System.err.println(" qq "+qq);
+						pstmt2 = con.prepareStatement(qq);
+						rs = pstmt.executeQuery();
+						while(rs.next()){
+								for(int jj=1;jj<27;jj++){
+										pstmt2.setString(jj, rs.getString(jj));
+								}
+								String race_id=null;
+								String race = rs.getString(27); // find the related id
+								if(race != null){
+										// old types
+										// 'Caucasion','Hispanic','African American','Native American','Asian','Other'
+										if(race.startsWith("Cauc"))
+												race_id="11";
+										else if(race.startsWith("Hisp"))
+												race_id="6";
+										else if(race.startsWith("Afric"))
+												race_id="1";
+										else if(race.startsWith("Native"))
+												race_id="4";
+										else if(race.startsWith("Asian"))
+												race_id="8";
+										else if(race.startsWith("Other"))
+												race_id="10";
+								}
+								pstmt2.setString(27,race_id);
+								pstmt2.executeUpdate();
+						}
+				}catch(Exception ex){
+						System.err.println(ex+": "+qc);
+						back = ex+": "+qc;
+				}
+				finally{
+						databaseDisconnect(pstmt, pstmt2, pstmt3, pstmt4, pstmt5, pstmt6);
+				}
+				return back;
+		}
+		//
+		// properties and vehicles
+		//
+		private String importFour(){
+				// properties
+				//
+				String back = "";
+				String qs = "select id,incident_id,damageType_id,brand,model,value,serialNum,owner,description from properties";
+				String qq = "insert into properties (id,incident_id,damage_type_id,brand,model,value,serial_num,owner,description) values(?,?,?,?,?, ?,?,?,?)";
+				// vehicles
+				String qs2 = "select id,incident_id,carDamageType_id,year,make,model,color,licensePlateNumber,state,licensePlateYear,owner,description from vehicles ";
+				String qq2 = "insert into vehicles (id,incident_id,car_damage_type_id,year,make,model,color,plate_number,state,plate_year,owner,description) values(?,?,?,?,?, ?,?,?,?,?, ?,?)";
+				String qc = qs;
+				PreparedStatement pstmt=null,pstmt2=null,pstmt3=null,
+						pstmt4=null, pstmt5=null,pstmt6=null;
+				ResultSet rs=null;
+				databaseConnect();
+				try{				
+						System.err.println(" qs "+qs);
+						pstmt = con2.prepareStatement(qs);
+						qc = qq;
+						System.err.println(" qq "+qq);
+						pstmt2 = con.prepareStatement(qq);
+						rs = pstmt.executeQuery();
+						while(rs.next()){
+								for(int jj=1;jj<10;jj++){
+										pstmt2.setString(jj, rs.getString(jj));
+								}
+								pstmt2.executeUpdate();
+						}
+						qc = qs2;
+						// vehicles
+						System.err.println(" qs "+qs2);
+						pstmt3 = con2.prepareStatement(qs2);
+						qc = qq2;
+						System.err.println(" qq "+qq2);
+						pstmt4 = con.prepareStatement(qq2);
+						rs = pstmt3.executeQuery();
+						while(rs.next()){
+								for(int jj=1;jj<13;jj++){
+										pstmt4.setString(jj, rs.getString(jj));
+								}
+								pstmt4.executeUpdate();
+						}						
+				}catch(Exception ex){
+						System.err.println(ex+": "+qc);
+						back = ex+": "+qc;
+				}
+				finally{
+						databaseDisconnect(pstmt, pstmt2, pstmt3, pstmt4, pstmt5, pstmt6);
+				}
+				return back;
+		}
+						
+		private String doImport(){
+				String back = "";
+				back = cleanup();
+				if(back.isEmpty()){
+						back = importOne();
+				}
+				if(back.isEmpty()){
+						back = importTwo();
+				}
+				if(back.isEmpty()){
+						back = importThree();
+				}
+				if(back.isEmpty()){
+						back = importFour();
 				}
 				return back;
 		}
@@ -152,6 +460,15 @@ public class ImportController extends TopController{
 						if(con == null){
 								System.err.println("Could not connect");
 						}
+						Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
+						sqlUrlStr2 = sql_url2+"&user="+sql_username2+"&password="+java.net.URLEncoder.encode(sql_password, "UTF-8");
+						System.err.println(" sql url "+sqlUrlStr2);
+						//
+						// mysql
+						con2 = DriverManager.getConnection(sqlUrlStr2);
+						if(con2 == null){
+								System.err.println("Could not connect db 2");
+						}						
 				}
 				catch (Exception ex){
 						System.err.println(ex);
@@ -166,6 +483,8 @@ public class ImportController extends TopController{
 						}
 						if(con != null)
 								con.close();
+						if(con2 != null)
+								con2.close();						
 				}
 				catch (Exception e) {
 						System.err.println(e);

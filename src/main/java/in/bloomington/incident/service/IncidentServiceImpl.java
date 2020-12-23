@@ -26,9 +26,9 @@ public class IncidentServiceImpl implements IncidentService {
     }
     @Override
     public Incident findById(int id){
-	Incident val = repository.findById(id)
-	    .orElseThrow(() -> new IllegalArgumentException("Invalid incident Id:" + id));
-	return val;
+				Incident val = repository.findById(id)
+						.orElseThrow(() -> new IllegalArgumentException("Invalid incident Id:" + id));
+				return val;
     }				
 		
     @Override

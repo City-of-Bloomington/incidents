@@ -14,8 +14,6 @@
 		<div th:replace="general::header-staff"></div>
 	</header>
 	<main class="staff">	
-		<div th:replace="general::staffMenu">
-			</div>			
 		<h2>View Incident</h2>
 
 		<div th:if="${errors}">
@@ -25,9 +23,9 @@
 		<div th:if="${messages}">
 			<div th:insert="general::messages(${messages})"></div>
 		</div>
-		<div th:fragment="incidentView(incident)">				
+		<div th:fragment="incidentView(${incident})">				
 		<fieldset>
-			<div th:fragment="incident(incident)">						
+			<div th:fragment="incident(${incident})">						
 				<div class="m-b-10" th:if="${incident.hasStatusInfo()}">
 					<label>Status: </label>
 					<span th:text="${incident.status}"> </span>

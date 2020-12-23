@@ -342,8 +342,9 @@ public class ProcessController extends TopController{
 						incident = incidentService.findById(id);
 						model.addAttribute("incident", incident);
 				}catch(Exception ex){
-						logger.error("Error no incident "+id+" not found "+ex);
+						logger.error("Error incident "+id+" not found "+ex);
 						addError("Invalid incident ID "+id);
+						return "redirect:/search";
 				}
 				getMessagesAndErrorsFromSession(session, model);
 				return "incidentView";
