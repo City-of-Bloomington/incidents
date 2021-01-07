@@ -31,6 +31,11 @@
 					<span th:text="${incident.status}"> </span>
 				</div>
 				<br />
+				<div class="m-b-10" th:if="${incident.hasCaseNumber()}">
+					<label>Case #: </label>
+					<span th:text="${incident.caseNumber}"> </span>
+				</div>
+				<br />				
 				<div class="m-b-10">
 					<label><strong> Incident type: </strong></label>
 					<span th:text="${incident.incidentType}"> </span>
