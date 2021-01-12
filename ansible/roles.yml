@@ -1,0 +1,6 @@
+---
+- src: 'City-of-Bloomington.linux'
+- src: 'City-of-Bloomington.apache'
+- src: 'City-of-Bloomington.tomcat'
+- src: 'City-of-Bloomington.mysql'
+...

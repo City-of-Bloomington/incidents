@@ -1,18 +1,16 @@
 # Incidents
 
 ## Introduction
-Incidents is a reporting program to help residance of certain city or town to report minor theft, lost and/or vandlized car within certian dollar value set by the local authority. 
-Residance will be able to report the incident online so no need to for police authority to come to record the incident. Then the local police authority will process each incident either as approved or denied. A letter or email of the descision is provided for resident about the incident. 
+Incidents is a reporting program to help residance of certain city or town to report minor theft, lost and/or vandlized car within certian dollar value set by the local authority.
+Residance will be able to report the incident online so no need to for police authority to come to record the incident. Then the local police authority will process each incident either as approved or denied. A letter or email of the descision is provided for resident about the incident.
 
-There are a number of conditions are set for the type of incidents that are accepted to go through this system. If the
-conditions are not met. The person reporting the incident must contact the authority directlry by phone or by person.
+There are a number of conditions are set for the type of incidents that are accepted to go through this system. If the conditions are not met. The person reporting the incident must contact the authority directlry by phone or by person.
 
 
 
 ## Requirements
 
-Incidents is built using java spring boot framework and requires Apache Tomcat version 8.* or above.  If you are using Ubuntu, this version is only provided with Ubuntu.
-
+Incidents is built using java spring boot framework and requires Apache Tomcat version 8.* or above.
 
 ## Development
 
@@ -32,5 +30,3 @@ mvn clean package
 cd ansible
 ansible-playbook deploy.yml -i /path/to/inventory
 ```
-# incidents
-# incidents

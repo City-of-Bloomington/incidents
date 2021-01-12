@@ -1,0 +1,20 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<configuration>
+    <appender name = "stout" class = "ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>[%d{MM-dd'T'HH:mm}] [%C] [%t] [%L] [%-5p] %m%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name = "file" class = "ch.qos.logback.core.FileAppender">
+        <File>/var/log/{{ tomcat_package }}/incidents.log</File>
+        <encoder>
+            <pattern>[%d{MM-dd'T'HH:mm}] [%C] [%t] [%L] [%-5p] %m%n</pattern>
+        </encoder>
+    </appender>
+
+    <root level = "WARN">
+        <appender-ref ref = "file"/>
+        <appender-ref ref = "stout"/>
+    </root>
+</configuration>
