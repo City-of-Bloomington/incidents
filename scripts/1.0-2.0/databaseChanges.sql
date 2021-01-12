@@ -114,14 +114,172 @@ create table fraud_types (
 );
 
 create table frauds (
-  id            int unsigned not null primary key auto_increment,
-  incident_id   int unsigned not null,
-  fraud_type_id int unsigned,
-  other_type    varchar(80) default null,
-  identity_used text,
-  account_used  text,
-  amount_taken  decimal(12,2) default null,
-  details       text,
-  foreign key (incident_id)   references incidents(id),
-  foreign key (fraud_type_id) references fraud_types(id)
+    id            int unsigned not null primary key auto_increment,
+    incident_id   int unsigned not null,
+    fraud_type_id int unsigned,
+    other_type    varchar(80) default null,
+    identity_used text,
+    account_used  text,
+    amount_taken  decimal(12,2) default null,
+    details       text,
+    foreign key (incident_id)   references incidents(id),
+    foreign key (fraud_type_id) references fraud_types(id)
 );
+
+
+-- Quartz
+create table qrtz_job_details(
+    sched_name        varchar(120) not null,
+    job_name          varchar(190) not null,
+    job_group         varchar(190) not null,
+    description       varchar(250),
+    job_class_name    varchar(250) not null,
+    is_durable        varchar(1)   not null,
+    is_nonconcurrent  varchar(1)   not null,
+    is_update_data    varchar(1)   not null,
+    requests_recovery varchar(1)   not null,
+    job_data          blob null,
+    primary key (sched_name,job_name,job_group)
+);
+
+create table qrtz_triggers (
+    sched_name     varchar(120) not null,
+    trigger_name   varchar(190) not null,
+    trigger_group  varchar(190) not null,
+    job_name       varchar(190) not null,
+    job_group      varchar(190) not null,
+    description    varchar(250) null,
+    next_fire_time bigint(13) null,
+    prev_fire_time bigint(13) null,
+    priority       integer null,
+    trigger_state  varchar(16) not null,
+    trigger_type   varchar(8) not null,
+    start_time     bigint(13) not null,
+    end_time       bigint(13) null,
+    calendar_name  varchar(190) null,
+    misfire_instr  smallint(2) null,
+    job_data blob null,
+    primary key (sched_name,trigger_name,trigger_group),
+    foreign key (sched_name,job_name,job_group)
+    references qrtz_job_details(sched_name,job_name,job_group)
+);
+
+create table qrtz_simple_triggers (
+    sched_name      varchar(120) not null,
+    trigger_name    varchar(190) not null,
+    trigger_group   varchar(190) not null,
+    repeat_count    bigint(7)    not null,
+    repeat_interval bigint(12)   not null,
+    times_triggered bigint(10)   not null,
+    primary key (sched_name,trigger_name,trigger_group),
+    foreign key (sched_name,trigger_name,trigger_group)
+    references qrtz_triggers(sched_name,trigger_name,trigger_group)
+);
+
+create table qrtz_cron_triggers (
+    sched_name      varchar(120) not null,
+    trigger_name    varchar(190) not null,
+    trigger_group   varchar(190) not null,
+    cron_expression varchar(120) not null,
+    time_zone_id    varchar(80),
+    primary key (sched_name,trigger_name,trigger_group),
+    foreign key (sched_name,trigger_name,trigger_group)
+    references qrtz_triggers(sched_name,trigger_name,trigger_group)
+);
+
+create table qrtz_simprop_triggers (
+    sched_name    varchar(120) not null,
+    trigger_name  varchar(190) not null,
+    trigger_group varchar(190) not null,
+    str_prop_1    varchar(512),
+    str_prop_2    varchar(512),
+    str_prop_3    varchar(512),
+    int_prop_1    int,
+    int_prop_2    int,
+    long_prop_1   bigint,
+    long_prop_2   bigint,
+    dec_prop_1    numeric(13,4),
+    dec_prop_2    numeric(13,4),
+    bool_prop_1   varchar(1),
+    bool_prop_2   varchar(1),
+    primary key (sched_name,trigger_name,trigger_group),
+    foreign key (sched_name,trigger_name,trigger_group)
+    references qrtz_triggers(sched_name,trigger_name,trigger_group)
+);
+
+create table qrtz_blob_triggers (
+    sched_name    varchar(120) not null,
+    trigger_name  varchar(190) not null,
+    trigger_group varchar(190) not null,
+    blob_data     blob,
+    primary key (sched_name,trigger_name,trigger_group),
+    index (sched_name,trigger_name, trigger_group),
+    foreign key (sched_name,trigger_name,trigger_group)
+    references qrtz_triggers(sched_name,trigger_name,trigger_group)
+);
+
+create table qrtz_calendars (
+    sched_name    varchar(120) not null,
+    calendar_name varchar(190) not null,
+    calendar      blob         not null,
+    primary key (sched_name,calendar_name)
+);
+
+create table qrtz_paused_trigger_grps (
+    sched_name    varchar(120) not null,
+    trigger_group varchar(190) not null,
+    primary key (sched_name,trigger_group)
+);
+
+create table qrtz_fired_triggers (
+    sched_name        varchar(120) not null,
+    entry_id          varchar(95)  not null,
+    trigger_name      varchar(190) not null,
+    trigger_group     varchar(190) not null,
+    instance_name     varchar(190) not null,
+    fired_time        bigint(13)   not null,
+    sched_time        bigint(13)   not null,
+    priority          integer      not null,
+    state             varchar(16)  not null,
+    job_name          varchar(190),
+    job_group         varchar(190),
+    is_nonconcurrent  varchar(1),
+    requests_recovery varchar(1),
+    primary key (sched_name,entry_id)
+);
+
+create table qrtz_scheduler_state (
+    sched_name        varchar(120) not null,
+    instance_name     varchar(190) not null,
+    last_checkin_time bigint(13)   not null,
+    checkin_interval  bigint(13)   not null,
+    primary key (sched_name,instance_name)
+);
+
+create table qrtz_locks (
+    sched_name varchar(120) not null,
+    lock_name  varchar(40)  not null,
+    primary key (sched_name,lock_name)
+);
+
+-- Spring Sessions
+create table spring_session (
+    primary_id            char(36)   not null primary key,
+    session_id            char(36)   not null unique,
+    creation_time         bigint(20) not null,
+    last_access_time      bigint(20) not null,
+    max_inactive_interval int(11)    not null,
+    expiry_time           bigint(20) not null,
+    principal_name        varchar(100),
+    key spring_session_ix2 (expiry_time),
+    key spring_session_ix3 (principal_name)
+);
+
+create table spring_session_attributes (
+    session_primary_id char(36)     not null,
+    attribute_name     varchar(200) not null,
+    attribute_bytes    blob         not null,
+    primary key (session_primary_id,attribute_name),
+    constraint spring_session_attributes_fk foreign key (session_primary_id) references spring_session (primary_id) on delete cascade
+);
+
