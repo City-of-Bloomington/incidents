@@ -124,6 +124,14 @@ alter table vehicles add value decimal(10, 2);
 -- ----------
 -- New Tables
 -- ----------
+create table role_actions (
+    role_id   int unsigned not null,
+    action_id int unsigned not null,
+    primary key (role_id, action_id),
+    foreign key (role_id  ) references   roles(id),
+    foreign key (action_id) references actions(id)
+);
+
 create table fraud_types (
     id int unsigned not null primary key auto_increment,
     name varchar(50) not null unique
