@@ -4,19 +4,35 @@ alter table users add  inactive char(1);
 
 alter table roles rename column role to name;
 
+-- Actions
 rename table statuses to actions;
 alter table actions add nextstep tinyint unsigned;
 update actions set nextstep=2 where name='received';
 update actions set nextstep=2 where name='confirmed';
 update actions set nextstep=3 where name='approved';
-insert actions set name='emailed',description='Incomplete, Email Sent',workflow_step=1;
+
+set foreign_key_checks=0;
+update actions        set id=id+1 order by id desc;
+update incidents      set status_id=status_id+1;
+update status_history set status_id=status_id+1;
+set foreign_key_checks=1;
+insert actions set id=1,name='emailed',description='Incomplete, Email Sent',workflow_step=1;
 
 rename table status_history to action_logs;
 alter table action_logs rename column status_id to action_id;
 
 rename table status_roles to action_roles;
 alter table action_roles rename column status_id to action_id;
+truncate table action_roles;
+insert into action_roles
+values (3,1),
+       (4,1),
+       (5,1),
+       (3,2),
+       (4,2),
+       (5,3);
 
+-- Damage Types
 rename table carDamageTypes to car_damage_types;
 alter table car_damage_types rename column type to name;
 
