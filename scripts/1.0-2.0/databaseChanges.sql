@@ -150,6 +150,39 @@ create table frauds (
     foreign key (fraud_type_id) references fraud_types(id)
 );
 
+create view incident_confirmed as
+with ranked as (
+select l.*, row_number() over (partition by incident_id order by id desc) as r
+from action_logs l
+) select incident_id from ranked where r=1 and action_id=3;
+
+create view incident_processed as
+with ranked as (
+select l.*, row_number() over (partition by incident_id order by id desc) as r
+from action_logs l
+) select incident_id from ranked where r=1 and action_id=6;
+
+create view incident_received as
+with ranked as (
+select l.*, row_number() over (partition by incident_id order by id desc) as r
+from action_logs l
+) select incident_id from ranked where r=1 and action_id=2;
+
+create view incident_rejected as
+with ranked as (
+select l.*, row_number() over (partition by incident_id order by id desc) as r
+from action_logs l
+) select incident_id from ranked where r=1 and action_id=5;
+
+create view incident_incomplete as
+select i.id
+from incidents i
+left join action_logs l on i.id=l.incident_id
+where l.id is null
+  and i.address_id is not null
+  and i.details    is not null
+order by i.id desc;
+
 
 -- Quartz
 create table qrtz_job_details(
