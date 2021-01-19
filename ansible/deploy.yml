@@ -53,4 +53,10 @@
         src:  '../target/incidents.war'
         dest: "{{ incidents_install_path }}/{{ incidents_app_name }}.war"
       notify: "tomcat_restart"
+
+    - name: 'Configure Apache'
+      template:
+        src: 'apache.conf'
+        dest: "/etc/apache2/sites-enabled/conf.d/{{ incidents_app_name }}.conf"
+      notify: 'apache_restart'
 ...
