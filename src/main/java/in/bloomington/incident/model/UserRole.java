@@ -29,19 +29,21 @@ import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 // not needed
-@Entity
-@Table(name = "user_roles")
+// @Entity
+// @Table(name = "user_roles")
 public class UserRole implements java.io.Serializable{
 
-		@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+		//		@Id
+		//   @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 		//
-		@NotNull
-		@OneToOne			
+		// @NotNull
+		// @OneToOne			
 		User user;
-		@NotNull
-		@OneToOne
+		// @JoinColumn(name = "user_id")		
+		// @NotNull
+		// @OneToOne
+		// @JoinColumn(name = "role_id")
 		Role role;
 		
 		public UserRole(){

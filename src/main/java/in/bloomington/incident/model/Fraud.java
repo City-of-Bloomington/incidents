@@ -3,7 +3,7 @@ package in.bloomington.incident.model;
  * @copyright Copyright (C) 2014-2015 City of Bloomington, Indiana. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
  * @author W. Sibo <sibow@bloomington.in.gov>
- *
+ *  vu&N5zt3KPA<kCVwa9,?mh
  */
 
 import java.text.SimpleDateFormat;
@@ -36,14 +36,18 @@ public class Fraud extends TopModel implements java.io.Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
+		@Column(name="other_type")
     String otherType;
+		@Column(name="identity_used")
     String identityUsed;
+		@Column(name="account_used")
     String accountUsed;
+		@Column(name="amount_taken")
     Double amountTaken;
     String details;
     //
-    @OneToOne		
+    @OneToOne
+		@JoinColumn(name = "fraud_type_id")
     FraudType fraudType;
     //
     @ManyToOne(fetch = FetchType.LAZY)
