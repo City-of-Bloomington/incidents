@@ -94,10 +94,10 @@ public class StatsRepositoryImpl implements StatsRepository {
 
 				String qw = "", qf="";
 				/*
-					SELECT a.name as name,count(l.incident_id) as total FROM action_logs as l, actions as a where a.id=l.action_id and l.action_id = (select max(l2.action_id) from action_logs l2 where l2.incident_id=l.incident_id) and l.date > '2020-04-01' group by a.name;
+					SELECT a.name as name,count(l.incident_id) as total FROM action_logs as l, actions as a where a.id=l.action_id and l.action_id = (select max(l2.action_id) from action_logs l2 where l2.incident_id=l.incident_id) and l.date > '2020-01-01' group by a.name order by a.name;
 
 				*/
-				String qq = "SELECT a.name as name,count(l.incident_id) as total FROM action_logs as l, actions as a where a.id=l.action_id and l.action_id = (select max(l2.action_id) from action_logs l2 where l2.incident_id=l.incident_id) ";
+				String qq = "SELECT a.name as name,count(l.incident_id) as total FROM action_logs as l, actions as a where a.id=l.action_id and l.action_id = (select max(l2.action_id) from action_logs l2 where l2.incident_id=l.incident_id)";
 				if(startDate != null){
 						qw += " and ";
 						qw += "l.date >= ? ";
@@ -109,8 +109,7 @@ public class StatsRepositoryImpl implements StatsRepository {
 				if(!qw.isEmpty()){
 						qq += qw;
 				}
-				qq += " group by a.name "; 
-				// System.err.println(" *** qq "+qq);
+				qq += " group by a.name order by a.name "; 
         Query query = entityManager.createNativeQuery(qq,
 																											"ResultMapping");
 				int jj=1;
@@ -130,7 +129,7 @@ public class StatsRepositoryImpl implements StatsRepository {
     /**
 		 // test
 
-		 SELECT a.name as name,count(l.incident_id) as total FROM action_logs as l, actions as a where a.id=l.action_id and l.action_id = (select max(l2.action_id) from action_logs l2 where l2.incident_id=l.incident_id) and l.date > '2020-04-01' group by a.name;       
+		 SELECT a.name as name,count(l.incident_id) as total FROM action_logs as l, actions as a where a.id=l.action_id and l.action_id = (select max(l2.action_id) from action_logs l2 where l2.incident_id=l.incident_id) and l.date > '2020-01-01' group by a.name order by a.name;       
 
 		*/
 

@@ -11,6 +11,7 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -54,7 +55,7 @@ public class Helper{
     public final static SimpleDateFormat dfTimeAmPm = new SimpleDateFormat("hh:mm aa");
     public final static SimpleDateFormat dfDateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm");
     public final static SimpleDateFormat dfDateTimeAmPm = new SimpleDateFormat("yyyy-MM-dd hh:mm aa");    
-    public final static NumberFormat curFr = NumberFormat.getCurrencyInstance();
+    public final static NumberFormat curFr = NumberFormat.getCurrencyInstance(Locale.US);
     public final static DecimalFormat dblFr = new DecimalFormat("###.##");
     final static Map<String, String>       mimeTypes = new HashMap<>();
     static {

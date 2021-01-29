@@ -23,7 +23,7 @@
 				<h2 th:case="null">No properties found</h2>
 				<div th:case="*">
 					<ul th:each="one,istat : ${properties}">
-						<li th:text="${istat.count+' - Damage Type: '+one.damageType.name}"></li>
+						<li th:if="${one.hasDamageTypeInfo()}"><span th:text="${istat.count+' - Damage Type: '+one.damageType.name}"></span></li>
 						<li th:if="${one.hasBrandInfo()}"><span th:text="${one.brandInfo}"></span></li>
 
 						<li th:if="${one.hasOwner()}"><span th:text="${'Owner: '+ one.owner}"></span></li>

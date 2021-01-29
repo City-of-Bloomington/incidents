@@ -366,20 +366,23 @@
     </div>
 
     <ul th:fragment="uploadInstructions">
-      <li>You can upload up to 5 images related to incident.</li>
+      <li>You can upload up to 3 images related to incident.</li>
       <li>
-        Optional, you may add explantions about each image in the text field
+        Optional, you may add explantions about these image in the text field
         below.
       </li>
       <li>
         The accepted image files are jpeg, gif, png and pdf only any other type
         will be ignored
       </li>
-      <li>Images size more than 2 MG will be rejected</li>
+      <li>Images size should not exceed 5 MG each</li>
       <li>
-        If image file size is more than 2 MB, you need to resize it using one of
+        If image file size is more than 5 MB, you need to resize it using one of
         the image editing tools such as MS paint
       </li>
+			<li>
+				Total max upload limit should not exceed 15MB
+			</li>
       <li>When done with image uploads, click on 'Submit'</li>
       <li>You can upload one file at a time</li>
     </ul>

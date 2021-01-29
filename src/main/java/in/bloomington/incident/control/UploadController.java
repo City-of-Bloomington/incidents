@@ -30,7 +30,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.FileSystemUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.core.env.Environment;
+// import org.springframework.core.envnvironment;
 import org.springframework.validation.BindingResult;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -54,8 +54,6 @@ import in.bloomington.incident.model.Incident;
 import in.bloomington.incident.model.Media;
 import in.bloomington.incident.utils.Helper;
 
-
-
 @Controller
 public class UploadController extends TopController{
 
@@ -64,35 +62,31 @@ public class UploadController extends TopController{
     MediaService mediaService;		
     @Autowired
     IncidentService incidentService;
-    private Environment env;
-    @Value( "${incident.upload.storage}" )
-    private String storagePath;		
 
-
-    /*
-    // get by id
-    @GetMapping("/media/view/{id}")
-    public String getAttachment(@PathVariable("id") int id, Model model)
-    {
-    try{
-    Media media = mediaService.findById(id);
-    model.addAttribute("media", media);
-    return "mediaView";
-    }catch(Exception ex){
-    errors += ex;
-    }
-    return "redirect:/incident/"+id;
-    }
-    */
+    @Value("${spring.servlet.multipart.location}")
+    private String storagePath;
+		@Value("${incident.media.max_count}")
+    private int mediaMaxCount;
     @GetMapping("/media/add/{id}")
-    public String mediaForm(@PathVariable("id") int id, Model model)
+    public String mediaForm(@PathVariable("id") int id,
+														Model model,
+														RedirectAttributes redirectAttributes)
     {
 				try{
 						Incident incident = incidentService.findById(id);
-						model.addAttribute("incident_id", id);
-						return "mediaAdd";
+						int media_count = incident.getMediaCount();
+						if(media_count < mediaMaxCount){
+								model.addAttribute("incident_id", id);
+								model.addAttribute("media_count", media_count);
+								model.addAttribute("media_max_count", mediaMaxCount);						
+								return "mediaAdd";
+						}
+						else{
+								redirectAttributes.addFlashAttribute("message","No more images can be uploaded");
+						}
 				}catch(Exception ex){
 						addError("invalid incident "+id);
+						redirectAttributes.addFlashAttribute("error","Invalid incident "+id);						
 						System.err.println(""+ ex);
 				}
 				return "redirect:/incident/"+id;
@@ -112,55 +106,68 @@ public class UploadController extends TopController{
 
 
     @PostMapping("/media/save")
-    public String doUploadAndSave(@RequestParam("file" ) MultipartFile file,
+    public String doUploadAndSave(@RequestParam("files" ) MultipartFile[] files,
 																	@RequestParam("incident_id"   ) int  incident_id,
-																	@RequestParam("notes") String  notes
+																	@RequestParam("notes") String  notes,
+																	RedirectAttributes redirectAttributes
 																	){
         String fileName = null;
-        if (file == null || file.isEmpty()) {
+        if (files == null) {
 						addMessage("Please select a file to upload");
-            return "redirect:media/add" + incident_id;
+            return "redirect:media/add/" + incident_id;
         }
-        String oldFileName  = file.getOriginalFilename();
-				if(oldFileName.contains("..")){
-						addError("file name should not have relative directory");
-						return "redirect:media/add/" + incident_id;
-				}
-				String mimeType = file.getContentType();
-        String ret_str   = "";
-        int    year      = Helper.getCurrentYear();
-        String file_ext  = Helper.getFileExtensionFromName(oldFileName);
-        String newName   = genNewFileName(file_ext);
-        
-        try {
-            byte[] bytes   = file.getBytes();
-            String dirPath = storagePath+ "/" + year + "/";
-            //
-
-            String back    = Helper.checkFilePath(dirPath);
-            if (!back.equals("")) {
-                addError(back);
-                logger.error(back);
-            }
-						else{
-								Path path = Paths.get(dirPath + newName);
-								Files.write(path, bytes);
-								Media one = new Media();
-								one.setFileName   (newName   );
-								one.setOldFileName(oldFileName  );
-								one.setNotes      (notes     );
-								one.setYear(year);
-								one.setMimeType(mimeType);
-								Incident incident = incidentService.findById(incident_id);
-								one.setIncident(incident);
-								mediaService.save(one);
-								addMessage("Uploaded Successfully");
+				int jj = 0;
+				for(MultipartFile file:files){
+						if(file == null || file.isEmpty()) continue;
+						jj++;
+						String oldFileName  = file.getOriginalFilename();
+						if(oldFileName.contains("..")){
+								addError("file name should not have relative directory");
+								return "redirect:media/add/" + incident_id;
 						}
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-            addError(""+e);
-        }
+						String mimeType = file.getContentType();
+						String ret_str   = "";
+						int    year      = Helper.getCurrentYear();
+						String file_ext  = Helper.getFileExtensionFromName(oldFileName);
+						String newName   = genNewFileName(file_ext);
+						
+						try {
+								byte[] bytes   = file.getBytes();
+								String dirPath = storagePath+ "/" + year + "/";
+								//
+								
+								String back    = Helper.checkFilePath(dirPath);
+								if (!back.equals("")) {
+										addError(back);
+										logger.error(back);
+										redirectAttributes.addFlashAttribute("error",back);
+								}
+								else{
+										Path path = Paths.get(dirPath + newName);
+										Files.write(path, bytes);
+										Media one = new Media();
+										one.setFileName   (newName   );
+										one.setOldFileName(oldFileName  );
+										if(jj == 1)
+												one.setNotes(notes);
+										one.setYear(year);
+										one.setMimeType(mimeType);
+										Incident incident = incidentService.findById(incident_id);
+										one.setIncident(incident);
+										mediaService.save(one);
+										if(jj == 1){
+												addMessage("Uploaded Successfully");
+												redirectAttributes.addFlashAttribute("message",
+																														 "Uploaded Successfully");
+										}
+								}
+						}
+						catch (Exception e) {
+								e.printStackTrace();
+								addError(""+e);
+						}
+				}
+
         return "redirect:/incident/" +  incident_id;
     }
     @GetMapping("/media/download/{id}")

@@ -120,9 +120,10 @@ public class Incident extends TopModel implements java.io.Serializable{
     private List<ActionLog> actionLogs;
 
     @NotNull(message = "Address is required")
-		// @OneToOne(fetch = FetchType.EAGER)
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "address_id")
+    // @ManyToOne(fetch = FetchType.EAGER)
+    // @JoinColumn(name = "address_id")
+		@OneToOne(fetch = FetchType.EAGER)
+		@JoinColumn(name="address_id", referencedColumnName="id")
     Address address;
 		
     public Incident(){
@@ -650,6 +651,10 @@ public class Incident extends TopModel implements java.io.Serializable{
     public boolean hasMediaList(){
 				return medias != null && medias.size() > 0;
     }
+		@Transient
+		public int getMediaCount(){
+				return hasMediaList() ? medias.size():0;
+		}
     @Transient
     public boolean hasActionLogs(){
 				return actionLogs != null && actionLogs.size() > 0;
