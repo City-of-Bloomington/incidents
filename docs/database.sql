@@ -574,3 +574,47 @@ alter table persons add foreign key(race_type_id) references race_types(id);
 ;;
 ;; person type Complainant
 insert into person_types values(2,'Complainant');
+;;
+;; add the following to application.properties
+;; for hibernate to handle table names
+;;
+spring.jpa.hibernate.naming.physical-strategy=org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+;;
+;;
+;; Spring session tables
+;;
+CREATE TABLE SPRING_SESSION (
+    PRIMARY_ID CHAR(36) NOT NULL,
+    SESSION_ID CHAR(36) NOT NULL,
+    CREATION_TIME BIGINT NOT NULL,
+    LAST_ACCESS_TIME BIGINT NOT NULL,
+    MAX_INACTIVE_INTERVAL INT NOT NULL,
+    EXPIRY_TIME BIGINT NOT NULL,
+    PRINCIPAL_NAME VARCHAR(100),
+    PRIMARY KEY (PRIMARY_ID)
+) ENGINE=InnoDB;
+;;
+CREATE TABLE SPRING_SESSION_ATTRIBUTES (
+    SESSION_PRIMARY_ID CHAR(36) NOT NULL,
+    ATTRIBUTE_NAME VARCHAR(200) NOT NULL,
+    ATTRIBUTE_BYTES BLOB NOT NULL,
+    CONSTRAINT SPRING_SESSION_ATTRIBUTES_PK PRIMARY KEY (SESSION_PRIMARY_ID, ATTRIBUTE_NAME)
+) ENGINE=InnoDB;
+;;
+;; changed views to tables by Cliff
+;;
+ create table incident_received(id tinyint not null)engine=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+;;
+ create table incident_approved(id tinyint not null)engine=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+;;
+ create table incident_confirmed(id tinyint not null)engine=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+;;
+ create table incident_rejected(id tinyint not null)engine=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+;;
+  create table incident_processed(id tinyint not null)engine=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+;;
+ create table incident_incomplete(id tinyint not null)engine=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+
+

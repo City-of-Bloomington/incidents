@@ -41,8 +41,10 @@ public class Person extends TopModel implements java.io.Serializable{
     @JoinColumn(name = "incident_id")
     Incident incident;
     @OneToOne
+		@JoinColumn(name = "person_type_id")
     PersonType personType;
 		@OneToOne
+		@JoinColumn(name = "race_type_id")		
     RaceType raceType;
     
     String title; // emum ('Mr','Ms','Mrs')
@@ -58,15 +60,19 @@ public class Person extends TopModel implements java.io.Serializable{
     String zip;
     String phone;
     String phone2;
+		@Column(name="phone_type")
     String phoneType; // emum('Cell','Home','Work')
     // added
+		@Column(name="phone_type2")
     String phoneType2; // emum('Cell','Home','Work')
     String email;
     String email2;
     String dln;
     Date dob;
     String ssn;
+		@Column(name="height_feet")
     Integer heightFeet;
+		@Column(name="height_inch")
     Integer heightInch;
     String weight;
     String sex; // emum('Male','Female','Other'),

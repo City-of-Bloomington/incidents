@@ -37,10 +37,12 @@ public class Media implements java.io.Serializable{
     @JoinColumn(name = "incident_id")		
     private Incident incident;
     @NotNull
+		@Column(name="file_name")
     private String fileName;
+		@Column(name="old_file_name")
     private String oldFileName;
     private Integer year;		
-
+		@Column(name="mime_type")
     private String mimeType;		
     private String notes;
 

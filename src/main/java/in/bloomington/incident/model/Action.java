@@ -50,6 +50,7 @@ public class Action implements java.io.Serializable{
     @NotNull
     private String name;
     private String description;
+		@Column(name="workflow_step")
     private Integer workflowStep;
     private Integer nextstep;
     @ManyToMany

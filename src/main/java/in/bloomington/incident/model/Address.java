@@ -46,8 +46,11 @@ public class Address extends TopModel implements java.io.Serializable{
 		private String state;
 		private String zipcode;
 		private String jurisdiction;
+		@Column(name="address_id")
 		private Integer addressId;
+		@Column(name="subunit_id")
 		private Integer subunitId;
+		@Column(name="invalid_address")
 		private Character invalidAddress;
 		//
 		// temporary place holder for incident type_id

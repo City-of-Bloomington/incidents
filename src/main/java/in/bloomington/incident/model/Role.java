@@ -41,8 +41,12 @@ public class Role implements java.io.Serializable{
     @NotNull(message = "Role name may not be null")
     private String name;
 
-    @ManyToMany
-    @JoinTable(name = "user_roles")		
+    @ManyToMany(mappedBy="roles")
+		/*
+    @JoinTable(name = "user_roles",
+							 joinColumns = @JoinColumn(name = "role_id", referencedColumnName="id"),
+							 inverseJoinColumns = @JoinColumn(name = "user_id"))
+		*/
     List<User> users;
 		
     @ManyToMany

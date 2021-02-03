@@ -31,7 +31,6 @@ import javax.validation.constraints.NotNull;
 public class Request implements java.io.Serializable{
 
     @Id
-    // @GeneratedValue(strategy = GenerationType.IDENTITY)
     // same as related incident
     private int id;
     private String hash;

@@ -44,10 +44,12 @@ public class Incident extends TopModel implements java.io.Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-		
+
+		@Column(name="case_number")
     private String caseNumber;
 		
     @OneToOne
+		@JoinColumn(name="incident_type_id", referencedColumnName="id")
     private IncidentType incidentType;
 
     private Date received;
@@ -59,15 +61,15 @@ public class Incident extends TopModel implements java.io.Serializable{
 		private String evidence;
 		
     // private Character invalidAddress;
-		
+		@Column(name="date_description")
     private String dateDescription;
-
+		@Column(name="end_date")
     private Date endDate;
-
+		@Column(name="entry_type")
     private String entryType;
-
+		@Column(name="other_entry")
     private String otherEntry;
-		
+		@Column(name="have_media")
     private Character haveMedia;
 
     private String email;

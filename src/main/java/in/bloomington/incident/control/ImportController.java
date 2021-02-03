@@ -169,7 +169,7 @@ public class ImportController extends TopController{
 
 				 */
 				// addresses
-				String qs = " select id,address,zip,invalidAddress from incidents";
+				String qs = " select id,upper(address),zip,invalidAddress from incidents";
 				// rmeove unique key
 				String qqu = "alter table addresses drop index name ";
 				String qq = " insert into addresses (id,name,city,state,zipcode,invalid_address) values(?,?,'Bloomington','IN',?,?)";

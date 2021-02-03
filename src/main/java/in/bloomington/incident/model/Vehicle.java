@@ -41,14 +41,17 @@ public class Vehicle extends TopModel implements java.io.Serializable{
     private Incident Incident;
 		
     @OneToOne
+		@JoinColumn(name="car_damage_type_id")
     private CarDamageType carDamageType;
     private String make;
     private String model;
 		
     private Integer year;
     private String color;
+		@Column(name="plate_number")
     private String plateNumber;
     private String state;
+		@Column(name="plate_year")
     private Integer plateYear;
     private String owner;
     private String description;

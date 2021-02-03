@@ -40,11 +40,13 @@ public class Property extends TopModel implements java.io.Serializable{
     String brand;
     String model;
     Double value;
+		@Column(name="serial_num")
     String serialNum;
     String owner;
     String description;
     //
-    @OneToOne		
+    @OneToOne
+		@JoinColumn(name = "damage_type_id")		
     DamageType damageType;
     //
 		
