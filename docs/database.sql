@@ -615,11 +615,11 @@ CREATE TABLE SPRING_SESSION_ATTRIBUTES (
 ;;
  create table incident_incomplete(id tinyint not null)engine=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-
 ;;
 ;; to upload files for tomcat9 you need to set the following
 ;; edit
- /etc/systemd/system/multi-user.target.wants/tomcat9.service
+/etc/systemd/system/multi-user.target.wants/tomcat9.service
+;; 
 ;;  adding to the end of 'ReadWritePath' section
 ;; 
 ReadWritePaths=/srv/data/incidents/files
