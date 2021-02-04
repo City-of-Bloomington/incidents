@@ -288,7 +288,7 @@ insert into actions select * from statuses;
 
 ;;
 ;; incomplete incidents are those started but not submitted
-;; modified 
+;; 
    create or Replace view incident_incomplete AS                                  select i.id from incidents i where i.address_id is not null and i.details is not null and 0 = (select count(*) from action_logs l where l.incident_id=i.id) order by i.id desc;
 
 ;;
@@ -446,19 +446,17 @@ alter table persons drop foreign key persons_ibfk_3;
 ;; do insert
 alter table persons add foreign key(race_type_id) references race_types(id);
 ;;
-;; old ones
-  insert into race_types values(1,'BLACK NON-HISP'),                                                           (2,'HAWAIIAN/OTH PACIFIC HISPANIC'),                                            (3,'HAWAIIAN/OTH PACIFIC NON-HISP'),                                            (4,'INDIAN/ALASKAN NATV NON-HISP'),                                             (5,'BLACK HISPANIC'),                                                           (6,'WHITE HISPANIC'),                                                           (7,'INDIAN/ALASKAN NATV HISPANIC'),                                             (8,'ASIAN NON-HISP'),                                                           (9,'ASIAN HISPANIC'),                                                           (10,'UNKOWN'),                                                                  (11,'WHITE NON-HISP');
 ;;
 ;; in persons table we need to change the field race enum to
 ;; int unsigned
   alter table persons add race_type_id int unsigned after race;
 	alter table persons add foreign key(race_type_id) references race_types(id);
-	update persons set race_type_id = 1 where race = 'African American';
-	update persons set race_type_id = 11 where race = 'Caucasion';
-	update persons set race_type_id = 6 where race = 'Hispanic';
-	update persons set race_type_id = 8 where race = 'Asian';		
-	update persons set race_type_id = 4 where race = 'Native American';		
-	update persons set race_type_id = 10 where race = 'Other';		
+	update persons set race_type_id = 1 where race = 3;
+	update persons set race_type_id = 11 where race = 1;
+	update persons set race_type_id = 6 where race = 2;
+	update persons set race_type_id = 8 where race = 5;		
+	update persons set race_type_id = 4 where race = 4;		
+	update persons set race_type_id = 10 where race = 6;		
 
   alter table persons drop column race;
   alter table persons modify sex enum('Male','Female','Nonbinary','Unknown');
@@ -474,28 +472,7 @@ alter table persons add foreign key(race_type_id) references race_types(id);
 ;; added on 8/4/2020
 ;;
   create table fraud_types(                                                          id int unsigned auto_increment primary key,                                     name varchar(50)                                                                )engine=InnoDB;
-/**
-// old 
-insert into fraud_types values
-(1,'Identity Theft'),
-(2,'Banking Scam'),
-(3,'Telephone Scam'),
-(4,'Grant Scam'),
-(5,'Investment Scam'),
-(6,'Lottery Scam'),
-(7,'Sweepstake Scam'),
-(8,'Charity Scam'),
-(9,'Pyramid or Ponzi Scheme'),
-(10,'Census-Related Fraud'),
-(11,'Movers Fraud'),
-(12,'Rental Scam'),
-(13,'IRS Imposter Scam'),
-(14,'Phishing or Vishing Scam'),
-(15,'Internet Fraud'),
-(16,'Ransomware'),
-(17,'Other Specify');
 
-*/
  alter table frauds drop foreign key frauds_ibfk_2;
  delete from fraud_types;
 
@@ -523,7 +500,6 @@ create table addresses(                                                         
 			 
   alter table incidents add address_id int unsigned after date;
   alter table incidents add foreign key(address_id) references addresses(id);
-	alter table addresses add constraint unique(name);
 ;;
 ;; populating addresses table from incidents is done though ImportController class
 ;;
@@ -533,7 +509,7 @@ alter table incidents drop column address;
 alter table incidents drop column city;
 alter table incidents drop column zip;
 alter table incidents drop column state;
-alter table incidents drop column invalid_address
+alter table incidents drop column invalidAddress
 ;;
 
 
@@ -541,8 +517,6 @@ alter table incidents drop column invalid_address
 ;; changes on 12/15
  insert into person_types values(2,'Complainant');
 ;;
- alter table frauds drop foreign key frauds_ibfk_2;
- delete from fraud_types;
 
 insert into fraud_types values
 (1,'Credit Card Fraud'),
@@ -601,20 +575,6 @@ CREATE TABLE SPRING_SESSION_ATTRIBUTES (
     CONSTRAINT SPRING_SESSION_ATTRIBUTES_PK PRIMARY KEY (SESSION_PRIMARY_ID, ATTRIBUTE_NAME)
 ) ENGINE=InnoDB;
 ;;
-;; changed views to tables by Cliff
-;;
- create table incident_received(id tinyint not null)engine=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-;;
- create table incident_approved(id tinyint not null)engine=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-;;
- create table incident_confirmed(id tinyint not null)engine=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-;;
- create table incident_rejected(id tinyint not null)engine=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-;;
-  create table incident_processed(id tinyint not null)engine=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-;;
- create table incident_incomplete(id tinyint not null)engine=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
 ;;
 ;; to upload files for tomcat9 you need to set the following
 ;; edit
@@ -628,6 +588,7 @@ ReadWritePaths=/srv/data/incidents/files
 service tomcat9 stop
 systemctl daemon-reload
 service tomcat9 restart
+;;
 
 
 

@@ -20,6 +20,12 @@ insert actions set id=1,name='emailed',description='Incomplete, Email Sent',work
 
 rename table status_history to action_logs;
 alter table action_logs rename column status_id to action_id;
+--
+-- WS remove orphans
+delete from action_logs where incident_id not in (select id from incidents);
+--
+-- WS add foreign key
+alter table action_logs add foreign key(incident_id) references incidents(id);
 
 rename table status_roles to action_roles;
 alter table action_roles rename column status_id to action_id;
@@ -39,7 +45,8 @@ alter table car_damage_types rename column type to name;
 rename table damageTypes to damage_types;
 alter table damage_types rename column type to name;
 alter table damage_types add inactive char(1);
-
+-- WS Added
+update damage_types set inactive='y' where id=3;
 -- Incidents
 rename table incidentTypes to incident_types;
 alter table incident_types change type name varchar(70) not null;
@@ -64,10 +71,11 @@ create table addresses (
   address_id   int unsigned,
   subunit_id   int unsigned,
   invalid_address char(1)
-);
-
+)engine=InnoDB;
+--
+-- WS added upper(address) to capture more dups
 insert into addresses (name, city, state, zipcode, invalid_address)
-select address, city, state, zip, invalidAddress from incidents i
+select upper(address), city, state, zip, invalidAddress from incidents i
 on duplicate key update city=i.city, state=i.state, zipcode=i.zip, invalid_address=i.invalidAddress;
 
 alter table incidents add address_id int unsigned after date;
@@ -88,6 +96,11 @@ alter table media rename column name to file_name;
 -- Persons
 rename table personTypes to person_types;
 
+-- WS change type to name
+alter table person_types rename column type to name;
+-- WS remove suspect replace with Complainant
+update person_types set name='Complainant' where id=2;
+
 alter table persons rename column personType_id to person_type_id;
 alter table persons rename column phonetype     to phone_type;
 alter table persons add phone_type2 enum('Cell', 'Home', 'Work') after phone_type;
@@ -103,11 +116,27 @@ alter table persons add ethnicity enum('Hispanic','Non-hispanic','Unknown') afte
 create table race_types (
     id int unsigned not null primary key auto_increment,
     name varchar(50) not null unique
-);
-insert into race_types (name) select distinct race from persons where race is not null;
+) ENGINE=InnoDB;
+
+-- WS commented out
+-- insert into race_types (name) select distinct race from persons where race is not null;
+
+-- WS Added
+  insert into race_types values(1,'Black Non-Hisp'),                                                           (2,'Hawaiian/Oth Pacific Hispanic'),                                            (3,'Hawaiian/Oth Pacific Non-Hisp'),                                            (4,'Indian/Alaskan Natv Non-Hisp'),                                             (5,'Black Hispanic'),                                                           (6,'White Hispanci'),                                                           (7,'Indian/Alaskan Natv Hispanci'),                                             (8,'Asian Non-Hisp'),                                                           (9,'Asian Hispanic'),                                                           (10,'Unknown'),                                                                 (11,'White Non-Hisp');
+;;	
 alter table persons add race_type_id int unsigned after race;
 alter table persons add foreign key (race_type_id) references race_types(id);
-update persons set race_type_id=(select id from race_types where name=race);
+;;
+;; WS Added
+	update persons set race_type_id = 1 where race = 3;
+	update persons set race_type_id = 11 where race = 1;
+	update persons set race_type_id = 6 where race = 2;
+	update persons set race_type_id = 8 where race = 5;		
+	update persons set race_type_id = 4 where race = 4;		
+	update persons set race_type_id = 10 where race = 6;		
+;;
+;; WS commented out
+;; update persons set race_type_id=(select id from race_types where name=race);
 alter table persons drop column race;
 
 -- Properties
@@ -130,12 +159,22 @@ create table role_actions (
     primary key (role_id, action_id),
     foreign key (role_id  ) references   roles(id),
     foreign key (action_id) references actions(id)
-);
+) ENGINE=InnoDB;
 
 create table fraud_types (
     id int unsigned not null primary key auto_increment,
     name varchar(50) not null unique
-);
+) ENGINE=InnoDB;
+--
+-- WS added
+insert into fraud_types values
+(1,'Credit Card Fraud'),
+(2,'Impersonation'),
+(3,'Welfare Fraud'),
+(4,'Wire Fraud'),
+(5,'Identity Theft'),
+(6,'Hacking/Computer Invasion'),
+(7,'Other Specify');
 
 create table frauds (
     id            int unsigned not null primary key auto_increment,
@@ -148,33 +187,33 @@ create table frauds (
     details       text,
     foreign key (incident_id)   references incidents(id),
     foreign key (fraud_type_id) references fraud_types(id)
-);
-
-create view incident_confirmed as
+) ENGINE=InnoDB;
+--
+-- WS the following views are not working with hibernate it is causing unknown
+-- column name,could be hibernate does not know partition 
+/**
+create or replace view incident_confirmed as
 with ranked as (
 select l.*, row_number() over (partition by incident_id order by id desc) as r
 from action_logs l
 ) select incident_id from ranked where r=1 and action_id=3;
 
-create view incident_processed as
+create or replace view incident_processed as
 with ranked as (
 select l.*, row_number() over (partition by incident_id order by id desc) as r
 from action_logs l
 ) select incident_id from ranked where r=1 and action_id=6;
 
-create view incident_received as
-with ranked as (
-select l.*, row_number() over (partition by incident_id order by id desc) as r
-from action_logs l
-) select incident_id from ranked where r=1 and action_id=2;
+create or replace view incident_received as with ranked as (select l.*, row_number() over (partition by incident_id order by id desc) as r from action_logs l) select incident_id from ranked where r=1 and action_id=2;
 
-create view incident_rejected as
+create or replace view incident_rejected as
 with ranked as (
 select l.*, row_number() over (partition by incident_id order by id desc) as r
 from action_logs l
 ) select incident_id from ranked where r=1 and action_id=5;
 
-create view incident_incomplete as
+
+create or replace view incident_incomplete as
 select i.id
 from incidents i
 left join action_logs l on i.id=l.incident_id
@@ -182,7 +221,39 @@ where l.id is null
   and i.address_id is not null
   and i.details    is not null
 order by i.id desc;
+*/
 
+--
+-- WS added back the old views
+--
+;;
+;; received but not confirmed
+;; 
+  create or Replace view incident_received AS                                  select i.id from incidents i,action_logs l where l.incident_id=i.id and l.action_id = 2 and l.action_id in (select max(l2.action_id) from action_logs l2 where l2.incident_id=i.id) order by i.id desc;
+
+;;
+;; confirmed
+;;
+  create or Replace view incident_confirmed AS                                  select i.id from incidents i,action_logs l where l.incident_id=i.id and l.action_id = 3 and l.action_id in (select max(l2.action_id) from action_logs l2 where l2.incident_id=i.id);
+
+;; approved
+     create or Replace view incident_approved AS                                     select i.id from incidents i,action_logs l where l.incident_id=i.id and l.action_id = 4 and l.action_id in (select max(l2.action_id) from action_logs l2 where l2.incident_id=i.id);				 
+;;
+;; rejected (not used)
+;;
+    create or Replace view incident_rejected AS                                   select i.id from incidents i,action_logs l where l.incident_id=i.id and l.action_id = 5 and l.action_id in (select max(l2.action_id) from action_logs l2 where l2.incident_id=i.id) order by i.id desc;
+;;
+;; processed
+     create or Replace view incident_processed AS                                    select i.id from incidents i,action_logs l where l.incident_id=i.id and l.action_id = 6 and l.action_id in (select max(l2.action_id) from action_logs l2 where l2.incident_id=i.id);
+
+;;
+;; incomplete incidents are those started but not submitted
+;; 
+   create or Replace view incident_incomplete AS                                  select i.id from incidents i where i.address_id is not null and i.details is not null and 0 = (select count(*) from action_logs l where l.incident_id=i.id) order by i.id desc;
+
+--
+-- WS added temp to fix hibernate error not find USERS table
+create table USERS select * from users;
 
 -- Quartz
 CREATE TABLE QRTZ_JOB_DETAILS(
