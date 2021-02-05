@@ -46,6 +46,12 @@ update damage_types set inactive='y' where id=3;
 -- Incidents
 rename table incidentTypes to incident_types;
 alter table incident_types change type name varchar(70) not null;
+--
+-- WS additional incident types
+update incident_types set name='Theft - All Other' where id=1;
+insert into incident_types values(4,'Theft - From Vehicle');
+insert into incident_types values(5,'Theft - From Building');
+insert into incident_types values(6,'Fruad');
 
 alter table incidents rename column cfsNumber       to case_number;
 alter table incidents rename column incidentType_id to incident_type_id;
