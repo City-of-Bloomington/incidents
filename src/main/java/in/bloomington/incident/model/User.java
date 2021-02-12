@@ -26,13 +26,18 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.persistence.NamedQuery;
+import javax.persistence.NamedNativeQuery;
 import javax.validation.constraints.NotNull;
 
 
 @Entity
 @Table(name = "users")
+/**
 @NamedQuery(name = "User.findUserByUsername",
-  query = "select u from User u where u.username = ?1")
+  query = "SELECT u FROM User u WHERE u.username = ?1")
+*/
+@NamedNativeQuery(name = "User.findUserByUsername", query = "SELECT * FROM users WHERE username = ?", resultClass = User.class)
+@NamedNativeQuery(name = "User.findUserByFirstNameOrLastname", query = "SELECT * FROM users WHERE firstname like ? or lastname like ?", resultClass = User.class)	
 public class User implements java.io.Serializable{
 
     @Id

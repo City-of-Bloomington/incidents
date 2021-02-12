@@ -16,5 +16,5 @@ public interface UserService{
     public abstract User findById(int id);
     public abstract List<User> getAll();		
     public abstract User findUserByUsername(String val);
-    public abstract List<User> findByFirstnameOrByLastname(String firstname, String lastname);
+    public abstract List<User> findByFirstnameOrByLastname(String str, String str2);
 }

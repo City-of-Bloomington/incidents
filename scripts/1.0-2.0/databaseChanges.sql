@@ -236,8 +236,6 @@ where i.address_id is not null
   and 0 = (select count(*) from action_logs l where l.incident_id=i.id)
 order by i.id desc;
 
--- WS added temp to fix hibernate error not find USERS table
-create table USERS select * from users;
 
 -- Quartz
 CREATE TABLE QRTZ_JOB_DETAILS(

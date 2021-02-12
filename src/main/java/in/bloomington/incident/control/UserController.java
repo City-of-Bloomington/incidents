@@ -47,6 +47,23 @@ public class UserController extends TopController{
         model.addAttribute("users", userService.getAll());
         return "staff/users";
     }
+    @GetMapping("/users/find/{name}")
+    public String findUsers(@PathVariable("name") String name, Model model) {
+				String ret = canUserAccess(session);
+				if(!ret.isEmpty()){
+						return ret;
+				}
+				if(name != null && !name.isEmpty()){
+						String str = "%"+name+"%";
+						List<User> users = userService.findByFirstnameOrByLastname(str, str);
+						if(users != null)
+								model.addAttribute("users", users);
+						return "staff/users";
+				}
+				else{
+						return "redirect:/staff";
+				}
+    }		
     @GetMapping("/user/new")
     public String newUser(Model model) {
 				String ret = canUserAccess(session);
