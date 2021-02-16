@@ -5,14 +5,17 @@ package in.bloomington.incident.repos;
  * @author W. Sibo <sibow@bloomington.in.gov>
  *
  */
+import java.io.*;
 import java.util.List;
 import org.springframework.data.repository.CrudRepository;
 
 import in.bloomington.incident.model.Search;
 import in.bloomington.incident.model.Incident;
+import in.bloomington.incident.model.User;
 
 public interface SearchRepository{
 
     public List<Incident> find(Search search);    
-
+		public User findUser(String username) throws IOException;
+		
 }

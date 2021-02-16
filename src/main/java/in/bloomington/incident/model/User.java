@@ -31,7 +31,7 @@ import javax.validation.constraints.NotNull;
 
 
 @Entity
-@Table(name = "users")
+@Table(name = "\"users\"")
 /**
 @NamedQuery(name = "User.findUserByUsername",
   query = "SELECT u FROM User u WHERE u.username = ?1")
