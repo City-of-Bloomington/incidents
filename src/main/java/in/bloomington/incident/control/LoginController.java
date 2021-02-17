@@ -48,6 +48,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 //
 import in.bloomington.incident.service.UserService;
+import in.bloomington.incident.service.SearchService;
 import in.bloomington.incident.model.User;
 import in.bloomington.incident.utils.Helper;
 
@@ -57,7 +58,9 @@ public class LoginController extends TopController{
     final static Logger logger = LoggerFactory.getLogger(LoginController.class);
     @Autowired
     UserService userService;
-
+		@Autowired
+		SearchService searchService;
+		
     @Value("${incident.ldap.host}")    
     private String ldap_host;
 
@@ -96,25 +99,32 @@ public class LoginController extends TopController{
 						addMessagesAndErrorsToSession(session);
 						return "staff/loginForm";
 				}
-				User user = userService.findUserByUsername(username);
-				if(user == null){
-						// addMessage("user not found "+username);
-						// addMessagesAndErrorsToSession(session);
+				// userService was not working
+				try{
+						User user = searchService.findUser(username);
+						if(user == null){
+								// addMessage("user not found "+username);
+								// addMessagesAndErrorsToSession(session);
+								addMessage("you do not have access to this system ");
+								addMessagesAndErrorsToSession(session);						
+								return "redirect:/login";
+						}
+						session.setAttribute("user", user);
+						if(user.isAdmin()){
+								session.setAttribute("isAmin", "true");
+						}
+						if(user.canApprove()){
+								session.setAttribute("canApprove", "true");
+						}
+						if(user.canProcess()){
+								session.setAttribute("canProcess", "true");
+						}				
+						return "staff/staff_intro";
+				}catch(Exception ex){
 						addMessage("you do not have access to this system ");
 						addMessagesAndErrorsToSession(session);						
-						return "redirect:/login";
 				}
-				session.setAttribute("user", user);
-				if(user.isAdmin()){
-						session.setAttribute("isAmin", "true");
-				}
-				if(user.canApprove()){
-						session.setAttribute("canApprove", "true");
-				}
-				if(user.canProcess()){
-						session.setAttribute("canProcess", "true");
-				}				
-				return "staff/staff_intro";
+				return "redirect:/login";						
     }
     @GetMapping("/settings")
     public String showSettings(Model model,
