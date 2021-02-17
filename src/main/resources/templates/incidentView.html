@@ -9,7 +9,7 @@
 
 <head th:replace="general::head('Incident Details')"></head>
 
-<body>
+<body class="staff">
 	<header>
 		<div th:replace="general::header-staff"></div>
 	</header>
@@ -23,54 +23,68 @@
 		<div th:if="${messages}">
 			<div th:insert="general::messages(${messages})"></div>
 		</div>
+
 		<div th:fragment="incidentView(${incident})">				
-		<fieldset>
+		
+			<fieldset>
 			<div th:fragment="incident(${incident})">						
 				<div class="m-b-10" th:if="${incident.hasStatusInfo()}">
 					<label>Status: </label>
 					<span th:text="${incident.status}"> </span>
+					<br />
 				</div>
-				<br />
+				
+
 				<div class="m-b-10" th:if="${incident.hasCaseNumber()}">
-					<label>Case #: </label>
+					<label>Case #:</label>
 					<span th:text="${incident.caseNumber}"> </span>
+					<br />
 				</div>
-				<br />				
+								
+				
 				<div class="m-b-10">
-					<label><strong> Incident type: </strong></label>
+					<label>Incident type:</label>
 					<span th:text="${incident.incidentType}"> </span>
+					<br />
 				</div>
-				<br />
+				
+				
 				<div class="m-b-10">
-					<label><strong> Reporter email: </strong></label>
+					<label> Reporter email:</label>
 					<span th:text="${incident.email}"> </span>
+					<br />
 				</div>
-				<br />
+				
 				<div class="m-b-10">
 					<label>Report date & time: </label>
 					<span th:text="${incident.receivedStr}"> </span>
+					<br />
 				</div>
-				<br />
+				
 				<div class="m-b-10">
 					<label>Incident date & time: </label>
 					<span th:text="${incident.dateTimeInfo}"> </span>
+					<br />
 				</div>
-				<br />
+				
 				<div class="m-b-10">
 					<label>Location of incident: </label>
 					<span th:text="${incident.addressInfo}"> </span>
-				</div>
-				<br />									
+					<br />
+				</div>									
+				
 				<div class="m-b-10" th:if="${incident.hasAccessInfo()}">
 					<label>Entry access: </label>
 					<span th:text="${incident.entryInfo}"></span>
+					<br />
 				</div>
-				<br />
+
 				<div class="m-b-10">
 					<label>Incident details: </label>
 					<span th:text="${incident.details}"></span>
-				</div>
-				<br />									
+					<br />
+				</div>							
+				
 				<div class="m-b-10" th:if="${incident.hasEvidenceInfo()}">
 					<label>Evidence left behind:</label>
 					<span th:text="${incident.evidence}"></span>

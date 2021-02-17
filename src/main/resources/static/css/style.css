@@ -689,7 +689,14 @@ form fieldset legend {
 
 .m-b-10 {
   margin-bottom: 10px;
-  display: inline-block;
+}
+
+.m-b-20 {
+  margin-bottom: 20px;
+}
+
+.block {
+  display: block;
 }
 
 main.public-questions-wrapper {
@@ -959,4 +966,4 @@ main .next_div .button:hover {
   background: #449d48;
 }
 
-/*# sourceMappingURL=style.css.map */
+/*# sourceMappingURL=../css/style.css.map */
