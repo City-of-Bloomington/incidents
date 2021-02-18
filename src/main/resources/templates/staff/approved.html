@@ -25,7 +25,7 @@
       </div>			
 			
 			<div th:switch="${incidents}">
-				<h4 th:case="null">No incident found </h4>
+				<div class="message alert" th:case="null">No incident found </div>
 				<div th:case="*">
 					<table>
 						<thead>

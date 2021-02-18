@@ -156,7 +156,7 @@ public class PersonController extends TopController{
 						return "personAdd";
 				}
         personService.save(person);
-				addMessage("Saved Succefully");
+				addMessage("Saved Successfully");
 				addMessagesAndErrorsToSession(session);
 				return "redirect:/incident/"+incident.getId(); 
     }

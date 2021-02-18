@@ -47,11 +47,14 @@ public class Action implements java.io.Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @NotNull
+    @NotNull		
+		@Column(name="name")
     private String name;
+		@Column(name="description")
     private String description;
 		@Column(name="workflow_step")
     private Integer workflowStep;
+		@Column(name="nextstep")
     private Integer nextstep;
     @ManyToMany
     @JoinTable(name = "role_actions")

@@ -93,6 +93,10 @@ alter table incidents add evidence text after details;
 
 -- Media
 alter table media rename column name to file_name;
+-- added on 2/18
+alter table media drop constraint media_ibfk_1;
+alter table media modify id int unsigned not null auto_increment; 
+drop table media_ids;
 
 -- Persons
 rename table personTypes to person_types;

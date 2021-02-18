@@ -40,7 +40,6 @@ import in.bloomington.incident.utils.Helper;
 @Cacheable(false)
 public class Incident extends TopModel implements java.io.Serializable{
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -119,9 +118,9 @@ public class Incident extends TopModel implements java.io.Serializable{
     @JoinColumn(name="incident_id",insertable=false, updatable=false)
     private List<ActionLog> actionLogs;
 
-		@OneToOne(fetch = FetchType.EAGER)
-		// @ManyToOne(optional=false, fetch=FetchType.EAGER)
-		@JoinColumn(name="address_id", nullable=false, updatable=false, referencedColumnName="id")
+		// @OneToOne(fetch = FetchType.EAGER)
+		@ManyToOne(optional=false, fetch=FetchType.EAGER)
+		@JoinColumn(name="address_id", updatable=false, referencedColumnName="id")
     Address address;
 		
     public Incident(){

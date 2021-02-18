@@ -31,7 +31,7 @@ public class Media implements java.io.Serializable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private int id;		
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "incident_id")		
