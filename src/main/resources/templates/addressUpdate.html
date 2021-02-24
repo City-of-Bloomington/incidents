@@ -1,0 +1,123 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--
+ - @copyright Copyright (C) 2014-2015 City of Bloomington, Indiana. All rights reserved.
+ - @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
+ - @author W. Sibo <sibow@bloomington.in.gov>
+ -
+ -->
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head th:replace="general::head('Incident')"></head>
+  <body>
+    <header th:replace="general::header"></header>
+    <main class="public-questions-wrapper">
+      <h2>Address Input</h2>
+      <div th:if="${errors}">
+        <div th:replace="general::errors(${errors})"></div>
+      </div>
+      <div th:if="${messages}">
+        <div th:replace="general::messages(${messages})"></div>
+      </div>
+      <p>*indicated required fields</p>
+      <form
+        action="#"
+        th:action="@{/addressUpdateCheck}"
+        th:object="${address}"
+        onsubmit="return verifyAddress()"
+        method="post">
+				<input
+          type="hidden"
+          th:field="${address.old_id}"
+          id="old_id"
+          />
+        <input
+          type="hidden"
+          th:field="${address.addressId}"
+          id="addressId"
+          />
+        <input
+          type="hidden"
+          th:field="${address.subunitId}"
+          value=""
+          id="subunitId"
+          />
+				<input
+          type="hidden"
+          th:field="${address.latitude}"
+          id="latitude"
+          size="20"
+          />
+        <input
+          type="hidden"
+          th:field="${address.longitude}"
+          id="longitude"
+          size="20"
+          />
+				<input
+          type="hidden"
+            th:field="${address.city}"
+            id="city"
+            size="60"
+          />
+          <input
+						type="hidden"
+            th:field="${address.jurisdiction}"
+            id="jurisdiction"
+            size="60"
+          />
+          <input
+						type="hidden"
+            th:field="${address.zipcode}"
+            id="zip"
+            size="10"
+          />
+          <input
+						type="hidden"
+            th:field="${address.state}"
+            id="state"
+            size="2"
+						/>
+				<!-- type_id here is a temporary place holder for incident type that was selected before address -->
+        <input type="hidden" th:field="${address.type_id}" />
+        <fieldset>
+          <legend>Location of Incident</legend>
+          <ol>
+            <li>To add the incident location address, start typing the street address in the 'Street address' field below. A list of matching addresses will be populated, please select from the list the correct one for where the incident occured.</li>
+						<li><i>Please note that City, Zip code and State fields are
+						automatically filled when you pick the right address.</i></li>
+          </ol>
+          <label for="addr_id" class="required">
+            Street address where the incident occured
+					</label>
+					<div class="form-group autocomplete-wrapper">
+						<input
+							type="text"
+							autocomplete="off"
+							th:field="${address.name}"
+							id="addr_id"
+							size="60"
+							placeholder="start typing street address and then pick from a list"
+              required="required"
+              name="address"
+							/>
+					</div>
+					<div id="address_display" class="form-group">
+						<label for="address_info">City, State Zipcode</label>
+						<p id="address_info">&nbsp;</p>
+					</div>
+        </fieldset>
+				<p>Click on Next to continue </p>
+				<ul class="button-group tab-style">
+					<li>
+						<button
+							class="next-button"
+							th:attr="onclick=|window.location.href='@{/selectCategory}'|"
+							> Back</button>
+					</li>
+					<li>
+						<button type="submit" class="next-button"> Next</button>
+					</li>
+				</ul>
+      </form>
+    </main>
+  </body>
+</html>
