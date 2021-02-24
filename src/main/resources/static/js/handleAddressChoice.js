@@ -4,20 +4,22 @@ var handleAddressChoice = function (chosenAddress) {
 				// location_id = 'location_id',
 				addressInput = document.getElementById(addressId),
 				addressInput2 = document.getElementById('addr_id'),
-				zip = document.getElementById('zip'),
 				city = document.getElementById("city"),
+				zip = document.getElementById('zip'),				
 				subunitInput = document.getElementById(subunitId),
 				// locationId  = document.getElementById(location_id),
 				latitude  = document.getElementById('latitude'),
 				longitude  = document.getElementById('longitude'),
 				jurisdiction = document.getElementById('jurisdiction'),
-				display   = document.getElementById(address_id + '-display');
+				address_info  = document.getElementById('address_info');
+		// address_display = document.getElementById('address_display');
     // console.log(chosenAddress);
     addressInput.value = chosenAddress.id;
     zip.value = chosenAddress.zip;
     city.value = chosenAddress.city;
     jurisdiction.value = chosenAddress.jurisdiction_name;
-    // display.innerHTML  = chosenAddress.streetAddress;
+    address_info.textContent +=' '+chosenAddress.city+' '+chosenAddress.zip;
+		// address_display.style.display = "block";
     // An example of checking for a chosen subunit
     //
     // This just appends the subunit name to the displayed address

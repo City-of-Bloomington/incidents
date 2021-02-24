@@ -167,10 +167,16 @@
             placeholder="e.g. blood, shoe prints, fingerprints,.."
           ></textarea>
         </fieldset>
-
-        <div class="next_div">
-          <input type="submit" value="Next" />
-        </div>
+				<ul class="button-group tab-style">
+					<li>
+						<button
+							class="next-button"
+							th:attr="onclick=|window.location.href='@{/emailUpdate/{id}(id=${incident.id})}'|"
+							>Back </button>
+					</li>
+					<li> <button type="submit" class="next-button"> Next </button></li>
+				</ul>
+				
       </form>
     </main>
   </body>

@@ -27,7 +27,7 @@
     </div>
 
     <div id="finalStep" class="question" style="display:none">
-      <form action="#" th:action="@{/initialStart}" onsubmit="return verifyConfirm();" method="post">
+      <form action="#" th:action="@{/emailReqUpdate}" onsubmit="return verifyConfirm();" method="post">
         <input type="hidden" name="type_id" th:value="${type_id}" />
         <input type="hidden" name="address_id" th:value="${address_id}" />
 				<div th:unless="${type_id == 6}">
@@ -39,9 +39,18 @@
 					</div>
 				</div>				
         <div th:replace="general::emailFields"></div>
-        <div class="next_div">
-          <p> Click on <button type="submit" class="next-button"> Next </button> to continue </p>
+				<div class="next_div">
+          <p> Click on Next to continue </p>
         </div>
+				<ul class="button-group tab-style">
+					<li>
+						<button
+							class="next-button"
+							th:attr="onclick=|window.location.href='@{/addressUpdate/{id}/{type_id}(id=${address_id},type_id=${type_id})}'|"
+							>Back </button>
+					</li>
+					<li> <button type="submit" class="next-button"> Next </button></li>
+				</ul>
       </form>
     </div>
   </main>

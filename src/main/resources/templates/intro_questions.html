@@ -90,10 +90,9 @@
 					</ul>
 				</form>
 			</div>
-		
+			<!--		
 			<div id="finalStep" class="question" style="display:none">
-				<p> There will be a few additional questions depending on incident's category.</p>
-				
+				<p> In the next step</p>
 				<p>Please, select the incident category:</p>
 				<ul>
 					<li><a th:href="@{/introLost}">Lost Property </a></li>
@@ -104,14 +103,19 @@
 					<li><a th:href="@{/introVandal}">Vandalism </a></li>
 				</ul>
 			</div>
-
+			-->
 			<div id="moreInfo">
 				<div th:replace="general::introMoreInfo"></div>
 			</div>
-
 			<div id="next_div">
 				<p>Click on <input type="button" id='next' value="Next" /> to continue.</p>
 			</div>
+      <div id="finalStep" class="question" style="display:none">
+        <p> In the next step you will select the incident category</p>
+        <form action="#" th:action="@{/selectCategory}" method="get">
+          <p> Click on <button type="submit" class="next-button"> Next </button> to continue </p>
+        </form>
+      </div>
 		</div>
 	</main>
 </body>

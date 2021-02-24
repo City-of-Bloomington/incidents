@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class WebController extends TopController{
 
 
+		
     @RequestMapping(value = "/")
     public String index() {
 				return "redirect:/introStart";
@@ -36,6 +37,12 @@ public class WebController extends TopController{
 				getMessagesAndErrorsFromSession(session, model);
 				return "intro_questions";
     }
+    @RequestMapping(value = "/selectCategory")
+    public String selectCategory(Model model,
+																 HttpSession session){
+				getMessagesAndErrorsFromSession(session, model);
+				return "introSelectType";
+    }		
     @RequestMapping("/introTheft/{type_id}")
     public String introTheft(@PathVariable("type_id") int type_id,
 														 Model model,
@@ -67,14 +74,17 @@ public class WebController extends TopController{
 				return "lost_questions";
     }
 
-    @RequestMapping("/emailRequest")
-    public String emailRequest(@RequestParam(required=true) int type_id,
-															 Model model,
-															 HttpSession session
-															 ){
+    @RequestMapping("/emailAdd")
+    public String emailAdd(@RequestParam(required=true) int type_id,
+													 @RequestParam(required=true) int address_id,
+													 Model model,
+													 HttpSession session
+													 ){
 				getMessagesAndErrorsFromSession(session, model);
-        model.addAttribute("type_id", type_id);	
-				return "email_questions";
+        model.addAttribute("type_id", type_id);
+				model.addAttribute("address_id", address_id);				
+				return "emailAdd";
     }
+
 
 }

@@ -89,9 +89,19 @@ public class IncidentController extends TopController{
     @Value("${server.servlet.context-path}")
     private String hostPath; // incidents in production
 
-
-    @RequestMapping("/initialStart")
-    public String initialNext(@RequestParam(required = true) String email,
+    @RequestMapping("/emailUpdate/{id}")
+    public String emailUpdate(@PathVariable("id") int id,
+															Model model,
+															HttpSession session
+															){
+				getMessagesAndErrorsFromSession(session, model);
+				Incident incident = incidentService.findById(id);
+				model.addAttribute("address_id", incident.getAddress().getId());
+				model.addAttribute("type_id", incident.getIncidentType().getId());
+				return "emailAdd";
+    }		
+    @RequestMapping("/emailRequest")
+    public String emailRequest(@RequestParam(required = true) String email,
 															@RequestParam(required = true) String email2,
 															@RequestParam(required = true) int type_id,
 															@RequestParam(required = true) int address_id,
@@ -116,31 +126,52 @@ public class IncidentController extends TopController{
 						emailProblem = true;
 				}
 				if(emailProblem){
-						return "redirect:/introEmail?type_id="+type_id;
+						model.addAttribute("type_id", type_id);
+						model.addAttribute("address_id", address_id);
+						handleErrorsAndMessages(model);
+						return "emailAdd";
 				}
-				IncidentType type = incidentTypeService.findById(type_id);
-				Address address = addressService.findById(address_id);
-				Incident incident = new Incident();
-				incident.setEmail(email);
-				incident.setReceivedNow();
-				incident.setIncidentType(type);
-				incident.setAddress(address);
-				incidentService.save(incident);
-				//
-				// this is the only place we are adding
-				// incident ID in the session
-				//
 				List<String> ids = null;
+				int id = 0;
 				try{
 						ids = (List<String>) session.getAttribute("incident_ids");
 				}catch(Exception ex){
 						System.err.println(ex);
 				}
-				if(ids == null){
-						ids = new ArrayList<>();
+				if(ids != null && ids.size() > 0){
+						String str =  ids.get(ids.size() - 1);
+						if(str != null){
+								try{
+										id = Integer.parseInt(str);
+								}catch(Exception ex){}
+						}
 				}
-				ids.add(""+incident.getId());
-				session.setAttribute("incident_ids", ids);
+				IncidentType type = incidentTypeService.findById(type_id);
+				Address address = addressService.findById(address_id);
+				Incident incident = null;
+				if(id > 0){
+						incident = incidentService.findById(id);
+						incident.setEmail(email);
+						incident.setIncidentType(type);
+						incident.setAddress(address);
+						incidentService.update(incident);
+				}
+				else{
+						incident = new Incident();
+						incident.setEmail(email);
+						incident.setReceivedNow();
+						incident.setIncidentType(type);
+						incident.setAddress(address);
+						incidentService.save(incident);
+						if(ids == null){
+								ids = new ArrayList<>();
+						}
+						session.setAttribute("incident_ids", ids);
+				}
+				//
+				// this is the only place we are adding
+				// incident ID in the session
+				//
 				//
 				// return "redirect:/incidentStart/"+incident.getId();
 				//
@@ -186,16 +217,6 @@ public class IncidentController extends TopController{
 						// this redirect will decide the next step
 						//
 						return "redirect:/incident/"+id;
-						/**
-						if(incident.hasPersonList()){
-								model.addAttribute("incident", incident);
-								model.addAttribute("hostPath", hostPath);
-								return "incident";		
-						}
-						else{
-								return "redirect:/person/add/"+id;
-						}
-						*/
 				}
 				else {
 						addMessage("no more changes can be made");
