@@ -20,6 +20,7 @@ public class AddressServiceImpl implements AddressService {
     @Autowired
     AddressRepository repository;
 
+		/*
     @Override
     public void save(Address val){
 				repository.save(val);
@@ -39,10 +40,15 @@ public class AddressServiceImpl implements AddressService {
 				repository.deleteById(id);
     }
     @Override
+    public Address findOne(int id){
+				return repository.findOne(id);
+    }		
+    @Override
     public List<Address> getAll(){
 				Iterable<Address> it = repository.findAll();
 				return changeToList(it);
     }
+		*/
 		public List<Address> findDistinctAddressByName(String name){
 				Iterable<Address> it = repository.findDistinctAddressByName(name);
 				return changeToList(it);

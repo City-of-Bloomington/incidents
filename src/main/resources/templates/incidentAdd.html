@@ -24,7 +24,7 @@
 
       <p th:insert="general::incidentInstructions"></p>
 
-      <p>* indicated required fields</p>
+      <p>* indicate required fields</p>
       <form
         action="#"
         th:action="@{/incidentNext/{id}(id=${incident.id})}"
@@ -46,7 +46,7 @@
           <p>You report 8/8/2015 11:00 PM - 8/9/2015 06:00 AM.)</p>
 
           <label for="start_date" class="required">
-            *Incident Occurred, Date:
+            *Incident occurred, Date:
           </label>
 
           <input
@@ -124,7 +124,7 @@
           <div th:if="${incident.showGainedEntry()}">
             <!-- we do not show these fields for lost or vandal cases -->
             <label for="entry_type">
-              Identify how entry was gained to commit the act.
+              Identify how entry was gained to commit the act:
             </label>
             <select th:field="${incident.entryType}" id="entry_type">
               <option value="">Does not apply</option>
@@ -136,7 +136,7 @@
               </option>
             </select>
 
-            <label for="other_entry">Other entry gained details</label>
+            <label for="other_entry">Other entry gained details:</label>
             <textarea
               th:field="${incident.otherEntry}"
               id="other_entry"
@@ -147,7 +147,7 @@
             <!-- end gained entry section -->
           </div>
 
-          <label for="details_id" class="required">*Incident Details</label>
+          <label for="details_id" class="required">*Incident details:</label>
           <textarea
             th:field="${incident.details}"
             id="details_id"
@@ -157,7 +157,7 @@
             placeholder="Incident Details"
           ></textarea>
 
-          <label for="evidence_id">Evidence Left Behind</label>
+          <label for="evidence_id">Evidence left behind:</label>
 
           <textarea
             th:field="${incident.evidence}"

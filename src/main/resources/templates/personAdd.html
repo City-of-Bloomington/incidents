@@ -33,7 +33,6 @@
 			method="post">
 			<input type="hidden" th:field="${person.incident}" />
 			<input type="hidden" name="email" th:value="${person.incident.email}" />
-			
 			<fieldset>
 				<label
 					for="person_type_id"
@@ -45,9 +44,8 @@
 					<option th:each="r : ${personTypes}" th:value="${r.id}" th:text="${r.name}">
 					</option>
 				</select>
-				
 				<p><strong> Incident: </strong>
-						<a th:href="@{/incident/{id}(id=${person.incident.id})}">Back to Incident Page</a>
+						<a th:href="@{/incidentEdit/{id}(id=${person.incident.id})}">Back to Incident Page</a>
 				</p>
 				<label for="firstname_id" class="required">*First name</label>
 				<input type="text" th:field="${person.firstname}" id="firstname_id" size="30" required="required"
@@ -119,7 +117,6 @@
 						th:text="${r}">
 					</option>
 				</select>
-
 				<select id="height_in_id" th:field="${person.heightInch}" >
 					<option value="">in.</option>
 					<option th:each="r : ${#numbers.sequence(0,11)}"
@@ -127,7 +124,6 @@
 						th:text="${r}">
 					</option>
 				</select>
-				
 				<label for="weight_id">Weight:</label>
 				<input type="text" th:field="${person.weight}" id="weight_id" size="3" placeholder="weight lb" />
 				<label for="sex_id">Sex:</label>
@@ -150,8 +146,17 @@
 				</select>				
 				<label for="occupation_id">Occupation: </label>
 				<input type="text" th:field="${person.occupation}" id="occupation_id" size="70" placeholder="Occupation" />
+				
 				<p>All required fields must be filled in to Save and move on</p>
-				<input type="submit" value="Save" />
+				<ul class="button-group tab-style">
+					<li th:unless="${person.incident.hasPersonList()}">
+						<button
+							class="next-button"
+							th:attr="onclick=|window.location.href='@{/incidentEdit/{id}(id=${person.incident.id})}'|"
+							>Back </button>
+					</li>
+					<li> <button type="submit" class="next-button"> Next </button></li>
+				</ul>
 			</fieldset>
 		</form>
 	</main>

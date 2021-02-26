@@ -28,6 +28,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.persistence.Cacheable;
+import javax.persistence.Convert;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -118,8 +119,9 @@ public class Incident extends TopModel implements java.io.Serializable{
     @JoinColumn(name="incident_id",insertable=false, updatable=false)
     private List<ActionLog> actionLogs;
 
-		// @OneToOne(fetch = FetchType.EAGER)
-		@ManyToOne(optional=false, fetch=FetchType.EAGER)
+		@Convert(converter = AddressConverter.class)
+		@OneToOne
+		// @ManyToOne(optional=false, fetch=FetchType.EAGER)
 		@JoinColumn(name="address_id", updatable=false, referencedColumnName="id")
     Address address;
 		
@@ -334,7 +336,7 @@ public class Incident extends TopModel implements java.io.Serializable{
     }
 
 		@Transient
-		public boolean hasAddress(){
+		public boolean hasAddressInfo(){
 				return address != null;
 		}
     public String getDateDescription() {
@@ -405,7 +407,7 @@ public class Incident extends TopModel implements java.io.Serializable{
     @Transient
     public String getCityStateZip(){
 				String ret = "";
-				if(hasAddress()){
+				if(hasAddressInfo()){
 						ret = address.getCityStateZip();
 				}
 				return ret;
@@ -733,7 +735,7 @@ public class Incident extends TopModel implements java.io.Serializable{
     @Transient
     public String getAddressInfo(){
 				String ret = "";
-				if(hasAddress()){
+				if(hasAddressInfo()){
 						ret += address.getInfo();
 				}
 				return ret;

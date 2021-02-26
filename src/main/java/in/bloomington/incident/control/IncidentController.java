@@ -38,7 +38,7 @@ import in.bloomington.incident.service.ActionService;
 import in.bloomington.incident.service.ActionLogService;
 import in.bloomington.incident.service.RequestService;
 import in.bloomington.incident.service.UserService;
-import in.bloomington.incident.service.AddressService;
+import in.bloomington.incident.service.AddrService;
 import in.bloomington.incident.model.Incident;
 import in.bloomington.incident.model.IncidentType;
 import in.bloomington.incident.model.Action;
@@ -78,7 +78,7 @@ public class IncidentController extends TopController{
     @Autowired
     UserService userService;
     @Autowired
-		AddressService addressService;		
+		AddrService addrService;		
     @Autowired
     private JavaMailSender mailSender;
 		//
@@ -147,7 +147,7 @@ public class IncidentController extends TopController{
 						}
 				}
 				IncidentType type = incidentTypeService.findById(type_id);
-				Address address = addressService.findById(address_id);
+				Address address = addrService.findById(address_id);
 				Incident incident = null;
 				if(id > 0){
 						incident = incidentService.findById(id);
@@ -166,6 +166,7 @@ public class IncidentController extends TopController{
 						if(ids == null){
 								ids = new ArrayList<>();
 						}
+						ids.add(""+incident.getId());
 						session.setAttribute("incident_ids", ids);
 				}
 				//
@@ -345,9 +346,7 @@ public class IncidentController extends TopController{
 						}	    
 						if(hostPath != null)
 								url += hostPath;
-
 						url += "/incident/confirm/";
-
 						ActionLog actionLog = new ActionLog();
 						actionLog.setIncident(incident);
 						Action action = actionService.findById(2); // received action
@@ -443,7 +442,7 @@ public class IncidentController extends TopController{
 			 return "redirect:/incident/"+incident.getId();
 			 }
     */
-    @GetMapping("/incident/edit/{id}")
+    @GetMapping("/incidentEdit/{id}")
     public String showEditForm(@PathVariable("id") int id,
 															 Model model,
 															 HttpSession session
@@ -466,12 +465,7 @@ public class IncidentController extends TopController{
 				if(incident.canBeChanged()){
 						model.addAttribute("incident", incident);
 						model.addAttribute("entryTypes", entryTypes);
-						// model.addAttribute("allZipCodes", getAllZipCodes());
-						// model.addAttribute("allStates", getAllStates());
-						// model.addAttribute("allCities", getAllCities());
-						model.addAttribute("hostPath",hostPath);
 						getMessagesAndErrorsFromSession(session, model);
-						// handleErrorsAndMessages(model);
 						return "incidentUpdate";
 				}
 				else {
@@ -480,7 +474,7 @@ public class IncidentController extends TopController{
 						return "redirect:/index";
 				}
     }
-    @PostMapping("/incident/update/{id}")
+    @PostMapping("/incidentUpdate/{id}")
     public String updateIncident(@PathVariable("id") int id,
 																 @Valid Incident incident, 
 																 BindingResult result,
@@ -492,7 +486,7 @@ public class IncidentController extends TopController{
 						addError(error);
 						logger.error("Error update incident "+id+" "+error);
 						handleErrorsAndMessages(model);
-						return "updateIncident";
+						return "incidentUpdate";
 				}
 				if(!verifySession(session, ""+id)){
 						addMessage("no more changes can be made ");
@@ -507,7 +501,7 @@ public class IncidentController extends TopController{
 								pass = false;
 						}
 						if(!pass){
-								return "redirect:/incident/edit/"+incident.getId();
+								return "redirect:/incidentEdit/"+incident.getId();
 						}
 						incidentService.update(incident);
 						addMessage("Updated Successfully");				

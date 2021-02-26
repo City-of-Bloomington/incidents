@@ -61,9 +61,12 @@ public class Address extends TopModel implements java.io.Serializable{
 		private Integer old_id;
 		
     public Address(){
-
+				super();
     }
-		
+    public Address(int id){
+				super();
+				setId(id);
+		}
     public Address(int id,
 									 @NotNull(message = "Address text is required") String name,
 									 Double latitude,

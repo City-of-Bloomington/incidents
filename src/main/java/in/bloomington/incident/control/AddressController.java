@@ -35,6 +35,7 @@ import in.bloomington.incident.util.AddressCheck;
 import in.bloomington.incident.model.Item;
 import in.bloomington.incident.model.Address;
 import in.bloomington.incident.service.AddressService;
+import in.bloomington.incident.service.AddrService;
 import in.bloomington.incident.utils.Helper;
 
 
@@ -47,6 +48,8 @@ public class AddressController extends TopController{
     AddressCheck addressCheck;
     @Autowired
     AddressService addressService;
+    @Autowired
+    AddrService addrService;
 		
     @Value( "${incident.defaultcity}" )
     private String defaultCity;
@@ -92,7 +95,7 @@ public class AddressController extends TopController{
     public String addressEdit(@PathVariable("id") int id, Model model) {
 				Address address = null;
 				try{
-						address = addressService.findById(id);
+						address = addrService.findById(id);
 						
 				}catch(Exception ex){
 						addError("Invalid address Id"+id);
@@ -107,7 +110,7 @@ public class AddressController extends TopController{
     public String addressView(@PathVariable("id") int id, Model model) {
 				Address address = null;
 				try{
-						address = addressService.findById(id);
+						address = addrService.findById(id);
 						
 				}catch(Exception ex){
 						addError("Invalid address Id"+id);
@@ -203,14 +206,14 @@ public class AddressController extends TopController{
 								/**
 								 * if not then we save
 								 */
-								addressService.save(address);								
+								addrService.save(address);								
 						}
 						else{
 								System.err.println(" find address by name found "+addresses.size());
 								// if exist we update 
 								Address addr = addresses.get(0);
 								address.setId(addr.getId());
-								addressService.update(address);								
+								addrService.update(address);								
 						}
 						// next go to email request
 						model.addAttribute("type_id", address.getType_id());
@@ -280,7 +283,7 @@ public class AddressController extends TopController{
 								// if exist we update 
 								Address addr = addresses.get(0);
 								address.setId(addr.getId());
-								addressService.update(address);								
+								addrService.update(address);								
 						}
 						// next go to email request
 						model.addAttribute("type_id", address.getType_id());

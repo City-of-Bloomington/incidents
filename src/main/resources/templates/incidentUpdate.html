@@ -22,16 +22,14 @@
 		</div>
 		<p th:insert="general::incidentInstructions">
 		</p>
-		<p> *indicated required fields</p>
+		<p> *indicate required fields</p>
 
-		<form action="#" th:action="@{/incident/update/{id}(id=${incident.id})}" th:object="${incident}"
+		<form action="#" th:action="@{/incidentUpdate/{id}(id=${incident.id})}" th:object="${incident}"
 			onsubmit="return verifyIncidentInput()" method="post">
 			<input type="hidden" th:field="${incident.email}" />
 			<input type="hidden" th:field="${incident.receivedStr}" />
 			<input type="hidden" th:field="${incident.incidentType} " />
-			<div th:if="${incident.hasAddress()}">
-				<input type="hidden" th:field="${incident.address} " />
-			</div>
+			<input type="hidden" th:field="${incident.address} " />
 			<fieldset>
 				<legend>Incident Date and Time: </legend>
 				<p>eg. I went to bed at 11:00PM on Saturday, August 8th. When I woke up on Sunday around 6:00AM, I noticed my car window was smashed with a rock.
@@ -58,7 +56,7 @@
 					<textarea th:field="${incident.dateDescription}" id="date_description" rows="3" cols="60"></textarea>
 			</fieldset>
 			
-			<fieldset th:if="${incident.hasAddress()}">
+			<fieldset th:if="${incident.hasAddressInfo()}">
 				<legend>Location of Incident</legend>
 				<span th:text="${incident.addressInfo}"></span>
 			</fieldset>
@@ -75,25 +73,20 @@
 						<option th:each="r : ${entryTypes}" th:value="${r}" th:text="${r}">
 						</option>
 					</select>
-					
-					<label for="other_entry">Other entry gained details</label>
-
+					<label for="other_entry">Other entry gained details:</label>
 					<textarea th:field="${incident.otherEntry}" id="other_entry" rows="3" cols="60" placeholder="Other entry"></textarea>
-						
 				</div>
-		
-				<label for="details_id" class="required">Incident Details</label>
-
+				
+				<label for="details_id" class="required">Incident Details:</label>
 				<textarea th:field="${incident.details}" id="details_id" rows="3" cols="60" required="required" placeholder="Incident Details">
 				</textarea>
-				<label for="evidence_id">Evidence Left Behind</label>
 				
+				<label for="evidence_id">Evidence left behind:</label>
 				<textarea th:field="${incident.evidence}" id="evidence_id" rows="3" cols="60" placeholder="e.g. blood, shoe prints, fingerprints,..">
 				</textarea>
-
 			</fieldset>
-
 			<input type="submit" value="Save Changes" />
+			
 		</form>
 	</main>
 	
