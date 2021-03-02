@@ -38,7 +38,7 @@ import in.bloomington.incident.service.ActionService;
 import in.bloomington.incident.service.ActionLogService;
 import in.bloomington.incident.service.RequestService;
 import in.bloomington.incident.service.UserService;
-import in.bloomington.incident.service.AddrService;
+import in.bloomington.incident.service.AddressService;
 import in.bloomington.incident.model.Incident;
 import in.bloomington.incident.model.IncidentType;
 import in.bloomington.incident.model.Action;
@@ -78,7 +78,7 @@ public class IncidentController extends TopController{
     @Autowired
     UserService userService;
     @Autowired
-		AddrService addrService;		
+		AddressService addressService;		
     @Autowired
     private JavaMailSender mailSender;
 		//
@@ -147,7 +147,7 @@ public class IncidentController extends TopController{
 						}
 				}
 				IncidentType type = incidentTypeService.findById(type_id);
-				Address address = addrService.findById(address_id);
+				Address address = addressService.findById(address_id);
 				Incident incident = null;
 				if(id > 0){
 						incident = incidentService.findById(id);
@@ -178,7 +178,6 @@ public class IncidentController extends TopController{
 				//
 				model.addAttribute("incident", incident);
 				model.addAttribute("entryTypes", entryTypes);
-				model.addAttribute("hostPath", hostPath);
 				handleErrorsAndMessages(model);
         return "incidentAdd";
 
@@ -208,11 +207,16 @@ public class IncidentController extends TopController{
 						}
 						if(!pass){
 								model.addAttribute("entryTypes", entryTypes);
-								model.addAttribute("hostPath", hostPath);
 								model.addAttribute("incident", incident);
 								handleErrorsAndMessages(model);
 								return "incidentAdd";
 						}
+						int addr_id = incident.getAddr_id();
+						if(addr_id > 0){
+								Address address = addressService.findById(addr_id);;
+								if(address != null)
+										incident.setAddress(address);
+						}						
 						incidentService.update(incident);
 						//
 						// this redirect will decide the next step
@@ -222,7 +226,7 @@ public class IncidentController extends TopController{
 				else {
 						addMessage("no more changes can be made");
 						addMessagesAndErrorsToSession(session);
-						return "redirect:/introStart";	    
+						return "redirect:/";	    
 				}
     }
     // view mode
@@ -422,26 +426,6 @@ public class IncidentController extends TopController{
 						return "failedconfirm";
 				}
     }
-    /**
-			 @PostMapping("/incident/add")
-			 public String addIncident(@Valid Incident incident,
-			 BindingResult result,
-			 Model model,
-			 HttpSession session
-			 ) {
-			 if (result.hasErrors()) {
-			 String error = Helper.extractErrors(result);
-			 addError(error);
-			 logger.error("Error starting new incident "+error);
-			 return "incidentAdd";
-			 }
-			 incidentService.save(incident);
-			 addMessage("Added Successfully");
-			 addMessagesAndErrorsToSession(session);
-			 resetAll();
-			 return "redirect:/incident/"+incident.getId();
-			 }
-    */
     @GetMapping("/incidentEdit/{id}")
     public String showEditForm(@PathVariable("id") int id,
 															 Model model,
@@ -450,23 +434,29 @@ public class IncidentController extends TopController{
 				if(!verifySession(session, ""+id)){
 						addMessage("no more changes can be made ");
 						addMessagesAndErrorsToSession(session);
-						return "redirect:/index";
+						return "redirect:/";
 				}
 				Incident incident = null;
 				try{
 						incident = incidentService.findById(id);
-						
+						if(incident != null){
+								int addr_id = incident.getAddr_id();
+								if(addr_id > 0){
+										Address address = addressService.findById(addr_id);;
+										if(address != null)
+												incident.setAddress(address);
+								}
+						}
 				}catch(Exception ex){
 						addError("Invalid incident Id "+id);
 						logger.error(""+ex);
-
-						return "start";
+						return "redirect:/";
 				}
 				if(incident.canBeChanged()){
 						model.addAttribute("incident", incident);
 						model.addAttribute("entryTypes", entryTypes);
 						getMessagesAndErrorsFromSession(session, model);
-						return "incidentUpdate";
+						return "incidentAdd";
 				}
 				else {
 						addError("No more changes can be made to this incident");
@@ -503,6 +493,12 @@ public class IncidentController extends TopController{
 						if(!pass){
 								return "redirect:/incidentEdit/"+incident.getId();
 						}
+						int addr_id = incident.getAddr_id();
+						if(addr_id > 0){
+								Address address = addressService.findById(addr_id);;
+								if(address != null)
+										incident.setAddress(address);
+						}						
 						incidentService.update(incident);
 						addMessage("Updated Successfully");				
 						addMessagesAndErrorsToSession(session);

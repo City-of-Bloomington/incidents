@@ -204,9 +204,9 @@ public class PersonController extends TopController{
 				Person person = null;
 				try{
 						person = personService.findById(id);
-	    
 				}catch(Exception ex){
 						addError("Invalid person Id "+id);
+						System.err.println(" person edit error "+ex);
 						logger.error(" "+ex);
 						addMessagesAndErrorsToSession(session);	    
 						return "redirect:/"; 

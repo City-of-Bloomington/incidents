@@ -51,7 +51,7 @@ alter table incident_types change type name varchar(70) not null;
 update incident_types set name='Theft - All Other' where id=1;
 insert into incident_types values(4,'Theft - From Vehicle');
 insert into incident_types values(5,'Theft - From Building');
-insert into incident_types values(6,'Fruad');
+insert into incident_types values(6,'Fraud');
 
 alter table incidents rename column cfsNumber       to case_number;
 alter table incidents rename column incidentType_id to incident_type_id;

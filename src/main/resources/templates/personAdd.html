@@ -44,9 +44,6 @@
 					<option th:each="r : ${personTypes}" th:value="${r.id}" th:text="${r.name}">
 					</option>
 				</select>
-				<p><strong> Incident: </strong>
-						<a th:href="@{/incidentEdit/{id}(id=${person.incident.id})}">Back to Incident Page</a>
-				</p>
 				<label for="firstname_id" class="required">*First name</label>
 				<input type="text" th:field="${person.firstname}" id="firstname_id" size="30" required="required"
 					placeholder="First Name" />

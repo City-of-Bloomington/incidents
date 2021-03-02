@@ -333,7 +333,7 @@ delete from incidents;
  update incident_types set name='Theft - All Other' where id=1;
  insert into incident_types values(4,'Theft - From Vehicle');
  insert into incident_types values(5,'Theft - From Building');
- insert into incident_types values(6,'Fruad');
+ insert into incident_types values(6,'Fraud');
 
 alter table vehicles add value decimal(10,2);
 

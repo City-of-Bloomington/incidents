@@ -94,6 +94,8 @@ public class Incident extends TopModel implements java.io.Serializable{
     private String jurisdiction;
     @Transient
     private String oldAddress;
+		@Transient
+		private int addr_id = 0;
     
     @OneToMany
     @JoinColumn(name="incident_id",insertable=false, updatable=false)		
@@ -293,9 +295,11 @@ public class Incident extends TopModel implements java.io.Serializable{
     }
 
     public void setAddress(Address val) {
-				if(val != null)
+				if(val != null){
 						this.address = val;
-			 
+						if(val != null)
+								addr_id = address.getId();
+				}
     }		
 
     public String getDetails() {
@@ -385,7 +389,16 @@ public class Incident extends TopModel implements java.io.Serializable{
     public boolean canEdit(){
 				return canBeChanged();
     }
-				
+		@Transient
+		public int getAddr_id(){
+				if(address != null)
+						addr_id = address.getId();
+				return addr_id;
+		}
+		@Transient
+		public void setAddr_id(int val){
+				addr_id = val;
+		}
     @Transient
     public String getStartEndDate(){
 				String ret = "";
@@ -593,6 +606,13 @@ public class Incident extends TopModel implements java.io.Serializable{
     public void setMedias(List<Media> medias){
 				this.medias = medias;
     }
+		@Transient
+		public String getFirstPersonId(){
+				if(hasPersonList()){
+						return ""+persons.get(0).getId();
+				}
+				return "";
+		}
     /**
      *
      the incident can be submitted if the following conditions are met

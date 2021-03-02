@@ -35,7 +35,7 @@
         <input type="hidden" th:field="${incident.email}" />
         <input type="hidden" th:field="${incident.receivedStr}" />
         <input type="hidden" th:field="${incident.incidentType} " />
-        <input type="hidden" th:field="${incident.address} " />
+        <input type="hidden" th:field="${incident.addr_id} " />
         <fieldset>
           <legend>Incident Date and Time</legend>
           <p>
@@ -168,15 +168,25 @@
           ></textarea>
         </fieldset>
 				<ul class="button-group tab-style">
-					<li>
+					<li th:unless="${incident.hasPersonList()}">
 						<button
 							class="next-button"
 							th:attr="onclick=|window.location.href='@{/emailUpdate/{id}(id=${incident.id})}'|"
 							>Back </button>
 					</li>
-					<li> <button type="submit" class="next-button"> Next </button></li>
+					<li th:unless="${incident.hasPersonList()}">
+						<button
+							class="next-button"
+							type="submit"
+							>Next </button>
+					</li>					
+					<li th:if="${incident.hasPersonList()}">
+						<button
+							type="submit"
+							class="next-button"
+							>Save Changes </button>
+					</li>
 				</ul>
-				
       </form>
     </main>
   </body>

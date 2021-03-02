@@ -67,7 +67,7 @@
 			<div th:replace="incidentView::incident(${incident})"></div>
 			<ul class="button-group">
 				<li>
-					<input type="button" th:attr="onclick=|window.location.href='${hostPath}/incident/edit/${incident.id}'|"
+					<input type="button" th:attr="onclick=|window.location.href='${hostPath}/incidentEdit/${incident.id}'|"
 					value="Edit Incident" />
 				</li>
 			</ul>
