@@ -17,13 +17,12 @@
       <div th:if="${messages}">
         <div th:replace="general::messages(${messages})"></div>
       </div>
-      <p>*indicated required fields</p>
       <form
         action="#"
         th:action="@{/addressUpdateCheck}"
         th:object="${address}"
         onsubmit="return verifyAddress()"
-        method="post">
+        method="post"></form>
 				<input
           type="hidden"
           th:field="${address.old_id}"
@@ -106,7 +105,7 @@
 					</div>
         </fieldset>
 				<p>Click on Next to continue </p>
-				<ul class="button-group tab-style">
+				<ul class="button-group">
 					<li>
 						<button
 							class="next-button"

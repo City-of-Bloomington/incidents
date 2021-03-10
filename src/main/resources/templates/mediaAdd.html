@@ -15,37 +15,51 @@
       <div th:if="${errors}">
         <div th:insert="general::errors(${errors})"></div>
       </div>
-      
+
       <div th:if="${messages}">
         <div th:insert="general::messages(${messages})"></div>
       </div>
 
       <fieldset>
-        <caption>Upload Images of the Incident</caption>
-        <ul th:replace="general::uploadInstructions">
-        </ul>
+        <caption>
+          <p>Upload Images of the Incident</p>
+        </caption>
+
+        <ul th:replace="general::uploadInstructions"></ul>
+
         <div>
-          <form enctype="multipart/form-data" th:action="@{/media/save}" method="post">
+          <form
+            enctype="multipart/form-data"
+            th:action="@{/media/save}"
+            method="post"
+          >
             <input type="hidden" name="incident_id" th:value="${incident_id}" />
-            <dl th:each="i:${#numbers.sequence(media_count+1,media_max_count)}">
-              <dt>
-                <label for="file_id">Image File to Upload</label>
-              </dt>
-              <dd>
-                <input type="file" name="files" id="file_id" placeholder="Select file" />
-              </dd>
-						</dl>
-						<dl>
-              <dt>Notes (any explanation of the picture, optional)</dt>
-              <dd><textarea name="notes" rows="5" cols="60" placeHolder="Image description"></textarea>
-              </dd>
-              <dd>
-                <input type="submit" value="Save" />
-              </dd>
-            </dl>
+            <div
+              class="field-group"
+              th:each="i:${#numbers.sequence(media_count+1,media_max_count)}"
+            >
+              <label for="file_id">Image File to Upload</label>
+              <input
+                type="file"
+                name="files"
+                id="file_id"
+                placeholder="Select file"
+              />
+            </div>
+
+            <div class="field-group">
+              <p>Notes (any explanation of the picture, optional)</p>
+              <textarea
+                name="notes"
+                rows="5"
+                cols="60"
+                placeholder="Image description"
+              ></textarea>
+            </div>
+            <input type="submit" value="Save" />
+          </form>
         </div>
-        </form>
       </fieldset>
     </main>
   </body>
-</htmL>
+</html>

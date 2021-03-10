@@ -6,54 +6,56 @@
  -
  -->
 <html xmlns="http://www.w3.org/1999/xhtml">
+  <head th:replace="general::head('incidents')"> </head>
 
-<head th:replace="general::head('incidents')">
-</head>
+  <body>
+    <header th:replace="general::header"></header>
 
-<body>
-  <header th:replace="general::header"></header>
-
-  <div th:if="${errors}">
-    <div th:replace="general::errors(${errors})"></div>
-  </div>
-
-  <div th:if="${messages}">
-    <div th:replace="general::messages(${messages})"></div>
-  </div>
-
-  <main class="public-questions-wrapper">
-    <div>
-      <h2>Incident Reporting (continue)</h2>
+    <div th:if="${errors}">
+      <div th:replace="general::errors(${errors})"></div>
     </div>
 
-    <div id="finalStep" class="question" style="display:none">
-      <form action="#" th:action="@{/emailReqUpdate}" onsubmit="return verifyConfirm();" method="post">
-        <input type="hidden" name="type_id" th:value="${type_id}" />
-        <input type="hidden" name="address_id" th:value="${address_id}" />
-				<div th:unless="${type_id == 6}">
-					<div th:replace="general::reportSteps">
-					</div>
-				</div>
-				<div th:if="${type_id == 6}">
-					<div th:replace="general::reportStepsForFraud">
-					</div>
-				</div>				
-        <div th:replace="general::emailFields"></div>
-				<div class="next_div">
-          <p> Click on Next to continue </p>
-        </div>
-				<ul class="button-group tab-style">
-					<li>
-						<button
-							class="next-button"
-							th:attr="onclick=|window.location.href='@{/addressUpdate/{id}/{type_id}(id=${address_id},type_id=${type_id})}'|"
-							>Back </button>
-					</li>
-					<li> <button type="submit" class="next-button"> Next </button></li>
-				</ul>
-      </form>
+    <div th:if="${messages}">
+      <div th:replace="general::messages(${messages})"></div>
     </div>
-  </main>
-</body>
 
+    <main class="public-questions-wrapper">
+      <div>
+        <h2>Incident Reporting (continue)</h2>
+      </div>
+
+      <div id="finalStep" class="question" style="display: none">
+        <form
+          action="#"
+          th:action="@{/emailReqUpdate}"
+          onsubmit="return verifyConfirm();"
+          method="post"
+        >
+          <input type="hidden" name="type_id" th:value="${type_id}" />
+          <input type="hidden" name="address_id" th:value="${address_id}" />
+          <div th:unless="${type_id == 6}">
+            <div th:replace="general::reportSteps"></div>
+          </div>
+          <div th:if="${type_id == 6}">
+            <div th:replace="general::reportStepsForFraud"></div>
+          </div>
+          <div th:replace="general::emailFields"></div>
+          <div class="next_div">
+            <p>Click on Next to continue</p>
+          </div>
+          <ul class="button-group">
+            <li>
+              <button
+                class="next-button"
+                th:attr="onclick=|window.location.href='@{/addressUpdate/{id}/{type_id}(id=${address_id},type_id=${type_id})}'|"
+              >
+                Back
+              </button>
+            </li>
+            <li><button type="submit" class="next-button">Next</button></li>
+          </ul>
+        </form>
+      </div>
+    </main>
+  </body>
 </html>

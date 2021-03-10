@@ -6,66 +6,119 @@
  -
  -->
 <html xmlns="http://www.w3.org/1999/xhtml">
+  <head th:replace="general::head('Properties')"></head>
 
-<head th:replace="general::head('Properties')"></head>
+  <body>
+    <header th:replace="general::header"></header>
 
-<body>
-	<header th:replace="general::header"></header>
+    <div th:if="${errors}">
+      <div th:insert="general::errors(${errors})"></div>
+    </div>
 
-	<div th:if="${errors}">
-		<div th:insert="general::errors(${errors})"></div>
-	</div>
-	
-	<div th:if="${messages}">
-		<div th:insert="general::messages(${messages})"></div>
-	</div>
+    <div th:if="${messages}">
+      <div th:insert="general::messages(${messages})"></div>
+    </div>
 
-	<main class="public-questions-wrapper">
-		<h2>Add Fraud/Scam Details</h2>
-		<p>*Indicate required fields</p>
-		
-		<div th:insert="general::fraudInstructions">
-		</div>
-		
-		<form action="#"
-					th:action="@{/fraud/save}"
-					th:object="${fraud}"
-					onsubmit="return verifyFraudInput()"
-					method="post">
-		
-			<input type="hidden" th:field="${fraud.incident}" />
-		
-			<label> Incident: <a th:href="@{/incident/{id}(id=${fraud.incident.id})}">Back to Incident</a> </label>
-			<label class="required" for="fraudType">*Fraud/Scam Type</label>
-			<select
-				id="fraudType"
-				th:field="${fraud.fraudType}"
-				onchange="handelRelatedFraud()"
-				required="required">
-				<option value="">Fraud/Scam type options</option>
-				<option th:each="r : ${fraudTypes}" th:value="${r.id}" th:text="${r.name}">
-				</option>
-			</select>
-			<div id="type_other" style="display:none">
-				<label for="otherType">Other type:</label>
-				<input type="text" th:field="${fraud.otherType}" id="otherType" placeholder="Specify other fraud type" />
-			</div>
-			<div id="personal" style="display:none">
-				<label for="identityUsed">Identity used</label>
-				<input type="text" th:field="${fraud.identityUsed}" id="identityUsed" placeholder="Identity Used" />
-			</div>
-			<div id="account" style="display:none">
-				<label for="accountUsed">Account used</label>
-				<input type="text" th:field="${fraud.accountUsed}" id="accountUsed" placeholder="Account Used" />
-				<label for="amountTaken">Amount taken ($)</label>
-				<input type="text" th:field="${fraud.amountTaken}" id="amountTaken" placeholder="Amount taken in dddd.dd format" />
-			</div>
-			<label for="details" class="required">*Fraud/Scam details</label>
-			<textarea th:field="${fraud.details}" id="details" placeholder="Fraud or scam details" rows="5" cols="50" required="required">
-			</textarea>
-			
-			<input type="submit" value="Save" />
-		</form>
-	</main>
-</body>
-</htmL>
+    <main class="public-questions-wrapper">
+      <h2>Add Fraud/Scam Details</h2>
+      <p>*Indicate required fields</p>
+
+      <div th:insert="general::fraudInstructions"></div>
+
+      <form
+        action="#"
+        th:action="@{/fraud/save}"
+        th:object="${fraud}"
+        onsubmit="return verifyFraudInput()"
+        method="post"
+      >
+        <input type="hidden" th:field="${fraud.incident}" />
+
+        <p>
+          Incident:
+          <a th:href="@{/incident/{id}(id=${fraud.incident.id})}"
+            >Back to Incident</a
+          >
+        </p>
+
+        <div class="field-group">
+          <label class="required" for="fraudType">*Fraud/Scam Type</label>
+          <select
+            id="fraudType"
+            th:field="${fraud.fraudType}"
+            onchange="handelRelatedFraud()"
+            required="required"
+          >
+            <option value="">Fraud/Scam type options</option>
+            <option
+              th:each="r : ${fraudTypes}"
+              th:value="${r.id}"
+              th:text="${r.name}"
+            ></option>
+          </select>
+        </div>
+
+        <div id="type_other" style="display: none">
+          <div class="field-group">
+            <label for="otherType">Other type:</label>
+            <input
+              type="text"
+              th:field="${fraud.otherType}"
+              id="otherType"
+              placeholder="Specify other fraud type"
+            />
+          </div>
+        </div>
+
+        <div id="personal" style="display: none">
+          <div class="field-group">
+            <label for="identityUsed">Identity used</label>
+            <input
+              type="text"
+              th:field="${fraud.identityUsed}"
+              id="identityUsed"
+              placeholder="Identity Used"
+            />
+          </div>
+        </div>
+
+        <div id="account" style="display: none">
+          <div class="field-group">
+            <label for="accountUsed">Account used</label>
+            <input
+              type="text"
+              th:field="${fraud.accountUsed}"
+              id="accountUsed"
+              placeholder="Account Used"
+            />
+          </div>
+
+          <div class="field-group">
+            <label for="amountTaken">Amount taken ($)</label>
+            <input
+              type="text"
+              th:field="${fraud.amountTaken}"
+              id="amountTaken"
+              placeholder="Amount taken in dddd.dd format"
+            />
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label for="details" class="required">*Fraud/Scam details</label>
+          <textarea
+            th:field="${fraud.details}"
+            id="details"
+            placeholder="Fraud or scam details"
+            rows="5"
+            cols="50"
+            required="required"
+          >
+          </textarea>
+        </div>
+
+        <input type="submit" value="Save" />
+      </form>
+    </main>
+  </body>
+</html>

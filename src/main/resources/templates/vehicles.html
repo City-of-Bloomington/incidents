@@ -8,38 +8,45 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head th:replace="general::head('Vehicle')"></head>
   <body>
-    <header th:replace="general::header">
-    </header>
+    <header th:replace="general::header"></header>
     <div th:if="${errors}">
-      <div th:insert="general::errors(${errors})"></div>			
+      <div th:insert="general::errors(${errors})"></div>
     </div>
     <div th:if="${messages}">
-      <div th:insert="general::messages(${messages})"></div>			
-    </div>			
+      <div th:insert="general::messages(${messages})"></div>
+    </div>
     <div th:fragment="vehicles(vehicles, hostPath)">
-      <h2>Incident Vehicle(s) </h2>
+      <h2>Incident Vehicle(s)</h2>
       <div th:switch="${vehicles}">
-				<h2 th:case="null">No vehicle found</h2>
-				<div th:case="*">
-					<ul th:each="one : ${vehicles}" style="margin: 0; padding: 0;">
-						<li th:text="${'Damage Type: '+one.carDamageType.name}"></li>
-						<li th:if="${one.hasMakeInfo()}"><span th:text="${one.makeInfo}"></span></li>
-						<li th:if="${one.hasPlateInfo()}"><span th:text="${one.plateInfo}"></span></li>
-						<li th:if="${one.hasOwner()}"><span th:text="${'Owner: '+one.owner}"></span></li>
-						<li th:if="${one.hasValue()}"><span th:text="${'Value: '+one.valueFr}"></span></li>
-						<li th:if="${one.hasDescription()}"><span th:text="${'Description: '+one.description}"></span></li>	
-						<li>
-							<ul class="button-group">
-								<li>
-									<input type="button" th:attr="onclick=|window.location.href='${hostPath}/vehicle/edit/${one.id}'|"
-												 value="Edit Vehicle" />
-								</li>
-							</ul>
-						</li>
-					</ul>
-				</div>      
+        <h2 th:case="null">No vehicle found</h2>
+        <div th:case="*">
+          <ul th:each="one : ${vehicles}">
+            <li th:text="${'Damage Type: '+one.carDamageType.name}"></li>
+            <li th:if="${one.hasMakeInfo()}">
+              <span th:text="${one.makeInfo}"></span>
+            </li>
+            <li th:if="${one.hasPlateInfo()}">
+              <span th:text="${one.plateInfo}"></span>
+            </li>
+            <li th:if="${one.hasOwner()}">
+              <span th:text="${'Owner: '+one.owner}"></span>
+            </li>
+            <li th:if="${one.hasValue()}">
+              <span th:text="${'Value: '+one.valueFr}"></span>
+            </li>
+            <li th:if="${one.hasDescription()}">
+              <span th:text="${'Description: '+one.description}"></span>
+            </li>
+            <li class="button-group">
+              <input
+                type="button"
+                th:attr="onclick=|window.location.href='${hostPath}/vehicle/edit/${one.id}'|"
+                value="Edit Vehicle"
+              />
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
   </body>
-</htmL>
-		
+</html>

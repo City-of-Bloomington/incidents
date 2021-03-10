@@ -6,91 +6,156 @@
  -
  -->
 <html xmlns="http://www.w3.org/1999/xhtml">
+  <head th:replace="general::head('incidents')"> </head>
 
-<head th:replace="general::head('incidents')">
-</head>
+  <body>
+    <header th:replace="general::header"></header>
 
-<body>
-	<header th:replace="general::header">
-	</header>
-	
-	<div th:if="${errors}">
-		<div th:replace="general::errors(${errors})"></div>
-	</div>
+    <div th:if="${errors}">
+      <div th:replace="general::errors(${errors})"></div>
+    </div>
 
-	<div th:if="${messages}">
-		<div th:replace="general::messages(${messages})"></div>
-	</div>
+    <div th:if="${messages}">
+      <div th:replace="general::messages(${messages})"></div>
+    </div>
 
-	<main class="public-questions-wrapper">
-		<div class="welcome">
-			<h2>Welcome to Incident Reporting</h2>
-			<p>Guidelines for Using the Bloomington Police Department Online Reporting System.</p>
-			<p><strong>Note:</strong> Filing a false police report is a crime and is punishable by up to 180 days in jail and a fine of up to $1000.</p>
-			
-			<div id="typeOptions" style="display:inline">
-				The following are the incident types that can be reported through this system:<br />
-				<ul>
-					<li>Lost Property </li>
-					<li>Theft From Vehicle</li>					
-					<li>Theft From Building </li>	
-					<li>Theft (All Other)</li>
-					<li>Fraud & Scam</li>
-					<li>Vandalism </li>
-				</ul>
-			</div>
-			<p>Please answer the following questions carefully to create your report.</p>
-		</div>
-		<div id="questions">
-			<div class="question">
-				<p>1. Is this an emergency or a crime in progress?</p>
-				<form class="options">
-					<ul>
-						<li> <input class="option" type="radio" name="question1" value="Stop. Please do not use this system, call 911" />
-							Yes </li>
-						<li><input class="option" type="radio" name="question1" value="Next" /> No </li>
-					</ul>
-				</form>
-			</div>
+    <main class="public-questions-wrapper">
+      <div class="welcome">
+        <h2>Welcome to Incident Reporting</h2>
+        <p>
+          Guidelines for Using the Bloomington Police Department Online
+          Reporting System.
+        </p>
+        <p>
+          <strong
+            >Note: Filing a false police report is a crime and is punishable by
+            up to 180 days in jail and a fine of up to $1000.</strong
+          >
+        </p>
 
-			<div class="question" style="display:none">
-				<p>2. Are you 18 years or older? </p>
-				<form class="options">
-					<ul>
-						<li> <input class="option" type="radio" name="question2" value="Next" />Yes </li>
-						<li> <input class="option" type="radio" name="question2"
-								value="Stop, you must ask a parent or guardian to accompany you in using this system" /> No </li>
-					</ul>
-				</form>
-			</div>
+        <div id="typeOptions" style="display: inline">
+          <p>
+            The following are the incident types that can be reported through
+            this system:
+          </p>
+          <ul>
+            <li>Lost Property</li>
+            <li>Theft From Vehicle</li>
+            <li>Theft From Building</li>
+            <li>Theft (All Other)</li>
+            <li>Fraud & Scam</li>
+            <li>Vandalism</li>
+          </ul>
+        </div>
+        <p>
+          Please answer the following questions carefully to create your report.
+        </p>
+      </div>
+      <div id="questions">
+        <div class="question">
+          <p>1. Is this an emergency or a crime in progress?</p>
+          <form class="options">
+            <ul>
+              <li>
+                <input
+                  autofocus
+                  class="option"
+                  type="radio"
+                  name="question1"
+                  value="Stop. Please do not use this system, call 911"
+                />
+                Yes
+              </li>
+              <li>
+                <input
+                  class="option"
+                  type="radio"
+                  name="question1"
+                  value="Next"
+                />
+                No
+              </li>
+            </ul>
+          </form>
+        </div>
 
-			<div class="question" style="display:none">
-				<p>3. Are there known suspects or evidence that could lead to identification of a suspect (including surveillance video)?
-				</p>
-				<form>
-					<ul>
-						<li> <input class="option" type="radio" name="question4"
-								value="Stop. This system is designed to be used for thefts/vandalisms with no suspect information. To make this report, please contact us at 812-339-4477." />Yes
-						</li>
-						<li> <input class="option" type="radio" name="question4" value="Next" />No
-						</li>
-					</ul>
-				</form>
-			</div>
+        <div class="question" style="display: none">
+          <p>2. Are you 18 years or older?</p>
+          <form class="options">
+            <ul>
+              <li>
+                <input
+                  autofocus
+                  class="option"
+                  type="radio"
+                  name="question2"
+                  value="Next"
+                />Yes
+              </li>
+              <li>
+                <input
+                  class="option"
+                  type="radio"
+                  name="question2"
+                  value="Stop, you must ask a parent or guardian to accompany you in using this system"
+                />
+                No
+              </li>
+            </ul>
+          </form>
+        </div>
 
-			<div class="question" style="display:none" id="LastQuestion">
-				<p>4. Are you reporting injury to an animal or human?</p>
-				<form>
-					<ul>
-						<li> <input class="option" type="radio" name="question5"
-								value="Stop. If you would like to report injury to a being, please contact us at 812-339-4477" />Yes
-						</li>
-						<li> <input class="option" type="radio" name="question5" value="Next" />No
-						</li>
-					</ul>
-				</form>
-			</div>
-			<!--		
+        <div class="question" style="display: none">
+          <p>
+            3. Are there known suspects or evidence that could lead to
+            identification of a suspect (including surveillance video)?
+          </p>
+          <form>
+            <ul>
+              <li>
+                <input
+                  class="option"
+                  type="radio"
+                  name="question4"
+                  value="Stop. This system is designed to be used for thefts/vandalisms with no suspect information. To make this report, please contact us at 812-339-4477."
+                />Yes
+              </li>
+              <li>
+                <input
+                  class="option"
+                  type="radio"
+                  name="question4"
+                  value="Next"
+                />No
+              </li>
+            </ul>
+          </form>
+        </div>
+
+        <div class="question" style="display: none" id="LastQuestion">
+          <p>4. Are you reporting injury to an animal or human?</p>
+          <form>
+            <ul>
+              <li>
+                <input
+                  class="option"
+                  type="radio"
+                  name="question5"
+                  value="Stop. If you would like to report injury to a being, please contact us at 812-339-4477"
+                />Yes
+              </li>
+              <li>
+                <input
+                  class="option"
+                  type="radio"
+                  name="question5"
+                  value="Next"
+                />No
+              </li>
+            </ul>
+          </form>
+        </div>
+        <!--		
 			<div id="finalStep" class="question" style="display:none">
 				<p> In the next step</p>
 				<p>Please, select the incident category:</p>
@@ -104,19 +169,25 @@
 				</ul>
 			</div>
 			-->
-			<div id="moreInfo">
-				<div th:replace="general::introMoreInfo"></div>
-			</div>
-			<div id="next_div">
-				<p>Click on <input type="button" id='next' value="Next" /> to continue.</p>
-			</div>
-      <div id="finalStep" class="question" style="display:none">
-        <p> In the next step you will select the incident category</p>
-        <form action="#" th:action="@{/selectCategory}" method="get">
-          <p> Click on <button type="submit" class="next-button"> Next </button> to continue </p>
-        </form>
+        <div id="moreInfo">
+          <div th:replace="general::introMoreInfo"></div>
+        </div>
+        <div id="next_div">
+          <p>
+            Click on <input type="button" id="next" value="Next" /> to continue.
+          </p>
+        </div>
+        <div id="finalStep" class="question" style="display: none">
+          <p>In the next step you will select the incident category</p>
+          <form action="#" th:action="@{/selectCategory}" method="get">
+            <p>
+              Click on
+              <button type="submit" class="next-button">Next</button> to
+              continue
+            </p>
+          </form>
+        </div>
       </div>
-		</div>
-	</main>
-</body>
+    </main>
+  </body>
 </html>

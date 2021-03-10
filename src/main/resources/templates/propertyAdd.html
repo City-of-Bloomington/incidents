@@ -33,106 +33,139 @@
         method="post"
       >
         <input type="hidden" th:field="${property.incident}" />
-				<fieldset>
-					<input
-						type="hidden"
-						id="old_value_id"
-          th:field="${property.oldValue}"
-						/>
-					<input type="hidden" id="balance_id" th:field="${property.balance}" />
-					<input
-						type="hidden"
-						id="max_total_id"
-						th:field="${property.maxTotalValue}"
-						/>
-					<div th:if="${damageTypes}">
-						<label class="required">*Problem Type</label>
-						<ul>
-							<li th:each="r : ${damageTypes}">
-								<input
-                type="radio"
-									th:field="${property.damageType}"
-									th:value="${r.id}"
-									required="required"
-									/>
-								<span th:text="${r.name}"></span>
-							</li>
-						</ul>
-					</div>
+        <fieldset>
+          <input
+            type="hidden"
+            id="old_value_id"
+            th:field="${property.oldValue}"
+          />
+          <input type="hidden" id="balance_id" th:field="${property.balance}" />
+          <input
+            type="hidden"
+            id="max_total_id"
+            th:field="${property.maxTotalValue}"
+          />
 
-					<label for="brand">Brand</label>
-					<input
-						type="text"
-						th:field="${property.brand}"
-						id="brand"
-						placeholder="Brand"
-						/>
-					<span th:if="${#fields.hasErrors('brand')}" th:errors="*{brand}"></span>
+          <div class="field-group"></div>
+          <div th:if="${damageTypes}">
+            <label class="required">*Problem Type</label>
+            <ul>
+              <li th:each="r : ${damageTypes}">
+                <input
+                  type="radio"
+                  th:field="${property.damageType}"
+                  th:value="${r.id}"
+                  required="required"
+                />
+                <span th:text="${r.name}"></span>
+              </li>
+            </ul>
+          </div>
 
-					<label for="model">Model</label>
-					<input
-						type="text"
-						th:field="${property.model}"
-						id="model"
-						placeholder="Model"
-						/>
-					<span th:if="${#fields.hasErrors('model')}" th:errors="*{model}"></span>
-					
-					<label for="serialNum">Serial Number</label>
-					<input
-						type="text"
-						th:field="${property.serialNum}"
-						id="serialNum"
-						placeholder="Serial Number"
-						/>
-					<span
-						th:if="${#fields.hasErrors('serialNum')}"
-						th:errors="*{serialNum}"
-						></span>
-					
-					<label for="value_id" class="required">*$ Value</label>
-					<input
-						type="text"
-						th:field="${property.value}"
-						id="value_id"
-						placeholder="dddd.dd"
-						required="required"
-						/>
-					<span th:if="${#fields.hasErrors('value')}" th:errors="*{value}"></span>
+          <div class="field-group">
+            <label for="brand">Brand</label>
+            <input
+              type="text"
+              th:field="${property.brand}"
+              id="brand"
+              placeholder="Brand"
+            />
+            <span
+              th:if="${#fields.hasErrors('brand')}"
+              th:errors="*{brand}"
+            ></span>
+          </div>
 
-					<label for="owener">*Owner</label>
-					<input
-						type="text"
-						th:field="${property.owner}"
-						id="owner"
-						placeholder="property owner"
-						size="30"
-						maxlength="70"
-						required="required"
-						/>
-					<span th:if="${#fields.hasErrors('owner')}" th:errors="*{owner}"></span>
+          <div class="field-group">
+            <label for="model">Model</label>
+            <input
+              type="text"
+              th:field="${property.model}"
+              id="model"
+              placeholder="Model"
+            />
+            <span
+              th:if="${#fields.hasErrors('model')}"
+              th:errors="*{model}"
+            ></span>
+          </div>
 
-					<label for="description" class="required">*Property Description</label>
-					<textarea
-						th:field="${property.description}"
-						id="description"
-						placeholder="Description"
-						rows="5"
-						cols="50"
-						required="required">
+          <div class="field-group">
+            <label for="serialNum">Serial Number</label>
+            <input
+              type="text"
+              th:field="${property.serialNum}"
+              id="serialNum"
+              placeholder="Serial Number"
+            />
+            <span
+              th:if="${#fields.hasErrors('serialNum')}"
+              th:errors="*{serialNum}"
+            ></span>
+          </div>
+
+          <div class="field-group">
+            <label for="value_id" class="required">*$ Value</label>
+            <input
+              type="text"
+              th:field="${property.value}"
+              id="value_id"
+              placeholder="dddd.dd"
+              required="required"
+            />
+            <span
+              th:if="${#fields.hasErrors('value')}"
+              th:errors="*{value}"
+            ></span>
+          </div>
+
+          <div class="field-group">
+            <label for="owener">*Owner</label>
+            <input
+              type="text"
+              th:field="${property.owner}"
+              id="owner"
+              placeholder="property owner"
+              size="30"
+              maxlength="70"
+              required="required"
+            />
+            <span
+              th:if="${#fields.hasErrors('owner')}"
+              th:errors="*{owner}"
+            ></span>
+          </div>
+
+          <div class="field-group">
+            <label for="description" class="required"
+              >*Property Description</label
+            >
+            <textarea
+              th:field="${property.description}"
+              id="description"
+              placeholder="Description"
+              rows="5"
+              cols="50"
+              required="required"
+            >
 						<span th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></span>
-					</textarea>
-					<ul class="button-group tab-style">
-						<li th:unless="${property.incident.hasPropertyList()}">
-							<button
-								class="next-button"
-								th:attr="onclick=|window.location.href='@{/person/edit/{id}(id=${property.incident.getFirstPersonId()})}'|"
-								>Back </button>
-						</li>
-						<li> <button type="submit" class="next-button"> Next </button></li>
-					</ul>
-				</fieldset>
-			</form>
-		</main>
-	</body>
+					</textarea
+            >
+          </div>
+
+          <ul class="button-group">
+            <li th:unless="${property.incident.hasPropertyList()}">
+              <button
+                class="next-button"
+                th:attr="onclick=|window.location.href='@{/person/edit/{id}(id=${property.incident.getFirstPersonId()})}'|"
+              >
+                Back
+              </button>
+            </li>
+            <li><button type="submit" class="next-button">Next</button></li>
+          </ul>
+        </fieldset>
+      </form>
+    </main>
+  </body>
 </html>
