@@ -1043,6 +1043,16 @@ form .button-group {
   margin: 0 0 10px 0;
 }
 
+#address-full {
+  margin: 5px 0 10px 0;
+  padding: 10px;
+  border-radius: 3px;
+  display: none;
+  font-weight: 500;
+  background: #c1e4c2;
+  color: #1f4620;
+}
+
 #typeOptions ul {
   list-style: none;
   display: flex;
