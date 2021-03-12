@@ -589,6 +589,8 @@ service tomcat9 stop
 systemctl daemon-reload
 service tomcat9 restart
 ;;
-
+;; Note: we also need to copy media files from the old server to
+;; /srv/data/incidents/files/
+;;
 
 
