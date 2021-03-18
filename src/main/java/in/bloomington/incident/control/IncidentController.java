@@ -574,6 +574,13 @@ public class IncidentController extends TopController{
 				body += url+id+"/"+hash+" to confirm.\n\n ";
 				body += " Once your report is reviewed it will either be accepted or rejected, at which time you will receive another email explaining the reason for denial or a report reference number.\n\n";
 				body += "Please do not reply to this email as this is an automated system.";
+				body += "\n\n";
+				body += "Police Services\n";
+				body += "Bloomington Police Department (BPD)\n";
+				body += "220 E 3rd St, Bloomington, IN 47401\n";
+				body += "(812) 339-4477\n";
+				body += "https://bloomington.in.gov/police";
+				body += "\n";
 				EmailHelper emailHelper = new EmailHelper(mailSender, email_sender, to, subject, body);
 				String back = emailHelper.send();
 				if(!back.isEmpty()){
