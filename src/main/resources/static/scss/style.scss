@@ -331,6 +331,9 @@ form {
     width: 100%;
 
     &[type="submit"] {
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
       background: $color-fern;
       color: white;
       font-weight: 500;
@@ -686,6 +689,9 @@ main {
   }
 
   .next-button {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
     background: $color-fern;
     color: white;
     font-weight: 500;
@@ -722,6 +728,9 @@ main {
     input[type="button"],
     button,
     .button {
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
       background: $color-fern;
       color: white;
       font-weight: 500;
@@ -760,6 +769,9 @@ form .button-group {
   input[type="button"],
   button,
   .button {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
     cursor: pointer;
     background: $color-fern;
     color: white;

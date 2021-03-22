@@ -700,6 +700,9 @@ form input {
   width: 100%;
 }
 form input[type=submit] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
   background: #4caf50;
   color: white;
   font-weight: 500;
@@ -942,6 +945,9 @@ main #moreInfo {
   padding: 20px 0 0 0;
 }
 main .next-button {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
   background: #4caf50;
   color: white;
   font-weight: 500;
@@ -977,6 +983,9 @@ main #next_div .button,
 main .next_div input[type=button],
 main .next_div button,
 main .next_div .button {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
   background: #4caf50;
   color: white;
   font-weight: 500;
@@ -1021,6 +1030,9 @@ form .button-group {
 .button-group input[type=button],
 .button-group button,
 .button-group .button {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
   cursor: pointer;
   background: #4caf50;
   color: white;
