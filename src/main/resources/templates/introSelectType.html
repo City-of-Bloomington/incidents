@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--
+ - @copyright Copyright (C) 2014-2015 City of Bloomington, Indiana. All rights reserved.
+ - @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
+ - @author W. Sibo <sibow@bloomington.in.gov>
+ -
+ -->
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head th:replace="general::head('Incident')"></head>
+  <body>
+    <header th:replace="general::header"></header>
+    <div th:if="${errors}">
+      <div th:insert="general::errors(${errors})"></div>
+    </div>
+    <div th:if="${messages}">
+      <div th:insert="general::messages(${messages})"></div>
+    </div>
+    <main class="public-questions-wrapper">
+      <div class="welcome">
+        <h2>Incident Reporting</h2>
+        <div id="finalStep" class="question" style="display: none">
+          <p>
+            There will be a few additional questions depending on incident's
+            category.
+          </p>
+          <p><strong>Please, select the incident category:</strong></p>
+          <ul style="list-style: none">
+            <li><a th:href="@{/introLost}">Lost Property </a></li>
+            <li><a th:href="@{/introTheft/4}">Theft From Vehicle</a></li>
+            <li><a th:href="@{/introTheft/5}">Theft From Building </a></li>
+            <li><a th:href="@{/introTheft/1}">Theft (All Other)</a></li>
+            <li><a th:href="@{/introFraud}">Fraud & Scam</a></li>
+            <li><a th:href="@{/introVandal}">Vandalism </a></li>
+          </ul>
+        </div>
+        <div id="moreInfo">
+          <div th:replace="general::introMoreInfo"></div>
+        </div>
+        <div id="next_div">
+          <p>
+            Click on <input type="button" id="next" value="Next" /> to continue.
+          </p>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>

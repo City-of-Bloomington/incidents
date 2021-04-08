@@ -51,7 +51,7 @@ alter table incident_types change type name varchar(70) not null;
 update incident_types set name='Theft - All Other' where id=1;
 insert into incident_types values(4,'Theft - From Vehicle');
 insert into incident_types values(5,'Theft - From Building');
-insert into incident_types values(6,'Fruad');
+insert into incident_types values(6,'Fraud');
 
 alter table incidents rename column cfsNumber       to case_number;
 alter table incidents rename column incidentType_id to incident_type_id;
@@ -93,6 +93,10 @@ alter table incidents add evidence text after details;
 
 -- Media
 alter table media rename column name to file_name;
+-- added on 2/18
+alter table media drop constraint media_ibfk_1;
+alter table media modify id int unsigned not null auto_increment; 
+drop table media_ids;
 
 -- Persons
 rename table personTypes to person_types;

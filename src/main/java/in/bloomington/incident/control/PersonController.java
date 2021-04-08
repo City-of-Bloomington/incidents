@@ -156,7 +156,7 @@ public class PersonController extends TopController{
 						return "personAdd";
 				}
         personService.save(person);
-				addMessage("Saved Succefully");
+				addMessage("Saved Successfully");
 				addMessagesAndErrorsToSession(session);
 				return "redirect:/incident/"+incident.getId(); 
     }
@@ -204,9 +204,9 @@ public class PersonController extends TopController{
 				Person person = null;
 				try{
 						person = personService.findById(id);
-	    
 				}catch(Exception ex){
 						addError("Invalid person Id "+id);
+						System.err.println(" person edit error "+ex);
 						logger.error(" "+ex);
 						addMessagesAndErrorsToSession(session);	    
 						return "redirect:/"; 

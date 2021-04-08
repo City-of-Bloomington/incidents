@@ -15,23 +15,33 @@
     />
     <meta name="viewport" content="width=device-width,initial-scale=1.0" />
     <link th:href="@{/css/style.css}" rel="stylesheet" />
-		<link rel="stylesheet" th:href="@{/css/jquery-ui.min-1.12.1.css}" type="text/css" media="all" />
-		<link rel="stylesheet" th:href="@{/css/jquery-ui.theme-1.12.1.css}" type="text/css" media="all" />
+    <link
+      rel="stylesheet"
+      th:href="@{/css/jquery-ui.min-1.12.1.css}"
+      type="text/css"
+      media="all"
+    />
+    <link
+      rel="stylesheet"
+      th:href="@{/css/jquery-ui.theme-1.12.1.css}"
+      type="text/css"
+      media="all"
+    />
 
     <link
       rel="stylesheet"
       th:href="@{/css/addressChooser.css}"
       type="text/css"
       media="all"
-      />
-      
-      <link th:href="@{/css/jquery.timepicker.min.css}" rel="stylesheet" />
-		
+    />
+
+    <link th:href="@{/css/jquery.timepicker.min.css}" rel="stylesheet" />
+
     <script
       type="text/javascript"
       src="https://bloomington.in.gov/master_address/js/choosers/env.php"
-			></script>
-		
+    ></script>
+
     <script
       type="text/javascript"
       src="https://bloomington.in.gov/master_address/js/choosers/addressChooser.js"
@@ -39,15 +49,18 @@
     <script
       type="text/javascript"
       th:src="@{/js/handleAddressChoice.js}"
-			>
-		</script>
-		<script type="text/javascript" th:src="@{/js/jquery-3.5.0.min.js}"></script>		
-    <script type="text/javascript" th:src="@{/js/jquery-ui.1.12.1.js}" ></script>
-    <script type="text/javascript" th:src="@{/js/jquery.timepicker.min.js}">
-    </script>
+    ></script>
+    <script type="text/javascript" th:src="@{/js/jquery-3.5.0.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/jquery-ui.1.12.1.js}"></script>
+    <script
+      type="text/javascript"
+      th:src="@{/js/jquery.timepicker.min.js}"
+    ></script>
     <script type="text/javascript" th:src="@{/js/incidents.js}"></script>
     <script type="text/javascript" th:src="@{/js/incidents_intro.js}"></script>
-    <title th:text="${title}"></title>
+
+    <!-- <title th:text="${title}"></title> -->
+    <title>BPD Incident Reporting</title>
   </head>
 
   <body>
@@ -82,9 +95,16 @@
         </svg>
       </a>
 
-      <a th:href="@{/}" title="Incident Reporting" class="app-name">
-        Bloomington Police Department Incident Reporting</a
+      <a
+        th:href="@{/}"
+        title="Bloomington Police Department Incident Reporting"
+        class="app-name"
       >
+        <span class="full">
+          Bloomington Police Department Incident Reporting
+        </span>
+        <span class="mobile">BPD Incident Reporting </span>
+      </a>
 
       <nav id="navigation" role="navigation" aria-labelledby="navigation">
         <ul>
@@ -132,9 +152,17 @@
         </svg>
       </a>
 
-      <a th:href="@{/}" title="Incident Reporting" class="app-name">
-        Bloomington Police Department Incident Reporting</a
+      <a
+        th:href="@{/}"
+        title="Bloomington Police Department Incident Reporting"
+        class="app-name"
       >
+        <span class="full">
+          Bloomington Police Department Incident Reporting
+        </span>
+        <span class="mobile">BPD Incident Reporting </span>
+      </a>
+
       <nav id="navigation" role="navigation" aria-labelledby="navigation">
         <ul>
           <li>
@@ -170,35 +198,38 @@
       <br />
     </div>
     <div th:fragment="staffMenu(tabName)">
-      <ul
-        class="button-group tab-style"
-        th:if="${#session.getAttribute('user') != null}"
-      >
+      <ul class="button-group" th:if="${#session.getAttribute('user') != null}">
         <li th:attr="class=${tabName == 'Received'?'active':''}">
-          <input 
-								 type="button"
-								 th:attr="onclick=|window.location.href='@{/search/received}'|"
-								 value="Received"
-								 />
+          <input
+            type="button"
+            th:attr="onclick=|window.location.href='@{/search/received}'|"
+            value="Received"
+          />
         </li>
-        <li th:attr="class=${tabName == 'Confirmed'?'active':''}"
-						th:if="${#session.getAttribute('canApprove') != null}">
+        <li
+          th:attr="class=${tabName == 'Confirmed'?'active':''}"
+          th:if="${#session.getAttribute('canApprove') != null}"
+        >
           <input
             type="button"
             th:attr="onclick=|window.location.href='@{/search/confirmed}'|"
             value="Confirmed"
           />
         </li>
-        <li th:attr="class=${tabName == 'Approved'?'active':''}"
-					th:if="${#session.getAttribute('canProcess') != null}">
+        <li
+          th:attr="class=${tabName == 'Approved'?'active':''}"
+          th:if="${#session.getAttribute('canProcess') != null}"
+        >
           <input
             type="button"
             th:attr="onclick=|window.location.href='@{/search/approved}'|"
             value="Approved"
           />
         </li>
-        <li th:attr="class=${tabName == 'Incomplete'?'active':''}"
-					th:if="${#session.getAttribute('canProcess') != null}">
+        <li
+          th:attr="class=${tabName == 'Incomplete'?'active':''}"
+          th:if="${#session.getAttribute('canProcess') != null}"
+        >
           <input
             type="button"
             th:attr="onclick=|window.location.href='@{/search/incomplete}'|"
@@ -212,8 +243,8 @@
             value="Search"
           />
         </li>
-				<li th:if="${tabName == 'Settings'}" class="active">Settings</li>
-				<li th:if="${tabName == 'Report'}" class="active">Report</li>
+        <li th:if="${tabName == 'Settings'}" class="active">Settings</li>
+        <li th:if="${tabName == 'Report'}" class="active">Report</li>
       </ul>
     </div>
 
@@ -226,13 +257,11 @@
         <label for="email" class="required">*Email</label>
         <input id="email" name="email" value="" />
       </div>
-
+      <p>Please re-enter the same email to confirm</p>
       <div class="field-group">
         <label for="email2" class="required">*Confirm Email</label>
         <input id="email2" name="email2" value="" />
       </div>
-
-      <p>Please re-enter the same email to confirm</p>
     </div>
 
     <div th:fragment="reportSteps">
@@ -245,7 +274,8 @@
         <li>Upload incident image(s) (if any)</li>
         <li>Submit your report</li>
         <li>
-					Confirm your request via the link that will be sent to the email address you provide below.
+          Confirm your request via the link that will be sent to the email
+          address you provide below.
         </li>
       </ol>
 
@@ -271,7 +301,8 @@
         <li>Upload incident image(s) (if any)</li>
         <li>Submit your report</li>
         <li>
-					Confirm your request via the link that will be sent to the email address you provide below.
+          Confirm your request via the link that will be sent to the email
+          address you provide below.
         </li>
       </ol>
 
@@ -308,9 +339,7 @@
     </ul>
 
     <div th:fragment="propertyInstructions">
-      <p>
-        Use this page to report property that was lost, stolen or damaged.
-      </p>
+      <p>Use this page to report property that was lost, stolen or damaged.</p>
       <ul>
         <li>
           You are able to add multiple pieces of property, however, you can only
@@ -323,9 +352,7 @@
       </ul>
     </div>
     <div th:fragment="fraudInstructions">
-      <p>
-        Use this page to report any fraud or scam.
-      </p>
+      <p>Use this page to report any fraud or scam.</p>
       <ul>
         <li>
           If the fraud or scam type is not one of the list below, type the fraud
@@ -341,13 +368,6 @@
           in xxx.xx dollars format in the 'Amount taken' field.
         </li>
         <li>Any additional details use the 'Details' field</li>
-				<!--
-        <li>
-          To learn more about the most popular fraud and scams types you can
-          visit the federal government 
-          <a href="https://www.usa.gov/stop-scams-frauds"> the federal government website</a>. You can use the same website to report fraud and scams to other government agencies.
-        </li>
-				-->
       </ul>
     </div>
 
@@ -380,9 +400,7 @@
         If image file size is more than 5 MB, you need to resize it using one of
         the image editing tools such as MS paint
       </li>
-			<li>
-				Total max upload limit should not exceed 15MB
-			</li>
+      <li>Total max upload limit should not exceed 15MB</li>
       <li>When done with image uploads, click on 'Submit'</li>
       <li>You can upload one file at a time</li>
     </ul>
@@ -396,24 +414,24 @@
       </p>
 
       <p>You may contact one of the following nearby Police Departments:</p>
-      <ol>
+      <ul>
         <li>
-          - Indiana University Police Department; 812-855-4111; 1469 E 17th St,
+          Indiana University Police Department; 812-855-4111; 1469 E 17th St,
           Bloomington, IN 47408
         </li>
         <li>
-          - Monroe County Sheriff's Office; 812-349-2780; 301 N College Ave,
+          Monroe County Sheriff's Office; 812-349-2780; 301 N College Ave,
           Bloomington, IN 47404
         </li>
         <li>
-          - Indiana State Police; 812-332-4411; 1500 N Packinghouse Road,
+          Indiana State Police; 812-332-4411; 1500 N Packinghouse Road,
           Bloomington, IN 47404
         </li>
         <li>
-          - Ellettsville Police Department; 812-876-2272; 1406 W Guy McCown
-          Drive, Ellettsville, IN 47429
+          Ellettsville Police Department; 812-876-2272; 1406 W Guy McCown Drive,
+          Ellettsville, IN 47429
         </li>
-      </ol>
+      </ul>
     </div>
 
     <div th:fragment="errors(errors)">

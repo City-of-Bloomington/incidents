@@ -6,93 +6,127 @@
  -
  -->
 <html xmlns="http://www.w3.org/1999/xhtml">
+  <head th:replace="general::head('Incident Details')"></head>
 
-<head th:replace="general::head('Incident Details')"></head>
+  <body>
+    <header th:replace="general::header"></header>
 
-<body>
-	<header th:replace="general::header"></header>
+    <main class="public-questions-wrapper">
+      <h2>View Incident</h2>
 
-	<main class="public-questions-wrapper">
-		<h2>View Incident</h2>
+      <div th:if="${errors}">
+        <div th:replace="general::errors(${errors})"></div>
+      </div>
 
-		<div th:if="${errors}">
-			<div th:replace="general::errors(${errors})"></div>
-		</div>
-		
-		<div th:if="${messages}">
-			<div th:replace="general::messages(${messages})"></div>
-		</div>
-		<p>
-			If you need to add additional information relating to a person or upload supporting images, please use the links below
-		</p>
-		<ul class="button-group">
-			<li>
-				<input type="button" th:attr="onclick=|window.location.href='${hostPath}/person/add/${incident.id}'|"
-					value="Add Person" />
-			</li>
-		
-			<li th:if="${!incident.isFraudRelated()}">
-				<input type="button" th:attr="onclick=|window.location.href='${hostPath}/property/add/${incident.id}'|"
-					value="Add Property" />
-			</li>
-			<li th:if="${!incident.isFraudRelated()}">		
-				<input type="button" th:attr="onclick=|window.location.href='${hostPath}/vehicle/add/${incident.id}'|"
-					value="Add Vehicle" />
-			</li>
-			<!--
+      <div th:if="${messages}">
+        <div th:replace="general::messages(${messages})"></div>
+      </div>
+      <p>
+        If you need to add additional information relating to a person or upload
+        supporting images, please use the links below
+      </p>
+      <ul class="button-group">
+        <li>
+          <input
+            type="button"
+            th:attr="onclick=|window.location.href='${hostPath}/person/add/${incident.id}'|"
+            value="Add Person"
+          />
+        </li>
+
+        <li th:if="${!incident.isFraudRelated()}">
+          <input
+            type="button"
+            th:attr="onclick=|window.location.href='${hostPath}/property/add/${incident.id}'|"
+            value="Add Property"
+          />
+        </li>
+        <li th:if="${!incident.isFraudRelated()}">
+          <input
+            type="button"
+            th:attr="onclick=|window.location.href='${hostPath}/vehicle/add/${incident.id}'|"
+            value="Add Vehicle"
+          />
+        </li>
+        <!--
 			<li th:if="${incident.isFraudRelated()}">
 				<input type="button" th:attr="onclick=|window.location.href='${hostPath}/fraud/add/${incident.id}'|"
 					value="Add Fraud/Scam" />
 			</li>
 			-->
-			<li>
-				<input type="button" th:attr="onclick=|window.location.href='${hostPath}/media/add/${incident.id}'|"
-					value="Upload Image" />
-			</li>
-		</ul>
-		<p>
-			If you notice any incident information need change click on the corresponding Edit link.
-		</p>
-		<div th:if="${incident.canBeSubmitted()}">
-			<ul>
-				<li>Review your incident report below.</li>
-				<li>Edit any information. Click on the corresponding edit link for that section to edit information.</li>
-				<li>Once your report has been submitted, no changes can be made.</li>
-				<li>If no further changes are needed, click on the 'Next' at the bottom of this page.</li>
-			</ul>
-		</div>
+        <li>
+          <input
+            type="button"
+            th:attr="onclick=|window.location.href='${hostPath}/media/add/${incident.id}'|"
+            value="Upload Image"
+          />
+        </li>
+      </ul>
+      <p>
+        If you notice any incident information need change click on the
+        corresponding Edit link.
+      </p>
+      <div th:if="${incident.canBeSubmitted()}">
+        <ul>
+          <li>Review your incident report below.</li>
+          <li>
+            Edit any information. Click on the corresponding edit link for that
+            section to edit information.
+          </li>
+          <li>Once your report has been submitted, no changes can be made.</li>
+          <li>
+            If no further changes are needed, click on the 'Next' at the bottom
+            of this page.
+          </li>
+        </ul>
+      </div>
 
-		<h2>Incident General Info</h2>
-		<div>
-			<div th:replace="incidentView::incident(${incident})"></div>
-			<ul class="button-group">
-				<li>
-					<input type="button" th:attr="onclick=|window.location.href='${hostPath}/incident/edit/${incident.id}'|"
-					value="Edit Incident" />
-				</li>
-			</ul>
-			<div th:if="${incident.hasPersonList()}">
-				<div th:insert="persons::persons(${incident.persons},${hostPath})"></div>
-			</div>
-			<div th:if="${incident.hasPropertyList()}">
-				<div th:insert="properties::properties(${incident.properties},${incident.totalValueFr},${hostPath})"></div>
-			</div>
-		
-			<div th:if="${incident.hasVehicleList()}">
-				<div th:insert="vehicles::vehicles(${incident.vehicles},${hostPath})"></div>
-			</div>
-			<div th:if="${incident.hasFraudList()}">
-				<div th:insert="frauds::frauds(${incident.frauds},${hostPath})"></div>			
-			</div>
-			<div th:if="${incident.hasMediaList()}">
-				<div th:insert="medias::medias(${incident.medias})"></div>
-			</div>
-			
-			<div class="next_div" th:if="${incident.canBeSubmitted()}">
-				<input type="button" th:attr="onclick=|window.location.href='${hostPath}/incident/finalPage/${incident.id}'|"
-							 value="Next" />
-			</div>
-		</div>
-	</main>
-</body>
+      <h2>Incident General Info</h2>
+      <div>
+        <div th:replace="incidentView::incident(${incident})"></div>
+
+        <ul class="button-group">
+          <li>
+            <input
+              type="button"
+              th:attr="onclick=|window.location.href='${hostPath}/incidentEdit/${incident.id}'|"
+              value="Edit Incident"
+            />
+          </li>
+        </ul>
+
+        <div th:if="${incident.hasPersonList()}">
+          <div
+            th:insert="persons::persons(${incident.persons},${hostPath})"
+          ></div>
+        </div>
+
+        <div th:if="${incident.hasPropertyList()}">
+          <div
+            th:insert="properties::properties(${incident.properties},${incident.totalValueFr},${hostPath})"
+          ></div>
+        </div>
+
+        <div th:if="${incident.hasVehicleList()}">
+          <div
+            th:insert="vehicles::vehicles(${incident.vehicles},${hostPath})"
+          ></div>
+        </div>
+        <div th:if="${incident.hasFraudList()}">
+          <div th:insert="frauds::frauds(${incident.frauds},${hostPath})"></div>
+        </div>
+        <div th:if="${incident.hasMediaList()}">
+          <div th:insert="medias::medias(${incident.medias})"></div>
+        </div>
+
+        <div class="next_div" th:if="${incident.canBeSubmitted()}">
+          <input
+            type="button"
+            th:attr="onclick=|window.location.href='${hostPath}/incident/finalPage/${incident.id}'|"
+            value="Next"
+          />
+        </div>
+      </div>
+    </main>
+  </body>
 </html>

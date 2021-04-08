@@ -39,6 +39,10 @@ public class AddressServiceImpl implements AddressService {
 				repository.deleteById(id);
     }
     @Override
+    public Address findOne(int id){
+				return repository.findOne(id);
+    }		
+    @Override
     public List<Address> getAll(){
 				Iterable<Address> it = repository.findAll();
 				return changeToList(it);

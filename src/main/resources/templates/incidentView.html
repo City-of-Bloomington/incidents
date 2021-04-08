@@ -13,7 +13,9 @@
 	<header>
 		<div th:replace="general::header-staff"></div>
 	</header>
-	<main class="staff">	
+	<main class="staff">
+		<div th:replace="general::staffMenu('Search')">
+		</div>		
 		<h2>View Incident</h2>
 
 		<div th:if="${errors}">

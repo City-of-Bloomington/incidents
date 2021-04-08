@@ -21,7 +21,7 @@
     <div th:fragment="incidents(incidents)">
       <h2>Incidents</h2>
       <div th:switch="${incidents}">
-				<h4 th:case="null">No incidents found</h4>
+				<div class="message alert" th:case="null">No incident found </div>
 				<div th:case="*">
 					<table>
 						<thead>

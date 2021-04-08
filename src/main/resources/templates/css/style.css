@@ -107,11 +107,9 @@ body {
   line-height: 1;
 }
 
-ol li {
-  list-style-position: inside;
-}
-ol li::marker {
-  font-weight: 600;
+ol,
+ul {
+  list-style: none;
 }
 
 blockquote,
@@ -407,16 +405,6 @@ header div:first-of-type {
   align-items: center;
   width: 100%;
 }
-header ul {
-  list-style: none;
-  margin: 0;
-}
-@media (max-width: 767px) {
-  header ul li,
-header ul a {
-    font-size: 14px;
-  }
-}
 header a {
   text-decoration: none;
 }
@@ -448,11 +436,8 @@ header a.app-name {
   font-size: 16px;
   font-weight: 400;
   line-height: 21px;
-  margin: 0 0 0 5px;
+  margin: 0 0 0 20px;
   padding: 0 0 0 20px;
-}
-header a.app-name span.mobile {
-  display: none;
 }
 @media (max-width: 767px) {
   header a.app-name {
@@ -460,18 +445,17 @@ header a.app-name span.mobile {
     margin: 0;
     padding: 0 0 0 10px;
   }
-  header a.app-name span.mobile {
-    display: block;
-  }
-  header a.app-name span.full {
-    display: none;
-  }
 }
 header nav {
   display: flex;
   align-items: center;
   align-self: center;
   margin: 0 0 0 auto;
+}
+@media (max-width: 767px) {
+  header nav {
+    display: none;
+  }
 }
 header nav#navigation ul li a {
   color: #4f4f4f;
@@ -542,7 +526,7 @@ header nav.navigation-dropdown ul li a {
 
 html,
 body {
-  min-height: 100%;
+  height: 100%;
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
   -moz-osx-font-smoothing: grayscale;
@@ -700,9 +684,6 @@ form input {
   width: 100%;
 }
 form input[type=submit] {
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
   background: #4caf50;
   color: white;
   font-weight: 500;
@@ -797,7 +778,6 @@ main.public-questions-wrapper #questions .question form ul li input {
 }
 main.public-questions-wrapper #finalStep ul {
   padding: 0;
-  margin: 0;
 }
 main.public-questions-wrapper #finalStep ul li a {
   display: inline-block;
@@ -945,9 +925,6 @@ main #moreInfo {
   padding: 20px 0 0 0;
 }
 main .next-button {
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
   background: #4caf50;
   color: white;
   font-weight: 500;
@@ -963,6 +940,7 @@ main .next-button:focus, main .next-button:hover {
   background: #449d48;
 }
 main #next_div,
+main #finalStep form,
 main .next_div {
   border-top: 1px solid #dbdbdb;
   padding: 20px 0 0 0;
@@ -970,6 +948,7 @@ main .next_div {
   color: #4f4f4f;
 }
 main #next_div p,
+main #finalStep form p,
 main .next_div p {
   font-weight: 400 !important;
   color: #4f4f4f;
@@ -980,12 +959,12 @@ main .next_div p {
 main #next_div input[type=button],
 main #next_div button,
 main #next_div .button,
+main #finalStep form input[type=button],
+main #finalStep form button,
+main #finalStep form .button,
 main .next_div input[type=button],
 main .next_div button,
 main .next_div .button {
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
   background: #4caf50;
   color: white;
   font-weight: 500;
@@ -1002,6 +981,12 @@ main #next_div button:focus,
 main #next_div button:hover,
 main #next_div .button:focus,
 main #next_div .button:hover,
+main #finalStep form input[type=button]:focus,
+main #finalStep form input[type=button]:hover,
+main #finalStep form button:focus,
+main #finalStep form button:hover,
+main #finalStep form .button:focus,
+main #finalStep form .button:hover,
 main .next_div input[type=button]:focus,
 main .next_div input[type=button]:hover,
 main .next_div button:focus,
@@ -1011,14 +996,7 @@ main .next_div .button:hover {
   background: #449d48;
 }
 
-form .button-group {
-  border-bottom: none;
-  margin: 10px 0 0 0 !important;
-  padding: 10px 0 0 0 !important;
-}
-
 .button-group {
-  list-style: none;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
@@ -1030,9 +1008,6 @@ form .button-group {
 .button-group input[type=button],
 .button-group button,
 .button-group .button {
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
   cursor: pointer;
   background: #4caf50;
   color: white;
@@ -1049,35 +1024,6 @@ form .button-group {
 .button-group .button:hover,
 .button-group .button:focus {
   background: #449d48;
-}
-
-.autocomplete-wrapper {
-  margin: 0 0 10px 0;
-}
-
-#address-full {
-  margin: 5px 0 10px 0;
-  padding: 10px;
-  border-radius: 3px;
-  display: none;
-  font-weight: 500;
-  background: #c1e4c2;
-  color: #1f4620;
-}
-
-#typeOptions ul {
-  list-style: none;
-  display: flex;
-  flex-wrap: wrap;
-  margin: 0 0 10px 0;
-  padding: 0;
-}
-#typeOptions ul li {
-  background: #dbdbdb;
-  border-radius: 3px;
-  font-weight: 500;
-  margin: 0 5px 5px 0;
-  padding: 2px 5px;
 }
 
 /*# sourceMappingURL=../css/style.css.map */

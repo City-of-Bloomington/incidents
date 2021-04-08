@@ -71,7 +71,8 @@ public class SearchController extends TopController{
 				User user = findUserFromSession(session);
 				if(user == null ){
 						return "redirect:/login";
-				}	
+				}
+				resetAll();
 				List<Incident> all = null;
 				List<IncidentReceived> plist = receivedService.getAll();
 				if(plist != null){
@@ -83,10 +84,8 @@ public class SearchController extends TopController{
 						}
 				}
 				if(all != null && all.size() > 0){
+						addMessage("Found "+all.size()+" incidents");
 						model.addAttribute("incidents", all);
-				}
-				else{
-						addMessage("No incident found");
 						model.addAttribute("messages", messages);
 				}
         return "staff/received";
@@ -98,7 +97,8 @@ public class SearchController extends TopController{
 				User user = findUserFromSession(session);
 				if(user == null ){
 						return "redirect:/login";
-				}	
+				}
+				resetAll();
 				List<IncidentIncomplete> plist = incompleteService.getAll();
 				if(plist != null){
 						all = new ArrayList<>();
@@ -109,10 +109,8 @@ public class SearchController extends TopController{
 						}
 				}
 				if(all != null && all.size() > 0){
+						addMessage("Found "+all.size()+" incidents");
 						model.addAttribute("incidents", all);
-				}
-				else{
-						addMessage("No incident found");
 						model.addAttribute("messages", messages);
 				}
         return "staff/incomplete";
@@ -124,7 +122,8 @@ public class SearchController extends TopController{
 				User user = findUserFromSession(session);
 				if(user == null ){
 						return "redirect:/login";
-				}	
+				}
+				resetAll();
 				List<IncidentConfirmed> plist = confirmedService.getAll();
 				if(plist != null){
 						all = new ArrayList<>();
@@ -135,11 +134,9 @@ public class SearchController extends TopController{
 						}
 				}
 				if(all != null && all.size() > 0){
+						addMessage("Found "+all.size()+" incidents");
 						model.addAttribute("incidents", all);
-				}
-				else{
-						addMessage("No incident found");
-						model.addAttribute("messages", messages);
+						model.addAttribute("messages", messages);						
 				}
         return "staff/confirmed";
     }    
@@ -150,7 +147,8 @@ public class SearchController extends TopController{
 				User user = findUserFromSession(session);
 				if(user == null ){
 						return "redirect:/login";
-				}	
+				}
+				resetAll();
 				List<IncidentApproved> plist = approvedService.getAll();
 				if(plist != null){
 						all = new ArrayList<>();
@@ -160,11 +158,10 @@ public class SearchController extends TopController{
 										all.add(incident);
 						}
 				}
+				resetAll();
 				if(all != null && all.size() > 0){
+						addMessage("Found "+all.size()+" incidents");
 						model.addAttribute("incidents", all);
-				}
-				else{
-						addMessage("No incident found");
 						model.addAttribute("messages", messages);
 				}
         return "staff/approved";
@@ -174,16 +171,13 @@ public class SearchController extends TopController{
 				User user = findUserFromSession(session);
 				if(user == null ){
 						return "redirect:/login";
-				}	
+				}
 				Search search = new Search();
 				List<IncidentType> types = incidentTypeService.getAll();
         model.addAttribute("search", search);
 				model.addAttribute("types", types);
 				if(hasErrors())
 						model.addAttribute("errors", getErrors());
-				if(hasMessages()){
-						model.addAttribute("messages", getMessages());
-				}
         return "staff/search";
     }
     @PostMapping("/search/find")
@@ -207,6 +201,7 @@ public class SearchController extends TopController{
 				if(!search.getId().isEmpty()){
 						return "redirect:/incidentView/"+search.getId();
 				}
+				resetAll();
         List<Incident> incidents = searchService.find(search);
 				if(incidents != null && incidents.size() > 0){
 						addMessage(" found "+incidents.size()+" incidents");

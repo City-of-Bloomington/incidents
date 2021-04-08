@@ -8,48 +8,47 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head th:replace="general::head('Properties')"></head>
   <body>
-    <header th:replace="general::header">
-    </header>		
+    <header th:replace="general::header"></header>
     <div th:if="${errors}">
-      <div th:insert="general::errors(${errors})"></div>			
+      <div th:insert="general::errors(${errors})"></div>
     </div>
     <div th:if="${messages}">
-      <div th:insert="general::messages(${messages})"></div>			
-    </div>				
+      <div th:insert="general::messages(${messages})"></div>
+    </div>
     <div th:fragment="properties(properties,totalBalance,hostPath)">
       <h2>Reported Properties</h2>
       <div th:switch="${properties}">
-				<h4 th:case="null">No properties found</h4>
-				<div th:case="*">
-					<ul th:each="one : ${properties}" style="padding: 0;">
-						<li th:if="${one.hasDamageTypeInfo()}">
-							<strong>Damage Type:</strong>
-							<span th:text="${one.damageType}"></span>
-						</li>
-						<li>
-							<strong>Description:</strong>
-							<span th:text="${one.info}"></span>
-						</li>
-						<li>
-							<strong>Value:</strong>
-							<span th:text="${one.valueFr}"></span>
-						</li>
-						<li>
-							<ul class="button-group">
-								<li>
-									<input type="button" th:attr="onclick=|window.location.href='${hostPath}/property/edit/${one.id}'|"
-												 value="Edit Property" />
-								</li>
-							</ul>							
-						</li>
-						<li>
-							<strong>Total Reported Properties Value: </strong>
-							<span th:text="${totalBalance}"></span>
-						</li>
-					</ul>
-				</div>      
+        <h4 th:case="null">No properties found</h4>
+        <div th:case="*">
+          <ul th:each="one : ${properties}">
+            <li th:if="${one.hasDamageTypeInfo()}">
+              <strong>Damage Type:</strong>
+              <span th:text="${one.damageType}"></span>
+            </li>
+            <li>
+              <strong>Description:</strong>
+              <span th:text="${one.info}"></span>
+            </li>
+            <li>
+              <strong>Value:</strong>
+              <span th:text="${one.valueFr}"></span>
+            </li>
+
+            <li>
+              <strong>Total Reported Properties Value: </strong>
+              <span th:text="${totalBalance}"></span>
+            </li>
+
+            <li class="button-group">
+              <input
+                type="button"
+                th:attr="onclick=|window.location.href='${hostPath}/property/edit/${one.id}'|"
+                value="Edit Property"
+              />
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
   </body>
-</htmL>
-		
+</html>

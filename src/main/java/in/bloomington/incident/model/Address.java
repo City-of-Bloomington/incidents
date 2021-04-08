@@ -38,7 +38,7 @@ public class Address extends TopModel implements java.io.Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @NotNull(message = "Role name may not be null")
+    @NotNull(message = "Street address may not be null")
     private String name;
 		private Double latitude;
 		private Double longitude;
@@ -57,10 +57,16 @@ public class Address extends TopModel implements java.io.Serializable{
 		//
 		@Transient
 		private Integer type_id;
-    public Address(){
-
-    }
+		@Transient
+		private Integer old_id;
 		
+    public Address(){
+				super();
+    }
+    public Address(int id){
+				super();
+				setId(id);
+		}
     public Address(int id,
 									 @NotNull(message = "Address text is required") String name,
 									 Double latitude,
@@ -86,8 +92,6 @@ public class Address extends TopModel implements java.io.Serializable{
 				this.subunitId = subunitId;
 				this.invalidAddress = invalidAddress;
     }
-
-
 
     public int getId() {
 				return id;
@@ -178,6 +182,17 @@ public class Address extends TopModel implements java.io.Serializable{
 				return type_id;
 		}
 		@Transient
+		public void setOld_id(Integer val){
+				old_id = val;
+		}
+		@Transient
+		public Integer getOld_id(){
+				if(old_id == null)
+						return id;
+				else
+						return old_id;
+		}		
+		@Transient
 		public boolean isValid(){
 				return invalidAddress == null;
 		}
@@ -207,17 +222,25 @@ public class Address extends TopModel implements java.io.Serializable{
           
 				if(this == obj) 
 						return true; 
-				
         if(obj == null || obj.getClass()!= this.getClass()) 
-            return false; 
-				
-        Address one = (Address) obj; 
-        return one.getId() == this.getId();
+            return false;
+        Address one = (Address) obj;
+				if(this.id > 0 &&
+					 one.getId() > 0 &&
+					 this.id == one.getId()) return true;
+				if(one.getAddressId() != this.getAddressId()) return false;
+				if((one.getSubunitId() != null && this.getSubunitId() == null) ||
+					 (one.getSubunitId() == null && this.getSubunitId() != null) ||
+					 (one.getSubunitId() != this.getSubunitId())) return false;
+				return true;
     }
     @Override
     public int hashCode(){ 
 				int ret = 29;
-        return ret += this.id; 
+        ret += 13*this.addressId;
+				if(this.subunitId != null)
+						ret += 7*this.subunitId;
+				return ret;
     }
 
     @Override

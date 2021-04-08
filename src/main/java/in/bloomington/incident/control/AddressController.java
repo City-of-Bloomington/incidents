@@ -35,6 +35,7 @@ import in.bloomington.incident.util.AddressCheck;
 import in.bloomington.incident.model.Item;
 import in.bloomington.incident.model.Address;
 import in.bloomington.incident.service.AddressService;
+// import in.bloomington.incident.service.AddrService;
 import in.bloomington.incident.utils.Helper;
 
 
@@ -148,6 +149,18 @@ public class AddressController extends TopController{
 				model.addAttribute("hostPath", hostPath);
         return "addressInput";
     }
+    @CrossOrigin(origins = "https://bloomington.in.gov")
+    @GetMapping("/addressUpdate/{id}/{type_id}")
+    public String addressInput(@PathVariable("id") int id,
+															 @PathVariable("type_id") int type_id,
+															 Model model) {
+				Address address = addressService.findById(id);
+				address.setOld_id(id);
+				address.setType_id(type_id);
+				model.addAttribute("address", address);
+				model.addAttribute("hostPath", hostPath);
+        return "addressUpdate";
+    }		
 		// for testing purpose
     // @CrossOrigin(origins = "https://bloomington.in.gov")
     @GetMapping("/addressTest")
@@ -203,7 +216,7 @@ public class AddressController extends TopController{
 						// next go to email request
 						model.addAttribute("type_id", address.getType_id());
 						model.addAttribute("address_id", address.getId());						
-						return "email_questions";
+						return "emailAdd";
 				}
 				// no pass then we send the user to address input again with error message
 				model.addAttribute("address", address);
@@ -211,6 +224,76 @@ public class AddressController extends TopController{
 				return "addressInput";
 				
 		}
+		//
+		// we come here when back button is pressed
+		//
+    @PostMapping("/addressUpdateCheck")
+    public String addressUpdateCheck(@Valid Address address,
+																		 BindingResult result,
+																		 Model model
+																		 ) {
+				boolean pass = true;
+        if (result.hasErrors()) {
+						addError(Helper.extractErrors(result));
+						pass = false;
+        }
+				int old_id = address.getOld_id();
+				Address old_address = addressService.findById(old_id);
+				//
+				// check if the same address
+				if(old_address.equals(address)){
+						//
+						// no change in address, so we go to next step
+						//
+						System.err.println("The same address, no change");
+						model.addAttribute("type_id", address.getType_id());
+						model.addAttribute("address_id", old_id);						
+						return "emailAdd";
+				}
+				System.err.println("The address changed");				
+				if(!address.verifyAddress(defaultCity,
+																	defaultJurisdiction,
+																	defaultState,
+																	zipCodes)){
+						pass = false;						
+						addError(address.getErrorInfo());
+				}
+				if(pass && addressCheck.isInIUPDLayer(address.getLatitude(),
+																							address.getLongitude())){
+						pass = false;
+						addError("This address is in IU Police Department district");
+				}
+				if(pass){ //Success: save and go to next, email questions
+						/**
+						 * first we need to check if this address exist
+						 */
+						List<Address> addresses = addressService.findDistinctAddressByName(address.getName());
+						
+						if(addresses == null || addresses.size() == 0){
+								System.err.println(" find address by name not found ");
+								/**
+								 * if not then we save
+								 */
+								addressService.save(address);								
+						}
+						else{
+								System.err.println(" find address by name found "+addresses.size());
+								// if exist we update 
+								Address addr = addresses.get(0);
+								address.setId(addr.getId());
+								addressService.update(address);								
+						}
+						// next go to email request
+						model.addAttribute("type_id", address.getType_id());
+						model.addAttribute("address_id", address.getId());						
+						return "emailAdd";
+				}
+				// no pass then we send the user to address input again with error message
+				model.addAttribute("address", address);
+				model.addAttribute("errors", errors);
+				return "addressInput";
+				
+		}		
     /**
        list of addresses to try
 

@@ -8,44 +8,41 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head th:replace="general::head('Properties')"></head>
   <body>
-    <header th:replace="general::header">
-    </header>		
+    <header th:replace="general::header"></header>
     <div th:if="${errors}">
-      <div th:insert="general::errors(${errors})"></div>			
+      <div th:insert="general::errors(${errors})"></div>
     </div>
     <div th:if="${messages}">
-      <div th:insert="general::messages(${messages})"></div>			
-    </div>				
+      <div th:insert="general::messages(${messages})"></div>
+    </div>
     <div th:fragment="frauds(frauds, hostPath)">
       <h2>Reported Frauds/Scams</h2>
       <div th:switch="${frauds}">
-				<h4 th:case="null">No fraud/scam found</h4>
-				<div th:case="*">
-					<ul th:each="one : ${frauds}" style="padding: 0;">
-						<li th:if="${one.hasFraudTypeInfo()}">
-							<strong>Fraud/Scam Type: </strong>
-							<span th:text="${one.fraudType}"></span>
-						</li>
-						<li>
-							<strong>Details: </strong>
-							<span th:text="${one.info}"></span>
-						</li>
-						<li th:if="${one.hasValidAmount()}">
-							<strong>Amount Taken: </strong>
-							<span th:text="${one.amountTakenFr}"></span>
-						</li>
-						<li>
-							<ul class="button-group">
-								<li>
-									<input type="button" th:attr="onclick=|window.location.href='${hostPath}/fraud/edit/${one.id}'|"
-												 value="Edit Fraud/Scam" />
-								</li>
-							</ul>
-						</li>
-					</ul>
-				</div>      
+        <h4 th:case="null">No fraud/scam found</h4>
+        <div th:case="*">
+          <ul th:each="one : ${frauds}">
+            <li th:if="${one.hasFraudTypeInfo()}">
+              <strong>Fraud/Scam Type: </strong>
+              <span th:text="${one.fraudType}"></span>
+            </li>
+            <li>
+              <strong>Details: </strong>
+              <span th:text="${one.info}"></span>
+            </li>
+            <li th:if="${one.hasValidAmount()}">
+              <strong>Amount Taken: </strong>
+              <span th:text="${one.amountTakenFr}"></span>
+            </li>
+            <li class="button-group">
+              <input
+                type="button"
+                th:attr="onclick=|window.location.href='${hostPath}/fraud/edit/${one.id}'|"
+                value="Edit Fraud/Scam"
+              />
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
   </body>
-</htmL>
-		
+</html>
