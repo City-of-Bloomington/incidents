@@ -340,11 +340,19 @@ public class IncidentController extends TopController{
 						return "redirect:/index";
 				}
 				try{
+						String host_forward = req.getHeader("X-Forwarded-Host");
+
 						String host = req.getServerName();
 						String uri = req.getRequestURI();
 						String scheme = req.getScheme();
 						int port = req.getServerPort();
-						String url = scheme+"://"+host;
+						String url = scheme+"://";
+						if(host_forward != null){
+								url += host_forward;
+						}
+						else{
+								url += host;
+						}
 						if(port == 8080){ // for localhost
 								url += ":"+port;
 						}	    
