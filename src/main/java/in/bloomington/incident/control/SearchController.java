@@ -176,8 +176,8 @@ public class SearchController extends TopController{
 				List<IncidentType> types = incidentTypeService.getAll();
         model.addAttribute("search", search);
 				model.addAttribute("types", types);
-				if(hasErrors())
-						model.addAttribute("errors", getErrors());
+				getMessagesAndErrorsFromSession(session, model);
+				resetAll();
         return "staff/search";
     }
     @PostMapping("/search/find")
@@ -210,7 +210,8 @@ public class SearchController extends TopController{
 						}
 				}
 				else{
-						addMessage(" no match found ");
+						addMessage(" No match found ");
+						addMessagesAndErrorsToSession(session);
 						return "redirect:/search";
 				}
         model.addAttribute("incidents", incidents);

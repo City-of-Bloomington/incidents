@@ -48,7 +48,7 @@ public class SearchRepositoryImpl implements SearchRepository {
 				dln = search.getDln();
 				dob = search.getDob();
 				if(!caseNumber.isEmpty()){
-						qw = "em.caseNumber = ? ";
+						qw = "em.case_number like ? ";
 				}
 				if(!address.isEmpty()){
 						qf = " join addresses ad on em.address_id=ad.id ";
