@@ -40,7 +40,7 @@ import javax.naming.directory.SearchControls;
 import javax.naming.directory.SearchResult;
 import javax.naming.ldap.InitialLdapContext;
 import javax.naming.ldap.LdapContext;
-
+import java.util.regex.Pattern;
 
 import org.springframework.stereotype.Component;
 import org.springframework.core.env.Environment;
@@ -115,7 +115,20 @@ public class Helper{
         }
         return fileType;
     }
-
+		/**
+		 * we expect to have an integer or double
+		 * remove any $ or , from the string
+		 */
+		public final static String cleanNumber(String str){
+				String str2 = "";
+				try{
+						str2 = str.replaceAll("[$,]","");
+				}catch(Exception ex){
+						System.err.println(str+" "+ex);
+						str2 = str;
+				}
+				return str2;
+		}
     //
     // check multiple emails separated by comma
     //

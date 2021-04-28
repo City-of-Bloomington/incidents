@@ -163,9 +163,9 @@
             <label for="value_id">Damage Value (USD $)</label>
             <input
               type="text"
-              th:field="${vehicle.value}"
+              th:field="${vehicle.valueFr}"
               id="value_id"
-              placeholder="Value"
+              placeholder="ddd.dd"
             />(damage value related to this incident only)
             <span
               th:if="${#fields.hasErrors('value')}"

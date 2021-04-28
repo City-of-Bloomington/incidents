@@ -138,10 +138,17 @@ public class Property extends TopModel implements java.io.Serializable{
 				}
 				return str;
     }		
+    @Transient
+		public void setValueFr(String str){
+				if(str != null){
+						String str2 = Helper.cleanNumber(str);
+						value = Double.parseDouble(str2);
+				}
+		}
+    public void setValue(Double str) {
+				if(str != null)
+						value = str;
 
-    public void setValue(Double value) {
-				if(value != null)
-						this.value = value;
     }
 		
     public double getBalance() {
@@ -157,8 +164,9 @@ public class Property extends TopModel implements java.io.Serializable{
     }
 
     public void setOldValue(Double val) {
-				if(val != null)
+				if(val != null){
 						this.oldValue = val;
+				}
     }
     public double getMaxTotalValue() {
 				return maxTotalValue;

@@ -170,6 +170,7 @@ public class Vehicle extends TopModel implements java.io.Serializable{
 				if(val != null)
 						this.balance = val;
     }
+		
     public double getOldValue() {
 				return oldValue;
     }
@@ -343,11 +344,21 @@ public class Vehicle extends TopModel implements java.io.Serializable{
 				return str;
     }		
 
-    public void setValue(Double value) {
-				if(value != null)
-						this.value = value;
+    public void setValue(Double val) {
+				if(val != null)
+						value = val;
     }
-
+		@Transient
+    public void setValueFr(String val) {
+				if(val != null){
+						String str = Helper.cleanNumber(val);
+						try{
+								value = Double.parseDouble(str);
+						}catch(Exception ex){
+								System.err.println(ex+" "+val);
+						}
+				}
+    }
     public void setDescription(String val) {
 				if(val != null && !val.isEmpty())
 						this.description = val;
