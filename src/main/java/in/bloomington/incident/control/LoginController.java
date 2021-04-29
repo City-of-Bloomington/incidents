@@ -50,6 +50,7 @@ import org.slf4j.LoggerFactory;
 import in.bloomington.incident.service.UserService;
 import in.bloomington.incident.service.SearchService;
 import in.bloomington.incident.model.User;
+import in.bloomington.incident.model.Action;
 import in.bloomington.incident.utils.Helper;
 
 @Controller

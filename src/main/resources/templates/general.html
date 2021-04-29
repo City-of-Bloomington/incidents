@@ -199,17 +199,9 @@
     </div>
     <div th:fragment="staffMenu(tabName)">
       <ul class="button-group" th:if="${#session.getAttribute('user') != null}">
-        <li th:attr="class=${tabName == 'Received'?'active':''}">
-          <input
-            type="button"
-            th:attr="onclick=|window.location.href='@{/search/received}'|"
-            value="Received"
-          />
-        </li>
         <li
           th:attr="class=${tabName == 'Confirmed'?'active':''}"
-          th:if="${#session.getAttribute('canApprove') != null}"
-        >
+          th:if="${#session.getAttribute('canApprove') != null}">
           <input
             type="button"
             th:attr="onclick=|window.location.href='@{/search/confirmed}'|"
@@ -218,18 +210,23 @@
         </li>
         <li
           th:attr="class=${tabName == 'Approved'?'active':''}"
-          th:if="${#session.getAttribute('canProcess') != null}"
-        >
+          th:if="${#session.getAttribute('canProcess') != null}">
           <input
             type="button"
             th:attr="onclick=|window.location.href='@{/search/approved}'|"
             value="Approved"
           />
         </li>
+				<li th:attr="class=${tabName == 'Received'?'active':''}">
+          <input
+            type="button"
+            th:attr="onclick=|window.location.href='@{/search/received}'|"
+            value="Received"
+          />
+        </li>
         <li
           th:attr="class=${tabName == 'Incomplete'?'active':''}"
-          th:if="${#session.getAttribute('canProcess') != null}"
-        >
+          th:if="${#session.getAttribute('canProcess') != null}">
           <input
             type="button"
             th:attr="onclick=|window.location.href='@{/search/incomplete}'|"

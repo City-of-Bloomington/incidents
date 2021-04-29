@@ -17,6 +17,8 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.Query;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import in.bloomington.incident.model.User;
 import in.bloomington.incident.model.Search;
 import in.bloomington.incident.model.Incident;
@@ -26,6 +28,7 @@ import in.bloomington.incident.utils.Helper;
 @Transactional(readOnly = true)
 public class SearchRepositoryImpl implements SearchRepository {
 
+		final static Logger logger = LoggerFactory.getLogger(SearchRepositoryImpl.class);		
     @PersistenceContext
     @Autowired
     private EntityManager entityManager;
@@ -96,8 +99,6 @@ public class SearchRepositoryImpl implements SearchRepository {
 				if(!qw.isEmpty()){
 						qq += " where "+qw;
 				}
-	
-				System.err.println(" *** qq "+qq);
       
         Query query = entityManager.createNativeQuery(qq, Incident.class);
 				int jj=1;
@@ -132,7 +133,8 @@ public class SearchRepositoryImpl implements SearchRepository {
 						}	    
 	    
 				}catch(Exception ex){
-						System.err.println(ex);
+						System.err.println(ex+" "+qq);
+						logger.error(ex+" "+qq);
 				}
 
         return query.getResultList();
@@ -141,9 +143,9 @@ public class SearchRepositoryImpl implements SearchRepository {
 		public User findUser(String username) throws IOException {
 				String qq = "SELECT u.* FROM users as u where u.username = ?";
 				if(username == null || username.isEmpty()){
+						logger.error("username not set");
 						throw new IOException("Username is required");
 				}
-				System.err.println(" *** qq "+qq);
         Query query = entityManager.createNativeQuery(qq, User.class);
 				query.setParameter(1, username);				
 				List<User> users =  query.getResultList();
