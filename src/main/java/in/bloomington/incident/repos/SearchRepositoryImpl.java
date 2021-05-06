@@ -37,7 +37,7 @@ public class SearchRepositoryImpl implements SearchRepository {
     public List<Incident> find(Search search){
 				String id="",caseNumber="",address="",zip="",city="",
 						state="",dateFrom="",dateTo="",incidentTypeId="",
-						name="", dln="", dob="";
+						name="", dln="", dob="", actionId="",sortBy="";
 				String qw = "", qf="";
 				String qq = "SELECT em.* FROM incidents as em ";
 				id = search.getId(); // we handle this separately
@@ -50,17 +50,23 @@ public class SearchRepositoryImpl implements SearchRepository {
 				name = search.getName();
 				dln = search.getDln();
 				dob = search.getDob();
+				actionId = search.getActionId();
+				sortBy = search.getSortBy();
+				boolean addrTbl = false;
+				boolean personTbl = false;
+				boolean actionTbl = false;
 				if(!caseNumber.isEmpty()){
 						qw = "em.case_number like ? ";
 				}
 				if(!address.isEmpty()){
-						qf = " join addresses ad on em.address_id=ad.id ";
+						addrTbl = true;
+						// qf = " join addresses ad on em.address_id=ad.id ";
 						if(!qw.isEmpty()) qw += " and ";
 						qw += "ad.name like ? ";
 				}
 				if(!zip.isEmpty()){
-						if(qf.isEmpty() || qf.indexOf("addresses") == -1)
-								qf += " join addresses ad on em.address_id=ad.id ";
+						
+						// qf += " join addresses ad on em.address_id=ad.id ";
 						if(!qw.isEmpty()) qw += " and ";
 						qw += "ad.zipcode like ? ";
 				}
@@ -69,15 +75,23 @@ public class SearchRepositoryImpl implements SearchRepository {
 						qw += "em.incident_type_id = ? ";
 				}
 				if(!name.isEmpty()){
-						qf = " join persons pr on pr.incident_id=em.id ";
+						personTbl = true;
+						// qf = " join persons pr on pr.incident_id=em.id ";
 						if(!qw.isEmpty()) qw += " and ";
 						qw += "(pr.firstname like ? or pr.lastname like ?)";
 				}
 				if(!dln.isEmpty()){
-						if(qf.isEmpty() || qf.indexOf("persons") == -1)
-								qf = " join persons pr on pr.incident_id=em.id ";
+						personTbl = true;
+						/// if(qf.isEmpty() || qf.indexOf("persons") == -1)
+						//qf = " join persons pr on pr.incident_id=em.id ";
 						if(!qw.isEmpty()) qw += " and ";
 						qw += "pr.dln like ? ";
+				}
+				if(!actionId.isEmpty()){
+						actionTbl = true;
+
+						if(!qw.isEmpty()) qw += " and ";
+						qw +=" (al.action_id = ? and al.action_id in (select max(l2.action_id) from action_logs l2 where l2.incident_id=al.incident_id)) ";
 				}
 				if(!dateFrom.isEmpty()){
 						if(!qw.isEmpty()) qw += " and ";
@@ -88,18 +102,42 @@ public class SearchRepositoryImpl implements SearchRepository {
 						qw += "em.received <= ? ";
 				}
 				if(!dob.isEmpty()){
-						if(qf.isEmpty() || qf.indexOf("persons") == -1)
-								qf = " join persons pr on pr.incident_id=em.id ";
+						// if(qf.isEmpty() || qf.indexOf("persons") == -1)
+						//	qf = " join persons pr on pr.incident_id=em.id ";
 						if(!qw.isEmpty()) qw += " and ";
 						qw += "pr.dob = ? ";
-				}	
+				}
+				if(!sortBy.isEmpty()){
+						if(sortBy.indexOf("name") > -1){
+								personTbl = true;
+								sortBy = "pr.lastname, pr.firstname";
+						}
+						else if(sortBy.indexOf("address") > -1){
+								addrTbl = true;
+								sortBy = "ad.name";
+						}
+						else if(sortBy.indexOf("id") > -1 || sortBy.indexOf("date") > -1){
+								sortBy = "em."+sortBy;
+						}
+				}
+				if(personTbl){
+						qf = " join persons pr on pr.incident_id=em.id ";
+				}
+				if(addrTbl){
+						qf += " join addresses ad on em.address_id=ad.id ";
+				}
+				if(actionTbl){
+						qf += " join action_logs al on al.incident_id=em.id ";
+				}
 				if(!qf.isEmpty()){
 						qq += qf;
 				}
 				if(!qw.isEmpty()){
 						qq += " where "+qw;
 				}
-      
+				if(!sortBy.isEmpty()){
+						qq += " order by "+sortBy;
+				}
         Query query = entityManager.createNativeQuery(qq, Incident.class);
 				int jj=1;
 				if(!caseNumber.isEmpty()){
@@ -120,7 +158,10 @@ public class SearchRepositoryImpl implements SearchRepository {
 				}
 				if(!dln.isEmpty()){
 						query.setParameter(jj++, dln + "%");
-				}		
+				}
+				if(!actionId.isEmpty()){
+						query.setParameter(jj++, actionId);
+				}
 				try{
 						if(!dateFrom.isEmpty()){
 								query.setParameter(jj++, Helper.dfDate.parse(dateFrom), TemporalType.DATE);

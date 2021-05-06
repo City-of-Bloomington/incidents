@@ -30,7 +30,8 @@
 					<table>
 						<thead>
 							<tr>
-								<th>More Details</th>
+								<th>ID</th>
+								<th>Status</th>
 								<th>Incident Type</th>
 								<th>Received Date & Time</th>
 								<th>Incident Date & Time</th>
@@ -41,8 +42,9 @@
 						<tbody>
 							<tr th:each="incident : ${incidents}">
 								<td>
-									<a th:href="@{/staff/{id}(id=${incident.id})}">More Details</a>
+									<a th:href="@{/staff/{id}(id=${incident.id})}" th:text="${incident.id}"></a>
 								</td>
+								<td>Confirmed</td>
 								<td th:text="${incident.incidentType}"></td>
 								<td th:text="${incident.receivedStr}"></td>
 								<td th:text="${incident.dateTimeInfo}"></td>

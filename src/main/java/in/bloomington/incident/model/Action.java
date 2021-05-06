@@ -59,6 +59,8 @@ public class Action implements java.io.Serializable{
     @ManyToMany
     @JoinTable(name = "role_actions")
     List<Role> roles;
+		@Transient
+		String nameCap = "";
     //
     public Action(){
 
@@ -92,7 +94,15 @@ public class Action implements java.io.Serializable{
 
     public void setName(String name) {
 				this.name = name;
+				this.nameCap = toString();
     }
+		@Transient
+		public String getNameCap(){
+				if(nameCap == null || nameCap.isEmpty()){
+						this.nameCap = toString();
+				}
+				return nameCap;
+		}
 
     public String getDescription() {
 				return description;

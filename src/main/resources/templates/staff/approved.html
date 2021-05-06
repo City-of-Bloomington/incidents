@@ -30,7 +30,8 @@
 					<table>
 						<thead>
 							<tr>
-								<th>ID</th>							
+								<th>ID</th>
+								<th>Status</th>
 								<th>Incident Type</th>
 								<th>Received Date & Time</th>
 								<th>Address </th>
@@ -41,8 +42,9 @@
 						<tbody>
 							<tr th:each="incident : ${incidents}">
 								<td>
-									<a th:href="@{/process/{id}(id=${incident.id})}">More Details</a>
+									<a th:href="@{/process/{id}(id=${incident.id})}" th:text="${incident.id}"></a>
 								</td>
+								<td>Approved</td>
 								<td th:text="${incident.incidentType}"></td>
 								<td th:text="${incident.receivedStr}"></td>
 

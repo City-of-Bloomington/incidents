@@ -825,7 +825,7 @@ public class Incident extends TopModel implements java.io.Serializable{
     }
     @Transient
     public boolean verifyDetails(){
-				if(details == null || details.isEmpty()){
+				if(details == null || details.trim().isEmpty()){
 						addError("Incident details are required");
 						return false;
 				}

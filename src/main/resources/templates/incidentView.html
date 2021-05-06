@@ -29,21 +29,28 @@
 		<div th:fragment="incidentView(${incident})">				
 		
 			<fieldset>
-			<div th:fragment="incident(${incident})">						
-				<div class="m-b-10" th:if="${incident.hasStatusInfo()}">
-					<label>Status: </label>
-					<span th:text="${incident.status}"> </span>
+				<div th:fragment="incident(${incident})">
+				<div class="m-b-10">
+					<label>ID: </label>
+					<span th:text="${incident.id}"> </span>
 					<br />
 				</div>
 				
-
 				<div class="m-b-10" th:if="${incident.hasCaseNumber()}">
 					<label>Case #:</label>
 					<span th:text="${incident.caseNumber}"> </span>
 					<br />
 				</div>
-								
 				
+				<div class="m-b-10" th:if="${incident.hasStatusInfo()}">
+					<label>Status: </label>
+					<span th:text="${incident.status}"> </span>
+					<br />
+				</div>
+				<div class="m-b-10" th:unless="${incident.hasActionLogs()}">
+					<label>Status: </label>					
+					Incomplete (No action can be made)
+				</div>						
 				<div class="m-b-10">
 					<label>Incident type:</label>
 					<span th:text="${incident.incidentType}"> </span>
@@ -115,6 +122,7 @@
 		<div th:if="${incident.hasActionLogs()}">
 			<div th:insert="actionLogs::actionLogs(${incident.actionLogs})"></div>
 		</div>
+
 	</div>
 	</main>
 </body>

@@ -29,7 +29,6 @@
 						<li th:if="${one.hasOwner()}"><span th:text="${'Owner: '+one.owner}"></span></li>
 						<li th:if="${one.hasValue()}"><span th:text="${'Value: '+one.valueFr}"></span></li>
 						<li th:if="${one.hasDescription()}"><span th:text="${'Description: '+one.description}"></span></li>						
-						<li><a th:href="@{/vehicleView/{id}(id=${one.id})}">Details</a></li>
 					</ul>
 				</div>      
       </div>

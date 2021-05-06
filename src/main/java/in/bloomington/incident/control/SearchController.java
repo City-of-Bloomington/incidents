@@ -40,6 +40,7 @@ import in.bloomington.incident.model.IncidentConfirmed;
 import in.bloomington.incident.model.IncidentApproved;
 import in.bloomington.incident.model.Search;
 import in.bloomington.incident.model.User;
+import in.bloomington.incident.model.Action;
 import in.bloomington.incident.model.IncidentType;
 
 @Controller
@@ -174,8 +175,10 @@ public class SearchController extends TopController{
 				}
 				Search search = new Search();
 				List<IncidentType> types = incidentTypeService.getAll();
+				List<Action> actions = actionService.getAll();
         model.addAttribute("search", search);
 				model.addAttribute("types", types);
+				model.addAttribute("actions",actions);
 				getMessagesAndErrorsFromSession(session, model);
 				resetAll();
         return "staff/search";

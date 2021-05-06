@@ -29,7 +29,7 @@ import javax.validation.constraints.NotNull;
 
 public class Search implements java.io.Serializable{
 
-    private String id="";
+    private String id="", actionId="";
     private String caseNumber="";
     private String address="";
     private String zip="";
@@ -46,6 +46,8 @@ public class Search implements java.io.Serializable{
     //
     // the following not used
     private String race="",sex="";
+		//
+		private String sortBy="id";
     //
     //
     public Search(){
@@ -59,10 +61,22 @@ public class Search implements java.io.Serializable{
     public void setId(String id) {
 				this.id = id;
     }
+    public String getActionId() {
+				return actionId;
+    }
+
+    public void setActionId(String val) {
+				this.actionId = val;
+    }		
+    public String getSortBy() {
+				return sortBy;
+    }
+    public void setSortBy(String val) {
+				this.sortBy = val;
+    }		
     public String getCaseNumber() {
 				return caseNumber;
     }
-
     public void setCaseNumber(String val) {
 				if(val != null && !val.isEmpty())
 						caseNumber = val;
@@ -173,6 +187,7 @@ public class Search implements java.io.Serializable{
 					 dln.isEmpty() &&
 					 dob.isEmpty() &&
 					 race.isEmpty() &&
+					 actionId.isEmpty() &&
 					 sex.isEmpty()){
 						return false;
 				}
