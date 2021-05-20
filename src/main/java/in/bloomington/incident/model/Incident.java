@@ -52,6 +52,7 @@ public class Incident extends TopModel implements java.io.Serializable{
 		@JoinColumn(name="incident_type_id", referencedColumnName="id")
     private IncidentType incidentType;
 
+		private String category; // Person, Business
     private Date received;
 
     private Date date;
@@ -99,8 +100,12 @@ public class Incident extends TopModel implements java.io.Serializable{
     
     @OneToMany
     @JoinColumn(name="incident_id",insertable=false, updatable=false)		
-    private List<Person> persons;		
-
+    private List<Person> persons;
+		
+    @OneToOne
+    @JoinColumn(name="incident_id",insertable=false, updatable=false)		
+    private Business business;
+		
     @OneToMany
     @JoinColumn(name="incident_id", insertable=false, updatable=false)
     private List<Property> properties;
@@ -126,6 +131,7 @@ public class Incident extends TopModel implements java.io.Serializable{
 		// @ManyToOne(optional=false, fetch=FetchType.EAGER)
 		@JoinColumn(name="address_id", updatable=false, referencedColumnName="id")
     Address address;
+
 		
     public Incident(){
 				super();
@@ -150,7 +156,9 @@ public class Incident extends TopModel implements java.io.Serializable{
 										List<Vehicle> vehicles,
 										List<ActionLog> actionLogs,
 										List<Media> medias,
-										List<Fraud> frauds
+										List<Fraud> frauds,
+										String category,
+										Business business
 										
 										) {
 				super();
@@ -174,6 +182,8 @@ public class Incident extends TopModel implements java.io.Serializable{
 				this.medias = medias;
 				this.frauds = frauds;
 				this.address = address;
+				this.category = category;
+				this.business = business;
     }
 
     public int getId() {
@@ -254,7 +264,28 @@ public class Incident extends TopModel implements java.io.Serializable{
 				}
 				return str;
     }		
-
+		public void setCategory(String val){
+				if(val != null)
+						this.category = val;
+		}
+		public String getCategory(){
+				return category;
+		}
+		@Transient
+		public boolean isBusiness(){
+				return category != null && category.equals("Business");
+		}
+		public void setBusiness(Business val){
+				if(val != null)
+						this.business = val;
+		}
+		public Business getBusiness(){
+				return business;
+		}
+		@Transient
+		public boolean hasBusiness(){
+				return business != null;
+		}
     public void setDate(Date date) {
 				this.date = date;
     }

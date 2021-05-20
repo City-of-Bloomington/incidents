@@ -594,3 +594,13 @@ service tomcat9 restart
 ;;
 
 
+;;
+;; database tables related to business portion of incidents
+;; business local address is entered separately, so not needed here
+;;
+create table businesses(                                                            id int unsigned auto_increment primary key,                                     incident_id int unsigned not null,                                              business_name varchar(80) not null,                                             corporate_address varchar(160),                                                 business_number varchar(32),                                                    business_phone varchar(32),                                                     contact_name varchar(80),                                                       contact_title varchar(80),                                                      contact_phone varchar(32),                                                      contact_email varchar(160),                                                     foreign key(incident_id) references incidents(id)                              )engine=InnoDB;
+;;
+;; modify incidents table add category 
+;; 
+alter table incidents add category enum('Person','Business') after incident_type_id;
+
