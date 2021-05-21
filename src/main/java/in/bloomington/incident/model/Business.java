@@ -81,7 +81,7 @@ public class Business extends TopModel implements java.io.Serializable{
 				this.contactName = contactName;
 				this.contactTitle = contactTitle;
 				this.contactPhone = contactPhone;
-				this.contactEmail = contactEmail
+				this.contactEmail = contactEmail;
     }
     public int getId() {
 				return id;
@@ -129,9 +129,6 @@ public class Business extends TopModel implements java.io.Serializable{
 						this.contactEmail = val;
     }
 
-    public String getBusinessName() {
-				return businessName;
-    }
     public String getBusinessNumber() {
 				return businessNumber;
     }
@@ -167,10 +164,78 @@ public class Business extends TopModel implements java.io.Serializable{
     @Transient
     public boolean verify(){
 				boolean ret = true;
-
+				if(businessName == null || businessName.isEmpty()){
+						addError("business name is required");
+						ret = false;
+				}
+				if(contactName == null || contactName.isEmpty()){
+						addError("Contact name is required");
+						ret = false;
+				}
+				if(contactEmail == null || contactEmail.isEmpty()){
+						addError("Contact email is required");
+						ret = false;
+				}
+				if(contactPhone == null || contactPhone.isEmpty()){
+						addError("Contact phone is required");
+						ret = false;
+				}				
 				return ret;
     }
-
+		@Transient
+		String getCorporateInfo(){
+				String ret = "";
+				if(businessName != null && !businessName.isEmpty()){
+						ret += "Name: "+businessName;
+				}
+				if(businessNumber != null && !businessNumber.isEmpty()){
+						if(!ret.isEmpty()){
+								ret += ", ";
+						}
+						ret += "#: "+businessNumber;				
+				}
+				if(corporateAddress != null && !corporateAddress.isEmpty()){
+						if(!ret.isEmpty()){
+								ret += ", ";
+						}
+						ret += "Corporate address: "+corporateAddress;	
+				}
+				return ret;
+		}
+		@Transient
+		boolean hasCorporateInfo(){
+				return !getCorporateInfo().isEmpty();
+		}
+		@Transient
+		String getContactInfo(){
+				String ret = "";
+				if(contactName != null && !contactName.isEmpty()){
+						ret += "Name: "+contactName;
+				}
+				if(contactTitle != null && !contactTitle.isEmpty()){
+						if(!ret.isEmpty()){
+								ret += ", ";
+						}
+						ret += "Title: "+contactTitle;
+				}
+				if(contactPhone != null && !contactPhone.isEmpty()){
+						if(!ret.isEmpty()){
+								ret += ", ";
+						}
+						ret += "Phone: "+contactPhone;
+				}
+				if(contactEmail != null && !contactEmail.isEmpty()){
+						if(!ret.isEmpty()){
+								ret += ", ";
+						}
+						ret += "Email: "+contactEmail;
+				}				
+				return ret;
+		}
+		@Transient
+		boolean hasContactInfo(){
+				return !getContactInfo().isEmpty();
+		}
 		@Override
     public boolean equals(Object obj) { 
           

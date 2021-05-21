@@ -1,0 +1,39 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--
+ - @copyright Copyright (C) 2014-2015 City of Bloomington, Indiana. All rights reserved.
+ - @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
+ - @author W. Sibo <sibow@bloomington.in.gov>
+ -
+ -->
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head th:replace="general::head('Business')"></head>
+
+<body class="staff">
+	<header>
+		<div th:replace="general::header-staff"></div>
+	</header>
+	<main class="staff">
+		<h2>Business Details</h2>
+		<div th:if="${errors}">
+			<div th:insert="general::errors(${errors})"></div>
+		</div>
+		<div th:if="${messages}">
+			<div th:insert="general::messages(${messages})"></div>
+		</div>
+		<p>
+			Business Details
+		</p>
+		<ul>
+			<li>Incident: <a th:href="@{/incidentView/{id}(id=${business.incident.id})}">Back to Incident</a></li>
+			<li th:if="${business.hasCorporateInfo()}">
+				<span th:text="${'Corporate: '+business.corporateInfo}"></span>
+			</li>
+			<li th:if="${property.hasContactInfo()}">
+				<span th:text="${'Contact: '+business.contactInfo}"></span>
+			</li>
+		</ul>
+	</main>
+</body>
+
+</htmL>

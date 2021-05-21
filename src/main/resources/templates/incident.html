@@ -48,12 +48,6 @@
             value="Add Vehicle"
           />
         </li>
-        <!--
-			<li th:if="${incident.isFraudRelated()}">
-				<input type="button" th:attr="onclick=|window.location.href='${hostPath}/fraud/add/${incident.id}'|"
-					value="Add Fraud/Scam" />
-			</li>
-			-->
         <li>
           <input
             type="button"
@@ -94,7 +88,11 @@
             />
           </li>
         </ul>
-
+        <div th:if="${incident.isBusiness()}">
+          <div
+            th:replace="business::business(${incident.business})"
+          ></div>
+        </div>
         <div th:if="${incident.hasPersonList()}">
           <div
             th:insert="persons::persons(${incident.persons},${hostPath})"
