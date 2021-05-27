@@ -150,9 +150,34 @@ public class AddressController extends TopController{
         return "addressInput";
     }
     @CrossOrigin(origins = "https://bloomington.in.gov")
+    @GetMapping("/addressBusinessInput/{type_id}")
+    public String addressBusinessInput(@PathVariable("type_id") int type_id,
+															 Model model) {
+				Address address = new Address();
+				address.setType_id(type_id);
+				address.setCategory("Business");
+				model.addAttribute("address", address);
+				model.addAttribute("hostPath", hostPath);
+        return "addressInput";
+    }		
+		
+    @CrossOrigin(origins = "https://bloomington.in.gov")
     @GetMapping("/addressUpdate/{id}/{type_id}")
     public String addressInput(@PathVariable("id") int id,
 															 @PathVariable("type_id") int type_id,
+															 Model model) {
+				Address address = addressService.findById(id);
+				address.setOld_id(id);
+				address.setType_id(type_id);
+				model.addAttribute("address", address);
+				model.addAttribute("hostPath", hostPath);
+        return "addressUpdate";
+    }
+    @CrossOrigin(origins = "https://bloomington.in.gov")
+    @GetMapping("/addressBusinessUpdate/{id}/{type_id}/{category}")
+    public String addressBusinessInput(@PathVariable("id") int id,
+															 @PathVariable("type_id") int type_id,
+															 @PathVariable("category") String category,
 															 Model model) {
 				Address address = addressService.findById(id);
 				address.setOld_id(id);
@@ -215,7 +240,10 @@ public class AddressController extends TopController{
 						}
 						// next go to email request
 						model.addAttribute("type_id", address.getType_id());
-						model.addAttribute("address_id", address.getId());						
+						model.addAttribute("address_id", address.getId());
+						if(address.hasBusinessCategory()){
+								model.addAttribute("category", address.getCategory());
+						}
 						return "emailAdd";
 				}
 				// no pass then we send the user to address input again with error message
@@ -285,7 +313,10 @@ public class AddressController extends TopController{
 						}
 						// next go to email request
 						model.addAttribute("type_id", address.getType_id());
-						model.addAttribute("address_id", address.getId());						
+						model.addAttribute("address_id", address.getId());
+						if(address.hasBusinessCategory()){
+								model.addAttribute("category", address.getCategory());
+						}
 						return "emailAdd";
 				}
 				// no pass then we send the user to address input again with error message

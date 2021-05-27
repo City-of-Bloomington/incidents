@@ -99,15 +99,17 @@ public class IncidentController extends TopController{
 				model.addAttribute("address_id", incident.getAddress().getId());
 				model.addAttribute("type_id", incident.getIncidentType().getId());
 				return "emailAdd";
-    }		
+    }
+		// TODO
     @RequestMapping("/emailRequest")
     public String emailRequest(@RequestParam(required = true) String email,
-															@RequestParam(required = true) String email2,
-															@RequestParam(required = true) int type_id,
-															@RequestParam(required = true) int address_id,
-															Model model,
-															HttpSession session
-															){
+															 @RequestParam(required = true) String email2,
+															 @RequestParam(required = true) int type_id,
+															 @RequestParam(required = true) int address_id,
+															 @RequestParam String category,
+															 Model model,
+															 HttpSession session
+															 ){
 				boolean emailProblem = false;
 				if(email == null || email.isEmpty() ||
 					 email2 == null || email2.isEmpty()){
@@ -128,6 +130,9 @@ public class IncidentController extends TopController{
 				if(emailProblem){
 						model.addAttribute("type_id", type_id);
 						model.addAttribute("address_id", address_id);
+						if(category != null && !category.isEmpty()){
+								model.addAttribute("category", category);
+						}
 						handleErrorsAndMessages(model);
 						return "emailAdd";
 				}
@@ -154,6 +159,7 @@ public class IncidentController extends TopController{
 						incident.setEmail(email);
 						incident.setIncidentType(type);
 						incident.setAddress(address);
+						incident.setCategory(category);
 						incidentService.update(incident);
 				}
 				else{
@@ -162,20 +168,19 @@ public class IncidentController extends TopController{
 						incident.setReceivedNow();
 						incident.setIncidentType(type);
 						incident.setAddress(address);
+						incident.setCategory(category);						
 						incidentService.save(incident);
 						if(ids == null){
 								ids = new ArrayList<>();
 						}
+						//
+						// this is the only place we are adding
+						// incident ID in the session
+						//
+						//						
 						ids.add(""+incident.getId());
 						session.setAttribute("incident_ids", ids);
 				}
-				//
-				// this is the only place we are adding
-				// incident ID in the session
-				//
-				//
-				// return "redirect:/incidentStart/"+incident.getId();
-				//
 				model.addAttribute("incident", incident);
 				model.addAttribute("entryTypes", entryTypes);
 				handleErrorsAndMessages(model);
@@ -251,7 +256,12 @@ public class IncidentController extends TopController{
 						redirectAttributes.addFlashAttribute("errors", errors);
 						return "redirect:/error";
 				}
-				if(incident.canBeChanged()){	
+				if(incident.canBeChanged()){
+						if(incident.isBusinessRelated() && !incident.hasBusinessRecord()){
+								addMessage("You need to add business info");
+								addMessagesAndErrorsToSession(session);	    
+								return "redirect:/business/add/"+id;
+						}
 						if(!incident.hasPersonList()){
 								addMessage("You need to add a person");
 								addMessagesAndErrorsToSession(session);	    
@@ -271,6 +281,11 @@ public class IncidentController extends TopController{
 								addMessage("You need to add a vehicle");
 								addMessagesAndErrorsToSession(session);
 								return "redirect:/vehicle/add/"+id;
+						}
+						if(incident.isBusinessRelated() && !incident.hasMediaList()){
+								addMessage("You need to add a receipt or photo of the damage");
+								addMessagesAndErrorsToSession(session);
+								return "redirect:/media/add/"+id;
 						}
 						model.addAttribute("incident", incident);
 						model.addAttribute("hostPath", hostPath);	    

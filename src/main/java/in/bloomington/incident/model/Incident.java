@@ -272,7 +272,7 @@ public class Incident extends TopModel implements java.io.Serializable{
 				return category;
 		}
 		@Transient
-		public boolean isBusiness(){
+		public boolean isBusinessRelated(){
 				return category != null && category.equals("Business");
 		}
 		public void setBusiness(Business val){
@@ -283,7 +283,7 @@ public class Incident extends TopModel implements java.io.Serializable{
 				return business;
 		}
 		@Transient
-		public boolean hasBusiness(){
+		public boolean hasBusinessRecord(){
 				return business != null;
 		}
     public void setDate(Date date) {
@@ -414,8 +414,14 @@ public class Incident extends TopModel implements java.io.Serializable{
 		// entry gained is not required for lost property or vandalism
     @Transient
     public boolean showGainedEntry(){
-				return !(isVandalRelated() || isLostRelated() || isFraudRelated());
-    }				
+				return !(isVandalRelated() || isLostRelated() || isFraudRelated()
+								 || isBusinessRelated());
+    }
+		// we do not show evidence field for business related
+		@Transient
+		public boolean showEvidence(){
+				return !isBusinessRelated();
+		}
     @Transient
     public boolean canEdit(){
 				return canBeChanged();

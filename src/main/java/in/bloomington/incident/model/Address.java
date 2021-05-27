@@ -58,6 +58,8 @@ public class Address extends TopModel implements java.io.Serializable{
 		@Transient
 		private Integer type_id;
 		@Transient
+		private String category="";
+		@Transient
 		private Integer old_id;
 		
     public Address(){
@@ -180,6 +182,20 @@ public class Address extends TopModel implements java.io.Serializable{
 		@Transient
 		public Integer getType_id(){
 				return type_id;
+		}
+		@Transient
+		public void setCategory(String val){
+				if(val != null)
+						category = val;
+		}
+		@Transient
+		public String getCategory(){
+				return category;
+		}
+		// only business category will have a value
+		@Transient
+		public boolean hasBusinessCategory(){
+				return category != null && !category.isEmpty();
 		}
 		@Transient
 		public void setOld_id(Integer val){

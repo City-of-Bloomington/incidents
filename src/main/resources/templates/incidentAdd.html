@@ -177,8 +177,23 @@
             ></textarea>
           </div>
         </fieldset>
-
-        <ul class="button-group">
+				<ul class="button-group" th:if="${incident.isBusinessRelated()}">
+          <li th:unless="${incident.hasBusinessRecord()}">
+            <button
+              class="next-button"
+              th:attr="onclick=|window.location.href='@{/emailUpdate/{id}(id=${incident.id})}'|"
+            >
+              Back
+            </button>
+          </li>
+          <li th:unless="${incident.hasBusinessRecord()}">
+            <button class="next-button" type="submit">Next</button>
+          </li>
+          <li th:if="${incident.hasBisnessRecord()}">
+            <button type="submit" class="next-button">Save Changes</button>
+          </li>
+				</ul>
+        <ul class="button-group" th:unless="${incident.isBusinessRelated()}">
           <li th:unless="${incident.hasPersonList()}">
             <button
               class="next-button"
