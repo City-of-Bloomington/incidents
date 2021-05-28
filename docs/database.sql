@@ -593,14 +593,23 @@ service tomcat9 restart
 ;; /srv/data/incidents/files/
 ;;
 
-
-;;
-;; database tables related to business portion of incidents
-;; business local address is entered separately, so not needed here
-;;
-create table businesses(                                                            id int unsigned auto_increment primary key,                                     incident_id int unsigned not null,                                              business_name varchar(80) not null,                                             corporate_address varchar(160),                                                 business_number varchar(32),                                                    business_phone varchar(32),                                                     contact_name varchar(80),                                                       contact_title varchar(80),                                                      contact_phone varchar(32),                                                      contact_email varchar(160),                                                     foreign key(incident_id) references incidents(id)                              )engine=InnoDB;
 ;;
 ;; modify incidents table add category 
 ;; 
 alter table incidents add category enum('Person','Business') after incident_type_id;
 
+
+;;
+;; database tables related to business portion of incidents
+;; business local address is entered separately, so not needed here
+;;
+create table businesses(                                                            id int unsigned auto_increment primary key,                                     name varchar(80) not null,                                                      corporate_address varchar(160),                                                 business_number varchar(32),                                                    phone varchar(32),                                                              email varchar(160),                                                             street_address varchar(80),                                                     street_address2 varchar(80),                                                    city           varchar(80),                                                     state          varchar(2),                                                      zip_code       varchar(5),                                                      zip_ext        varchar(4)                                                      )engine=InnoDB;
+;;
+;;
+create table credentials(                                                            id int unsigned auto_increment primary key,                                     business_id int unsigned not null,                                              password varchar(256),                                                          last_update datetime,                                                           foreign key(business_id) references businesses(id)                              )engine=InnoDB;
+;;
+;; we will be using sha2(string, 256) for encryption
+;; something like select sha2(str, 256) = password; => 1 if match
+;;
+alter table incidents add business_id int unsigned after address_id;
+alter table incidents add foreign key(business_id) references businesses(id);

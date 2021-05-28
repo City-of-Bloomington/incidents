@@ -40,35 +40,13 @@ public class BusinessController extends TopController{
     @Autowired
     IncidentService incidentService;		
 
-    @GetMapping("/business/add/{incident_id}")
-    public String newBusiness(@PathVariable("incident_id") int incident_id,
+    @GetMapping("/business/add")
+    public String newBusiness(
 															Model model,
 															HttpSession session) {
 				
 				Business business = new Business();
-				Incident incident = null;
-				incident = incidentService.findById(incident_id);
-				
-				try{
-						if(incident == null || !incident.canBeChanged()){
-								addMessage("no more changes can be made");
-								addMessagesAndErrorsToSession(session);
-								return "redirect:/";	    
-						}
-						if(!verifySession(session, ""+incident_id)){				
-								addMessage("No more changes can be made ");
-								addMessagesAndErrorsToSession(session);
-								return "redirect:/";
-						}							
-						business.setIncident(incident);
-				}catch(Exception ex){
-						addError("Invalid incident "+incident_id);
-						logger.error(" "+ex);
-				}
         model.addAttribute("business", business);
-				if(hasErrors()){
-						model.addAttribute("errors",errors);
-				}
         return "businessAdd";
     }     
     @PostMapping("/business/save")
@@ -91,23 +69,11 @@ public class BusinessController extends TopController{
 						handleErrorsAndMessages(model);
 						return "businessAdd";						
 				}
-				int incident_id = business.getIncident().getId();
-				Incident incident = incidentService.findById(incident_id);
-				if(incident == null || !incident.canBeChanged()){
-						addMessage("no more changes can be made");
-						addMessagesAndErrorsToSession(session);
-						return "redirect:/";	    
-				}
-				if(!verifySession(session, ""+incident_id)){				
-						addMessage("No more changes can be made ");
-						addMessagesAndErrorsToSession(session);
-						return "redirect:/";
-				}				
-
         businessService.save(business);
-				addMessage("Added Successfully");
+				addMessage("Business Added Successfully");
+				int id = business.getId();
 				addMessagesAndErrorsToSession(session);
-				return "redirect:/incident/"+incident_id;
+				return "redirect:/business/"+id;
     }
 
     @GetMapping("/business/edit/{id}")
@@ -115,21 +81,8 @@ public class BusinessController extends TopController{
 															 Model model,
 															 HttpSession session) {
 				Business business = null;
-				Incident incident = null;
 				try{
 						business = businessService.findById(id);
-						incident = business.getIncident();
-						if(incident == null || !incident.canBeChanged()){
-								addMessage("no more changes can be made");
-								addMessagesAndErrorsToSession(session);
-								return "redirect:/";	    
-						}
-						int incident_id = incident.getId();
-						if(!verifySession(session, ""+incident_id)){				
-								addMessage("No more changes can be made ");
-								addMessagesAndErrorsToSession(session);
-								return "redirect:/";
-						}				
 				}catch(Exception ex){
 						addError("Invalid business "+id);
 						logger.error(" "+ex);
@@ -158,60 +111,15 @@ public class BusinessController extends TopController{
 						String error = business.getErrorInfo();
 						addError(error);
 						logger.error(error);
-						// model.addAttribute("properties", businessService.getAll());
 						handleErrorsAndMessages(model);
 						return "businessUpdate";						
 				}
-				Incident incident = business.getIncident();
-				if(incident == null || !incident.canBeChanged()){
-						addMessage("no more changes can be made");
-						addMessagesAndErrorsToSession(session);
-						return "redirect:/";	    
-				}
-				int incident_id = incident.getId();
-				if(!verifySession(session, ""+incident_id)){				
-						addMessage("No more changes can be made ");
-						addMessagesAndErrorsToSession(session);
-						return "redirect:/";
-				}				
 				businessService.save(business);
 				addMessage("Updated Successfully");
 				addMessagesAndErrorsToSession(session);
-				// need redirect to incident
-				return "redirect:/incident/"+incident_id;
+				return "redirect:/business/"+id;
     }
 		
-    @GetMapping("/business/delete/{id}")
-    public String deleteBusiness(@PathVariable("id") int id,
-																 Model model,
-																 HttpSession session) {
-
-				Incident incident = null;
-				try{
-						Business business = businessService.findById(id);
-						incident = business.getIncident();
-						if(incident == null || !incident.canBeChanged()){
-								addMessage("no more changes can be made");
-								addMessagesAndErrorsToSession(session);
-								return "redirect:/";	    
-						}
-						int incident_id = incident.getId();
-						if(!verifySession(session, ""+incident_id)){				
-								addMessage("No more changes can be made ");
-								addMessagesAndErrorsToSession(session);
-								return "redirect:/";
-						}				
-						businessService.delete(id);
-						addMessage("Deleted Succefully");
-				}catch(Exception ex){
-						addError("Error delete business "+id);
-						logger.error(" "+ex);
-				}
-				addMessagesAndErrorsToSession(session);
-				resetAll();
-				return "redirect:/incident/"+incident.getId();
-
-    }
     @GetMapping("/business/{id}")
     public String viewBusiness(@PathVariable("id") int id, Model model) {
 
@@ -223,20 +131,7 @@ public class BusinessController extends TopController{
 						logger.error(" "+ex);
 				}
 				handleErrorsAndMessages(model);
-				return "business";
-    }
-    @GetMapping("/businessView/{id}")
-    public String businessView(@PathVariable("id") int id, Model model) {
-
-				try{
-						Business business = businessService.findById(id);
-						model.addAttribute("business", business);						
-				}catch(Exception ex){
-						addError("Invalid business "+id);
-						logger.error(" "+ex);
-				}
-				handleErrorsAndMessages(model);
 				return "businessView";
-    }	    
+    }
 		
 }

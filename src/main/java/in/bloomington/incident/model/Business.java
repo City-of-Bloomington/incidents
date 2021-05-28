@@ -36,52 +36,65 @@ public class Business extends TopModel implements java.io.Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-		@Column(name="business_name")
-    String businessName;
+		@Column(name="name")
+    String name;
 		@Column(name="corporate_address")
     String corporateAddress;
 		@Column(name="business_number")		
 		String businessNumber;
-		@Column(name="business_phone")		
-		String businessPhone;
-		@Column(name="contact_name")		
-		String contactName;
-		@Column(name="contact_title")		
-		String contactTitle;
-		@Column(name="contact_phone")		
-		String contactPhone;
-		@Column(name="contact_email")		
-		String contactEmail;
-    //
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "incident_id")
-    Incident incident;
+		@Column(name="phone")		
+		String phone;
+		@Column(name="email")		
+		String email;
+		@Column(name="street_address")		
+		String streetAdress;
+		@Column(name="street_address2")		
+		String streetAdress2;
+		@Column(name="city")		
+		String city;
+		@Column(name="state")		
+		String state;
+		@Column(name="zip_code")		
+		String zipCode;
+		@Column(name="zip_ext")		
+		String zipExt;		
+		@OneToOne
+		@JoinColumn(name="business_id", updatable=false, referencedColumnName="id")
+    Credential credential;
     //
     public Business(){
 
     }
     public Business(int id,
-										Incident incident,
-										String businessName,
+										String name,
 										String corporateAddress,
 										String businessNumber,
-										String businessPhone,
-										String contactName,
-										String contactTitle,
-										String contactPhone,
-										String contactEmail
+										String phone,
+										String email,
+										
+										String streetAdress,
+										String streetAdress2,
+										String city,
+										String state,
+										String zipCode,
+										
+										String zipExt,
+										Credential credential
 										) {
 				super();
 				this.id = id;
-				this.incident = incident;
-				this.businessName = businessName;
+				this.name = name;
 				this.corporateAddress = corporateAddress;
 				this.businessNumber = businessNumber;
-				this.businessPhone = businessPhone;
-				this.contactName = contactName;
-				this.contactTitle = contactTitle;
-				this.contactPhone = contactPhone;
-				this.contactEmail = contactEmail;
+				this.phone = phone;
+				this.email = email;
+				this.streetAdress = streetAdress;
+				this.streetAdress2 = streetAdress2;
+				this.city = city;
+				this.state = state;
+				this.zipCode = zipCode;
+				this.zipExt = zipExt;
+				this.credential = credential;
     }
     public int getId() {
 				return id;
@@ -91,13 +104,13 @@ public class Business extends TopModel implements java.io.Serializable{
 				this.id = id;
     }
 
-    public String getBusinessName() {
+    public String getBusinessNumber() {
 				return businessNumber;
     }
 
-    public void setBusinessName(String val) {
+    public void setName(String val) {
 				if(val != null && !val.isEmpty())
-						this.businessName = val;
+						this.name = val;
     }
 
     public String getCorporateAddress() {
@@ -108,76 +121,92 @@ public class Business extends TopModel implements java.io.Serializable{
 				if(val != null && !val.isEmpty())
 						this.businessNumber = val;
     }
-    public void setBusinessPhone(String val) {
+    public void setPhone(String val) {
 				if(val != null && !val.isEmpty())
-						this.businessPhone = val;
+						this.phone = val;
     }
-    public void setContactName(String val) {
+    public void setEmail(String val) {
 				if(val != null && !val.isEmpty())
-						this.contactName = val;
+						this.email = val.toLowerCase();
     }
-    public void setContactTitle(String val) {
+    public void setStreetAddress(String val) {
 				if(val != null && !val.isEmpty())
-						this.contactTitle = val;
+						this.streetAdress = val;
+    }
+    public void setStreetAddress2(String val) {
+				if(val != null && !val.isEmpty())
+						this.streetAdress2 = val;
     }		
-    public void setContactPhone(String val) {
+    public void setCity(String val) {
 				if(val != null && !val.isEmpty())
-						this.contactPhone = val;
+						this.city = val;
     }
-		public void setContactEmail(String val) {
+		public void setState(String val) {
 				if(val != null && !val.isEmpty())
-						this.contactEmail = val;
+						this.state = val;
     }
-
-    public String getBusinessNumber() {
-				return businessNumber;
+		public void setZipCode(String val) {
+				if(val != null && !val.isEmpty())
+						this.zipCode = val;
     }
-    public String getContactName() {
-				return contactName;
-    }
-    public String getContactTitle() {
-				return contactTitle;
+		public void setZipExt(String val) {
+				if(val != null && !val.isEmpty())
+						this.zipExt = val;
     }		
-    public String getContactPhone() {
-				return contactPhone;
-    }
-    public String getContactEmail() {
-				return contactEmail;
-    }
-    public Incident getIncident() {
-				return incident;
-    }
 
-    public void setIncident(Incident incident) {
-				this.incident = incident;
+    public String getPhone() {
+				return phone;
     }
+    public String getEmail() {
+				return email;
+    }		
+    public String getStreetAddress() {
+				return streetAdress;
+    }
+    public String getStreetAddress2() {
+				return streetAdress2;
+    }		
+    public String getCity() {
+				return city;
+    }
+    public String getState() {
+				return state;
+    }
+    public String getZipCode() {
+				return zipCode;
+    }
+    public String getZipExt() {
+				return zipExt;
+    }
+		public Credential getCredential(){
+				return credential;
+		}
+		public void setCredential(Credential val){
+				credential = val;
+		}
     public String getInfo(){
-				String ret = businessName != null?businessName:"";
-				if(contactName != null && !contactName.isEmpty()){
+				String ret = name != null?name:"";
+				if(businessNumber != null && !businessNumber.isEmpty()){
 						if(!ret.isEmpty()){
 								ret += ", ";
 						}
-						ret += "contact: "+contactName;
+						ret += "#: "+businessNumber;				
 				}
 				return ret;
     }
     @Transient
     public boolean verify(){
 				boolean ret = true;
-				if(businessName == null || businessName.isEmpty()){
+				if(name == null || name.isEmpty()){
 						addError("business name is required");
 						ret = false;
 				}
-				if(contactName == null || contactName.isEmpty()){
-						addError("Contact name is required");
+				if(email == null || email.isEmpty()){
+						addError("Business email is required");
 						ret = false;
 				}
-				if(contactEmail == null || contactEmail.isEmpty()){
-						addError("Contact email is required");
-						ret = false;
-				}
-				if(contactPhone == null || contactPhone.isEmpty()){
-						addError("Contact phone is required");
+				if(phone == null || phone.isEmpty()){
+						addError("Business phone is required");
 						ret = false;
 				}				
 				return ret;
@@ -185,8 +214,8 @@ public class Business extends TopModel implements java.io.Serializable{
 		@Transient
 		String getCorporateInfo(){
 				String ret = "";
-				if(businessName != null && !businessName.isEmpty()){
-						ret += "Name: "+businessName;
+				if(name != null && !name.isEmpty()){
+						ret += "Name: "+name;
 				}
 				if(businessNumber != null && !businessNumber.isEmpty()){
 						if(!ret.isEmpty()){
@@ -205,36 +234,6 @@ public class Business extends TopModel implements java.io.Serializable{
 		@Transient
 		boolean hasCorporateInfo(){
 				return !getCorporateInfo().isEmpty();
-		}
-		@Transient
-		String getContactInfo(){
-				String ret = "";
-				if(contactName != null && !contactName.isEmpty()){
-						ret += "Name: "+contactName;
-				}
-				if(contactTitle != null && !contactTitle.isEmpty()){
-						if(!ret.isEmpty()){
-								ret += ", ";
-						}
-						ret += "Title: "+contactTitle;
-				}
-				if(contactPhone != null && !contactPhone.isEmpty()){
-						if(!ret.isEmpty()){
-								ret += ", ";
-						}
-						ret += "Phone: "+contactPhone;
-				}
-				if(contactEmail != null && !contactEmail.isEmpty()){
-						if(!ret.isEmpty()){
-								ret += ", ";
-						}
-						ret += "Email: "+contactEmail;
-				}				
-				return ret;
-		}
-		@Transient
-		boolean hasContactInfo(){
-				return !getContactInfo().isEmpty();
 		}
 		@Override
     public boolean equals(Object obj) { 
