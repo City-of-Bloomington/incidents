@@ -15,7 +15,7 @@
     <div th:if="${messages}">
       <div th:insert="general::messages(${messages})"></div>
     </div>
-    <div th:fragment="vehicles(vehicles, hostPath)">
+    <div th:fragment="vehicles(vehicles)">
       <h2>Incident Vehicle(s)</h2>
       <div th:switch="${vehicles}">
         <h2 th:case="null">No vehicle found</h2>
@@ -40,7 +40,7 @@
             <li class="button-group">
               <input
                 type="button"
-                th:attr="onclick=|window.location.href='${hostPath}/vehicle/edit/${one.id}'|"
+                th:attr="onclick=|window.location.href='@{/vehicle/edit/{id}(id=${one.id})}'|"
                 value="Edit Vehicle"
               />
             </li>

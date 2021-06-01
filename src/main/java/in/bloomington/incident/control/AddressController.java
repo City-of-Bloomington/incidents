@@ -35,7 +35,7 @@ import in.bloomington.incident.util.AddressCheck;
 import in.bloomington.incident.model.Item;
 import in.bloomington.incident.model.Address;
 import in.bloomington.incident.service.AddressService;
-// import in.bloomington.incident.service.AddrService;
+import in.bloomington.incident.model.Business;
 import in.bloomington.incident.utils.Helper;
 
 
@@ -146,19 +146,16 @@ public class AddressController extends TopController{
 				Address address = new Address();
 				address.setType_id(type_id);
 				model.addAttribute("address", address);
-				model.addAttribute("hostPath", hostPath);
         return "addressInput";
     }
     @CrossOrigin(origins = "https://bloomington.in.gov")
-    @GetMapping("/addressBusinessInput/{type_id}")
-    public String addressBusinessInput(@PathVariable("type_id") int type_id,
+    @GetMapping("/addressBusinessInput")
+    public String addressBusinessInput(
 															 Model model) {
 				Address address = new Address();
-				address.setType_id(type_id);
 				address.setCategory("Business");
 				model.addAttribute("address", address);
-				model.addAttribute("hostPath", hostPath);
-        return "addressInput";
+        return "addressBusinessInput";
     }		
 		
     @CrossOrigin(origins = "https://bloomington.in.gov")
@@ -238,19 +235,30 @@ public class AddressController extends TopController{
 								address.setId(addr.getId());
 								addressService.update(address);								
 						}
-						// next go to email request
-						model.addAttribute("type_id", address.getType_id());
-						model.addAttribute("address_id", address.getId());
 						if(address.hasBusinessCategory()){
-								model.addAttribute("category", address.getCategory());
+								Business business = new Business();
+								business.setAddress(address);
+								return "businessAdd";
 						}
-						return "emailAdd";
+						else{
+								// next go to email request
+								model.addAttribute("type_id", address.getType_id());
+								model.addAttribute("address_id", address.getId());
+								model.addAttribute("category", address.getCategory());
+								return "emailAdd";								
+						}
 				}
 				// no pass then we send the user to address input again with error message
-				model.addAttribute("address", address);
-				model.addAttribute("errors", errors);
-				return "addressInput";
-				
+				if(address.hasBusinessCategory()){
+								model.addAttribute("address", address);
+								model.addAttribute("category", "Business");
+								return "addressBusinessInput";
+				}
+				else{
+						model.addAttribute("address", address);
+						model.addAttribute("errors", errors);
+						return "addressInput";
+				}
 		}
 		//
 		// we come here when back button is pressed

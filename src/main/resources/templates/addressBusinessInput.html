@@ -1,0 +1,101 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--
+ - @copyright Copyright (C) 2014-2015 City of Bloomington, Indiana. All rights reserved.
+ - @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
+ - @author W. Sibo <sibow@bloomington.in.gov>
+ -
+ -->
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head th:replace="general::head('Incident')"></head>
+  <body>
+    <header th:replace="general::header"></header>
+    <main class="public-questions-wrapper">
+      <h2>Address Input</h2>
+      <div th:if="${errors}">
+        <div th:replace="general::errors(${errors})"></div>
+      </div>
+      <div th:if="${messages}">
+        <div th:replace="general::messages(${messages})"></div>
+      </div>
+			<p> To add a new business, please provide the local address first.</p>
+      <form
+        action="#"
+        th:action="@{/addressCheck}"
+        th:object="${address}"
+        onsubmit="return verifyAddress()"
+        method="post"
+      >
+        <input type="hidden" th:field="${address.addressId}" id="addressId" />
+        <input
+          type="hidden"
+          th:field="${address.subunitId}"
+          value=""
+          id="subunitId"
+        />
+        <input
+          type="hidden"
+          th:field="${address.latitude}"
+          id="latitude"
+          size="20"
+        />
+        <input
+          type="hidden"
+          th:field="${address.longitude}"
+          id="longitude"
+          size="20"
+        />
+        <input type="hidden" th:field="${address.city}" id="city" size="60" />
+        <input
+          type="hidden"
+          th:field="${address.jurisdiction}"
+          id="jurisdiction"
+          size="60"
+        />
+        <input type="hidden" th:field="${address.zipcode}" id="zip" />
+        <input type="hidden" th:field="${address.state}" id="state" />
+				<input type="hidden" th:field="${address.category}" />
+        <fieldset>
+          <legend>Business Location</legend>
+          <ul>
+            <li>
+              To add the Business local address, start typing the street
+              address in the 'Street address' field below. A list of matching
+              addresses will be populated, please select from the list the
+              correct one for where the incident occured.
+            </li>
+            <li>
+              <i
+                >Please note that City, Zip code and State fields are
+                automatically filled when you pick the right address.</i
+              >
+            </li>
+          </ul>
+          <label for="addr_id" class="required">
+            Street address
+          </label>
+          <div class="form-group autocomplete-wrapper">
+            <span id="addr_id"></span>
+            <input
+              type="text"
+              autocomplete="off"
+              th:field="${address.name}"
+              id="addr_id"
+              size="60"
+              placeholder="Enter a street address, then pick from the list."
+              required="required"
+              name="address"
+            />
+          </div>
+          <div id="address_display" class="form-group" style="display: none">
+            <label for="address_info">City, State Zipcode</label>
+            <p id="address_info">&nbsp;</p>
+          </div>
+        </fieldset>
+        <p>Click on Save to continue</p>
+        <li>
+          <button type="submit" class="next-button">Save</button>
+        </li>
+      </form>
+    </main>
+  </body>
+</html>

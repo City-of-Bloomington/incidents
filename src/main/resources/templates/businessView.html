@@ -21,18 +21,29 @@
 		<div th:if="${messages}">
 			<div th:insert="general::messages(${messages})"></div>
 		</div>
-		<p>
-			Business Details
-		</p>
-		<ul>
-			<li>Incident: <a th:href="@{/incidentView/{id}(id=${business.incident.id})}">Back to Incident</a></li>
-			<li th:if="${business.hasCorporateInfo()}">
-				<span th:text="${'Corporate: '+business.corporateInfo}"></span>
-			</li>
-			<li th:if="${property.hasContactInfo()}">
-				<span th:text="${'Contact: '+business.contactInfo}"></span>
-			</li>
-		</ul>
+		<div th:fragment="business(${business})">			
+			<p>
+				Business Details
+			</p>
+			<ul>
+        <li class="button-group">
+          <input
+            type="button"
+            th:attr="onclick=|window.location.href='@{/business/edit/{id}(id=${business.id})}'|"
+            value="Edit Business"
+            />
+        </li>				
+				<li th:if="${business.hasAddressInfo()}">
+					<span th:text="${'Address: '+business.addressInfo}"></span>
+				</li>			
+				<li th:if="${business.hasCorporateInfo()}">
+					<span th:text="${'Corporate: '+business.corporateInfo}"></span>
+				</li>
+				<li th:if="${property.hasContactInfo()}">
+					<span th:text="${'Contact: '+business.contactInfo}"></span>
+				</li>
+			</ul>
+		</div>
 	</main>
 </body>
 

@@ -37,30 +37,24 @@ public class Business extends TopModel implements java.io.Serializable{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 		@Column(name="name")
-    String name;
+    private String name;
 		@Column(name="corporate_address")
-    String corporateAddress;
+    private String corporateAddress;
 		@Column(name="business_number")		
-		String businessNumber;
+		private String businessNumber;
 		@Column(name="phone")		
-		String phone;
+		private String phone;
 		@Column(name="email")		
-		String email;
-		@Column(name="street_address")		
-		String streetAdress;
-		@Column(name="street_address2")		
-		String streetAdress2;
-		@Column(name="city")		
-		String city;
-		@Column(name="state")		
-		String state;
-		@Column(name="zip_code")		
-		String zipCode;
-		@Column(name="zip_ext")		
-		String zipExt;		
+		private String email;
 		@OneToOne
-		@JoinColumn(name="business_id", updatable=false, referencedColumnName="id")
-    Credential credential;
+		@JoinColumn(name="address_id", updatable=false, referencedColumnName="id")
+    private Address address;
+		@OneToOne
+		@JoinColumn(name="business_id", referencedColumnName="id")
+    private Credential credential;
+		
+		@Transient
+		private int addr_id = 0;
     //
     public Business(){
 
@@ -72,13 +66,7 @@ public class Business extends TopModel implements java.io.Serializable{
 										String phone,
 										String email,
 										
-										String streetAdress,
-										String streetAdress2,
-										String city,
-										String state,
-										String zipCode,
-										
-										String zipExt,
+										Address address,
 										Credential credential
 										) {
 				super();
@@ -88,12 +76,7 @@ public class Business extends TopModel implements java.io.Serializable{
 				this.businessNumber = businessNumber;
 				this.phone = phone;
 				this.email = email;
-				this.streetAdress = streetAdress;
-				this.streetAdress2 = streetAdress2;
-				this.city = city;
-				this.state = state;
-				this.zipCode = zipCode;
-				this.zipExt = zipExt;
+				this.address = address;
 				this.credential = credential;
     }
     public int getId() {
@@ -116,7 +99,9 @@ public class Business extends TopModel implements java.io.Serializable{
     public String getCorporateAddress() {
 				return corporateAddress;
     }
-
+		public Credential getCredential(){
+				return credential;
+		}
     public void setBusinessNumber(String val) {
 				if(val != null && !val.isEmpty())
 						this.businessNumber = val;
@@ -129,30 +114,10 @@ public class Business extends TopModel implements java.io.Serializable{
 				if(val != null && !val.isEmpty())
 						this.email = val.toLowerCase();
     }
-    public void setStreetAddress(String val) {
-				if(val != null && !val.isEmpty())
-						this.streetAdress = val;
+    public void setAddress(Address val) {
+				if(val != null)
+						this.address = val;
     }
-    public void setStreetAddress2(String val) {
-				if(val != null && !val.isEmpty())
-						this.streetAdress2 = val;
-    }		
-    public void setCity(String val) {
-				if(val != null && !val.isEmpty())
-						this.city = val;
-    }
-		public void setState(String val) {
-				if(val != null && !val.isEmpty())
-						this.state = val;
-    }
-		public void setZipCode(String val) {
-				if(val != null && !val.isEmpty())
-						this.zipCode = val;
-    }
-		public void setZipExt(String val) {
-				if(val != null && !val.isEmpty())
-						this.zipExt = val;
-    }		
 
     public String getPhone() {
 				return phone;
@@ -160,30 +125,22 @@ public class Business extends TopModel implements java.io.Serializable{
     public String getEmail() {
 				return email;
     }		
-    public String getStreetAddress() {
-				return streetAdress;
+    public Address getAddress() {
+				return address;
     }
-    public String getStreetAddress2() {
-				return streetAdress2;
-    }		
-    public String getCity() {
-				return city;
-    }
-    public String getState() {
-				return state;
-    }
-    public String getZipCode() {
-				return zipCode;
-    }
-    public String getZipExt() {
-				return zipExt;
-    }
-		public Credential getCredential(){
-				return credential;
-		}
 		public void setCredential(Credential val){
 				credential = val;
 		}
+		@Transient
+		public int getAddr_id(){
+				if(address != null)
+						addr_id = address.getId();
+				return addr_id;
+		}
+		@Transient
+		public void setAddr_id(int val){
+				addr_id = val;
+		}		
     public String getInfo(){
 				String ret = name != null?name:"";
 				if(businessNumber != null && !businessNumber.isEmpty()){
@@ -232,9 +189,35 @@ public class Business extends TopModel implements java.io.Serializable{
 				return ret;
 		}
 		@Transient
+		String getContactInfo(){
+				String ret = "";
+				if(email != null && !email.isEmpty()){
+						ret += "Email: "+email;
+				}
+				if(phone != null && !phone.isEmpty()){
+						if(!ret.isEmpty()){
+								ret +=", ";
+						}
+						ret += "Phone(s): "+phone;
+				}				
+				return ret;
+		}
+		@Transient
 		boolean hasCorporateInfo(){
 				return !getCorporateInfo().isEmpty();
 		}
+		@Transient
+		public boolean hasAddressInfo(){
+				return address != null;
+		}		
+    @Transient
+    public String getAddressInfo(){
+				String ret = "";
+				if(hasAddressInfo()){
+						ret += address.getInfo();
+				}
+				return ret;
+    }		
 		@Override
     public boolean equals(Object obj) { 
           
@@ -254,8 +237,7 @@ public class Business extends TopModel implements java.io.Serializable{
     }
     @Override
     public String toString() {
-				String ret = "Business: ["+getInfo()+"]";
-				return ret;
+				return getInfo();
     } 		
 
 		

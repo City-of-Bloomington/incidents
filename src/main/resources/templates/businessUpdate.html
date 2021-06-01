@@ -29,19 +29,18 @@
 				th:action="@{/business/update/{id}(id=${business.id})}"
 				th:object="${business}"
 				method="post">
-
-        <input type="hidden" th:field="${business.incident}" />
+				<input type="hidden" th:field="${business.addr_id} " />
+				<fieldset>
+          <legend>Business Location</legend>
+          <span th:text="${business.addressInfo}"></span>
+        </fieldset>
         <fieldset>
-				<div>
-					<label>Incident: 
-					<a th:href="@{/incident/{id}(id=${business.incident.id})}">Back to Incident</a> </label>
-				</div>
           <div class="field-group">
-            <label for="businessName">Business Name</label>
+            <label for="name">Business Name</label>
             <input
               type="text"
-              th:field="${business.businessName}"
-              id="businessName"
+              th:field="${business.name}"
+              id="name"
               placeholder="Business name"
 							required="required"
             />
@@ -65,52 +64,22 @@
             />
           </div>					
           <div class="field-group">
-            <label for="businessPhone">Business Phone</label>
+            <label for="phone">Business Phone(s)</label>
             <input
               type="text"
-              th:field="${business.businessPhone}"
-              id="businessPhone"
-              placeholder="Business phone"
+              th:field="${business.phone}"
+              id="phone"
+              placeholder="Business phone(s)"
             />
           </div>
           <div class="field-group">
-            <label for="contactName">Contact name</label>
+            <label for="email">Business email</label>
             <input
               type="text"
-              th:field="${business.contactName}"
-              id="contactName"
-              placeholder="Contact name"
+              th:field="${business.email}"
+              id="email"
+              placeholder="Business email"
 							required="required"
-            />
-          </div>
-          <div class="field-group">
-            <label for="contactTitle">Contact title</label>
-            <input
-              type="text"
-              th:field="${business.contactTitle}"
-              id="contactName"
-              placeholder="Contact title"
-							required="required"
-            />
-          </div>
-          <div class="field-group">
-            <label for="contactName">Contact name</label>
-            <input
-              type="text"
-              th:field="${business.contactPhone}"
-              id="contactPhone"
-              placeholder="Contact phone"
-							required="required"
-            />
-          </div>
-          <div class="field-group">
-            <label for="contactName">Contact email</label>
-            <input
-              type="text"
-              th:field="${business.contactEmail}"
-              id="contactEmail"
-              placeholder="Contact email"
-							readonly="readonly"
             />
           </div>
 					<ul class="button-group">

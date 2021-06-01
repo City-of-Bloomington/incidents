@@ -330,18 +330,7 @@
           </div>
 
           <p>All required fields must be filled in to Save and move on</p>
-					<ul class="button-group" th:if="${incident.isBusinessRelated()}">
-            <li th:unless="${person.incident.hasBusinessRecord()}">
-              <button
-                class="next-button"
-                th:attr="onclick=|window.location.href='@{/businessEdit/{id}(id=${person.incident.id})}'|"
-              >
-                Back
-              </button>
-            </li>
-            <li><button type="submit" class="next-button">Next</button></li>
-          </ul>
-          <ul class="button-group" th:unless="${incident.isBusinessRelated()}">
+          <ul class="button-group">
             <li th:unless="${person.incident.hasPersonList()}">
               <button
                 class="next-button"

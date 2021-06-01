@@ -30,7 +30,7 @@
 						<li th:if="${one.hasDescription()}"><span th:text="${'Description: '+ one.description}"></span></li>						
 						<li th:text="${'Value: '+one.valueFr}">&#36;</li>
 					</ul>
-					<ul>
+					<ul th:if="${istat.last}">
 						<li th:text="${'Total: '+totalBalance}"></td>
 					</ul>	      
 				</div>      

@@ -87,7 +87,7 @@ public class BusinessController extends TopController{
 						addError("Invalid business "+id);
 						logger.error(" "+ex);
 						addMessagesAndErrorsToSession(session);
-						return "redirect:/index";
+						return "redirect:/businesses";
 				}
 				model.addAttribute("business", business);
 				handleErrorsAndMessages(model);
@@ -133,5 +133,23 @@ public class BusinessController extends TopController{
 				handleErrorsAndMessages(model);
 				return "businessView";
     }
+    @GetMapping("/businesses")
+    public String viewBusinesses(Model model) {
+
+				try{
+						List<Business> businesses = businessService.getAll();
+						if(businesses == null || businesses.size() == 0){
+								model.addAttribute("message","No business found ");
+						}
+						else{
+								model.addAttribute("businesses", businesses);
+								model.addAttribute("message","Found "+businesses.size());
+						}
+				}catch(Exception ex){
+						logger.error(" "+ex);
+				}
+				handleErrorsAndMessages(model);
+				return "businessesView";
+    }		
 		
 }

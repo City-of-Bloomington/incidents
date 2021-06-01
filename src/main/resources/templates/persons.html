@@ -27,7 +27,7 @@
             <li class="button-group">
               <input
                 type="button"
-                th:attr="onclick=|window.location.href='${hostPath}/person/edit/${person.id}'|"
+                th:attr="onclick=|window.location.href='@{/person/edit/{id}(id=${person.id})}'|"
                 value="Edit Person"
               />
             </li>

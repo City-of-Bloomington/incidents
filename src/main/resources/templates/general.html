@@ -320,7 +320,17 @@
       Please complete the fields below. The information you provide for your
       case is critical to the Department's overall crime analysis efforts.
     </p>
-
+    <div th:fragment="businessInstructions">
+      <p>Information about Business data entry</p>
+			<ul>
+				<li>Business local address need to be added first </li>
+				<li>Business name and email are required</li>
+				<li>
+					For multiple phone numbers, use comma or semicolon to separate
+					and use '(ddd) ddd-dddd' format for each number
+				</li>
+			</ul>
+		</div>
     <ul th:fragment="personInstructions">
       <li>Information about the Person Reporting this Incident</li>
       <li>
