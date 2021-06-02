@@ -1,0 +1,48 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--
+ - @copyright Copyright (C) 2014-2015 City of Bloomington, Indiana. All rights reserved.
+ - @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
+ - @author W. Sibo <sibow@bloomington.in.gov>
+ -
+ -->
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head th:replace="general::head('Incident')"></head>
+  <body>
+    <header th:replace="general::header"></header>
+    <div th:if="${errors}">
+      <div th:insert="general::errors(${errors})"></div>
+    </div>
+    <div th:if="${messages}">
+      <div th:insert="general::messages(${messages})"></div>
+    </div>
+    <main class="public-questions-wrapper">
+      <div class="welcome">
+        <h2>Incident Reporting for Business</h2>
+        <div>
+          <p>
+						To add an incident you would go through a number of steps
+						depending on the incident type. The following information
+						are needed to complete an incident. 
+          </p>						
+					<ul>
+						<li>Business Info (we get from the login)</li>
+						<li>Select the incident type (see below)</li>
+						<li>Incident date, time and details</li>
+						<li>Person(s) involved in the incident</li>
+						<li>Damaged properties</li>
+						<li>Upload receipts for theft and photo(s) for vandalism</li>
+						<li>Submit the incident</li>
+						<li>Our staff will check the incident, they may approve or reject the incident</li>
+						<li>The business will be informed by email of the staff descision</li>
+						<li>Please gather the needed information before you continue</li>
+					</ul>
+          <p><strong>Please, select the incident category:</strong></p>
+          <ul style="list-style: none">
+            <li><a th:href="@{/introTheft/1}">Theft</a></li>
+            <li><a th:href="@{/introVandal}">Vandalism </a></li>
+          </ul>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>

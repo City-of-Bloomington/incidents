@@ -180,21 +180,7 @@ public class SearchRepositoryImpl implements SearchRepository {
 
         return query.getResultList();
     }
-		@Override
-		public User findUser(String username) throws IOException {
-				String qq = "SELECT u.* FROM users as u where u.username = ?";
-				if(username == null || username.isEmpty()){
-						logger.error("username not set");
-						throw new IOException("Username is required");
-				}
-        Query query = entityManager.createNativeQuery(qq, User.class);
-				query.setParameter(1, username);				
-				List<User> users =  query.getResultList();
-				if(users != null && users.size() > 0){
-						return users.get(0);
-				}
-				return null;
-		}
+
 
 }
 

@@ -39,6 +39,8 @@ public class Credential extends TopModel implements java.io.Serializable{
     private Business business;
 		@Column(name="password")
     private String password;
+		@Column(name="email")
+    private String email;		
 		@Column(name="last_update")
     private Date lastUpdate;
 		@Transient
@@ -51,11 +53,13 @@ public class Credential extends TopModel implements java.io.Serializable{
     public Credential(int id,
 											Business business,
 											String password,
+											String email,
 											Date lastUpdate) {
 				super();
 				this.id = id;
 				this.business = business;
 				this.password = password;
+				this.email = email;
 				this.lastUpdate = lastUpdate;
     }
 
@@ -78,7 +82,13 @@ public class Credential extends TopModel implements java.io.Serializable{
     public String getPassword() {
 				return password;
     }
-
+    public String getEmail() {
+				return email;
+    }
+		@Transient
+		public boolean checkPassword(String encypted){
+				return encypted != null && password.equals(encypted);
+		}
 		@Transient
 		public void setNewPassword(String val){
 				if(isValidPassword(val)){
@@ -124,7 +134,10 @@ public class Credential extends TopModel implements java.io.Serializable{
 				if(val != null && !val.isEmpty())				
 						this.password = val;
     }
-
+    public void setEmail(String val) {
+				if(val != null && !val.isEmpty())				
+						this.email = val;
+    }
     public Date getLastUpdate() {
 				return lastUpdate;
     }
@@ -143,8 +156,8 @@ public class Credential extends TopModel implements java.io.Serializable{
         if(obj == null || obj.getClass()!= this.getClass()) 
             return false; 
 				
-        Media one = (Media) obj; 
-        return one.getId() == this.getId();
+        Credential one = (Credential) obj; 
+        return one.getEmail().equals(this.getEmail());
     }
     @Override
     public int hashCode(){ 
@@ -154,6 +167,6 @@ public class Credential extends TopModel implements java.io.Serializable{
 
     @Override
     public String toString() {
-				return ""+id;
+				return this.email;
     } 			
 }

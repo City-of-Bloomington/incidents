@@ -24,11 +24,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
 import org.springframework.beans.factory.annotation.Value;
 import in.bloomington.incident.service.BusinessService;
-import in.bloomington.incident.service.IncidentService;
-import in.bloomington.incident.service.DamageTypeService;
-import in.bloomington.incident.model.Incident;
+import in.bloomington.incident.service.AddressService;
+import in.bloomington.incident.service.CredentialService;
+
 import in.bloomington.incident.model.Business;
-import in.bloomington.incident.model.DamageType;
+import in.bloomington.incident.model.Address;
+import in.bloomington.incident.model.Credential;
+
 import in.bloomington.incident.utils.Helper;
 
 @Controller
@@ -38,14 +40,19 @@ public class BusinessController extends TopController{
     @Autowired
     BusinessService businessService;
     @Autowired
-    IncidentService incidentService;		
-
-    @GetMapping("/business/add")
-    public String newBusiness(
+    AddressService addressService;		
+		@Autowired
+		CredentialService credentialService;
+		
+    @GetMapping("/business/add/{addr_id}")
+    public String newBusiness(@PathVariable("addr_id") int addr_id,
 															Model model,
 															HttpSession session) {
 				
 				Business business = new Business();
+				Address addr = addressService.findById(addr_id);
+				if(addr != null)
+						business.setAddress(addr);
         model.addAttribute("business", business);
         return "businessAdd";
     }     
@@ -70,6 +77,10 @@ public class BusinessController extends TopController{
 						return "businessAdd";						
 				}
         businessService.save(business);
+				Credential credit = new Credential();
+				credit.setEmail(business.getEmail());
+				credit.setBusiness(business);
+				credentialService.save(credit);
 				addMessage("Business Added Successfully");
 				int id = business.getId();
 				addMessagesAndErrorsToSession(session);
@@ -94,7 +105,8 @@ public class BusinessController extends TopController{
 				return "businessUpdate";
     }
     @PostMapping("/business/update/{id}")
-    public String updateBusiness(@PathVariable("id") int id, @Valid Business business, 
+    public String updateBusiness(@PathVariable("id") int id,
+																 @Valid Business business, 
 																 BindingResult result,
 																 Model model,
 																 HttpSession session) {
@@ -112,9 +124,16 @@ public class BusinessController extends TopController{
 						addError(error);
 						logger.error(error);
 						handleErrorsAndMessages(model);
-						return "businessUpdate";						
+						return "redirect:/business/edit/"+id;						
 				}
-				businessService.save(business);
+				businessService.update(business);
+				if(business.isEmailChanged()){
+						Credential credit = business.getCredential();
+						if(credit != null){
+								credit.setEmail(business.getEmail());
+								credentialService.update(credit);
+						}
+				}
 				addMessage("Updated Successfully");
 				addMessagesAndErrorsToSession(session);
 				return "redirect:/business/"+id;

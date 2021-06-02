@@ -236,9 +236,7 @@ public class AddressController extends TopController{
 								addressService.update(address);								
 						}
 						if(address.hasBusinessCategory()){
-								Business business = new Business();
-								business.setAddress(address);
-								return "businessAdd";
+								return "redirect:/business/add/"+address.getId();
 						}
 						else{
 								// next go to email request

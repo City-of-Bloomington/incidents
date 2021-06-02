@@ -55,6 +55,10 @@ public class Business extends TopModel implements java.io.Serializable{
 		
 		@Transient
 		private int addr_id = 0;
+		//
+		// Needed when email is changed
+		@Transient
+		private String oldEmail;
     //
     public Business(){
 
@@ -114,6 +118,10 @@ public class Business extends TopModel implements java.io.Serializable{
 				if(val != null && !val.isEmpty())
 						this.email = val.toLowerCase();
     }
+    public void setOldEmail(String val) {
+				if(val != null && !val.isEmpty())
+						this.oldEmail = val.toLowerCase();
+    }		
     public void setAddress(Address val) {
 				if(val != null)
 						this.address = val;
@@ -124,12 +132,21 @@ public class Business extends TopModel implements java.io.Serializable{
     }
     public String getEmail() {
 				return email;
-    }		
+    }
+		public String getOldEmail(){
+				if(oldEmail !=  null) return oldEmail;
+				return email;
+		}
     public Address getAddress() {
 				return address;
     }
 		public void setCredential(Credential val){
 				credential = val;
+		}
+		@Transient
+		public boolean isEmailChanged(){
+				return !(email != null && oldEmail != null &&
+								 email.equals(oldEmail));
 		}
 		@Transient
 		public int getAddr_id(){

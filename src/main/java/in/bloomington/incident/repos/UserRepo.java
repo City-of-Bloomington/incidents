@@ -9,12 +9,13 @@ import java.io.*;
 import java.util.List;
 import org.springframework.data.repository.CrudRepository;
 
-import in.bloomington.incident.model.Search;
-import in.bloomington.incident.model.Incident;
+import in.bloomington.incident.model.User;
+import in.bloomington.incident.model.Credential;
 
 
-public interface SearchRepository{
+public interface UserRepo{
 
-    public List<Incident> find(Search search);    
-
+		public User findUser(String username) throws IOException;
+		public String encyptString(String str) throws IOException;
+		public Credential findCredentail(String email) throws IOException;
 }

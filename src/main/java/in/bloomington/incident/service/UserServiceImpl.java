@@ -9,16 +9,21 @@ package in.bloomington.incident.service;
 import java.util.Collection;
 import java.util.List;
 import java.util.ArrayList;
+import java.io.*;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import in.bloomington.incident.repos.UserRepository;
+import in.bloomington.incident.repos.UserRepo;
 import in.bloomington.incident.model.User;
+import in.bloomington.incident.model.Credential;
 
 @Service
 public class UserServiceImpl implements UserService {
 
     @Autowired
     UserRepository repository;
+    @Autowired
+    UserRepo repo;		
 
     @Override
     public void save(User user){
@@ -58,4 +63,18 @@ public class UserServiceImpl implements UserService {
 				List<User> users = repository.findByFirstnameOrByLastname(str, str2);
 				return users;
     }
+		@Override
+		public User findUser(String username) throws IOException{
+				User user = repo.findUser(username);
+				return user;
+		}
+		@Override
+		public String encyptString(String str) throws IOException{
+				return repo.encyptString(str);
+		}
+		@Override
+		public Credential findCredentail(String email) throws IOException{
+				return repo.findCredentail(email);
+		}
+		
 }
