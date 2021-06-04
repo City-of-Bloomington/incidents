@@ -17,7 +17,7 @@
       <div th:if="${messages}">
         <div th:replace="general::messages(${messages})"></div>
       </div>
-			<p> To add a new business, please provide the local address first.</p>
+			<div>To add a new business you start with adding the business local street address</div>
       <form
         action="#"
         th:action="@{/addressCheck}"
@@ -53,12 +53,12 @@
         />
         <input type="hidden" th:field="${address.zipcode}" id="zip" />
         <input type="hidden" th:field="${address.state}" id="state" />
-				<input type="hidden" th:field="${address.category}" />
+				<input type="hidden" th:field="${address.category}" id="category" />
         <fieldset>
-          <legend>Business Location</legend>
+          <legend>Location of Incident</legend>
           <ul>
             <li>
-              To add the Business local address, start typing the street
+              To add the incident location address, start typing the street
               address in the 'Street address' field below. A list of matching
               addresses will be populated, please select from the list the
               correct one for where the incident occured.
@@ -71,10 +71,10 @@
             </li>
           </ul>
           <label for="addr_id" class="required">
-            Street address
+            Street address where the incident occured
           </label>
           <div class="form-group autocomplete-wrapper">
-            <span id="addr_id"></span>
+            <span id="address-full"></span>
             <input
               type="text"
               autocomplete="off"
@@ -91,10 +91,12 @@
             <p id="address_info">&nbsp;</p>
           </div>
         </fieldset>
-        <p>Click on Save to continue</p>
-        <li>
-          <button type="submit" class="next-button">Save</button>
-        </li>
+        <p>Click on Next to continue</p>
+        <ul class="button-group">
+          <li>
+            <button type="submit" class="next-button">Next</button>
+          </li>
+        </ul>
       </form>
     </main>
   </body>

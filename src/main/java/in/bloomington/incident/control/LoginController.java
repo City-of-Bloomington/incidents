@@ -145,8 +145,8 @@ public class LoginController extends TopController{
 				return "redirect:/login";						
     }
 		//non CAS after login action
-    @PostMapping("/busLoginUser")
-    public String busLogin(@RequestParam("email") String email,
+    @PostMapping("/businessLoginVerify")
+    public String busLoginVerify(@RequestParam("email") String email,
 													 @RequestParam("password") String password,
 													 HttpServletRequest req
 													 ) {
@@ -156,33 +156,34 @@ public class LoginController extends TopController{
 				}
 
 				try{
-						Credential credit = userService.findCredentail(email);
+						Credential credit = userService.findCredential(email);
 						if(credit == null){
 								// addMessage("user not found "+username);
 								// addMessagesAndErrorsToSession(session);
 								addMessage("you do not have access to this system ");
-								addMessagesAndErrorsToSession(session);						
-								return "businessLoginForm";
-						}
-						// we need to check the password after encryption
-						String encrypted = userService.encyptString(password);
-						if(credit.checkPassword(encrypted)){
-								Business business = credit.getBusiness();
-								if(business != null){
-										session.setAttribute("business", business);
-										return "TODO"; // adding incident
-								}
 						}
 						else{
-								addMessage("Your password does not match");
-								addMessagesAndErrorsToSession(session);						
-								return "businessLoginForm";								
+								// we need to check the password after encryption
+								String encrypted = userService.encryptString(password);
+								if(credit.checkPassword(encrypted)){
+										Business business = credit.getBusiness();
+										if(business != null){
+												// temp
+												return "redirect:/business/"+business.getId(); // adding incident
+										}
+										else{
+												System.err.println(" business is null");
+										}
+								}
+								else{
+										addMessage("Your password does not match");
+								}
 						}
 				}catch(Exception ex){
 						addMessage("you do not have access to this system ");
-						addMessagesAndErrorsToSession(session);						
 				}
-				return "redirect:/login";						
+				addMessagesAndErrorsToSession(session);
+				return "redirect:/businessLogin";						
     }		
     @GetMapping("/settings")
     public String showSettings(Model model,

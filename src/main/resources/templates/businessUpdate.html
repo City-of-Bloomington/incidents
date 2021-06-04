@@ -30,6 +30,8 @@
 				th:object="${business}"
 				method="post">
 				<input type="hidden" th:field="${business.addr_id} " />
+				<input type="hidden" th:field="${business.oldEmail}" />
+				<input type="hidden" th:field="${business.credential}" />				
 				<fieldset>
           <legend>Business Location</legend>
           <span th:text="${business.addressInfo}"></span>
@@ -80,10 +82,16 @@
               id="email"
               placeholder="Business email"
 							required="required"
-            />
+            />(will be used for business login)
           </div>
 					<ul class="button-group">
             <li><button type="submit" class="next-button">Save Changes</button></li>
+						<li>
+						<input
+            type="button"
+            th:attr="onclick=|window.location.href='@{/credential/{id}(id=${business.credential.id})}'|"
+            value="Reset Password"
+          /></li>
           </ul>
         </fieldset>
 				

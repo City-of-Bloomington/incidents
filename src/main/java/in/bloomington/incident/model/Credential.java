@@ -13,6 +13,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
+import javax.persistence.CascadeType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -34,7 +35,7 @@ public class Credential extends TopModel implements java.io.Serializable{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;		
 
-    @ManyToOne(fetch = FetchType.EAGER)
+		@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "business_id")		
     private Business business;
 		@Column(name="password")
@@ -44,7 +45,9 @@ public class Credential extends TopModel implements java.io.Serializable{
 		@Column(name="last_update")
     private Date lastUpdate;
 		@Transient
-		private String newPassword;
+		private String password2;
+		@Transient
+		private String oldEmail;
     //
     public Credential(){
 
@@ -82,6 +85,9 @@ public class Credential extends TopModel implements java.io.Serializable{
     public String getPassword() {
 				return password;
     }
+		public void setPassword(String val){
+				password = val;
+		}		
     public String getEmail() {
 				return email;
     }
@@ -90,10 +96,12 @@ public class Credential extends TopModel implements java.io.Serializable{
 				return encypted != null && password.equals(encypted);
 		}
 		@Transient
-		public void setNewPassword(String val){
-				if(isValidPassword(val)){
-						newPassword = val;
-				}
+		public void setPassword2(String val){
+				password2 = val;
+		}
+		@Transient
+		public String getPassword2(){
+				return password2;
 		}
 		/**
 			 a valid password will have lowercase, upercase, number and
@@ -106,11 +114,11 @@ public class Credential extends TopModel implements java.io.Serializable{
                        + "(?=.*[-+_!@#$%^&*., ?]).+$";
  
 				if(val == null || val.trim().isEmpty()){
-						addError("password should be at least 14 characters");						
+						addError("password should be at least 8 characters");						
 						return false;
 				}
-				if(val.length() < 14){
-						addError("password is less than 14 characters");
+				if(val.length() < 8){
+						addError("password is less than 8 characters");
 						return false;
 				}
 				// Compile the ReGex
@@ -130,10 +138,6 @@ public class Credential extends TopModel implements java.io.Serializable{
 				}
 				return true;
 		}
-    public void setPassword(String val) {
-				if(val != null && !val.isEmpty())				
-						this.password = val;
-    }
     public void setEmail(String val) {
 				if(val != null && !val.isEmpty())				
 						this.email = val;
@@ -146,7 +150,38 @@ public class Credential extends TopModel implements java.io.Serializable{
 				if(val != null)
 						this.lastUpdate = val;
     }
-
+		@Transient
+		public boolean verify(){
+				if(password == null || password2 == null ||
+					 password.isEmpty() || password2.isEmpty()){
+						return false;
+				}
+				if(!password.equals(password2)){
+						addError("Two passwords are different, try again");
+						return false;
+				}
+				if(!isValidPassword(password)){
+						addError("Not valid password");
+						return false;
+				}
+				return true;
+		}
+		@Transient
+		public void setOldEmail(String val) {
+				if(val != null && !val.isEmpty())
+						this.oldEmail = val;
+    }		
+		@Transient
+		public String getOldEmail(){
+				if(oldEmail == null)
+						return email;
+				return oldEmail;
+		}
+		@Transient
+		public boolean isEmailChanged(){
+				return !(email != null && oldEmail != null &&
+								 email.equals(oldEmail));
+		}
     @Override
     public boolean equals(Object obj) { 
           

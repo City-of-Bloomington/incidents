@@ -20,6 +20,6 @@ public interface UserService{
     public abstract User findUserByUsername(String val);
     public abstract List<User> findByFirstnameOrByLastname(String str, String str2);
 		public abstract User findUser(String username) throws IOException;
-		public abstract String encyptString(String str) throws IOException;
-		public abstract Credential findCredentail(String email) throws IOException;
+		public abstract String encryptString(String str) throws IOException;
+		public abstract Credential findCredential(String email) throws IOException;
 }

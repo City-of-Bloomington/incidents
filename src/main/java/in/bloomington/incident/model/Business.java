@@ -19,6 +19,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.CascadeType;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
@@ -49,8 +50,13 @@ public class Business extends TopModel implements java.io.Serializable{
 		@OneToOne
 		@JoinColumn(name="address_id", updatable=false, referencedColumnName="id")
     private Address address;
-		@OneToOne
-		@JoinColumn(name="business_id", referencedColumnName="id")
+
+    @OneToMany(fetch=FetchType.LAZY, mappedBy="business")
+    // @JoinColumn(name="business_id",insertable=false, updatable=false)		
+    private List<Incident> incidents;
+		
+		@OneToOne(cascade=CascadeType.ALL, targetEntity=Credential.class,
+							mappedBy="business")
     private Credential credential;
 		
 		@Transient
@@ -71,7 +77,8 @@ public class Business extends TopModel implements java.io.Serializable{
 										String email,
 										
 										Address address,
-										Credential credential
+										Credential credential,
+										List<Incident> incidents
 										) {
 				super();
 				this.id = id;
@@ -82,6 +89,7 @@ public class Business extends TopModel implements java.io.Serializable{
 				this.email = email;
 				this.address = address;
 				this.credential = credential;
+				this.incidents = incidents;
     }
     public int getId() {
 				return id;
@@ -99,7 +107,10 @@ public class Business extends TopModel implements java.io.Serializable{
 				if(val != null && !val.isEmpty())
 						this.name = val;
     }
-
+    public void setCorporateAddress(String val) {
+				if(val != null && !val.isEmpty())
+						this.corporateAddress = val;
+    }
     public String getCorporateAddress() {
 				return corporateAddress;
     }
@@ -120,28 +131,42 @@ public class Business extends TopModel implements java.io.Serializable{
     }
     public void setOldEmail(String val) {
 				if(val != null && !val.isEmpty())
-						this.oldEmail = val.toLowerCase();
+						this.oldEmail = val;
     }		
     public void setAddress(Address val) {
 				if(val != null)
 						this.address = val;
     }
-
+    public String getName() {
+				return name;
+    }
     public String getPhone() {
 				return phone;
     }
+		
     public String getEmail() {
 				return email;
     }
-		public String getOldEmail(){
-				if(oldEmail !=  null) return oldEmail;
-				return email;
-		}
+
     public Address getAddress() {
 				return address;
     }
 		public void setCredential(Credential val){
 				credential = val;
+		}
+    public List<Incident> getIncidents() {
+				return incidents;
+    }
+
+    public void setIncidents(List<Incident> incidents) {
+				this.incidents = incidents;
+    }
+
+		@Transient
+		public String getOldEmail(){
+				if(oldEmail == null)
+						return email;
+				return oldEmail;
 		}
 		@Transient
 		public boolean isEmailChanged(){
@@ -168,6 +193,10 @@ public class Business extends TopModel implements java.io.Serializable{
 				}
 				return ret;
     }
+		@Transient
+		public boolean hasCorporateData(){
+				return !getContactInfo().isEmpty();
+		}
     @Transient
     public boolean verify(){
 				boolean ret = true;
@@ -186,7 +215,7 @@ public class Business extends TopModel implements java.io.Serializable{
 				return ret;
     }
 		@Transient
-		String getCorporateInfo(){
+		public String getCorporateInfo(){
 				String ret = "";
 				if(name != null && !name.isEmpty()){
 						ret += "Name: "+name;
@@ -206,7 +235,11 @@ public class Business extends TopModel implements java.io.Serializable{
 				return ret;
 		}
 		@Transient
-		String getContactInfo(){
+		public boolean hasContactData(){
+				return !getContactInfo().isEmpty();
+		}
+		@Transient
+		public String getContactInfo(){
 				String ret = "";
 				if(email != null && !email.isEmpty()){
 						ret += "Email: "+email;
@@ -218,10 +251,6 @@ public class Business extends TopModel implements java.io.Serializable{
 						ret += "Phone(s): "+phone;
 				}				
 				return ret;
-		}
-		@Transient
-		boolean hasCorporateInfo(){
-				return !getCorporateInfo().isEmpty();
 		}
 		@Transient
 		public boolean hasAddressInfo(){

@@ -26,13 +26,21 @@ public class CredentialServiceImpl implements CredentialService {
 		}
 		@Override
 		public Credential findById(int id){
-				Credential type = repository.findById(id)
+				Credential val = repository.findById(id)
 						.orElseThrow(() -> new IllegalArgumentException("Invalid credential Id:" + id));
-				return type;
+				return val;
 		}				
 		@Override
-		public void update(Credential type){
-				repository.save(type);
+		public void update(Credential val){
+				try{
+						Credential credit = findById(val.getId());
+						credit.setBusiness(val.getBusiness());
+						credit.setPassword(val.getPassword());
+						credit.setLastUpdate(val.getLastUpdate());
+						credit.setEmail(val.getEmail());
+						repository.save(credit);
+				}catch(Exception ex){
+				}
 		}
 		@Override
 		public void delete(int id){

@@ -36,10 +36,10 @@
 				<li th:if="${business.hasAddressInfo()}">
 					<span th:text="${'Address: '+business.addressInfo}"></span>
 				</li>			
-				<li th:if="${business.hasCorporateInfo()}">
+				<li th:if="${business.hasCorporateData()}">
 					<span th:text="${'Corporate: '+business.corporateInfo}"></span>
 				</li>
-				<li th:if="${property.hasContactInfo()}">
+				<li th:if="${business.hasContactData()}">
 					<span th:text="${'Contact: '+business.contactInfo}"></span>
 				</li>
 			</ul>

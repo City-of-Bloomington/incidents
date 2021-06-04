@@ -31,8 +31,15 @@ public class BusinessServiceImpl implements BusinessService {
 				return type;
 		}				
 		@Override
-		public void update(Business type){
-				repository.save(type);
+		public void update(Business val){
+				Business bus = findById(val.getId());
+				bus.setName(val.getName());
+				bus.setCorporateAddress(val.getCorporateAddress());
+				bus.setBusinessNumber(val.getBusinessNumber());
+				bus.setEmail(val.getEmail());
+				bus.setPhone(val.getPhone());
+				bus.setAddress(val.getAddress());
+				repository.save(bus);
 		}
 		@Override
 		public void delete(int id){

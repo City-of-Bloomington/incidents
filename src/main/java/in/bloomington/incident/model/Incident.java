@@ -102,8 +102,8 @@ public class Incident extends TopModel implements java.io.Serializable{
     @JoinColumn(name="incident_id",insertable=false, updatable=false)		
     private List<Person> persons;
 		
-    @OneToOne
-    @JoinColumn(name="incident_id",insertable=false, updatable=false)		
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "business_id")
     private Business business;
 		
     @OneToMany

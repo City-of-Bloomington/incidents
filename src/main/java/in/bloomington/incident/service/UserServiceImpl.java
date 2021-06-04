@@ -69,12 +69,12 @@ public class UserServiceImpl implements UserService {
 				return user;
 		}
 		@Override
-		public String encyptString(String str) throws IOException{
-				return repo.encyptString(str);
+		public String encryptString(String str) throws IOException{
+				return repo.encryptString(str);
 		}
 		@Override
-		public Credential findCredentail(String email) throws IOException{
-				return repo.findCredentail(email);
+		public Credential findCredential(String email) throws IOException{
+				return repo.findCredential(email);
 		}
 		
 }

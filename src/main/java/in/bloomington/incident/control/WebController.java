@@ -37,6 +37,13 @@ public class WebController extends TopController{
 				getMessagesAndErrorsFromSession(session, model);
 				return "intro_all";
     }
+		// for testing purpose only
+    @RequestMapping(value = "/staff_menu")
+    public String staffMenu(Model model,
+														 HttpSession session){
+				getMessagesAndErrorsFromSession(session, model);
+				return "staff_menu";
+    }		
     @RequestMapping(value = "/introPersonal")
     public String introPersonal(Model model,
 														 HttpSession session){

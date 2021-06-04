@@ -48,19 +48,19 @@ public class UserRepoImpl implements UserRepo {
 				return null;
 		}
 		@Override
-		public String encyptString(String str) throws IOException{
+		public String encryptString(String str) throws IOException{
 				String qq = "select sha2(?,256) ";
 				if(str == null || str.isEmpty()){
 						logger.error("invalid string");
 						throw new IOException("Invalid String");
 				}
-        Query query = entityManager.createNativeQuery(qq, String.class);
+        Query query = entityManager.createNativeQuery(qq);
 				query.setParameter(1, str);
 				return (String) query.getSingleResult();
 		}
 		@Override
-		public Credential findCredentail(String email) throws IOException {
-				String qq = "SELECT c.* FROM credentails as c where c.email = ?";
+		public Credential findCredential(String email) throws IOException {
+				String qq = "SELECT c.* FROM credentials as c where c.email = ?";
 				if(email == null || email.isEmpty()){
 						logger.error("email not set");
 						throw new IOException("Email is required");

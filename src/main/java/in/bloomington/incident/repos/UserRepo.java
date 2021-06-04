@@ -16,6 +16,6 @@ import in.bloomington.incident.model.Credential;
 public interface UserRepo{
 
 		public User findUser(String username) throws IOException;
-		public String encyptString(String str) throws IOException;
-		public Credential findCredentail(String email) throws IOException;
+		public String encryptString(String str) throws IOException;
+		public Credential findCredential(String email) throws IOException;
 }
