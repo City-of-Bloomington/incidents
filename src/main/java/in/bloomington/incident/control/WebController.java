@@ -54,7 +54,7 @@ public class WebController extends TopController{
     public String introBusiness(Model model,
 														 HttpSession session){
 				getMessagesAndErrorsFromSession(session, model);
-				return "introBusiness";
+				return "business_questions";
     }		
 		
     @RequestMapping(value = "/selectCategory")
@@ -62,7 +62,14 @@ public class WebController extends TopController{
 																 HttpSession session){
 				getMessagesAndErrorsFromSession(session, model);
 				return "introSelectType";
+    }
+    @RequestMapping(value = "/businessSelectCategory")
+    public String busSelectCategory(Model model,
+																 HttpSession session){
+				getMessagesAndErrorsFromSession(session, model);
+				return "introBusinessSelectType";
     }		
+		
     @RequestMapping("/introTheft/{type_id}")
     public String introTheft(@PathVariable("type_id") int type_id,
 														 Model model,

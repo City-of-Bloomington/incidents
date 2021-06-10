@@ -21,25 +21,26 @@ $(document).ready(function () {
 $(document).ready(function(){
     answers = new Object();
     $('.option').change(function(){
-	var answer = ($(this).attr('value'))
-	var question = ($(this).attr('name'))
-	answers[question] = answer;
-	if(answer == 'finalStep'){
-	    $('#finalStep').show();
-	    $('#next_div').hide();
-	    $('#moreInfo').hide();
-	    $('#lastQuestion').hide();
-
-	}	      
-	else if(answer != 'Next'){
-	    $('#next_div').hide();		  		  
-	    $('#moreInfo').show();		  
-	}
-	else{
-	    $('#moreInfo').hide();
-	    $('#next_div').show();
-			$('#typeOptions').hide();
-	}
+				var answer = ($(this).attr('value'))
+				var question = ($(this).attr('name'))
+				answers[question] = answer;
+				if(answer == 'finalStep'){
+						$('#finalStep').show();
+						$('#next_div').hide();
+						$('#moreInfo').hide();
+						$('#lastQuestion').hide();
+						
+				}	      
+				else if(answer != 'Next'){
+						alert(answer);
+						$('#next_div').hide();		  		  
+						$('#moreInfo').show();		  
+				}
+				else{
+						$('#moreInfo').hide();
+						$('#next_div').show();
+						$('#typeOptions').hide();
+				}
     })
     var totalQuestions = $('.questions').length;
     var currentQuestion = 0;

@@ -31,7 +31,7 @@ import in.bloomington.incident.service.UserService;
 
 import in.bloomington.incident.model.Business;
 import in.bloomington.incident.model.Address;
-import in.bloomington.incident.model.Credential;
+// import in.bloomington.incident.model.Credential;
 
 import in.bloomington.incident.utils.Helper;
 
@@ -43,8 +43,6 @@ public class BusinessController extends TopController{
     BusinessService businessService;
     @Autowired
     AddressService addressService;		
-		@Autowired
-		CredentialService credentialService;
 		@Autowired
 		UserService userService;		
 		@Autowired 
@@ -94,11 +92,10 @@ public class BusinessController extends TopController{
 				}
         businessService.save(business);
 				addMessage("Business Added Successfully");				
-				Credential credit = new Credential();
-				credit.setEmail(business.getEmail());
-				credit.setBusiness(business);
-				System.err.println(" saving credential");
-				credentialService.save(credit);
+				// Credential credit = new Credential();
+				// credit.setEmail(business.getEmail());
+				// credit.setBusiness(business);
+				// credentialService.save(credit);
 				int id = business.getId();
 				addMessagesAndErrorsToSession(session);
 				return "redirect:/business/"+id;
@@ -108,9 +105,6 @@ public class BusinessController extends TopController{
     public String showEditForm(@PathVariable("id") int id,
 															 Model model
 															 ) {
-				if(session == null || session.getAttribute("user") == null){
-						return "staff/loginForm";
-				}
 				Business business = null;
 				try{
 						business = businessService.findById(id);
@@ -148,6 +142,7 @@ public class BusinessController extends TopController{
 						handleErrorsAndMessages(model);
 						return "redirect:/business/edit/"+id;						
 				}
+				/**
 				if(business.isEmailChanged()){
 						System.err.println(" email is changed ");
 						Credential credit = business.getCredential();
@@ -159,6 +154,7 @@ public class BusinessController extends TopController{
 								System.err.println(" credit is null ");
 						}
 				}
+				*/
 				businessService.update(business);				
 				addMessage("Updated Successfully");
 				addMessagesAndErrorsToSession(session);
@@ -204,9 +200,11 @@ public class BusinessController extends TopController{
 				handleErrorsAndMessages(model);
 				return "businessesView";
     }
+
+		/**
 		//
 		//for business password reset
-		//
+		//			 
     @GetMapping("/credential/{id}")
     public String credentialReset(@PathVariable("id") int id, Model model) {
 
@@ -223,7 +221,9 @@ public class BusinessController extends TopController{
 				}
 				handleErrorsAndMessages(model);
 				return "staff/passwordReset";
-    }		
+    }
+		*/
+		/**
     @PostMapping("/credential/update/{id}")
     public String updateBusiness(@PathVariable("id") int id,
 																 @Valid Credential credential, 
@@ -282,5 +282,6 @@ public class BusinessController extends TopController{
 				}
 				addMessagesAndErrorsToSession(session);
 				return "redirect:/credential/"+id;						
-    }		
+    }
+		*/
 }

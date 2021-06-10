@@ -603,13 +603,29 @@ alter table incidents add category enum('Person','Business') after incident_type
 ;; database tables related to business portion of incidents
 ;; business local address is entered separately, so not needed here
 ;;
-create table businesses(                                                            id int unsigned auto_increment primary key,                                     name varchar(80) not null,                                                      corporate_address varchar(160),                                                 business_number varchar(32),                                                    phone varchar(32),                                                              email varchar(160),                                                             address_id int unsigned,                                                        foreign key(address_id) references addresses(id)                                )engine=InnoDB;
+create table businesses(                                                            id int unsigned auto_increment primary key,                                     name varchar(80) not null,                                                      corporate_address varchar(160),                                                 business_number varchar(32),                                                    phone varchar(32),                                                              email varchar(160),                                                             address_id int unsigned,                                                        reporter_name varchar(160),                                                     reporter_title varchar(80),                                                     foreign key(address_id) references addresses(id)                                )engine=InnoDB;
 ;;
 ;;
-create table credentials(                                                            id int unsigned auto_increment primary key,                                     business_id int unsigned not null,                                              email varchar(256) not null uinque,                                             password varchar(256),                                                          last_update datetime,                                                           foreign key(business_id) references businesses(id)                              )engine=InnoDB;
+;; this table will not be used right now
+;; 
+;; create table credentials(                                                            id int unsigned auto_increment primary key,                                     business_id int unsigned not null,                                              email varchar(256) not null unique,                                             password varchar(256),                                                          last_update datetime,                                                           foreign key(business_id) references businesses(id)                              )engine=InnoDB;
+;;
+
 ;;
 ;; we will be using sha2(string, 256) for encryption
 ;; something like select sha2(str, 256) = password; => 1 if match
 ;;
 alter table incidents add business_id int unsigned after address_id;
 alter table incidents add foreign key(business_id) references businesses(id);
+;;
+;; 6/10/2021 changes
+alter table businesses add reporter_name varchar(160);
+alter table businesses add reporter_title varchar(80);
+;;
+;; probably will not hurt keeping the foreign key for credentials table
+;; since we are not going to use it right now.
+alter table credentials drop constraint credentials_ibfk_1;
+;;
+;; modified credentials table just to keep it around
+;;
+create table credentials(                                                            id int unsigned auto_increment primary key,                                     email varchar(256) not null unique,                                             password varchar(256),                                                          last_update datetime                                                           )engine=InnoDB;

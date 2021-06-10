@@ -29,6 +29,7 @@
         action="#"
         th:action="@{/business/save}"
         th:object="${business}"
+				onsubmit="return verifyConfirm()"
         method="post"
       >
 				<input type="hidden" th:field="${business.addr_id} " />
@@ -74,16 +75,50 @@
               placeholder="Business phone(s)"
             />
           </div>
+					<div class="field-group">
+						<p>
+						Please note that you need to provide a valid email in the field below so that the Police staff can use it to communicate with your business about the final decision.</p>
+					</div>
           <div class="field-group">
             <label for="email">Business email</label>
             <input
               type="text"
               th:field="${business.email}"
-              id="contactEmail"
+              id="email"
               placeholder="business email"
 							required="required"
-            />(will be used for business login)
+            />
           </div>
+          <div class="field-group">
+            <label for="email2">Verify business email</label>
+            <input
+              type="text"
+              th:field="${business.email2}"
+              id="email2"
+              placeholder="business email2"
+							required="required"
+            />
+          </div>
+          <div class="field-group">
+            <label for="reporterName">Your full name</label>
+            <input
+              type="text"
+              th:field="${business.reporterName}"
+              id="reporterName"
+              placeholder="full name"
+							required="required"
+            />
+          </div>
+          <div class="field-group">
+            <label for="reporterTitle">Your business title</label>
+            <input
+              type="text"
+              th:field="${business.reporterTitle}"
+              id="reporterTitle"
+              placeholder="Your business title"
+							required="required"
+            />
+          </div>							
 					<ul class="button-group">
             <li><button type="submit" class="next-button">Save</button></li>
           </ul>

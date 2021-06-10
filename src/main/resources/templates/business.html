@@ -28,10 +28,13 @@
 						<strong>Corporate info: </strong>
           <span th:text="${business.corporateInfo}"></span>
 					</li>
-					
 					<li>
 						<strong>Contact info: </strong>
-						<span th:text="${business.contact}"></span>
+						<span th:text="${business.contactInfo}"></span>
+					</li>					
+					<li>
+						<strong>Reporter info: </strong>
+						<span th:text="${business.reporterInfo}"></span>
 					</li>
 					<li>
 						<a th:href="@{/business/edit/{id}(id=${business.id})}">Edit</a>

@@ -47,6 +47,11 @@ public class Business extends TopModel implements java.io.Serializable{
 		private String phone;
 		@Column(name="email")		
 		private String email;
+		@Column(name="reporter_name")
+		private String reporterName;
+		@Column(name="reporter_title")
+		private String reporterTitle;
+		
 		@OneToOne
 		@JoinColumn(name="address_id", updatable=false, referencedColumnName="id")
     private Address address;
@@ -54,13 +59,21 @@ public class Business extends TopModel implements java.io.Serializable{
     @OneToMany(fetch=FetchType.LAZY, mappedBy="business")
     // @JoinColumn(name="business_id",insertable=false, updatable=false)		
     private List<Incident> incidents;
-		
+
+		/**
+		 * this is disabled right now
+		 * since no login is required
+		 * this may change in the future release
+		 *
 		@OneToOne(cascade=CascadeType.ALL, targetEntity=Credential.class,
 							mappedBy="business")
     private Credential credential;
+		*/
 		
 		@Transient
 		private int addr_id = 0;
+		@Transient
+		private String email2; // for verification only
 		//
 		// Needed when email is changed
 		@Transient
@@ -75,9 +88,11 @@ public class Business extends TopModel implements java.io.Serializable{
 										String businessNumber,
 										String phone,
 										String email,
-										
+
+										String reporterName,
+										String reporterTitle,
 										Address address,
-										Credential credential,
+										// Credential credential,
 										List<Incident> incidents
 										) {
 				super();
@@ -87,8 +102,10 @@ public class Business extends TopModel implements java.io.Serializable{
 				this.businessNumber = businessNumber;
 				this.phone = phone;
 				this.email = email;
+				this.reporterName = reporterName;
+				this.reporterTitle = reporterTitle;
 				this.address = address;
-				this.credential = credential;
+				// this.credential = credential;
 				this.incidents = incidents;
     }
     public int getId() {
@@ -107,6 +124,14 @@ public class Business extends TopModel implements java.io.Serializable{
 				if(val != null && !val.isEmpty())
 						this.name = val;
     }
+    public void setReporterName(String val) {
+				if(val != null && !val.isEmpty())
+						this.reporterName = val.trim();
+    }
+    public void setReporterTitle(String val) {
+				if(val != null && !val.isEmpty())
+						this.reporterTitle = val.trim();
+    }		
     public void setCorporateAddress(String val) {
 				if(val != null && !val.isEmpty())
 						this.corporateAddress = val;
@@ -114,9 +139,14 @@ public class Business extends TopModel implements java.io.Serializable{
     public String getCorporateAddress() {
 				return corporateAddress;
     }
+		/**
 		public Credential getCredential(){
 				return credential;
 		}
+		public void setCredential(Credential val){
+				credential = val;
+		}
+		*/
     public void setBusinessNumber(String val) {
 				if(val != null && !val.isEmpty())
 						this.businessNumber = val;
@@ -147,13 +177,16 @@ public class Business extends TopModel implements java.io.Serializable{
     public String getEmail() {
 				return email;
     }
-
+    public String getReporterName() {
+				return reporterName;
+    }
+    public String getReporterTitle() {
+				return reporterTitle;
+    }		
     public Address getAddress() {
 				return address;
     }
-		public void setCredential(Credential val){
-				credential = val;
-		}
+
     public List<Incident> getIncidents() {
 				return incidents;
     }
@@ -208,12 +241,36 @@ public class Business extends TopModel implements java.io.Serializable{
 						addError("Business email is required");
 						ret = false;
 				}
+				else if(email2 == null || email2.isEmpty()){
+						addError("Business verify email is required");
+						ret = false;
+				}
+				else if(!email.equals(email2)){
+						addError("The two emails are not the same,try again");
+						ret = false;
+				}
 				if(phone == null || phone.isEmpty()){
 						addError("Business phone is required");
 						ret = false;
 				}				
 				return ret;
     }
+		@Transient
+		public String getReporterInfo(){
+				String ret = reporterName == null? "":reporterName;
+				if(reporterTitle != null && !reporterTitle.isEmpty()){
+						if(!ret.isEmpty()){
+								ret += ": ";
+						}
+						ret += reporterTitle;
+				}
+				return ret;
+				
+		}
+		@Transient
+		public boolean hasReporterInfo(){
+				return !getReporterInfo().isEmpty();
+		}
 		@Transient
 		public String getCorporateInfo(){
 				String ret = "";

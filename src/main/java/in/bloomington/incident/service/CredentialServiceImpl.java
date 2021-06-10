@@ -34,7 +34,7 @@ public class CredentialServiceImpl implements CredentialService {
 		public void update(Credential val){
 				try{
 						Credential credit = findById(val.getId());
-						credit.setBusiness(val.getBusiness());
+						// credit.setBusiness(val.getBusiness());
 						credit.setPassword(val.getPassword());
 						credit.setLastUpdate(val.getLastUpdate());
 						credit.setEmail(val.getEmail());

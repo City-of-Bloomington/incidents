@@ -42,6 +42,9 @@
 				<li th:if="${business.hasContactData()}">
 					<span th:text="${'Contact: '+business.contactInfo}"></span>
 				</li>
+				<li th:if="${business.hasReporterInfo()}">
+					<span th:text="${'Reporter: '+business.reporterInfo}"></span>
+				</li>				
 			</ul>
 		</div>
 	</main>

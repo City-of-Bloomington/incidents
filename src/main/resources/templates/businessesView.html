@@ -6,13 +6,13 @@
  -
  -->
 <html xmlns="http://www.w3.org/1999/xhtml">
-  <head th:replace="general::head('Person')"></head>
+  <head th:replace="general::head('Business')"></head>
   <body>
     <header>
       <div th:replace="general::header-staff"></div>
     </header>
     <br />
-    <h3>Incident Related People</h3>
+    <h3>Incident Related Businesses</h3>
     <div th:if="${errors}">
       <div th:insert="general::errors(${errors})"></div>
     </div>
@@ -20,9 +20,9 @@
       <div th:insert="general::messages(${messages})"></div>
     </div>
     <div th:fragment="businesses(businesses)">
-      <h2>Reported People</h2>
+      <h2>Reported Businesses</h2>
       <ul th:switch="${businesses}">
-        <h4 th:case="null">No person found</h4>
+        <h4 th:case="null">No business found</h4>
         <div th:case="*">
           <li th:each="business : ${businesses}">
             <span th:replace="businessView::business(${business})"></span>

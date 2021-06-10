@@ -86,6 +86,8 @@ public class LoginController extends TopController{
 				}
 				return "staff/loginForm";
     }
+		/**
+		 // not used right now
     @GetMapping("/businessLogin")
     public String buslogin(HttpServletRequest req,
 													 Model model
@@ -97,7 +99,7 @@ public class LoginController extends TopController{
 				}
 				return "businessLoginForm";
     }
-		
+		*/		
 		//non CAS after login action
     @PostMapping("/loginUser")
     public String tryLogin(@RequestParam("username") String username,
@@ -144,7 +146,8 @@ public class LoginController extends TopController{
 				}
 				return "redirect:/login";						
     }
-		//non CAS after login action
+		
+		/**
     @PostMapping("/businessLoginVerify")
     public String busLoginVerify(@RequestParam("email") String email,
 													 @RequestParam("password") String password,
@@ -184,7 +187,8 @@ public class LoginController extends TopController{
 				}
 				addMessagesAndErrorsToSession(session);
 				return "redirect:/businessLogin";						
-    }		
+    }
+		*/
     @GetMapping("/settings")
     public String showSettings(Model model,
 															 HttpSession session) {

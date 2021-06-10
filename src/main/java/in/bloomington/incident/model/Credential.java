@@ -35,9 +35,14 @@ public class Credential extends TopModel implements java.io.Serializable{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;		
 
+		/**
+		 * we are disabling this right now
+		 * since we are not using login for businesses
+		 *
 		@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "business_id")		
     private Business business;
+		*/
 		@Column(name="password")
     private String password;
 		@Column(name="email")
@@ -54,13 +59,13 @@ public class Credential extends TopModel implements java.io.Serializable{
     }
 
     public Credential(int id,
-											Business business,
+											//Business business,
 											String password,
 											String email,
 											Date lastUpdate) {
 				super();
 				this.id = id;
-				this.business = business;
+				// this.business = business;
 				this.password = password;
 				this.email = email;
 				this.lastUpdate = lastUpdate;
@@ -74,6 +79,7 @@ public class Credential extends TopModel implements java.io.Serializable{
 				this.id = id;
     }
 
+		/**
     public Business getBusiness() {
 				return business;
     }
@@ -81,7 +87,7 @@ public class Credential extends TopModel implements java.io.Serializable{
     public void setBusiness(Business business) {
 				this.business = business;
     }
-
+		*/
     public String getPassword() {
 				return password;
     }
