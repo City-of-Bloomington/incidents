@@ -38,10 +38,12 @@ import in.bloomington.incident.service.ActionService;
 import in.bloomington.incident.service.ActionLogService;
 import in.bloomington.incident.service.RequestService;
 import in.bloomington.incident.service.UserService;
+import in.bloomington.incident.service.BusinessService;
 import in.bloomington.incident.service.AddressService;
 import in.bloomington.incident.model.Incident;
 import in.bloomington.incident.model.IncidentType;
 import in.bloomington.incident.model.Action;
+import in.bloomington.incident.model.Business;
 import in.bloomington.incident.model.Address;
 import in.bloomington.incident.model.ActionLog;
 import in.bloomington.incident.model.Person;
@@ -49,7 +51,6 @@ import in.bloomington.incident.model.Request;
 import in.bloomington.incident.model.User;
 import in.bloomington.incident.utils.Helper;
 import in.bloomington.incident.utils.EmailHelper;
-// import in.bloomington.incident.utils.AddressCheck;
 
 @Controller
 public class IncidentController extends TopController{
@@ -66,7 +67,9 @@ public class IncidentController extends TopController{
 																			"Unlocked vehicle",
 																			"Other specify"));
     @Autowired
-    IncidentService incidentService;		
+    IncidentService incidentService;
+    @Autowired
+    BusinessService businessService;			
     @Autowired
     IncidentTypeService incidentTypeService;
     @Autowired
@@ -533,7 +536,57 @@ public class IncidentController extends TopController{
 						return "redirect:/index";
 				}
     }
-		
+		@GetMapping("/businessIncidentAdd/{addr_id}/{type_id}/{bus_id}")
+    public String busIncidentAdd(@PathVariable("addr_id") int addr_id,
+																 @PathVariable("type_id") int type_id,
+																 @PathVariable("bus_id") int bus_id,
+																 Model model,
+																 HttpSession session
+																 ) {
+				List<String> ids = null;
+				int id = 0;
+				try{
+						ids = (List<String>) session.getAttribute("incident_ids");
+				}catch(Exception ex){
+						System.err.println(ex);
+				}				
+				Address address = addressService.findById(addr_id);
+				IncidentType incidentType = incidentTypeService.findById(type_id);
+				Business business = businessService.findById(bus_id);
+				Incident incident = new Incident();
+				incident.setAddress(address);
+				incident.setBusiness(business);
+				incident.setIncidentType(incidentType);
+				incident.setEmail(business.getEmail());
+				incident.setReceivedNow();
+				incident.setCategory("Business");
+				incidentService.save(incident);
+				if(ids == null){
+						ids = new ArrayList<>();
+				}
+				ids.add(""+incident.getId());
+				session.setAttribute("incident_ids", ids);
+				model.addAttribute("incident", incident);
+				// not needed for business
+				// model.addAttribute("entryTypes", entryTypes);
+				handleErrorsAndMessages(model);
+        return "businessIncidentAdd";
+		}
+		@GetMapping("/businessIncidentUpdate/{id}/{addr_id}")
+    public String busIncidentAdd(@PathVariable("id") int id,
+																 @PathVariable("addr_id") int addr_id,
+																 Model model,
+																 HttpSession session
+																 ) {
+				Address address = addressService.findById(addr_id);
+				Incident incident = incidentService.findById(id);
+				incident.setAddress(address);
+				incident.setCategory("Business");
+				incidentService.update(incident);
+				model.addAttribute("incident", incident);
+				handleErrorsAndMessages(model);
+        return "businessIncidentAdd";
+		}		
     @GetMapping("/incident/delete/{id}")
     public String deleteIncident(@PathVariable("id") int id,
 																 Model model,

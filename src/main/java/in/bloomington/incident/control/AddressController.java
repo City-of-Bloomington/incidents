@@ -33,8 +33,11 @@ import org.slf4j.LoggerFactory;
 //
 import in.bloomington.incident.util.AddressCheck;
 import in.bloomington.incident.model.Item;
+import in.bloomington.incident.model.Incident;
 import in.bloomington.incident.model.Address;
 import in.bloomington.incident.service.AddressService;
+import in.bloomington.incident.service.BusinessService;
+import in.bloomington.incident.service.IncidentService;
 import in.bloomington.incident.model.Business;
 import in.bloomington.incident.utils.Helper;
 
@@ -48,6 +51,10 @@ public class AddressController extends TopController{
     AddressCheck addressCheck;
     @Autowired
     AddressService addressService;
+    @Autowired
+    BusinessService businessService;
+    @Autowired
+    IncidentService incidentService;			
 		
     @Value( "${incident.defaultcity}" )
     private String defaultCity;
@@ -57,8 +64,8 @@ public class AddressController extends TopController{
     private String defaultState;		
     @Value( "${incident.zipcodes}" )
     private List<String> zipCodes;
-    @Value("${server.servlet.context-path}")
-    private String hostPath; // incidents in production
+		//  @Value("${server.servlet.context-path}")
+		//  private String hostPath; // incidents in production
 		
 		/**
 		@PostMapping("/address/add")
@@ -148,15 +155,59 @@ public class AddressController extends TopController{
 				model.addAttribute("address", address);
         return "addressInput";
     }
+		/**
+		 * business address (could be different from incident address)
+		 */ 
     @CrossOrigin(origins = "https://bloomington.in.gov")
-    @GetMapping("/addressBusinessInput")
-    public String addressBusinessInput(
-															 Model model) {
+    @GetMapping("/addressBusinessInput/{type_id}")
+    public String addressBusinessInput(@PathVariable("type_id") int type_id,
+																			 Model model) {
 				Address address = new Address();
+				address.setType_id(type_id);
 				address.setCategory("Business");
 				model.addAttribute("address", address);
         return "addressBusinessInput";
-    }		
+    }
+		/**
+		 * incident address for a given business
+		 */
+    @CrossOrigin(origins = "https://bloomington.in.gov")
+    @GetMapping("/businessIncidentAddressAdd/{bus_id}/{type_id}")
+    public String busIncidentAddrAdd(@PathVariable("type_id") int type_id,
+																		 @PathVariable("bus_id") int bus_id,
+																		 Model model) {
+				Business bus = businessService.findById(bus_id);
+				Address address = null;
+				if(bus != null){
+						address = bus.getAddress();
+				}
+				if(address != null){
+						address.setType_id(type_id);
+						address.setCategory("Business");
+						address.setBus_id(bus_id);
+						model.addAttribute("address", address);
+						return "businessIncidentAddressAdd";
+				}
+				else{
+						addError("business address not found");
+						return "redirect:/business/"+bus_id;
+				}
+    }
+    @CrossOrigin(origins = "https://bloomington.in.gov")
+    @GetMapping("/businessIncidentAddressEdit/{id}")
+		public String busIncidentAddrEdit(@PathVariable("id") int id,
+																			Model model) {
+										
+				Incident incident = incidentService.findById(id);
+				Integer bus_id = incident.getBus_id();
+				System.err.println(" bus id "+bus_id);
+				Address address = incident.getAddress();
+				address.setIncident_id(id);
+				address.setBus_id(bus_id);				
+				address.setCategory("Business");
+				model.addAttribute("address", address);
+				return "businessIncidentAddressUpdate";
+    }				
 		
     @CrossOrigin(origins = "https://bloomington.in.gov")
     @GetMapping("/addressUpdate/{id}/{type_id}")
@@ -167,20 +218,18 @@ public class AddressController extends TopController{
 				address.setOld_id(id);
 				address.setType_id(type_id);
 				model.addAttribute("address", address);
-				model.addAttribute("hostPath", hostPath);
+				// model.addAttribute("hostPath", hostPath);
         return "addressUpdate";
     }
     @CrossOrigin(origins = "https://bloomington.in.gov")
-    @GetMapping("/addressBusinessUpdate/{id}/{type_id}/{category}")
+    @GetMapping("/addressBusinessUpdate/{id}/{type_id}")
     public String addressBusinessInput(@PathVariable("id") int id,
 															 @PathVariable("type_id") int type_id,
-															 @PathVariable("category") String category,
 															 Model model) {
 				Address address = addressService.findById(id);
 				address.setOld_id(id);
 				address.setType_id(type_id);
 				model.addAttribute("address", address);
-				model.addAttribute("hostPath", hostPath);
         return "addressUpdate";
     }		
 		// for testing purpose
@@ -235,8 +284,16 @@ public class AddressController extends TopController{
 								address.setId(addr.getId());
 								addressService.update(address);								
 						}
-						if(address.hasBusinessCategory()){
-								return "redirect:/business/add/"+address.getId();
+						if(address.hasIncident()){
+								// redirect to add incident
+								return "redirect:/businessIncidentUpdate/"+address.getIncident_id()+"/"+address.getId();
+						}
+						else if(address.hasBusId()){
+								// redirect to add incident
+								return "redirect:/businessIncidentAdd/"+address.getId()+"/"+address.getType_id()+"/"+address.getBus_id();
+						}
+						else if(address.hasBusinessCategory()){
+								return "redirect:/business/add/"+address.getId()+"/"+address.getType_id();
 						}
 						else{
 								// next go to email request

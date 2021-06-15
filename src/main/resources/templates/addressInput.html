@@ -19,7 +19,6 @@
       </div>
 
       <form
-        action="#"
         th:action="@{/addressCheck}"
         th:object="${address}"
         onsubmit="return verifyAddress()"
@@ -65,10 +64,10 @@
               correct one for where the incident occured.
             </li>
             <li>
-              <i
-                >Please note that City, Zip code and State fields are
-                automatically filled when you pick the right address.</i
-              >
+              <i>
+                Please note that City, Zip code and State fields are
+                automatically filled when you pick the right address.
+							</i>
             </li>
           </ul>
           <label for="addr_id" class="required">
@@ -84,7 +83,6 @@
               size="60"
               placeholder="Enter a street address, then pick from the list."
               required="required"
-              name="address"
             />
           </div>
           <div id="address_display" class="form-group" style="display: none">

@@ -61,6 +61,10 @@ public class Address extends TopModel implements java.io.Serializable{
 		private String category="";
 		@Transient
 		private Integer old_id;
+		@Transient
+		private Integer bus_id;		
+		@Transient
+		private Integer incident_id;		
 		
     public Address(){
 				super();
@@ -207,7 +211,32 @@ public class Address extends TopModel implements java.io.Serializable{
 						return id;
 				else
 						return old_id;
-		}		
+		}
+		@Transient
+		public void setBus_id(Integer val){
+			 bus_id = val;
+		}
+		@Transient
+		public Integer getBus_id(){
+				return bus_id;
+		}
+		@Transient
+		public void setIncident_id(Integer val){
+			 incident_id = val;
+		}
+		@Transient
+		public Integer getIncident_id(){
+				return incident_id;
+		}
+		@Transient
+		public boolean hasIncident(){
+				return incident_id != null;
+		}
+		@Transient
+		public boolean hasBusId(){
+				return bus_id != null;
+		}
+		
 		@Transient
 		public boolean isValid(){
 				return invalidAddress == null;

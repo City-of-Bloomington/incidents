@@ -17,19 +17,21 @@
       <div th:if="${messages}">
         <div th:replace="general::messages(${messages})"></div>
       </div>
-			<div>To add a new business you start with adding the business local street address</div>
+
       <form
-        action="#"
         th:action="@{/addressCheck}"
         th:object="${address}"
         onsubmit="return verifyAddress()"
         method="post"
       >
         <input type="hidden" th:field="${address.addressId}" id="addressId" />
+				<input type="hidden"
+          th:field="${address.old_id}"
+          id="old_id"
+          />
         <input
           type="hidden"
           th:field="${address.subunitId}"
-          value=""
           id="subunitId"
         />
         <input
@@ -53,27 +55,31 @@
         />
         <input type="hidden" th:field="${address.zipcode}" id="zip" />
         <input type="hidden" th:field="${address.state}" id="state" />
+        <input type="hidden" th:field="${address.type_id}" id="type_id"/>
+				<input type="hidden" th:field="${address.bus_id}" id="bus_id"/>
 				<input type="hidden" th:field="${address.category}" id="category" />
-				<input type="hidden" th:field="${address.type_id}" id="type_id" />
         <fieldset>
           <legend>Location of Incident</legend>
           <ul>
+						<li><i>If the incident address is the same as business address, then just click on 'Next'.</i></li>
             <li>
-              To add the local business establishment address,
-							start typing the street address in the 'Street address' field below. A list of matching
-              addresses will be populated.
-            </li>
-						<li>If the incident address is different than the business address you will enter the incident address in later step.
+							<i>
+							If the incident address is different from the business address
+               add the incident street address, start typing the street
+              address in the 'Street address' field below. A list of matching
+              addresses will be populated, please select from the list the
+              correct one for where the incident occured.
+							</i>
 						</li>
             <li>
               <i>
-								Please note that City, Zip code and State fields are
+                Please note that City, Zip code and State fields are
                 automatically filled when you pick the right address.
 							</i>
             </li>
           </ul>
           <label for="addr_id" class="required">
-            Street address where the local business is located
+            Street address where the incident occured
           </label>
           <div class="form-group autocomplete-wrapper">
             <span id="address-full"></span>
@@ -89,11 +95,19 @@
           </div>
           <div id="address_display" class="form-group" style="display: none">
             <label for="address_info">City, State Zipcode</label>
-            <p id="address_info">&nbsp;</p>
+            <p id="address_info"><th:span="${address.info}" /></p>
           </div>
         </fieldset>
         <p>Click on Next to continue</p>
         <ul class="button-group">
+					<li>
+            <button
+              class="next-button"
+              th:attr="onclick=|window.location.href='@{/business/{id}(id=${address.bus_id})}'|"
+            >
+              Back
+            </button>
+          </li>					
           <li>
             <button type="submit" class="next-button">Next</button>
           </li>

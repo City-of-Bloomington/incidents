@@ -48,16 +48,16 @@ public class BusinessController extends TopController{
 		@Autowired 
     private HttpSession session;
 		
-    @GetMapping("/business/add/{addr_id}")
+    @GetMapping("/business/add/{addr_id}/{type_id}")
     public String newBusiness(@PathVariable("addr_id") int addr_id,
+															@PathVariable("type_id") int type_id,
 															Model model) {
-				if(session == null || session.getAttribute("user") == null){
-						return "staff/loginForm";
-				}
 				Business business = new Business();
+				business.setType_id(type_id);
 				Address addr = addressService.findById(addr_id);
-				if(addr != null)
+				if(addr != null){
 						business.setAddress(addr);
+				}
         model.addAttribute("business", business);
         return "businessAdd";
     }     
@@ -66,9 +66,6 @@ public class BusinessController extends TopController{
 															BindingResult result,
 															Model model
 															) {
-				if(session == null || session.getAttribute("user") == null){
-						return "staff/loginForm";
-				}
         if (result.hasErrors()) {
 						String error = Helper.extractErrors(result);
 						addError(error);
@@ -92,13 +89,11 @@ public class BusinessController extends TopController{
 				}
         businessService.save(business);
 				addMessage("Business Added Successfully");				
-				// Credential credit = new Credential();
-				// credit.setEmail(business.getEmail());
-				// credit.setBusiness(business);
-				// credentialService.save(credit);
 				int id = business.getId();
 				addMessagesAndErrorsToSession(session);
-				return "redirect:/business/"+id;
+				//
+				// to adding incident address
+				return "redirect:/businessIncidentAddressAdd/"+id+"/"+business.getType_id();
     }
 
     @GetMapping("/business/edit/{id}")
@@ -123,9 +118,6 @@ public class BusinessController extends TopController{
 																 @Valid Business business, 
 																 BindingResult result,
 																 Model model) {
-				if(session == null || session.getAttribute("user") == null){
-						return "staff/loginForm";
-				}
 				if (result.hasErrors()) {
 						String error = Helper.extractErrors(result);
 						error += " Error update business "+id;
@@ -165,9 +157,6 @@ public class BusinessController extends TopController{
     public String viewBusiness(@PathVariable("id") int id, Model model) {
 
 				try{
-						if(session == null || session.getAttribute("user") == null){
-								return "staff/loginForm";
-						}						
 						Business business = businessService.findById(id);
 						model.addAttribute("business", business);
 						

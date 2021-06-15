@@ -186,9 +186,6 @@
               Back
             </button>
           </li>
-          <li th:unless="${incident.hasBusinessRecord()}">
-            <button class="next-button" type="submit">Next</button>
-          </li>
           <li th:if="${incident.hasBisnessRecord()}">
             <button type="submit" class="next-button">Save Changes</button>
           </li>

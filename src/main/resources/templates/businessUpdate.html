@@ -25,9 +25,9 @@
 
       <div th:insert="general::businessInstructions"></div>
 			<form
-				action="#"
 				th:action="@{/business/update/{id}(id=${business.id})}"
 				th:object="${business}"
+				onsubmit="return verifyConfirm()"				
 				method="post">
 				<input type="hidden" th:field="${business.addr_id} " />
 				<input type="hidden" th:field="${business.oldEmail}" />
@@ -83,6 +83,16 @@
 							required="required"
             />
           </div>
+          <div class="field-group">
+            <label for="email2">Verify business email</label>
+            <input
+              type="text"
+              th:field="${business.email2}"
+              id="email2"
+              placeholder="business email2"
+							required="required"
+            />
+          </div>					
           <div class="field-group">
             <label for="reporterName">Your full name</label>
             <input

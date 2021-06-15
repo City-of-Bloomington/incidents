@@ -26,13 +26,13 @@
       <div th:insert="general::businessInstructions"></div>
 
       <form
-        action="#"
         th:action="@{/business/save}"
         th:object="${business}"
 				onsubmit="return verifyConfirm()"
         method="post"
       >
 				<input type="hidden" th:field="${business.addr_id} " />
+				<input type="hidden" th:field="${business.type_id} " />				
 				<fieldset>
           <legend>Business Location</legend>
           <span th:text="${business.addressInfo}"></span>
@@ -120,7 +120,7 @@
             />
           </div>							
 					<ul class="button-group">
-            <li><button type="submit" class="next-button">Save</button></li>
+            <li><button type="submit" class="next-button">Next</button></li>
           </ul>
         </fieldset>
 				

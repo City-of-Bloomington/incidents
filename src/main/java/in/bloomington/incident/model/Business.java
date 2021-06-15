@@ -56,10 +56,10 @@ public class Business extends TopModel implements java.io.Serializable{
 		@JoinColumn(name="address_id", updatable=false, referencedColumnName="id")
     private Address address;
 
+		/**
     @OneToMany(fetch=FetchType.LAZY, mappedBy="business")
-    // @JoinColumn(name="business_id",insertable=false, updatable=false)		
     private List<Incident> incidents;
-
+		*/
 		/**
 		 * this is disabled right now
 		 * since no login is required
@@ -72,6 +72,8 @@ public class Business extends TopModel implements java.io.Serializable{
 		
 		@Transient
 		private int addr_id = 0;
+		@Transient
+		private int type_id = 0; // for incident type (theft, vandal,..)
 		@Transient
 		private String email2; // for verification only
 		//
@@ -91,9 +93,8 @@ public class Business extends TopModel implements java.io.Serializable{
 
 										String reporterName,
 										String reporterTitle,
-										Address address,
-										// Credential credential,
-										List<Incident> incidents
+										Address address
+										// List<Incident> incidents
 										) {
 				super();
 				this.id = id;
@@ -105,8 +106,7 @@ public class Business extends TopModel implements java.io.Serializable{
 				this.reporterName = reporterName;
 				this.reporterTitle = reporterTitle;
 				this.address = address;
-				// this.credential = credential;
-				this.incidents = incidents;
+				// this.incidents = incidents;
     }
     public int getId() {
 				return id;
@@ -147,6 +147,12 @@ public class Business extends TopModel implements java.io.Serializable{
 				credential = val;
 		}
 		*/
+		public int getType_id(){
+				return type_id;
+		}
+		public void setType_id(int val){
+				type_id = val;
+		}
     public void setBusinessNumber(String val) {
 				if(val != null && !val.isEmpty())
 						this.businessNumber = val;
@@ -159,13 +165,19 @@ public class Business extends TopModel implements java.io.Serializable{
 				if(val != null && !val.isEmpty())
 						this.email = val.toLowerCase();
     }
+    public void setEmail2(String val) {
+				if(val != null && !val.isEmpty())
+						this.email2 = val.toLowerCase();
+    }		
     public void setOldEmail(String val) {
 				if(val != null && !val.isEmpty())
 						this.oldEmail = val;
     }		
     public void setAddress(Address val) {
-				if(val != null)
+				if(val != null){
 						this.address = val;
+						addr_id = this.address.getId();
+				}
     }
     public String getName() {
 				return name;
@@ -177,6 +189,12 @@ public class Business extends TopModel implements java.io.Serializable{
     public String getEmail() {
 				return email;
     }
+    public String getEmail2() {
+				if(email2 == null && email != null){
+						return email;
+				}
+				return email2;
+    }		
     public String getReporterName() {
 				return reporterName;
     }
@@ -186,7 +204,7 @@ public class Business extends TopModel implements java.io.Serializable{
     public Address getAddress() {
 				return address;
     }
-
+		/**
     public List<Incident> getIncidents() {
 				return incidents;
     }
@@ -194,6 +212,7 @@ public class Business extends TopModel implements java.io.Serializable{
     public void setIncidents(List<Incident> incidents) {
 				this.incidents = incidents;
     }
+		*/
 
 		@Transient
 		public String getOldEmail(){
@@ -260,9 +279,9 @@ public class Business extends TopModel implements java.io.Serializable{
 				String ret = reporterName == null? "":reporterName;
 				if(reporterTitle != null && !reporterTitle.isEmpty()){
 						if(!ret.isEmpty()){
-								ret += ": ";
+								ret += " ";
 						}
-						ret += reporterTitle;
+						ret += "("+reporterTitle+")";
 				}
 				return ret;
 				

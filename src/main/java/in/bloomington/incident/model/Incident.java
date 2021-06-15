@@ -97,13 +97,18 @@ public class Incident extends TopModel implements java.io.Serializable{
     private String oldAddress;
 		@Transient
 		private int addr_id = 0;
-    
+		@Transient
+		private Integer bus_id;    
     @OneToMany
     @JoinColumn(name="incident_id",insertable=false, updatable=false)		
     private List<Person> persons;
+
+    @OneToMany
+    @JoinColumn(name="incident_id",insertable=false, updatable=false)		
+    private List<Offender> offenders;		
 		
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "business_id")
+		@OneToOne
+		@JoinColumn(name="business_id", updatable=false, referencedColumnName="id")
     private Business business;
 		
     @OneToMany
@@ -128,7 +133,6 @@ public class Incident extends TopModel implements java.io.Serializable{
 
 		@Convert(converter = AddressConverter.class)
 		@OneToOne
-		// @ManyToOne(optional=false, fetch=FetchType.EAGER)
 		@JoinColumn(name="address_id", updatable=false, referencedColumnName="id")
     Address address;
 
@@ -151,7 +155,8 @@ public class Incident extends TopModel implements java.io.Serializable{
 										Character haveMedia,
 										String email,
 										Address address,
-										List<Person> persons,										
+										List<Person> persons,
+										List<Offender> offenders,
 										List<Property> properties,
 										List<Vehicle> vehicles,
 										List<ActionLog> actionLogs,
@@ -175,7 +180,8 @@ public class Incident extends TopModel implements java.io.Serializable{
 				this.otherEntry = otherEntry;
 				this.haveMedia = haveMedia;
 				this.email = email;
-				this.persons = persons;				
+				this.persons = persons;
+				this.offenders = offenders;
 				this.properties = properties;
 				this.vehicles = vehicles;
 				setActionLogs(actionLogs);
@@ -183,7 +189,7 @@ public class Incident extends TopModel implements java.io.Serializable{
 				this.frauds = frauds;
 				this.address = address;
 				this.category = category;
-				this.business = business;
+				setBusiness(business);
     }
 
     public int getId() {
@@ -276,8 +282,10 @@ public class Incident extends TopModel implements java.io.Serializable{
 				return category != null && category.equals("Business");
 		}
 		public void setBusiness(Business val){
-				if(val != null)
-						this.business = val;
+				if(val != null){
+						business = val;
+						bus_id = business.getId();
+				}
 		}
 		public Business getBusiness(){
 				return business;
@@ -436,6 +444,16 @@ public class Incident extends TopModel implements java.io.Serializable{
 		public void setAddr_id(int val){
 				addr_id = val;
 		}
+		@Transient
+		public Integer getBus_id(){
+				if(business != null)
+						bus_id = business.getId();
+				return bus_id;
+		}
+		@Transient
+		public void setBus_id(Integer val){
+				bus_id = val;
+		}		
     @Transient
     public String getStartEndDate(){
 				String ret = "";
@@ -561,6 +579,12 @@ public class Incident extends TopModel implements java.io.Serializable{
     public void setPersons(List<Person> vals){
 				this.persons = vals;
     }
+    public List<Offender> getOffenders(){
+				return this.offenders;
+    }		
+    public void setOffenders(List<Offender> vals){
+				this.offenders = vals;
+    }		
     public List<Fraud> getFrauds(){
 				return this.frauds;
     }		
@@ -696,6 +720,10 @@ public class Incident extends TopModel implements java.io.Serializable{
     public boolean hasPersonList(){
 				return persons != null && persons.size() > 0;
     }
+    @Transient
+    public boolean hasOffenderList(){
+				return offenders != null && offenders.size() > 0;
+    }		
     @Transient		
     public boolean hasPropertyList(){
 				return properties != null && properties.size() > 0;

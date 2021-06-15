@@ -629,3 +629,13 @@ alter table credentials drop constraint credentials_ibfk_1;
 ;; modified credentials table just to keep it around
 ;;
 create table credentials(                                                            id int unsigned auto_increment primary key,                                     email varchar(256) not null unique,                                             password varchar(256),                                                          last_update datetime                                                           )engine=InnoDB;
+
+;;
+;;
+create table offenders like persons;
+alter table offenders drop column person_type_id;
+alter table offenders drop column reporter;
+alter table offenders drop column email2;
+alter table offenders drop column phone2;
+alter table offenders drop column phone_type2;
+alter table offenders add foreign key(incident_id) references incidents(id);
