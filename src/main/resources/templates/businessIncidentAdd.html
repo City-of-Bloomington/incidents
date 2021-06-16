@@ -26,8 +26,7 @@
 
       <p>* indicate required fields</p>
       <form
-        action="#"
-        th:action="@{/incidentNext/{id}(id=${incident.id})}"
+        th:action="@{/businessIncidentNext/{id}(id=${incident.id})}"
         th:object="${incident}"
         onsubmit="return verifyIncidentInput()"
         method="post"
@@ -36,15 +35,10 @@
         <input type="hidden" th:field="${incident.receivedStr}" />
         <input type="hidden" th:field="${incident.incidentType} " />
         <input type="hidden" th:field="${incident.addr_id} " />
-        <input type="hidden" th:field="${incident.business} " />				
+        <input type="hidden" th:field="${incident.business} " />
+        <input type="hidden" th:field="${incident.category} " />				
         <fieldset>
           <legend>Incident Date and Time</legend>
-          <p>
-            eg. I went to bed at 11:00PM on Saturday, August 8th. When I woke up
-            on Sunday around 6:00AM, I noticed my car window was smashed with a
-            rock.
-          </p>
-          <p>You report 8/8/2015 11:00 PM - 8/9/2015 06:00 AM.)</p>
 
           <div class="field-group">
             <label for="start_date" class="required">
@@ -114,7 +108,10 @@
             ></textarea>
           </div>
         </fieldset>
-
+        <fieldset>
+          <legend>Business Info</legend>
+          <span th:text="${incident.business.info}"></span>
+        </fieldset>				
         <fieldset>
           <legend>Location of Incident</legend>
           <span th:text="${incident.addressInfo}"></span>

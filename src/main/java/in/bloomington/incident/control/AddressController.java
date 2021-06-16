@@ -305,9 +305,9 @@ public class AddressController extends TopController{
 				}
 				// no pass then we send the user to address input again with error message
 				if(address.hasBusinessCategory()){
-								model.addAttribute("address", address);
-								model.addAttribute("category", "Business");
-								return "addressBusinessInput";
+						model.addAttribute("address", address);
+						model.addAttribute("category", "Business");
+						return "addressBusinessInput";
 				}
 				else{
 						model.addAttribute("address", address);
@@ -571,13 +571,6 @@ class AddressServiceController{
 						// if term has at least two parts
 						String[] arr = term.split("\\s+");
 						if(arr.length >= 2){
-								/**
-								List<Address>addrs = addressService.findByNameContaining(term);
-								if (addrs != null && addrs.size() > 0) {
-										json = buildJson(addrs, term);
-										System.err.println(json);
-								}
-								*/
 								String back = addressCheck.findMatchedAddresses(term);
 								if(back.indexOf("Exception") == -1){
 										json = back;

@@ -94,7 +94,6 @@ public class Business extends TopModel implements java.io.Serializable{
 										String reporterName,
 										String reporterTitle,
 										Address address
-										// List<Incident> incidents
 										) {
 				super();
 				this.id = id;
@@ -106,7 +105,6 @@ public class Business extends TopModel implements java.io.Serializable{
 				this.reporterName = reporterName;
 				this.reporterTitle = reporterTitle;
 				this.address = address;
-				// this.incidents = incidents;
     }
     public int getId() {
 				return id;
@@ -139,14 +137,6 @@ public class Business extends TopModel implements java.io.Serializable{
     public String getCorporateAddress() {
 				return corporateAddress;
     }
-		/**
-		public Credential getCredential(){
-				return credential;
-		}
-		public void setCredential(Credential val){
-				credential = val;
-		}
-		*/
 		public int getType_id(){
 				return type_id;
 		}
@@ -204,15 +194,6 @@ public class Business extends TopModel implements java.io.Serializable{
     public Address getAddress() {
 				return address;
     }
-		/**
-    public List<Incident> getIncidents() {
-				return incidents;
-    }
-
-    public void setIncidents(List<Incident> incidents) {
-				this.incidents = incidents;
-    }
-		*/
 
 		@Transient
 		public String getOldEmail(){
@@ -246,8 +227,8 @@ public class Business extends TopModel implements java.io.Serializable{
 				return ret;
     }
 		@Transient
-		public boolean hasCorporateData(){
-				return !getContactInfo().isEmpty();
+		public boolean hasCorporateInfo(){
+				return !getCorporateData().isEmpty();
 		}
     @Transient
     public boolean verify(){
@@ -291,7 +272,7 @@ public class Business extends TopModel implements java.io.Serializable{
 				return !getReporterInfo().isEmpty();
 		}
 		@Transient
-		public String getCorporateInfo(){
+		public String getCorporateData(){
 				String ret = "";
 				if(name != null && !name.isEmpty()){
 						ret += "Name: "+name;

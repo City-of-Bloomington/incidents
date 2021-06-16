@@ -1,0 +1,127 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--
+ - @copyright Copyright (C) 2014-2015 City of Bloomington, Indiana. All rights reserved.
+ - @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
+ - @author W. Sibo <sibow@bloomington.in.gov>
+ -
+ -->
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head th:replace="general::head('Incident Details')"></head>
+
+  <body>
+    <header th:replace="general::header"></header>
+
+    <main class="public-questions-wrapper">
+      <h2>View Incident</h2>
+
+      <div th:if="${errors}">
+        <div th:replace="general::errors(${errors})"></div>
+      </div>
+
+      <div th:if="${messages}">
+        <div th:replace="general::messages(${messages})"></div>
+      </div>
+      <p>
+        If you need to add additional information relating to an offender or upload
+        supporting images, please use the links below
+      </p>
+      <ul class="button-group">
+        <li>
+          <input
+            type="button"
+            th:attr="onclick=|window.location.href='@{/offender/add/{id}(id=${incident.id})}'|"
+            value="Add Offender"
+          />
+        </li>
+
+        <li>
+          <input
+            type="button"
+            th:attr="onclick=|window.location.href='@{/property/add/{id}(id=${incident.id})}'|"
+            value="Add Property"
+          />
+        </li>
+        <li>
+          <input
+            type="button"
+            th:attr="onclick=|window.location.href='@{/vehicle/add/{id}(id=${incident.id})}'|"
+            value="Add Vehicle"
+          />
+        </li>
+        <li>
+          <input
+            type="button"
+            th:attr="onclick=|window.location.href='@{/media/add/{id}(id=${incident.id})}'|"
+            value="Upload Photo"
+          />
+        </li>
+      </ul>
+      <p>
+        If you notice any incident information need change click on the
+        corresponding Edit link.
+      </p>
+      <div th:if="${incident.canBeSubmitted()}">
+        <ul>
+          <li>Review your incident report below.</li>
+          <li>
+            Edit any information. Click on the corresponding edit link for that
+            section to edit information.
+          </li>
+          <li>Once your report has been submitted, no changes can be made.</li>
+          <li>
+            If no further changes are needed, click on the 'Next' at the bottom
+            of this page.
+          </li>
+        </ul>
+      </div>
+
+      <h2>Incident General Info</h2>
+      <div>
+        <div th:replace="incidentView::incident(${incident})"></div>
+
+        <ul class="button-group">
+          <li>
+            <input
+              type="button"
+              th:attr="onclick=|window.location.href='@{/businessIncidentEdit/{id}(id=${incident.id})}'|"
+              value="Edit Incident"
+            />
+          </li>
+        </ul>
+        <div th:if="${incident.hasBusinessRecord()}">
+          <div
+            th:replace="business::business(${incident.business})"
+          ></div>
+        </div>
+        <div th:if="${incident.hasOffenerList()}">
+          <div
+            th:insert="offenders::offenders(${incident.offenders})"
+          ></div>
+        </div>
+
+        <div th:if="${incident.hasPropertyList()}">
+          <div
+            th:insert="properties::properties(${incident.properties},${incident.totalValueFr})"
+          ></div>
+        </div>
+
+        <div th:if="${incident.hasVehicleList()}">
+          <div
+            th:insert="vehicles::vehicles(${incident.vehicles})"
+          ></div>
+        </div>
+        <div th:if="${incident.hasMediaList()}">
+          <div th:insert="medias::medias(${incident.medias})"></div>
+        </div>
+
+        <div class="next_div" th:if="${incident.canBeSubmitted()}">
+          <input
+            type="button"
+            th:attr="onclick=|window.location.href='@{/businessIncident/finalPage/{id}(id=${incident.id})}'|"
+            value="Next"
+          />
+        </div>
+      </div>
+    </main>
+  </body>
+</html>

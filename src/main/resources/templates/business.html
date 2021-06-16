@@ -20,13 +20,12 @@
       <div th:if="${messages}">
         <div th:insert="general::messages(${messages})"></div>
       </div>
-			<div th:fragment="businessView(${business})">		
+			<div th:fragment="business(${business})">		
 				<p>Reported Business</p>
-
 				<ul>
 					<li>
 						<strong>Corporate info: </strong>
-          <span th:text="${business.corporateInfo}"></span>
+						<span th:text="${business.corporateData}"></span>
 					</li>
 					<li>
 						<strong>Contact info: </strong>

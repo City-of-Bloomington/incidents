@@ -129,7 +129,10 @@ public class PropertyController extends TopController{
         propertyService.save(property);
 				addMessage("Added Successfully");
 				addMessagesAndErrorsToSession(session);
-
+				// for business
+				if(incident.isBusinessRelated()){
+						return "redirect:/businessIncident/"+incident_id;
+				}
 				//
 				// next add vehicle if required
 				if(incident.isVehicleRequired() && !incident.hasVehicleList()){
@@ -213,6 +216,9 @@ public class PropertyController extends TopController{
 				addMessage("Updated Successfully");
 				addMessagesAndErrorsToSession(session);
 				// need redirect to incident
+				if(incident.isBusinessRelated()){
+						return "redirect:/businessIncident/"+incident_id;
+				}
 				return "redirect:/incident/"+incident_id;
     }
 		
@@ -222,6 +228,7 @@ public class PropertyController extends TopController{
 																 HttpSession session) {
 
 				Incident incident = null;
+				int incident_id=0;
 				try{
 						Property property = propertyService.findById(id);
 						incident = property.getIncident();
@@ -230,7 +237,7 @@ public class PropertyController extends TopController{
 								addMessagesAndErrorsToSession(session);
 								return "redirect:/";	    
 						}
-						int incident_id = incident.getId();
+						incident_id = incident.getId();
 						if(!verifySession(session, ""+incident_id)){				
 								addMessage("No more changes can be made ");
 								addMessagesAndErrorsToSession(session);
@@ -244,6 +251,9 @@ public class PropertyController extends TopController{
 				}
 				addMessagesAndErrorsToSession(session);
 				resetAll();
+				if(incident.isBusinessRelated()){
+						return "redirect:/businessIncident/"+incident_id;
+				}
 				return "redirect:/incident/"+incident.getId();
 
     }

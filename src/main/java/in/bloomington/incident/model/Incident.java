@@ -683,25 +683,41 @@ public class Incident extends TopModel implements java.io.Serializable{
     */
     @Transient
     public boolean canBeSubmitted(){
-				if(!hasPersonList()){
-						addError("Person information are required");
-						return false;
+				if(isBusinessRelated()){
+						if(!hasOffenderList()){
+								addError("Offender information are required");
+								return false;
+						}
+						if(!hasPropertyList()){
+								addError("You need to add property information");
+								return false;
+						}
+						if(!hasMediaList()){
+								addError("You need to add receipt photo of the theft or photo of the vandalism");
+								return false;
+						}
 				}
-				if(isFraudRelated() && !hasFraudList()){
-						addError("You need to add fraud/scam information");
-						return false;
-				}
-				if(!isFraudRelated() && !hasPropertyList()){
-						addError("You need to add property information");
-						return false;
-				}
-				if(isVehicleRequired() && !hasVehicleList()){
-						addError("You need to add vehicle information");
-						return false;
-				}
-				if(hasActionLogs() && !hasEmailActionLogOnly()){
-						addError("The incident is already submitted");
-						return false;
+				else{
+						if(!hasPersonList()){
+								addError("Person information are required");
+								return false;
+						}
+						if(isFraudRelated() && !hasFraudList()){
+								addError("You need to add fraud/scam information");
+								return false;
+						}
+						if(!isFraudRelated() && !hasPropertyList()){
+								addError("You need to add property information");
+								return false;
+						}
+						if(isVehicleRequired() && !hasVehicleList()){
+								addError("You need to add vehicle information");
+								return false;
+						}
+						if(hasActionLogs() && !hasEmailActionLogOnly()){
+								addError("The incident is already submitted");
+								return false;
+						}
 				}
 				return true;
     }

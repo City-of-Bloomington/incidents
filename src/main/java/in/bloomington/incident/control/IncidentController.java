@@ -260,11 +260,6 @@ public class IncidentController extends TopController{
 						return "redirect:/error";
 				}
 				if(incident.canBeChanged()){
-						if(incident.isBusinessRelated() && !incident.hasBusinessRecord()){
-								addMessage("You need to add business info");
-								addMessagesAndErrorsToSession(session);	    
-								return "redirect:/business/add/"+id;
-						}
 						if(!incident.hasPersonList()){
 								addMessage("You need to add a person");
 								addMessagesAndErrorsToSession(session);	    
@@ -285,22 +280,15 @@ public class IncidentController extends TopController{
 								addMessagesAndErrorsToSession(session);
 								return "redirect:/vehicle/add/"+id;
 						}
-						if(incident.isBusinessRelated() && !incident.hasMediaList()){
-								addMessage("You need to add a receipt or photo of the damage");
-								addMessagesAndErrorsToSession(session);
-								return "redirect:/media/add/"+id;
-						}
 						model.addAttribute("incident", incident);
-						model.addAttribute("hostPath", hostPath);	    
 						getMessagesAndErrorsFromSession(session, model);
-						return "incident";	    
+						return "incident";								
 				}
 				else {
 						addError("No more changes can be made to this incident");
 						addMessagesAndErrorsToSession(session);
-						return "redirect:/introStart";
+						return "redirect:/intro_all";
 				}
-
     }
     //
     @GetMapping("/incident/finalPage/{id}")
@@ -502,7 +490,7 @@ public class IncidentController extends TopController{
 						addError(error);
 						logger.error("Error update incident "+id+" "+error);
 						handleErrorsAndMessages(model);
-						return "incidentUpdate";
+						return "redirect:/incidentEdit/"+id;
 				}
 				if(!verifySession(session, ""+id)){
 						addMessage("no more changes can be made ");
@@ -517,7 +505,7 @@ public class IncidentController extends TopController{
 								pass = false;
 						}
 						if(!pass){
-								return "redirect:/incidentEdit/"+incident.getId();
+								return "redirect:/incidentEdit/"+id;
 						}
 						int addr_id = incident.getAddr_id();
 						if(addr_id > 0){
@@ -536,57 +524,6 @@ public class IncidentController extends TopController{
 						return "redirect:/index";
 				}
     }
-		@GetMapping("/businessIncidentAdd/{addr_id}/{type_id}/{bus_id}")
-    public String busIncidentAdd(@PathVariable("addr_id") int addr_id,
-																 @PathVariable("type_id") int type_id,
-																 @PathVariable("bus_id") int bus_id,
-																 Model model,
-																 HttpSession session
-																 ) {
-				List<String> ids = null;
-				int id = 0;
-				try{
-						ids = (List<String>) session.getAttribute("incident_ids");
-				}catch(Exception ex){
-						System.err.println(ex);
-				}				
-				Address address = addressService.findById(addr_id);
-				IncidentType incidentType = incidentTypeService.findById(type_id);
-				Business business = businessService.findById(bus_id);
-				Incident incident = new Incident();
-				incident.setAddress(address);
-				incident.setBusiness(business);
-				incident.setIncidentType(incidentType);
-				incident.setEmail(business.getEmail());
-				incident.setReceivedNow();
-				incident.setCategory("Business");
-				incidentService.save(incident);
-				if(ids == null){
-						ids = new ArrayList<>();
-				}
-				ids.add(""+incident.getId());
-				session.setAttribute("incident_ids", ids);
-				model.addAttribute("incident", incident);
-				// not needed for business
-				// model.addAttribute("entryTypes", entryTypes);
-				handleErrorsAndMessages(model);
-        return "businessIncidentAdd";
-		}
-		@GetMapping("/businessIncidentUpdate/{id}/{addr_id}")
-    public String busIncidentAdd(@PathVariable("id") int id,
-																 @PathVariable("addr_id") int addr_id,
-																 Model model,
-																 HttpSession session
-																 ) {
-				Address address = addressService.findById(addr_id);
-				Incident incident = incidentService.findById(id);
-				incident.setAddress(address);
-				incident.setCategory("Business");
-				incidentService.update(incident);
-				model.addAttribute("incident", incident);
-				handleErrorsAndMessages(model);
-        return "businessIncidentAdd";
-		}		
     @GetMapping("/incident/delete/{id}")
     public String deleteIncident(@PathVariable("id") int id,
 																 Model model,

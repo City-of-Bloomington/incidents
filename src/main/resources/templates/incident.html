@@ -88,11 +88,6 @@
             />
           </li>
         </ul>
-        <div th:if="${incident.isBusiness()}">
-          <div
-            th:replace="business::business(${incident.business})"
-          ></div>
-        </div>
         <div th:if="${incident.hasPersonList()}">
           <div
             th:insert="persons::persons(${incident.persons})"

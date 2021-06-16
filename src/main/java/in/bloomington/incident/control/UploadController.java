@@ -70,10 +70,9 @@ public class UploadController extends TopController{
     @GetMapping("/media/add/{id}")
     public String mediaForm(@PathVariable("id") int id,
 														Model model,
-														RedirectAttributes redirectAttributes)
-    {
+														RedirectAttributes redirectAttributes){
+				Incident incident = incidentService.findById(id);				
 				try{
-						Incident incident = incidentService.findById(id);
 						int media_count = incident.getMediaCount();
 						if(media_count < mediaMaxCount){
 								model.addAttribute("incident_id", id);
@@ -88,6 +87,9 @@ public class UploadController extends TopController{
 						addError("invalid incident "+id);
 						redirectAttributes.addFlashAttribute("error","Invalid incident "+id);						
 						System.err.println(""+ ex);
+				}
+				if(incident.isBusinessRelated()){
+						return "redirect:/businessIncident/"+id;
 				}
 				return "redirect:/incident/"+id;
     }		
@@ -167,7 +169,10 @@ public class UploadController extends TopController{
 								addError(""+e);
 						}
 				}
-
+				Incident incident = incidentService.findById(incident_id);
+				if(incident.isBusinessRelated()){
+						return "redirect:/businessIncident/" +  incident_id;
+				}
         return "redirect:/incident/" +  incident_id;
     }
     @GetMapping("/media/download/{id}")

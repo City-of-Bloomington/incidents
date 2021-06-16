@@ -71,7 +71,6 @@ public class Offender extends TopModel implements java.io.Serializable{
 		String gender; // emum('Male','Female','Tramsgender'),
 		String ethnicity; // enum('Hispanic','Non-hispanic','Unknown');
     String occupation;
-    Character reporter;
     // the following are temp var 
     @Transient
     Integer dobDay;
@@ -460,10 +459,6 @@ public class Offender extends TopModel implements java.io.Serializable{
     public void setOccupation(String val) {
 				if(val != null && !val.isEmpty())
 						this.occupation = val;
-    }
-
-    public Character getReporter() {
-				return reporter;
     }
 
     @Transient

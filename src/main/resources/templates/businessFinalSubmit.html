@@ -1,0 +1,46 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--
+ - @copyright Copyright (C) 2014-2015 City of Bloomington, Indiana. All rights reserved.
+ - @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
+ - @author W. Sibo <sibow@bloomington.in.gov>
+ -
+ -->
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head th:replace="general::head('Final Submit')"></head>
+  <body>
+		<header th:replace="general::header"></header>
+		
+		<main class="public-questions-wrapper">
+			<h2>Submit Report</h2>
+			
+			<div th:if="${errors}">
+				<div th:replace="general::errors(${errors})"></div>
+			</div>
+			
+			<div th:if="${messages}">
+				<div th:replace="general::messages(${messages})"></div>
+			</div>
+			
+			<form
+				th:action="@{/businessIncident/submit/{id}(id=${incident.id})}"
+				th:object="${incident}"
+				method="get">
+
+				<fieldset>
+					<p>
+						Your report is ready to be submitted. After submission you will receive an email with a verification that we received your incident. </p>
+					
+					<p> If approved, you will receive an email with the case number for your report. If denied, you will receive an email with a reason for the denial.</p>
+					<p>If you need to review your report one more time click on 
+						<a class="m-b-10" th:href="@{/businessIncident/{id}(id=${incident.id})}">Review report details</a>
+					</p>
+					<ul class="button-group">
+						<li>
+						<input type="submit" value="Submit Report" />
+						</li>
+					</ul>
+				</fieldset>
+			</form>
+		</main>
+  </body>
+</htmL>
