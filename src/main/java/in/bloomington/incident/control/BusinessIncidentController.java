@@ -178,7 +178,14 @@ public class BusinessIncidentController extends TopController{
 								addMessagesAndErrorsToSession(session);
 								return "redirect:/media/add/"+id;
 						}
+						Business business = incident.getBusiness();
 						model.addAttribute("incident", incident);
+						if(business != null){
+								model.addAttribute("business", business);
+						}
+						else{
+								System.err.println(" *** bus is null ");
+						}
 						getMessagesAndErrorsFromSession(session, model);
 						return "businessIncident";
 				}

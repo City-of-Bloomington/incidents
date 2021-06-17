@@ -89,16 +89,13 @@
           </li>
         </ul>
         <div th:if="${incident.hasBusinessRecord()}">
-          <div
-            th:replace="business::business(${incident.business})"
-          ></div>
+          <div th:insert="business::business(${business})">
+          </div>
         </div>
-        <div th:if="${incident.hasOffenerList()}">
-          <div
-            th:insert="offenders::offenders(${incident.offenders})"
-          ></div>
+        <div th:if="${incident.hasOffenderList()}">
+          <div th:insert="offenders::offenders(${incident.offenders})">
+          </div>
         </div>
-
         <div th:if="${incident.hasPropertyList()}">
           <div
             th:insert="properties::properties(${incident.properties},${incident.totalValueFr})"

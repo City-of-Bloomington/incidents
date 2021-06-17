@@ -227,8 +227,8 @@ public class Business extends TopModel implements java.io.Serializable{
 				return ret;
     }
 		@Transient
-		public boolean hasCorporateInfo(){
-				return !getCorporateData().isEmpty();
+		public boolean hasCorporateData(){
+				return !getCorporateInfo().isEmpty();
 		}
     @Transient
     public boolean verify(){
@@ -272,7 +272,7 @@ public class Business extends TopModel implements java.io.Serializable{
 				return !getReporterInfo().isEmpty();
 		}
 		@Transient
-		public String getCorporateData(){
+		public String getCorporateInfo(){
 				String ret = "";
 				if(name != null && !name.isEmpty()){
 						ret += "Name: "+name;

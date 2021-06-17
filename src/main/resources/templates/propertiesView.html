@@ -29,9 +29,10 @@
 						<li th:if="${one.hasOwner()}"><span th:text="${'Owner: '+ one.owner}"></span></li>
 						<li th:if="${one.hasDescription()}"><span th:text="${'Description: '+ one.description}"></span></li>						
 						<li th:text="${'Value: '+one.valueFr}">&#36;</li>
-					</ul>
-					<ul th:if="${istat.last}">
-						<li th:text="${'Total: '+totalBalance}"></td>
+						<li th:if="${istat.last}">
+              <strong>Total Reported Properties Value: </strong>
+              <span th:text="${totalBalance}"></span>
+						</li>
 					</ul>	      
 				</div>      
       </div>

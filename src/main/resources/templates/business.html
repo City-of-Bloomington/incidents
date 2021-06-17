@@ -5,41 +5,30 @@
  - @author W. Sibo <sibow@bloomington.in.gov>
  -
  -->
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head th:replace="general::head('Business')"></head>
-  <body>
-    <header th:replace="general::header"></header>
-
-    <main class="public-questions-wrapper">
-
-
-      <div th:if="${errors}">
-        <div th:insert="general::errors(${errors})"></div>
-      </div>
-
-      <div th:if="${messages}">
-        <div th:insert="general::messages(${messages})"></div>
-      </div>
-			<div th:fragment="business(${business})">		
-				<p>Reported Business</p>
-				<ul>
-					<li>
-						<strong>Corporate info: </strong>
-						<span th:text="${business.corporateData}"></span>
-					</li>
-					<li>
-						<strong>Contact info: </strong>
-						<span th:text="${business.contactInfo}"></span>
-					</li>					
-					<li>
-						<strong>Reporter info: </strong>
-						<span th:text="${business.reporterInfo}"></span>
-					</li>
-					<li>
-						<a th:href="@{/business/edit/{id}(id=${business.id})}">Edit</a>
-					</li>
-				</ul>
-			</div>
-    </main>
-  </body>
-</html>
+ <html xmlns="http://www.w3.org/1999/xhtml">
+   <head th:replace="general::head('Business')"></head>
+   <body>
+     <header th:replace="general::header"></header>
+		 
+     <main class="public-questions-wrapper">
+       <div th:if="${errors}">
+         <div th:insert="general::errors(${errors})"></div>
+       </div>
+       <div th:if="${messages}">
+         <div th:insert="general::messages(${messages})"></div>
+       </div>
+			 <div th:fragment="business(${business})">					 
+				 <fieldset>
+					 <caption>View Person</caption>			
+					 <div th:insert="businessView::business(${business})">
+						 <ul>
+							 <li>
+								 <a th:href="@{/business/edit/{id}(id=${business.id})}">Edit</a>
+							 </li>
+						 </ul>						
+					 </div>
+				 </fieldset>
+			 </div>
+		 </main>
+	 </body>
+ </html>

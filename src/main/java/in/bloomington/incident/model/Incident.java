@@ -52,7 +52,7 @@ public class Incident extends TopModel implements java.io.Serializable{
 		@JoinColumn(name="incident_type_id", referencedColumnName="id")
     private IncidentType incidentType;
 
-		private String category; // Person, Business
+		private String category="Person"; // Person, Business
     private Date received;
 
     private Date date;
@@ -188,7 +188,7 @@ public class Incident extends TopModel implements java.io.Serializable{
 				this.medias = medias;
 				this.frauds = frauds;
 				this.address = address;
-				this.category = category;
+				this.setCategory(category);
 				setBusiness(business);
     }
 

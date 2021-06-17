@@ -103,13 +103,12 @@ public class IncidentController extends TopController{
 				model.addAttribute("type_id", incident.getIncidentType().getId());
 				return "emailAdd";
     }
-		// TODO
+		// 
     @RequestMapping("/emailRequest")
     public String emailRequest(@RequestParam(required = true) String email,
 															 @RequestParam(required = true) String email2,
 															 @RequestParam(required = true) int type_id,
 															 @RequestParam(required = true) int address_id,
-															 @RequestParam String category,
 															 Model model,
 															 HttpSession session
 															 ){
@@ -133,9 +132,6 @@ public class IncidentController extends TopController{
 				if(emailProblem){
 						model.addAttribute("type_id", type_id);
 						model.addAttribute("address_id", address_id);
-						if(category != null && !category.isEmpty()){
-								model.addAttribute("category", category);
-						}
 						handleErrorsAndMessages(model);
 						return "emailAdd";
 				}
@@ -162,7 +158,7 @@ public class IncidentController extends TopController{
 						incident.setEmail(email);
 						incident.setIncidentType(type);
 						incident.setAddress(address);
-						incident.setCategory(category);
+						incident.setCategory("Person");
 						incidentService.update(incident);
 				}
 				else{
@@ -171,7 +167,7 @@ public class IncidentController extends TopController{
 						incident.setReceivedNow();
 						incident.setIncidentType(type);
 						incident.setAddress(address);
-						incident.setCategory(category);						
+						incident.setCategory("Person");						
 						incidentService.save(incident);
 						if(ids == null){
 								ids = new ArrayList<>();

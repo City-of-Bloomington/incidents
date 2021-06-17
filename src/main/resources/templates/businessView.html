@@ -23,22 +23,15 @@
 		</div>
 		<div th:fragment="business(${business})">			
 			<p>
-				Business Details
+				Business Info
 			</p>
 			<ul>
-        <li class="button-group">
-          <input
-            type="button"
-            th:attr="onclick=|window.location.href='@{/business/edit/{id}(id=${business.id})}'|"
-            value="Edit Business"
-            />
-        </li>				
+				<li th:if="${business.hasCorporateData()}">
+					<span th:text="${'Corporate: '+business.corporateInfo}"></span>
+				</li>				
 				<li th:if="${business.hasAddressInfo()}">
 					<span th:text="${'Address: '+business.addressInfo}"></span>
 				</li>			
-				<li th:if="${business.hasCorporateData()}">
-					<span th:text="${'Corporate: '+business.corporateInfo}"></span>
-				</li>
 				<li th:if="${business.hasContactData()}">
 					<span th:text="${'Contact: '+business.contactInfo}"></span>
 				</li>

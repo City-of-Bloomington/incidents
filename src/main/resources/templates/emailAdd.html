@@ -33,9 +33,6 @@
         >
           <input type="hidden" name="type_id" th:value="${type_id}" />
           <input type="hidden" name="address_id" th:value="${address_id}" />
-					<div th:if="${category != null}">
-						<input type="hidden" name="category" th:value="${category}" />
-					</div>
           <div th:unless="${type_id == 6}">
             <div th:replace="general::reportSteps"></div>
           </div>

@@ -26,10 +26,9 @@
 			<div th:insert="general::messages(${messages})"></div>
 		</div>
 
-		<div th:fragment="incidentView(${incident})">				
-		
+		<div th:fragment="incidentView(incident,business)">				
 			<fieldset>
-				<div th:fragment="incident(${incident})">
+				<div th:fragment="incident(incident)">
 				<div class="m-b-10">
 					<label>ID: </label>
 					<span th:text="${incident.id}"> </span>
@@ -41,6 +40,11 @@
 					<span th:text="${incident.caseNumber}"> </span>
 					<br />
 				</div>
+				<div class="m-b-10" th:if="${incident.isBusinessRelated()}">
+					<label>Category:</label>
+					<span>Business </span>
+					<br />
+				</div>				
 				
 				<div class="m-b-10" th:if="${incident.hasStatusInfo()}">
 					<label>Status: </label>
@@ -99,10 +103,16 @@
 					<span th:text="${incident.evidence}"></span>
 				</div>
 			</div>
-		</fieldset>
-		<div th:if="${incident.hasPersonList()}">
-			<div th:insert="personsView::persons(${incident.persons})"></div>
-		</div>
+			</fieldset>
+			<div th:if="${incident.hasBusinessRecord()}">
+        <div th:insert="businessView::business(${business})"></div>
+			</div>
+      <div th:if="${incident.hasOffenderList()}">
+        <div th:insert="offendersView::offenders(${incident.offenders})"></div>
+      </div>			
+			<div th:if="${incident.hasPersonList()}">
+				<div th:insert="personsView::persons(${incident.persons})"></div>
+			</div>
 		<div th:if="${incident.hasPropertyList()}">
 			<div th:insert="propertiesView::properties(${incident.properties},${incident.totalValueFr})"></div>
 		</div>

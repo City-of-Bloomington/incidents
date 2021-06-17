@@ -42,6 +42,7 @@ import in.bloomington.incident.model.Person;
 import in.bloomington.incident.model.Request;
 import in.bloomington.incident.model.User;
 import in.bloomington.incident.model.Email;
+import in.bloomington.incident.model.Business;
 import in.bloomington.incident.utils.Helper;
 import in.bloomington.incident.utils.EmailHelper;
 
@@ -101,6 +102,12 @@ public class ProcessController extends TopController{
 								actionLog.setIncident(incident);								
 								model.addAttribute("actionLog", actionLog);
 								model.addAttribute("actions", actions);
+								if(incident.isBusinessRelated()){
+										Business business = incident.getBusiness();
+										if(business != null){
+												model.addAttribute("business", business);
+										}
+								}
 						}						
 						model.addAttribute("incident", incident);
 				}catch(Exception ex){
@@ -340,6 +347,12 @@ public class ProcessController extends TopController{
 				}
 				try{
 						incident = incidentService.findById(id);
+						if(incident.hasBusinessRecord()){
+								Business business = incident.getBusiness();
+								if(business != null){
+										model.addAttribute("business", business);
+								}
+						}
 						model.addAttribute("incident", incident);
 				}catch(Exception ex){
 						logger.error("Error incident "+id+" not found "+ex);
