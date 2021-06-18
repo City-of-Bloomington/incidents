@@ -10,28 +10,27 @@
   <body class="staff">
     <header>
       <div th:replace="general::header-staff"></div>
-    </header>
-		<main class="staff">
-			<div th:replace="general::staffMenu('Confirmed')">
+		</header>
+    <main class="staff">
+			<div th:replace="general::staffMenu('Received')">
 			</div>
-      <h2>Confirmed Incidents</h2>
-			
+			<h2 th:text="${statusOutcome+' Incidents'}"></h2>
 			<div th:if="${errors}">
 				<div th:insert="general::errors(${errors})"></div>			
       </div>
-			
 			<div th:if="${messages}">
 				<div th:insert="general::messages(${messages})"></div>			
-			</div>		
-				
+      </div>
+			
       <div th:switch="${incidents}">
 				<div class="message alert" th:case="null">No incident found </div>
 				<div th:case="*">
+
 					<table>
 						<thead>
 							<tr>
 								<th>ID</th>
-								<th>Status</th>
+								<th>Category</th>
 								<th>Incident Type</th>
 								<th>Received Date & Time</th>
 								<th>Incident Date & Time</th>
@@ -44,7 +43,7 @@
 								<td>
 									<a th:href="@{/staff/{id}(id=${incident.id})}" th:text="${incident.id}"></a>
 								</td>
-								<td>Confirmed</td>
+								<td th:text="${incident.category}"></td>								
 								<td th:text="${incident.incidentType}"></td>
 								<td th:text="${incident.receivedStr}"></td>
 								<td th:text="${incident.dateTimeInfo}"></td>

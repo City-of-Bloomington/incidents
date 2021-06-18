@@ -51,7 +51,17 @@
 									</option>
 								</select>
 							</td>
-						</tr>						
+						</tr>
+						<tr>
+							<td><label for="category">Incident Category</label></td>
+						<td>
+							<select id="category" th:field="${search.category}">
+								<option value="">All</option>
+								<option value="Person">Person</option>
+								<option value="Business">Business</option>
+							</select>
+						</td>
+					</tr>								
 						<tr>
 							<td>
 								<label for="id">Incident Type:</label>
@@ -100,8 +110,8 @@
 					</table>
 				</fieldset>
 				<fieldset>
-					<legend>Incident Related Person</legend>
-					<table width="90%" summary="Person related search">
+					<legend>Persons/Offenders</legend>
+					<table width="90%" summary="Persons/Offenders related incident search">
 						<tr>
 							<td width="18%">
 								<label for="name_id">Name</label>

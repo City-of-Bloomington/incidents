@@ -597,7 +597,8 @@ service tomcat9 restart
 ;; modify incidents table add category 
 ;; 
 alter table incidents add category enum('Person','Business') after incident_type_id;
-
+;; for the old incidents 
+update incidents set category='Person' where category is null;
 
 ;;
 ;; database tables related to business portion of incidents

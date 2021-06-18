@@ -40,9 +40,9 @@
 					<span th:text="${incident.caseNumber}"> </span>
 					<br />
 				</div>
-				<div class="m-b-10" th:if="${incident.isBusinessRelated()}">
+				<div class="m-b-10" th:if="${incident.hasCategory()}">
 					<label>Category:</label>
-					<span>Business </span>
+					<span th:text="${incident.category}"> </span>
 					<br />
 				</div>				
 				

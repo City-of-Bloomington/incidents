@@ -278,6 +278,10 @@ public class Incident extends TopModel implements java.io.Serializable{
 				return category;
 		}
 		@Transient
+		public boolean hasCategory(){
+				return category != null && !category.isEmpty();
+		}
+		@Transient
 		public boolean isBusinessRelated(){
 				return category != null && category.equals("Business");
 		}

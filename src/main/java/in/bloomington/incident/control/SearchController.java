@@ -89,7 +89,8 @@ public class SearchController extends TopController{
 						model.addAttribute("incidents", all);
 						model.addAttribute("messages", messages);
 				}
-        return "staff/received";
+				model.addAttribute("statusOutcome", "Received");						
+        return "staff/status_outcomes";
     }
     @GetMapping("/search/incomplete")
     public String findIncomplete(Model model){
@@ -114,7 +115,8 @@ public class SearchController extends TopController{
 						model.addAttribute("incidents", all);
 						model.addAttribute("messages", messages);
 				}
-        return "staff/incomplete";
+				model.addAttribute("statusOutcome", "Incomplete");										
+        return "staff/status_outcomes";
     }
     
     @GetMapping("/search/confirmed")
@@ -137,9 +139,10 @@ public class SearchController extends TopController{
 				if(all != null && all.size() > 0){
 						addMessage("Found "+all.size()+" incidents");
 						model.addAttribute("incidents", all);
-						model.addAttribute("messages", messages);						
+						model.addAttribute("messages", messages);
 				}
-        return "staff/confirmed";
+				model.addAttribute("statusOutcome", "Confirmed");					
+        return "staff/status_outcomes";
     }    
     
     @GetMapping("/search/approved")
@@ -165,7 +168,8 @@ public class SearchController extends TopController{
 						model.addAttribute("incidents", all);
 						model.addAttribute("messages", messages);
 				}
-        return "staff/approved";
+				model.addAttribute("statusOutcome", "Approved");	
+        return "staff/status_outcomes";
     }
     @GetMapping("/search")
     public String search(Model model) {

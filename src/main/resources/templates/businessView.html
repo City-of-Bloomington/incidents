@@ -21,10 +21,8 @@
 		<div th:if="${messages}">
 			<div th:insert="general::messages(${messages})"></div>
 		</div>
-		<div th:fragment="business(${business})">			
-			<p>
-				Business Info
-			</p>
+		<div th:fragment="business(${business})">
+			<h2>Business Info</h2>
 			<ul>
 				<li th:if="${business.hasCorporateData()}">
 					<span th:text="${'Corporate: '+business.corporateInfo}"></span>
