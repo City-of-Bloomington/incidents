@@ -19,7 +19,7 @@
       </div>
 
       <form
-        th:action="@{/addressCheck}"
+        th:action="@{/busIncidentAddrSave}"
         th:object="${address}"
         onsubmit="return verifyAddress()"
         method="post"
@@ -57,7 +57,6 @@
         <input type="hidden" th:field="${address.state}" id="state" />
         <input type="hidden" th:field="${address.type_id}" id="type_id"/>
 				<input type="hidden" th:field="${address.bus_id}" id="bus_id"/>
-				<input type="hidden" th:field="${address.category}" id="category" />
         <fieldset>
           <legend>Location of Incident</legend>
           <ul>
@@ -100,14 +99,6 @@
         </fieldset>
         <p>Click on Next to continue</p>
         <ul class="button-group">
-					<li>
-            <button
-              class="next-button"
-              th:attr="onclick=|window.location.href='@{/business/{id}(id=${address.bus_id})}'|"
-            >
-              Back
-            </button>
-          </li>					
           <li>
             <button type="submit" class="next-button">Next</button>
           </li>

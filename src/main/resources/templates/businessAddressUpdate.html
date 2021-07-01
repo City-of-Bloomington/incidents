@@ -20,12 +20,16 @@
 			<div>To add a new business you start with adding the business local street address</div>
       <form
         action="#"
-        th:action="@{/addressCheck}"
+        th:action="@{/businessAddrChange}"
         th:object="${address}"
         onsubmit="return verifyAddress()"
         method="post"
       >
         <input type="hidden" th:field="${address.addressId}" id="addressId" />
+				<input type="hidden"
+          th:field="${address.old_id}"
+          id="old_id"
+          />
         <input
           type="hidden"
           th:field="${address.subunitId}"

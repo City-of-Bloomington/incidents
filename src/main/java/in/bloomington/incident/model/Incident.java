@@ -363,12 +363,6 @@ public class Incident extends TopModel implements java.io.Serializable{
 						this.evidence = val.trim();
 				
     }		
-		/*
-    @Transient
-    public boolean hasValidAddress(){
-				return this.invalidAddress == null;
-    }
-		*/		
     @Transient
     public boolean hasEvidenceInfo(){
 				return this.evidence != null && !this.evidence.isEmpty();

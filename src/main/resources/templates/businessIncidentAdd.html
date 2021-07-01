@@ -162,17 +162,16 @@
               placeholder="Incident Details"
             ></textarea>
           </div>
-
         </fieldset>
 				<ul class="button-group">
           <li>
             <button
               class="next-button"
-              th:attr="onclick=|window.location.href='@{/businessIncidentAddressEdit/{id}(id=${incident.id})}'|"
-            >
-              Back
-            </button>
-          </li>
+              th:attr="onclick=|window.location.href='@{/businessIncidentAddrEdit/{id}(id=${incident.id})}'|"
+              >
+                Back
+              </button>
+            </li>						
           <li>
             <button type="submit" class="next-button">Next</button>
           </li>

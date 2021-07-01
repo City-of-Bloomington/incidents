@@ -83,7 +83,7 @@ public class WebController extends TopController{
 																	 Model model,
 																	 HttpSession session) {
 				getMessagesAndErrorsFromSession(session, model);
-				return "redirect:/addressBusinessInput/"+type_id;
+				return "redirect:/businessAddrAdd/"+type_id;
     }		
 
     @RequestMapping("/introFraud")

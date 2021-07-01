@@ -72,21 +72,21 @@ public class BusinessIncidentController extends TopController{
 		AddressService addressService;		
     @Autowired
     private JavaMailSender mailSender;
+		@Autowired 
+    private HttpSession session;		
+		
 		//
     @Value("${incident.email.sender}")
     private String email_sender;
     @Value("${incident.application.name}")
     private String application_name;
-    @Value("${server.servlet.context-path}")
-    private String hostPath; // incidents in production
-
-
+		//
+		// incident is already save, so we do update for the new fields
     @PostMapping("/businessIncidentNext/{id}")
     public String busIncidentNext(@PathVariable("id") int id,
 															 @Valid Incident incident,
 															 BindingResult result,
-															 Model model,
-															 HttpSession session
+															 Model model
 															 ) {
 				boolean pass = true;
         if (result.hasErrors()) {
@@ -132,8 +132,7 @@ public class BusinessIncidentController extends TopController{
     public String showBusIncident(@PathVariable("id") int id,
 															 Model model,
 															 HttpServletRequest req,
-															 RedirectAttributes redirectAttributes,
-															 HttpSession session
+															 RedirectAttributes redirectAttributes
 															 ) {
 				Incident incident = null;
 				if(!verifySession(session, ""+id)){
@@ -158,6 +157,11 @@ public class BusinessIncidentController extends TopController{
 						return "redirect:/error";
 				}
 				if(incident.canBeChanged()){
+						if(!incident.verifyDetails()){
+								addMessage("Add incident details");
+								addMessagesAndErrorsToSession(session);	 
+								return "redirect:/businessIncidentUpdate/"+incident.getId();
+						}
 						if(!incident.hasBusinessRecord()){
 								addMessage("You need to add business info");
 								addMessagesAndErrorsToSession(session);	    
@@ -200,8 +204,7 @@ public class BusinessIncidentController extends TopController{
     public String busIncidentAdd(@PathVariable("addr_id") int addr_id,
 																 @PathVariable("type_id") int type_id,
 																 @PathVariable("bus_id") int bus_id,
-																 Model model,
-																 HttpSession session
+																 Model model
 																 ) {
 				List<String> ids = null;
 				int id = 0;
@@ -227,24 +230,23 @@ public class BusinessIncidentController extends TopController{
 				ids.add(""+incident.getId());
 				session.setAttribute("incident_ids", ids);
 				model.addAttribute("incident", incident);
-				// not needed for business
-				// model.addAttribute("entryTypes", entryTypes);
 				handleErrorsAndMessages(model);
         return "businessIncidentAdd";
 		}
-		@GetMapping("/businessIncidentUpdate/{id}/{addr_id}")
+		@GetMapping("/businessIncidentUpdate/{id}")
     public String busIncidentUpdate(@PathVariable("id") int id,
-																		@PathVariable("addr_id") int addr_id,
-																		Model model,
-																		HttpSession session
+																		Model model
 																		) {
-				Address address = addressService.findById(addr_id);
-				Incident incident = incidentService.findById(id);
+				Incident incident = incidentService.findById(id);				
+				Address address = incident.getAddress();
+				Business business = incident.getBusiness();
+				System.err.println(" bus "+business);
+				System.err.println(" addr "+address);				
 				incident.setAddress(address);
+				incident.setBusiness(business);
 				incident.setCategory("Business");
-				incidentService.update(incident);
 				model.addAttribute("incident", incident);
-				handleErrorsAndMessages(model);
+				getMessagesAndErrorsFromSession(session, model);					
         return "businessIncidentAdd";
 		}		
     //
