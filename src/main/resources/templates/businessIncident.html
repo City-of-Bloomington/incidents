@@ -37,7 +37,7 @@
         <li>
           <input
             type="button"
-            th:attr="onclick=|window.location.href='@{/property/add/{id}(id=${incident.id})}'|"
+            th:attr="onclick=|window.location.href='@{/businessProperty/add/{id}(id=${incident.id})}'|"
             value="Add Property"
           />
         </li>
@@ -98,7 +98,7 @@
         </div>
         <div th:if="${incident.hasPropertyList()}">
           <div
-            th:insert="properties::properties(${incident.properties},${incident.totalValueFr})"
+            th:insert="businessProperties::properties(${incident.properties},${incident.totalValueFr})"
           ></div>
         </div>
 

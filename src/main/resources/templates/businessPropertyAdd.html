@@ -1,0 +1,171 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--
+ - @copyright Copyright (C) 2014-2015 City of Bloomington, Indiana. All rights reserved.
+ - @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
+ - @author W. Sibo <sibow@bloomington.in.gov>
+ -
+ -->
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head th:replace="general::head('Properties')"></head>
+
+  <body>
+    <header th:replace="general::header"></header>
+
+    <div th:if="${errors}">
+      <div th:insert="general::errors(${errors})"></div>
+    </div>
+
+    <div th:if="${messages}">
+      <div th:insert="general::messages(${messages})"></div>
+    </div>
+
+    <main class="public-questions-wrapper">
+      <h2>Add Property/Item</h2>
+      <p>*Indicate required fields</p>
+
+      <div th:insert="general::propertyInstructions"></div>
+
+      <form
+				action="#"
+        th:action="@{/businessProperty/save}"
+        th:object="${property}"
+        onsubmit="return verifyTotalValue()"
+        method="post"
+      >
+        <input type="hidden" th:field="${property.incident}" />
+        <fieldset>
+          <input
+            type="hidden"
+            id="old_value_id"
+            th:field="${property.oldValue}"
+          />
+          <input type="hidden" id="balance_id" th:field="${property.balance}" />
+          <input
+            type="hidden"
+            id="max_total_id"
+            th:field="${property.maxTotalValue}"
+          />
+
+          <div class="field-group"></div>
+          <div th:if="${damageTypes}">
+            <label class="required">*Problem Type</label>
+            <ul>
+              <li th:each="r : ${damageTypes}">
+                <input
+                  type="radio"
+                  th:field="${property.damageType}"
+                  th:value="${r.id}"
+                  required="required"
+                />
+                <span th:text="${r.name}"></span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="field-group">
+            <label for="brand">Brand</label>
+            <input
+              type="text"
+              th:field="${property.brand}"
+              id="brand"
+              placeholder="Brand"
+            />
+            <span
+              th:if="${#fields.hasErrors('brand')}"
+              th:errors="*{brand}"
+            ></span>
+          </div>
+
+          <div class="field-group">
+            <label for="model">Model</label>
+            <input
+              type="text"
+              th:field="${property.model}"
+              id="model"
+              placeholder="Model"
+            />
+            <span
+              th:if="${#fields.hasErrors('model')}"
+              th:errors="*{model}"
+            ></span>
+          </div>
+
+          <div class="field-group">
+            <label for="serialNum">Serial Number</label>
+            <input
+              type="text"
+              th:field="${property.serialNum}"
+              id="serialNum"
+              placeholder="Serial Number"
+            />
+            <span
+              th:if="${#fields.hasErrors('serialNum')}"
+              th:errors="*{serialNum}"
+            ></span>
+          </div>
+
+          <div class="field-group">
+            <label for="value_id" class="required">*$ Value</label>
+            <input
+              type="text"
+              th:field="${property.valueFr}"
+              id="value_id"
+              placeholder="dddd.dd"
+              required="required"
+            />
+            <span
+              th:if="${#fields.hasErrors('value')}"
+              th:errors="*{value}"
+            ></span>
+          </div>
+
+          <div class="field-group">
+            <label for="owener">*Owner</label>
+            <input
+              type="text"
+              th:field="${property.owner}"
+              id="owner"
+              placeholder="property owner"
+              size="30"
+              maxlength="70"
+              required="required"
+            />
+            <span
+              th:if="${#fields.hasErrors('owner')}"
+              th:errors="*{owner}"
+            ></span>
+          </div>
+
+          <div class="field-group">
+            <label for="description" class="required"
+              >*Property Description</label
+            >
+            <textarea
+              th:field="${property.description}"
+              id="description"
+              placeholder="Description"
+              rows="5"
+              cols="50"
+              required="required"
+            >
+						<span th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></span>
+					</textarea
+            >
+          </div>
+
+          <ul class="button-group">
+            <li th:unless="${property.incident.hasPropertyList()}">
+              <button
+                class="next-button"
+                th:attr="onclick=|window.location.href='@{/offender/edit/{id}(id=${property.incident.getFirstOffenderId()})}'|"
+              >
+                Back
+              </button>
+            </li>
+            <li><button type="submit" class="next-button">Next</button></li>
+          </ul>
+        </fieldset>
+      </form>
+    </main>
+  </body>
+</html>

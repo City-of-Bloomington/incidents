@@ -160,7 +160,7 @@ public class BusinessIncidentController extends TopController{
 						if(!incident.verifyDetails()){
 								addMessage("Add incident details");
 								addMessagesAndErrorsToSession(session);	 
-								return "redirect:/businessIncidentUpdate/"+incident.getId();
+								return "redirect:/businessIncidentEdit/"+incident.getId();
 						}
 						if(!incident.hasBusinessRecord()){
 								addMessage("You need to add business info");
@@ -175,7 +175,7 @@ public class BusinessIncidentController extends TopController{
 						if(!incident.hasPropertyList()){
 								addMessage("You need to add a property");
 								addMessagesAndErrorsToSession(session);	    
-								return "redirect:/property/add/"+id;
+								return "redirect:/businessProperty/add/"+id;
 						}								
 						if(!incident.hasMediaList()){
 								addMessage("You need to add a receipt or photo of the damage");
@@ -233,22 +233,21 @@ public class BusinessIncidentController extends TopController{
 				handleErrorsAndMessages(model);
         return "businessIncidentAdd";
 		}
-		@GetMapping("/businessIncidentUpdate/{id}")
+		@GetMapping("/businessIncidentEdit/{id}")
     public String busIncidentUpdate(@PathVariable("id") int id,
 																		Model model
 																		) {
 				Incident incident = incidentService.findById(id);				
 				Address address = incident.getAddress();
 				Business business = incident.getBusiness();
-				System.err.println(" bus "+business);
-				System.err.println(" addr "+address);				
 				incident.setAddress(address);
 				incident.setBusiness(business);
 				incident.setCategory("Business");
 				model.addAttribute("incident", incident);
 				getMessagesAndErrorsFromSession(session, model);					
         return "businessIncidentAdd";
-		}		
+		}
+		
     //
     @GetMapping("/businessIncident/finalPage/{id}")
     public String busIncidentFinalPage(@PathVariable("id") int id,
@@ -260,7 +259,7 @@ public class BusinessIncidentController extends TopController{
 				if(!verifySession(session, ""+id)){
 						addMessage("no more changes can be made ");
 						addMessagesAndErrorsToSession(session);
-						return "redirect:/index";
+						return "redirect:/";
 				}
 				try{
 						incident = incidentService.findById(id);
@@ -279,7 +278,7 @@ public class BusinessIncidentController extends TopController{
 						addMessage("incident can be submitted ");
 						addMessages(incident.getErrors());
 						addMessagesAndErrorsToSession(session);
-						return "redirect:/introStart";
+						return "redirect:/";
 				}
     }
     @GetMapping("/businessIncident/submit/{id}")
@@ -322,7 +321,7 @@ public class BusinessIncidentController extends TopController{
 						addError("Invalid incident Id "+id);
 						logger.error(errors+" "+ex);
 						model.addAttribute("errors", errors);
-						return "redirect:/index"; 
+						return "redirect:/"; 
 				}
 				handleErrorsAndMessages(model);
 				return "businessSuccessSubmission";

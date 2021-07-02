@@ -672,6 +672,13 @@ public class Incident extends TopModel implements java.io.Serializable{
 				}
 				return "";
 		}
+		@Transient
+		public String getFirstOffenderId(){
+				if(hasOffenderList()){
+						return ""+offenders.get(0).getId();
+				}
+				return "";
+		}		
     /**
      *
      the incident can be submitted if the following conditions are met

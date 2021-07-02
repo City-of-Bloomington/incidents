@@ -256,6 +256,10 @@ public class IncidentController extends TopController{
 						return "redirect:/error";
 				}
 				if(incident.canBeChanged()){
+						// need to add details
+						if(!incident.verifyDetails()){
+								return "redirect:/incidentEdit/"+id;
+						}
 						if(!incident.hasPersonList()){
 								addMessage("You need to add a person");
 								addMessagesAndErrorsToSession(session);	    
