@@ -73,7 +73,7 @@ public class VehicleController extends TopController{
 						addError("Invalid incident "+incident_id);
 						logger.error(" "+ex);
 						model.addAttribute("errors", errors);
-						return "redirect:/start";
+						return "redirect:/";
 				}				
         model.addAttribute("vehicle", vehicle);
 				List<CarDamageType> types = damageTypeService.getAll();
@@ -118,6 +118,9 @@ public class VehicleController extends TopController{
         vehicleService.save(vehicle);
 				addMessage("Added Successfully");
 				addMessagesAndErrorsToSession(session);
+				if(incident.isBusinessRelated()){
+						return "redirect:/businessIncident/"+incident_id;
+				}
 				return "redirect:/incident/"+incident_id;
     }
 
@@ -193,6 +196,9 @@ public class VehicleController extends TopController{
 				vehicleService.save(vehicle);	
 				addMessage("Updated Successfully");
 				addMessagesAndErrorsToSession(session);
+				if(incident.isBusinessRelated()){
+						return "redirect:/businessIncident/"+incident_id;
+				}
 				return "redirect:/incident/"+incident_id;
     }
 		
@@ -224,6 +230,9 @@ public class VehicleController extends TopController{
 						addError("Error delete vehicle "+id);						
 						logger.error(" "+ex);
 				}
+				if(incident.isBusinessRelated()){
+						return "redirect:/businessIncident/"+incident.getId();
+				}				
 				return "redirect:/incident/"+incident.getId();
 
     }
