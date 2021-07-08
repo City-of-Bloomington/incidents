@@ -20,13 +20,13 @@
     </div>
 
     <main class="public-questions-wrapper">
-      <h2>Add Business Info</h2>
+      <h2>Edit Business Info</h2>
       <p>*Indicate required fields</p>
 
       <div th:insert="general::businessInstructions"></div>
 
       <form
-        th:action="@{/business/save}"
+        th:action="@{/businessUpdate/{id}(id=${business.id})}"
         th:object="${business}"
 				onsubmit="return verifyConfirm()"
         method="post"
@@ -120,16 +120,7 @@
             />
           </div>							
 					<ul class="button-group">
-            <li>
-              <button
-								type="button"
-                class="next-button"
-                th:attr="onclick=|window.location.href='@{/businessAddrEdit/{id}/{type_id}(id=${business.address.id},type_id=${business.type_id})}'|"
-              >
-                Back
-              </button>
-            </li>						
-            <li><button type="submit" class="next-button">Next</button></li>
+            <li><button type="submit" class="next-button">Save Changes</button></li>
           </ul>
         </fieldset>
 				

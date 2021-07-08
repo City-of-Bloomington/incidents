@@ -96,8 +96,9 @@ public class BusinessController extends TopController{
 				return "redirect:/businessIncidentAddressAdd/"+id+"/"+business.getType_id();
     }
 
-    @GetMapping("/business/edit/{id}")
+    @GetMapping("/businessEdit/{id}/{type_id}")
     public String showEditForm(@PathVariable("id") int id,
+															 @PathVariable("type_id") int type_id,
 															 Model model
 															 ) {
 				Business business = null;
@@ -109,11 +110,13 @@ public class BusinessController extends TopController{
 						addMessagesAndErrorsToSession(session);
 						return "redirect:/businesses";
 				}
+				if(type_id > 0)
+						business.setType_id(type_id);
 				model.addAttribute("business", business);
 				handleErrorsAndMessages(model);
-				return "businessUpdate";
+				return "businessEdit";
     }
-    @PostMapping("/business/update/{id}")
+    @PostMapping("/businessUpdate/{id}")
     public String updateBusiness(@PathVariable("id") int id,
 																 @Valid Business business, 
 																 BindingResult result,
@@ -125,32 +128,20 @@ public class BusinessController extends TopController{
 						logger.error(error);
 						business.setId(id);
 						addMessagesAndErrorsToSession(session);
-						return "redirect:/business/edit/"+id;
+						return "redirect:/businessEdit/"+id;
 				}
 				if(!business.verify()){
 						String error = business.getErrorInfo();
 						addError(error);
 						logger.error(error);
 						handleErrorsAndMessages(model);
-						return "redirect:/business/edit/"+id;						
+						return "redirect:/businessEdit/"+id;						
 				}
-				/**
-				if(business.isEmailChanged()){
-						System.err.println(" email is changed ");
-						Credential credit = business.getCredential();
-						if(credit != null){
-								credit.setEmail(business.getEmail());
-								credentialService.update(credit);
-						}
-						else{
-								System.err.println(" credit is null ");
-						}
-				}
-				*/
+				business.setId(id);
 				businessService.update(business);				
 				addMessage("Updated Successfully");
 				addMessagesAndErrorsToSession(session);
-				return "redirect:/business/"+id;
+				return "redirect:/businessIncidentAddressAdd/"+id+"/"+business.getType_id();
     }
 		
     @GetMapping("/business/{id}")

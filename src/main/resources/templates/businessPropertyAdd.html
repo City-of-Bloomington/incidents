@@ -156,6 +156,7 @@
           <ul class="button-group">
             <li th:unless="${property.incident.hasPropertyList()}">
               <button
+								type="button"
                 class="next-button"
                 th:attr="onclick=|window.location.href='@{/offender/edit/{id}(id=${property.incident.getFirstOffenderId()})}'|"
               >

@@ -10,7 +10,7 @@
   <body>
     <header th:replace="general::header"></header>
     <main class="public-questions-wrapper">
-      <h2>Address Input</h2>
+      <h2>Business Address</h2>
       <div th:if="${errors}">
         <div th:replace="general::errors(${errors})"></div>
       </div>
@@ -94,6 +94,15 @@
         </fieldset>
         <p>Click on Next to continue</p>
         <ul class="button-group">
+					<li>
+            <button
+							type="button"
+              class="next-button"
+              th:attr="onclick=|window.location.href='@{/businessSelectCategory}'|"
+              >
+                Back
+              </button>
+            </li>			
           <li>
             <button type="submit" class="next-button">Next</button>
           </li>

@@ -11,6 +11,12 @@ function verifyConfirm(){
     }
     return true;
 }
+function submitAfterVerify(btn){
+		var val = verifyConfirm();
+		if(val){
+				btn.parentNode.submit();
+		}
+}
 $(document).ready(function () {
     $('div.question').each(function () {
 	$(this).find('input:radio').prop('checked', false);

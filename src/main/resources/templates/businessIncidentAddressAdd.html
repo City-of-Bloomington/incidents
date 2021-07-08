@@ -10,7 +10,7 @@
   <body>
     <header th:replace="general::header"></header>
     <main class="public-questions-wrapper">
-      <h2>Address Input</h2>
+      <h2>Incident Address</h2>
       <div th:if="${errors}">
         <div th:replace="general::errors(${errors})"></div>
       </div>
@@ -99,6 +99,16 @@
         </fieldset>
         <p>Click on Next to continue</p>
         <ul class="button-group">
+          <li>
+            <button
+							type="button"
+              class="next-button"
+              th:attr="onclick=|window.location.href='@{/businessEdit/{id}/{type_id}(id=${address.bus_id},type_id=${address.type_id})}'|"
+              >
+                Back
+              </button>
+            </li>			
+					
           <li>
             <button type="submit" class="next-button">Next</button>
           </li>
