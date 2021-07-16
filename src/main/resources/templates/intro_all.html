@@ -32,33 +32,34 @@
             up to 180 days in jail and a fine of up to $1000.
 					</strong>
 				</p>
+				
 				<p>
-					You may report one of the following incident types:
+					You may report one of the following Incident types:
 				</p>
-				<ol>
-					<li>
-						<a th:href="@{/introPersonal}">File individual incident: </a>
-						that may include one of the following incident categories: 
-						<ul>
-							<li>Lost Property</li>
-							<li>Theft From Vehicle</li>
-							<li>Theft From Building</li>
-							<li>Theft (All Other)</li>
-							<li>Fraud & Scam</li>
-							<li>Vandalism</li>
-						</ul>
-					</li>
-					<li> 
-						<a th:href="@{/introBusiness}">File business incident. </a>
-						The incident could be one of the following categories:
-						<ul>
-							<li> Theft </li>
-							<li> Vandalism</li>
-						</ul>
-					</li>
-				</ol>
-				<p> Please select one of the incident types to continue
-				</p>
+
+				<div class="type-options" style="display: inline">
+					
+							<a class="next-button intro" th:href="@{/introPersonal}">Click to file an Individual Incident</a>
+							<p>The incident may include one of the following categories: </p>
+							<ul>
+								<li>Lost Property</li>
+								<li>Theft From Vehicle</li>
+								<li>Theft From Building</li>
+								<li>Theft (All Other)</li>
+								<li>Fraud & Scam</li>
+								<li>Vandalism</li>
+							</ul>
+
+						<a class="next-button intro" th:href="@{/introBusiness}">Click to file a Business Incident</a>
+							<p>The incident may include one of the following categories: </p>
+							<ul>
+								<li> Theft </li>
+								<li> Vandalism</li>
+							</ul>
+				</div>
+
+				
+				
       </div>
     </main>
   </body>
