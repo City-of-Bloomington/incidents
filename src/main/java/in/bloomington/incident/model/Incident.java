@@ -521,6 +521,34 @@ public class Incident extends TopModel implements java.io.Serializable{
     public boolean hasAccessInfo(){
 				return isNotLostRelated() && !getEntryInfo().isEmpty();
     }
+		// we can if there is more than one
+		@Transient
+		public boolean canDeleteProperty(){
+				return hasPropertyList() && properties.size() > 1;
+		}
+		@Transient
+		public boolean canDeletePerson(){
+				return hasPersonList() && persons.size() > 1;
+		}		
+		@Transient
+		public boolean canDeleteOffender(){
+				return hasOffenderList() && offenders.size() > 1;
+		}
+		@Transient
+		public boolean canDeleteFraud(){
+				return hasFraudList() && frauds.size() > 1;
+		}
+		@Transient
+		public boolean canDeleteVehicle(){
+				return hasVehicleList() && vehicles.size() > 1;
+		}		
+		@Transient
+		public boolean canDeleteMedia(){
+				if(isBusinessRelated()){
+						return hasMediaList() && medias.size() > 1;
+				}
+				return true;
+		}		
     public String getEntryType() {
 				return entryType;
     }
@@ -673,9 +701,22 @@ public class Incident extends TopModel implements java.io.Serializable{
 				return "";
 		}
 		@Transient
+		public String getFirstPropertyId(){
+				if(hasPropertyList()){
+						return ""+properties.get(0).getId();
+				}
+				return "";
+		}		
+		@Transient
 		public String getFirstOffenderId(){
 				if(hasOffenderList()){
 						return ""+offenders.get(0).getId();
+				}
+				return "";
+		}
+		public String getFirstMediaId(){
+				if(hasMediaList()){
+						return ""+medias.get(0).getId();
 				}
 				return "";
 		}		

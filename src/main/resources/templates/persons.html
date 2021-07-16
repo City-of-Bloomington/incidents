@@ -17,7 +17,7 @@
     <div th:if="${messages}">
       <div th:insert="general::messages(${messages})"></div>
     </div>
-    <div th:fragment="persons(persons)">
+    <div th:fragment="persons(persons,canDelete)">
       <h2>Reported People</h2>
       <div th:switch="${persons}">
         <h4 th:case="null">No person found</h4>
@@ -31,6 +31,13 @@
                 value="Edit Person"
               />
             </li>
+            <li th:if="${canDelete}" class="button-group">
+              <input
+                type="button"
+                th:attr="onclick=|window.location.href='@{/person/delete/{id}(id=${person.id})}'|"
+                value="Delete Person"
+              />
+            </li>						
           </div>
         </div>
       </div>

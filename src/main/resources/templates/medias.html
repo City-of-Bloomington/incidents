@@ -11,7 +11,7 @@
 		<header th:replace="general::header"></header>
 		
 		<main class="public-questions-wrapper">
-			<div th:fragment="medias(medias)">
+			<div th:fragment="medias(medias,canDelete)">
 				<h2>Uploaded Images</h2>
 				<div th:switch="${medias}">
 					<h4 th:case="null">No images found</h4>
@@ -22,17 +22,17 @@
 								<a th:href="@{/media/download/{id}(id=${one.id})}"><span th:text="${one.oldFileName}"></span></a>
 							</li>
 							
-							<li>
+							<li th:if="${one.hasNotes()}">
 								<strong>Description:</strong>
 								<span th:text="${one.notes}"></span>
 							</li>
 							
 							<li>
-								<strong>Show Image:</strong>
-								<a th:href="@{/media/image/{id}(id=${one.id})}" onclick="return popup(this, 'image')">Show Image</a>
+								<strong>Photo:</strong>
+								<a th:href="@{/media/image/{id}(id=${one.id})}" onclick="return popup(this, 'image')">Show Photo</a>
 							</li>
 							
-							<li>
+							<li th:if="${canDelete}">
 								<strong>Delete:</strong>
 								<a th:href="@{/media/delete/{id}(id=${one.id})}">Delete</a>
 							</li>

@@ -15,7 +15,7 @@
     <div th:if="${messages}">
       <div th:insert="general::messages(${messages})"></div>
     </div>
-    <div th:fragment="properties(properties,totalBalance)">
+    <div th:fragment="properties(properties,totalBalance, canDelete)">
       <h2>Reported Properties</h2>
       <div th:switch="${properties}">
         <h4 th:case="null">No properties found</h4>
@@ -40,6 +40,13 @@
                 value="Edit Property"
               />
             </li>
+            <li class="button-group" th:if="${canDelete}">
+              <input
+                type="button"
+                th:attr="onclick=|window.location.href='@{/property/delete/{id}(id=${one.id})}'|"
+                value="Delete Property"
+              />
+            </li>									
 						<li th:if="${istat.last}">
               <strong>Total Reported Properties Value: </strong>
               <span th:text="${totalBalance}"></span>

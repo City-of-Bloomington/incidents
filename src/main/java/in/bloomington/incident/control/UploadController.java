@@ -92,7 +92,32 @@ public class UploadController extends TopController{
 						return "redirect:/businessIncident/"+id;
 				}
 				return "redirect:/incident/"+id;
+    }
+    @GetMapping("/businessMedia/add/{id}")
+    public String busMediaForm(@PathVariable("id") int id,
+															 Model model,
+															 RedirectAttributes redirectAttributes){
+				Incident incident = incidentService.findById(id);				
+				try{
+						int media_count = incident.getMediaCount();
+						if(media_count < mediaMaxCount){
+								model.addAttribute("incident_id", id);
+								model.addAttribute("incident",incident);
+								model.addAttribute("media_count", media_count);
+								model.addAttribute("media_max_count", mediaMaxCount);						
+								return "businessMediaAdd";
+						}
+						else{
+								redirectAttributes.addFlashAttribute("message","No more images can be uploaded");
+						}
+				}catch(Exception ex){
+						addError("invalid incident "+id);
+						redirectAttributes.addFlashAttribute("error","Invalid incident "+id);						
+						System.err.println(""+ ex);
+				}
+				return "redirect:/businessIncident/"+id;
     }		
+		
     // delete by id
     @GetMapping("/media/delete/{id}")
     public String deleteAttachment(@PathVariable("id") int id)
@@ -100,7 +125,10 @@ public class UploadController extends TopController{
         Media media  = mediaService.findById(id);
         Incident     incident       = media.getIncident();
         mediaService.delete(id);
-				addMessage("Attachment deleted successfully");
+				addMessage("Photo deleted successfully");
+				if(incident.isBusinessRelated()){
+						return "redirect:/businessIncident/"+id;
+				}
         return 
             "redirect:/incident/" + incident.getId();
 

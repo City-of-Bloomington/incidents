@@ -118,7 +118,8 @@ public class Media implements java.io.Serializable{
     }
 
     public void setNotes(String notes) {
-				this.notes = notes;
+				if(notes != null)
+						this.notes = notes.trim();
     }
 		@Transient
 		public boolean hasNotes(){

@@ -180,7 +180,7 @@ public class BusinessIncidentController extends TopController{
 						if(!incident.hasMediaList()){
 								addMessage("You need to add a receipt or photo of the damage");
 								addMessagesAndErrorsToSession(session);
-								return "redirect:/media/add/"+id;
+								return "redirect:/businessMedia/add/"+id;
 						}
 						Business business = incident.getBusiness();
 						model.addAttribute("incident", incident);

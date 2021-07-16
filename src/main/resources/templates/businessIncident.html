@@ -93,22 +93,22 @@
           </div>
         </div>
         <div th:if="${incident.hasOffenderList()}">
-          <div th:insert="offenders::offenders(${incident.offenders})">
+          <div th:insert="offenders::offenders(${incident.offenders},${incident.canDeleteOffender()})">
           </div>
         </div>
         <div th:if="${incident.hasPropertyList()}">
           <div
-            th:insert="businessProperties::properties(${incident.properties},${incident.totalValueFr})"
+            th:insert="businessProperties::properties(${incident.properties},${incident.totalValueFr},${incident.canDeleteProperty()})"
           ></div>
         </div>
 
         <div th:if="${incident.hasVehicleList()}">
           <div
-            th:insert="vehicles::vehicles(${incident.vehicles})"
+            th:insert="vehicles::vehicles(${incident.vehicles},${incident.canDeleteVehicle()})"
           ></div>
         </div>
         <div th:if="${incident.hasMediaList()}">
-          <div th:insert="medias::medias(${incident.medias})"></div>
+          <div th:insert="medias::medias(${incident.medias},${incident.canDeleteMedia()})"></div>
         </div>
 
         <div class="next_div" th:if="${incident.canBeSubmitted()}">

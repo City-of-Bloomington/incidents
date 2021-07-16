@@ -15,7 +15,7 @@
     <div th:if="${messages}">
       <div th:insert="general::messages(${messages})"></div>
     </div>
-    <div th:fragment="vehicles(vehicles)">
+    <div th:fragment="vehicles(vehicles,canDelete)">
       <h2>Incident Vehicle(s)</h2>
       <div th:switch="${vehicles}">
         <h2 th:case="null">No vehicle found</h2>
@@ -44,6 +44,13 @@
                 value="Edit Vehicle"
               />
             </li>
+            <li class="button-group" th:if="${canDelete}">
+              <input
+                type="button"
+                th:attr="onclick=|window.location.href='@{/vehicle/delete/{id}(id=${one.id})}'|"
+                value="Delete Vehicle"
+              />
+            </li>						
           </ul>
         </div>
       </div>
