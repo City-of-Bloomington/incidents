@@ -24,7 +24,7 @@
 
       <p th:insert="general::incidentInstructions"></p>
 
-      <p>* indicate required fields</p>
+      <p>* indicates required fields</p>
       <form
         th:action="@{/businessIncidentNext/{id}(id=${incident.id})}"
         th:object="${incident}"
@@ -109,7 +109,7 @@
           </div>
         </fieldset>
         <fieldset>
-          <legend>Business Info</legend>
+          <legend>Establishment Info</legend>
           <span th:text="${incident.business.info}"></span>
         </fieldset>				
         <fieldset>

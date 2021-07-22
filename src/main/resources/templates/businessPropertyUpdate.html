@@ -21,7 +21,7 @@
 				<div th:insert="general::messages(${messages})"></div>
 			</div>
 			
-			<p>*Indicate required fields</p>
+			<p>*Indicates required fields</p>
 			
 			<div th:insert="general::propertyInstructions"></div>
 
@@ -35,11 +35,6 @@
 				<input type="hidden" id="old_value_id" name="oldValue" th:value="${property.value}" />
 				<input type="hidden" id="balance_id" th:field="${property.balance}" />
 				<input type="hidden" id="max_total_id" th:field="${property.maxTotalValue}" />
-				
-				<div>
-					<label>Incident: 
-					<a th:href="@{/incident/{id}(id=${property.incident.id})}">Back to Incident</a> </label>
-				</div>
 				
 				<div th:if="${damageTypes}">
 					<label class="required">*Problem Type</label>

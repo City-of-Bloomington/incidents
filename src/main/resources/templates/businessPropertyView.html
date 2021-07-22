@@ -33,9 +33,6 @@
 				<span th:text="${property.brandInfo}"></span>
 			</li>
 			<li th:text="${'Value: '+property.valueFr}"></li>
-			<li th:if="${property.hasOwner()}">
-				<span th:text="${'Owner: '+property.owner}"></span>
-			</li>
 			<li th:if="${property.hasDescription()}">
 				<span th:text="${'Description: '+property.description}"></span>
 			</li>

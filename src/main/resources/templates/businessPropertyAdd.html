@@ -21,7 +21,7 @@
 
     <main class="public-questions-wrapper">
       <h2>Add Property/Item</h2>
-      <p>*Indicate required fields</p>
+      <p>*Indicates required fields</p>
 
       <div th:insert="general::propertyInstructions"></div>
 
@@ -105,7 +105,7 @@
           </div>
 
           <div class="field-group">
-            <label for="value_id" class="required">*$ Value</label>
+            <label for="value_id" class="required">*Value ($)</label>
             <input
               type="text"
               th:field="${property.valueFr}"
@@ -116,23 +116,6 @@
             <span
               th:if="${#fields.hasErrors('value')}"
               th:errors="*{value}"
-            ></span>
-          </div>
-
-          <div class="field-group">
-            <label for="owener">*Owner</label>
-            <input
-              type="text"
-              th:field="${property.owner}"
-              id="owner"
-              placeholder="property owner"
-              size="30"
-              maxlength="70"
-              required="required"
-            />
-            <span
-              th:if="${#fields.hasErrors('owner')}"
-              th:errors="*{owner}"
             ></span>
           </div>
 

@@ -20,8 +20,8 @@
     </div>
 
     <main class="public-questions-wrapper">
-      <h2>Add Business Info</h2>
-      <p>*Indicate required fields</p>
+      <h2>Add Establishment Info</h2>
+      <p>* Indicates required fields</p>
 
       <div th:insert="general::businessInstructions"></div>
 
@@ -34,12 +34,12 @@
 				<input type="hidden" th:field="${business.addr_id} " />
 				<input type="hidden" th:field="${business.type_id} " />				
 				<fieldset>
-          <legend>Business Location</legend>
+          <legend>Establishment Location</legend>
           <span th:text="${business.addressInfo}"></span>
         </fieldset>
         <fieldset>
           <div class="field-group">
-            <label for="name">Business Name</label>
+            <label for="name">* Establishment Name</label>
             <input
               type="text"
               th:field="${business.name}"
@@ -58,7 +58,7 @@
             />
           </div>
           <div class="field-group">
-            <label for="businessNumber">Business Number</label>
+            <label for="businessNumber">Store Number (if applicable)</label>
             <input
               type="text"
               th:field="${business.businessNumber}"
@@ -67,20 +67,21 @@
             />
           </div>					
           <div class="field-group">
-            <label for="phone">Business Phone(s)</label>
+            <label for="phone">* Phone</label>
             <input
               type="text"
               th:field="${business.phone}"
               id="phone"
               placeholder="Business phone(s)"
+							required="required"
             />
           </div>
 					<div class="field-group">
 						<p>
-						Please note that you need to provide a valid email in the field below so that the Police staff can use it to communicate with your business about the final decision.</p>
+						Please note that you need to provide a valid email in the field below so that the BPD staff can use it to communicate with your establishment about the final decision.</p>
 					</div>
           <div class="field-group">
-            <label for="email">Business email</label>
+            <label for="email">* Establishment email</label>
             <input
               type="text"
               th:field="${business.email}"
@@ -90,7 +91,7 @@
             />
           </div>
           <div class="field-group">
-            <label for="email2">Verify business email</label>
+            <label for="email2">* Verify establishment email</label>
             <input
               type="text"
               th:field="${business.email2}"
@@ -100,7 +101,7 @@
             />
           </div>
           <div class="field-group">
-            <label for="reporterName">Your full name</label>
+            <label for="reporterName">* Your full name</label>
             <input
               type="text"
               th:field="${business.reporterName}"
@@ -110,7 +111,7 @@
             />
           </div>
           <div class="field-group">
-            <label for="reporterTitle">Your business title</label>
+            <label for="reporterTitle">* Your job title</label>
             <input
               type="text"
               th:field="${business.reporterTitle}"

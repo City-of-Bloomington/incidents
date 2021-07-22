@@ -18,15 +18,15 @@
          <div th:insert="general::messages(${messages})"></div>
        </div>
 			 <div th:fragment="business(${business})">					 
-				 <fieldset>
-					 <div th:insert="businessView::business(${business})">
-						 <ul>
-							 <li>
-								 <a th:href="@{/business/edit/{id}(id=${business.id})}">Edit</a>
-							 </li>
-						 </ul>						
-					 </div>
-				 </fieldset>
+				 <div th:insert="businessView::business(${business})">
+					 <li class="button-group">
+						 <input
+							 type="button"
+							 th:attr="onclick=|window.location.href='@{/business/edit/{id}(id=${business.id})}'|"
+							 value="Edit Establishment"
+								 />
+					 </li>
+				 </div>
 			 </div>
 		 </main>
 	 </body>

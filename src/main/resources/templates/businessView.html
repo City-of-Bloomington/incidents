@@ -14,7 +14,6 @@
 		<div th:replace="general::header-staff"></div>
 	</header>
 	<main class="staff">
-		<h2>Business Details</h2>
 		<div th:if="${errors}">
 			<div th:insert="general::errors(${errors})"></div>
 		</div>
@@ -22,7 +21,7 @@
 			<div th:insert="general::messages(${messages})"></div>
 		</div>
 		<div th:fragment="business(${business})">
-			<h2>Business Info</h2>
+			<h2>Establishment Info</h2>
 			<ul>
 				<li th:if="${business.hasCorporateData()}">
 					<span th:text="${'Corporate: '+business.corporateInfo}"></span>

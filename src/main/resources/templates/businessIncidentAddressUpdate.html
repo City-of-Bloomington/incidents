@@ -10,7 +10,7 @@
   <body>
     <header th:replace="general::header"></header>
     <main class="public-questions-wrapper">
-      <h2>Address Input</h2>
+      <h2>Incident Address</h2>
       <div th:if="${errors}">
         <div th:replace="general::errors(${errors})"></div>
       </div>
@@ -59,11 +59,12 @@
         <fieldset>
           <legend>Location of Incident</legend>
           <ul>
-						<li><i>If the incident address is the same as business address, then just click on 'Next'.</i></li>
+						<li><i>If the incident address is the same as establishment address, then just click on 'Next'.</i></li>
             <li>
 							<i>
-							If the incident address is different from the business address
-               add the incident street address, start typing the street
+							If the incident address is different from the establishment address
+              you need to add the incident street address,
+							start typing the street
               address in the 'Street address' field below. A list of matching
               addresses will be populated, please select from the list the
               correct one for where the incident occured.

@@ -89,8 +89,15 @@
           </li>
         </ul>
         <div th:if="${incident.hasBusinessRecord()}">
-          <div th:insert="business::business(${business})">
+          <div th:insert="businessView::business(${incident.business})">
           </div>
+					 <li class="button-group">
+						 <input
+							 type="button"
+							 th:attr="onclick=|window.location.href='@{/business/edit/{id}/{type_id}/{incident_id}(id=${incident.business.id},type_id=${incident.incidentType.id},incident_id=${incident.id})}'|"
+							 value="Edit Establishment"
+								 />
+					 </li>					
         </div>
         <div th:if="${incident.hasOffenderList()}">
           <div th:insert="offenders::offenders(${incident.offenders},${incident.canDeleteOffender()})">

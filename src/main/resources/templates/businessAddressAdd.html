@@ -10,14 +10,14 @@
   <body>
     <header th:replace="general::header"></header>
     <main class="public-questions-wrapper">
-      <h2>Business Address</h2>
+      <h2>Establishment Address</h2>
       <div th:if="${errors}">
         <div th:replace="general::errors(${errors})"></div>
       </div>
       <div th:if="${messages}">
         <div th:replace="general::messages(${messages})"></div>
       </div>
-			<div>To add a new business you start with adding the business local street address</div>
+			<div>To add a new establishment we need to know the establishment local street address</div>
       <form
         action="#"
         th:action="@{/businessAddrSave}"
@@ -56,10 +56,10 @@
 				<input type="hidden" th:field="${address.category}" id="category" />
 				<input type="hidden" th:field="${address.type_id}" id="type_id" />
         <fieldset>
-          <legend>Location of Business</legend>
+          <legend>Location</legend>
           <ul>
             <li>
-              To add the local business establishment address,
+              To add the local establishment address,
 							start typing the street address in the 'Street address' field below. A list of matching
               addresses will be populated.
             </li>
@@ -73,7 +73,7 @@
             </li>
           </ul>
           <label for="addr_id" class="required">
-            Street address where the local business is located
+            Street address where the local establishment is located
           </label>
           <div class="form-group autocomplete-wrapper">
             <span id="address-full"></span>

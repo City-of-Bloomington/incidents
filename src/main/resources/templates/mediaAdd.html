@@ -38,7 +38,7 @@
               class="field-group"
               th:each="i:${#numbers.sequence(media_count+1,media_max_count)}"
             >
-              <label for="file_id">Image File to Upload</label>
+              <label for="file_id"><span th:text="${i}"> </span> - Photo File to Upload</label>
               <input
                 type="file"
                 name="files"
@@ -48,7 +48,7 @@
             </div>
 
             <div class="field-group">
-              <p>Notes (any explanation of the picture, optional)</p>
+              <p>Notes (any explanation of the photo, optional)</p>
               <textarea
                 name="notes"
                 rows="5"

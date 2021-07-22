@@ -96,9 +96,10 @@ public class BusinessController extends TopController{
 				return "redirect:/businessIncidentAddressAdd/"+id+"/"+business.getType_id();
     }
 
-    @GetMapping("/businessEdit/{id}/{type_id}")
+    @GetMapping("/business/edit/{id}/{type_id}/{incident_id}")
     public String showEditForm(@PathVariable("id") int id,
-															 @PathVariable("type_id") int type_id,
+															 @PathVariable("type_id") Integer type_id,
+															 @PathVariable("incident_id") Integer incident_id,
 															 Model model
 															 ) {
 				Business business = null;
@@ -110,13 +111,16 @@ public class BusinessController extends TopController{
 						addMessagesAndErrorsToSession(session);
 						return "redirect:/businesses";
 				}
-				if(type_id > 0)
+				if(type_id != null)
 						business.setType_id(type_id);
+				if(incident_id != null){
+						business.setIncident_id(incident_id);
+				}
 				model.addAttribute("business", business);
 				handleErrorsAndMessages(model);
-				return "businessEdit";
+				return "businessUpdate";
     }
-    @PostMapping("/businessUpdate/{id}")
+    @PostMapping("/business/update/{id}")
     public String updateBusiness(@PathVariable("id") int id,
 																 @Valid Business business, 
 																 BindingResult result,
@@ -128,19 +132,22 @@ public class BusinessController extends TopController{
 						logger.error(error);
 						business.setId(id);
 						addMessagesAndErrorsToSession(session);
-						return "redirect:/businessEdit/"+id;
+						return "redirect:/business/edit/"+id;
 				}
 				if(!business.verify()){
 						String error = business.getErrorInfo();
 						addError(error);
 						logger.error(error);
 						handleErrorsAndMessages(model);
-						return "redirect:/businessEdit/"+id;						
+						return "redirect:/business/edit/"+id;						
 				}
 				business.setId(id);
 				businessService.update(business);				
 				addMessage("Updated Successfully");
 				addMessagesAndErrorsToSession(session);
+				if(business.hasIncidentId()){
+						return "redirect:/businessIncident/"+business.getIncident_id();
+				}
 				return "redirect:/businessIncidentAddressAdd/"+id+"/"+business.getType_id();
     }
 		

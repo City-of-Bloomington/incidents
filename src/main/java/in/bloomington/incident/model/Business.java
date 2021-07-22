@@ -80,6 +80,8 @@ public class Business extends TopModel implements java.io.Serializable{
 		// Needed when email is changed
 		@Transient
 		private String oldEmail;
+		@Transient
+		private Integer incident_id;
     //
     public Business(){
 
@@ -215,7 +217,19 @@ public class Business extends TopModel implements java.io.Serializable{
 		@Transient
 		public void setAddr_id(int val){
 				addr_id = val;
-		}		
+		}
+		@Transient
+		public Integer getIncident_id(){
+				return incident_id;
+		}
+		@Transient
+		public void setIncident_id(Integer val){
+				incident_id = val;
+		}
+		@Transient
+		public boolean hasIncidentId(){
+				return incident_id != null;
+		}
     public String getInfo(){
 				String ret = name != null?name:"";
 				if(businessNumber != null && !businessNumber.isEmpty()){
