@@ -88,11 +88,12 @@ public class BusinessPropertyController extends TopController{
         return "businessPropertyAdd";
     }     
     @PostMapping("/businessProperty/save")
-    public String addBusProperty(@Valid Property property,
-															BindingResult result,
-															Model model,
-															HttpSession session
-															) {
+    public String addBusProperty(@RequestParam String action,
+																 @Valid Property property,
+																 BindingResult result,
+																 Model model,
+																 HttpSession session
+																 ) {
         if (result.hasErrors()) {
 						String error = Helper.extractErrors(result);
 						addError(error);
@@ -126,6 +127,9 @@ public class BusinessPropertyController extends TopController{
         propertyService.save(property);
 				addMessage("Added Successfully");
 				addMessagesAndErrorsToSession(session);
+				if(!action.equals("Next")){ // more
+						return "redirect:/businessProperty/add/"+incident_id;						
+				}
 				return "redirect:/businessIncident/"+incident_id;
     }
 

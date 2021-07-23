@@ -11,7 +11,7 @@
     <header th:replace="general::header"></header>
 
     <main class="public-questions-wrapper">
-      <h2>Add/Upload Image File</h2>
+      <h2>Add/Upload Photo(s)/Receipt(s)</h2>
       <div th:if="${errors}">
         <div th:insert="general::errors(${errors})"></div>
       </div>
@@ -22,10 +22,10 @@
 
       <fieldset>
         <caption>
-          <p>Upload Photo(s) of the Incident</p>
+          <p>Upload Photo(s)/Receipts of the Incident</p>
         </caption>
 
-        <ul th:replace="general::uploadInstructions"></ul>
+        <ul th:replace="general::uploadInstructions(${media_max_count})"></ul>
 
         <div>
           <form

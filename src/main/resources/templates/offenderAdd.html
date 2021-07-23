@@ -290,6 +290,7 @@
           </div>
 
           <p>All required fields must be filled in to Save and move on</p>
+					<p>If there are more offenders click 'Next, Add Another' otherwise click on 'Next'</p>
           <ul class="button-group">
             <li th:unless="${offender.incident.hasOffenderList()}">
               <button
@@ -299,7 +300,8 @@
                 Back
               </button>
             </li>
-            <li><button type="submit" class="next-button">Next</button></li>
+            <li><button type="submit" class="next-button" name="action" value="Next">Next</button></li>
+						<li><button type="submit" class="next-button" name="action" value="More">Next, Add Another</button></li>						
           </ul>
         </fieldset>
       </form>

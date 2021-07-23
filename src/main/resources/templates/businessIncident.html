@@ -22,8 +22,7 @@
         <div th:replace="general::messages(${messages})"></div>
       </div>
       <p>
-        If you need to add additional information relating to an offender or upload
-        supporting images, please use the links below
+        If you need to add additional information please use the links below
       </p>
       <ul class="button-group">
         <li>
@@ -57,16 +56,17 @@
         </li>
       </ul>
       <p>
-        If you notice any incident information need change click on the
-        corresponding Edit link.
+
       </p>
       <div th:if="${incident.canBeSubmitted()}">
         <ul>
           <li>Review your incident report below.</li>
           <li>
-            Edit any information. Click on the corresponding edit link for that
-            section to edit information.
+            If you want to change any information. Click on the corresponding edit link below.
           </li>
+					<li>
+						If you mistakenly added duplicates information you can click on the 'Delete' link underneath the duplicate to remove it.						
+					</li>
           <li>Once your report has been submitted, no changes can be made.</li>
           <li>
             If no further changes are needed, click on the 'Next' at the bottom

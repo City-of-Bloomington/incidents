@@ -98,10 +98,11 @@ public class OffenderController extends TopController{
         return "offenderAdd";
     }
     @PostMapping("/offender/save")
-    public String offenderSave(@Valid Offender offender,
-														 BindingResult result,
-														 Model model,
-														 HttpSession session
+    public String offenderSave(@RequestParam String action,
+															 @Valid Offender offender,
+															 BindingResult result,
+															 Model model,
+															 HttpSession session
 														 ) {
         if (result.hasErrors()) {
 						String error = Helper.extractErrors(result);
@@ -148,6 +149,10 @@ public class OffenderController extends TopController{
         offenderService.save(offender);
 				addMessage("Saved Successfully");
 				addMessagesAndErrorsToSession(session);
+				System.err.println(" action "+action);
+				if(!action.equals("Next")){ // add more
+						return "redirect:/offender/add/"+incident_id;
+				}
 				return "redirect:/businessIncident/"+incident.getId(); 
     }
     

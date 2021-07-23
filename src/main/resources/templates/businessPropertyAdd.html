@@ -20,10 +20,10 @@
     </div>
 
     <main class="public-questions-wrapper">
-      <h2>Add Property/Item</h2>
+      <h2>Add Property Stolen/Vandalized</h2>
       <p>*Indicates required fields</p>
 
-      <div th:insert="general::propertyInstructions"></div>
+      <div th:insert="general::businessPropertyInstructions"></div>
 
       <form
 				action="#"
@@ -121,7 +121,7 @@
 
           <div class="field-group">
             <label for="description" class="required"
-              >*Property Description</label
+              >* Stolen/Vandalized Property(ies) Description</label
             >
             <textarea
               th:field="${property.description}"
@@ -146,7 +146,9 @@
                 Back
               </button>
             </li>
-            <li><button type="submit" class="next-button">Next</button></li>
+            <li><button type="submit" class="next-button" name="action" value="Next">Next</button></li>
+						<li><button type="submit" class="next-button" name="action" value="More">Next, Add Another</button></li>
+						
           </ul>
         </fieldset>
       </form>

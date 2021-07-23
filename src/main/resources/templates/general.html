@@ -345,13 +345,12 @@
       </li>
     </ul>
     <ul th:fragment="offenderInstructions">
-      <li>Information about the incident offender(s)</li>
+      <li>Information about the incident offender</li>
       <li>
         Please add information about the offender related to this incident. 
       </li>
       <li>
-        After completing one offender, you will have the option to add
-        additional offenders to the report.
+        After adding one offender, you can add anther another offender.
       </li>
     </ul>
     <div th:fragment="propertyInstructions">
@@ -367,6 +366,20 @@
         </li>
       </ul>
     </div>
+    <div th:fragment="businessPropertyInstructions">
+      <p>Use this page to report stolen or vandalized properties</p>
+      <ul>
+        <li>
+          If you are reporting damage to a vehicle, please give the description
+          and value of the damage in the vehicle screen.
+        </li>
+				<li> If you are reporting a large number of properties, you can report all in this screen and give appropriate total value and description below.
+				</li>
+        <li>
+          If you prefer, you can add one stolen or damaged property at a time.
+        </li>
+      </ul>
+    </div>		
     <div th:fragment="fraudInstructions">
       <p>Use this page to report any fraud or scam.</p>
       <ul>
@@ -401,22 +414,21 @@
       </ul>
     </div>
 
-    <ul th:fragment="uploadInstructions">
-      <li>You can upload up to 3 images related to incident.</li>
+    <ul th:fragment="uploadInstructions(media_max_count)">
+      <li>You can upload up to <span th:text="${media_max_count}"> </span> photos related to incident.</li>
       <li>
         Optional, you may add explantions about these image in the text field
         below.
       </li>
       <li>
-        The accepted image files are jpeg, gif, png and pdf only any other type
-        will be ignored
+        The accepted photo files types are jpg, gif, png and pdf only, any other type will be ignored
       </li>
-      <li>Images size should not exceed 5 MG each</li>
+      <li>Photo size should not exceed 5 MG each</li>
       <li>
-        If image file size is more than 5 MB, you need to resize it using one of
-        the image editing tools such as MS paint
+        If the photo file size is more than 5 MB, you need to resize it using one of
+        the photo editing tools such as MS paint
       </li>
-      <li>Total max upload limit should not exceed 15MB</li>
+      <li>Total max upload limit should not exceed <span th:text="${media_max_count*5}"> </span> MB</li>
       <li>When done with image uploads, click on 'Submit'</li>
     </ul>
 
