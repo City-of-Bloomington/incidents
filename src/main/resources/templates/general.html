@@ -414,7 +414,7 @@
       </ul>
     </div>
 
-    <ul th:fragment="uploadInstructions(media_max_count)">
+    <ul th:fragment="mediaInstructions(media_max_count)">
       <li>You can upload up to <span th:text="${media_max_count}"> </span> photos related to incident.</li>
       <li>
         Optional, you may add explantions about these image in the text field
@@ -429,9 +429,25 @@
         the photo editing tools such as MS paint
       </li>
       <li>Total max upload limit should not exceed <span th:text="${media_max_count*5}"> </span> MB</li>
-      <li>When done with image uploads, click on 'Submit'</li>
+      <li>When your are done with photo uploads, click on 'Submit'</li>
     </ul>
-
+    <ul th:fragment="mediaBusinessInstructions(media_max_count)">
+      <li>You can upload up to <span th:text="${media_max_count}"> </span> photos of the incident or photos of the receipts related to incident.</li>
+      <li>
+        Optional, you may add explantions about these image in the text field
+        below.
+      </li>
+      <li>
+        The accepted photo files types are jpg, gif, png and pdf only, any other type will be ignored
+      </li>
+      <li>Photo size should not exceed 5 MG each</li>
+      <li>
+        If the photo file size is more than 5 MB, you need to resize it using one of
+        the photo editing tools such as MS paint
+      </li>
+      <li>Total max upload limit should not exceed <span th:text="${media_max_count*5}"> </span> MB</li>
+      <li>When you are done with photo uploads, click on 'Submit'</li>
+    </ul>
     <div th:fragment="introMoreInfo">
       <p>
         To report a crime that does not fit the specifications of this system,

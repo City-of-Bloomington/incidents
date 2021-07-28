@@ -640,3 +640,9 @@ alter table offenders drop column email2;
 alter table offenders drop column phone2;
 alter table offenders drop column phone_type2;
 alter table offenders add foreign key(incident_id) references incidents(id);
+//
+// for business incidents we have two incident types only, theft and vandal
+//
+alter table incident_types add used_in_business char(1);
+update incident_types set used_in_business='y' where id in (1,2);
+

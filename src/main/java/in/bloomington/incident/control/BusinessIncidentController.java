@@ -9,6 +9,7 @@ package in.bloomington.incident.control;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -82,8 +83,8 @@ public class BusinessIncidentController extends TopController{
     private String application_name;
 		//
 		// incident is already save, so we do update for the new fields
-    @PostMapping("/businessIncidentNext/{id}")
-    public String busIncidentNext(@PathVariable("id") int id,
+    @PostMapping("/businessIncidentChange/{id}")
+    public String busIncidentChange(@PathVariable("id") int id,
 															 @Valid Incident incident,
 															 BindingResult result,
 															 Model model
@@ -124,7 +125,7 @@ public class BusinessIncidentController extends TopController{
 				else {
 						addMessage("no more changes can be made");
 						addMessagesAndErrorsToSession(session);
-						return "redirect:/";	    
+						return "redirect:/businessIncident/"+id;	    
 				}
     }
     // view mode
@@ -184,13 +185,10 @@ public class BusinessIncidentController extends TopController{
 						}
 						Business business = incident.getBusiness();
 						model.addAttribute("incident", incident);
-						if(business != null){
-								model.addAttribute("business", business);
-						}
-						else{
+						if(business == null){
 								System.err.println(" *** bus is null ");
 						}
-						getMessagesAndErrorsFromSession(session, model);
+						// getMessagesAndErrorsFromSession(session, model);
 						return "businessIncident";
 				}
 				else {
@@ -199,13 +197,41 @@ public class BusinessIncidentController extends TopController{
 						return "redirect:/";
 				}
     }
-    //
-		@GetMapping("/businessIncidentAdd/{addr_id}/{type_id}/{bus_id}")
+		//
+		@GetMapping("/businessIncidentAdd/{bus_id}/{addr_id}")
     public String busIncidentAdd(@PathVariable("addr_id") int addr_id,
-																 @PathVariable("type_id") int type_id,
 																 @PathVariable("bus_id") int bus_id,
 																 Model model
 																 ) {
+				getMessagesAndErrorsFromSession(session, model);		
+				Address address = addressService.findById(addr_id);
+				List<IncidentType> allTypes = incidentTypeService.getAll();
+				List<IncidentType> types = null;
+				if(allTypes != null){
+						types = allTypes.stream()
+								.filter( y -> y.getUsedInBusiness())
+								.collect(Collectors.toList());
+				}
+				System.err.println(" types "+types);
+				Business business = businessService.findById(bus_id);
+				Incident incident = new Incident();
+				incident.setAddr_id(addr_id);
+				incident.setBus_id(bus_id);
+				incident.setAddress(address);
+				incident.setBusiness(business);
+				incident.setEmail(business.getEmail());
+
+				model.addAttribute("incident", incident);
+				model.addAttribute("types", types);
+        return "businessIncidentAdd";
+		}
+		
+		@PostMapping("/businessIncident/save")
+    public String busIncidentSave(
+																	@Valid Incident incident,
+																	Model model,
+																	BindingResult result
+																	) {
 				List<String> ids = null;
 				int id = 0;
 				try{
@@ -213,25 +239,31 @@ public class BusinessIncidentController extends TopController{
 				}catch(Exception ex){
 						System.err.println(ex);
 				}				
-				Address address = addressService.findById(addr_id);
-				IncidentType incidentType = incidentTypeService.findById(type_id);
-				Business business = businessService.findById(bus_id);
-				Incident incident = new Incident();
-				incident.setAddress(address);
-				incident.setBusiness(business);
-				incident.setIncidentType(incidentType);
+				Address address = addressService.findById(incident.getAddr_id());
+				Business business = businessService.findById(incident.getBus_id());
 				incident.setEmail(business.getEmail());
 				incident.setReceivedNow();
 				incident.setCategory("Business");
-				incidentService.save(incident);
-				if(ids == null){
-						ids = new ArrayList<>();
+				incident.setAddress(address);
+				incident.setBusiness(business);
+				if(incident.verifyAll()){
+						incidentService.save(incident);
+						if(ids == null){
+								ids = new ArrayList<>();
+						}
+						id = incident.getId();
+						ids.add(""+id);
+						session.setAttribute("incident_ids", ids);
+						//
+						// this redirect will decide what is next
+						//
+						return "redirect:/businessIncident/"+id;
 				}
-				ids.add(""+incident.getId());
-				session.setAttribute("incident_ids", ids);
-				model.addAttribute("incident", incident);
-				handleErrorsAndMessages(model);
-        return "businessIncidentAdd";
+				else{
+						addError(incident.getErrorInfo());
+						addMessagesAndErrorsToSession(session);
+						return "redirect:/businessIncidentAdd/"+address.getId()+"/"+business.getId();
+				}
 		}
 		@GetMapping("/businessIncidentEdit/{id}")
     public String busIncidentUpdate(@PathVariable("id") int id,
@@ -244,12 +276,21 @@ public class BusinessIncidentController extends TopController{
 				incident.setBusiness(business);
 				incident.setCategory("Business");
 				model.addAttribute("incident", incident);
+				List<IncidentType> allTypes = incidentTypeService.getAll();
+				List<IncidentType> types = null;
+				if(allTypes != null){
+						types = allTypes.stream()
+								.filter( y -> y.getUsedInBusiness())
+								.collect(Collectors.toList());
+				}
+				if(types != null && types.size() > 0)
+						model.addAttribute("types", types);
 				getMessagesAndErrorsFromSession(session, model);					
-        return "businessIncidentAdd";
+        return "businessIncidentUpdate";
 		}
 		
     //
-    @GetMapping("/businessIncident/finalPage/{id}")
+    @PostMapping("/businessIncident/finalPage/{id}")
     public String busIncidentFinalPage(@PathVariable("id") int id,
 																		Model model,
 																		HttpSession session,

@@ -53,8 +53,8 @@
         />
         <input type="hidden" th:field="${address.zipcode}" id="zip" />
         <input type="hidden" th:field="${address.state}" id="state" />
-				<input type="hidden" th:field="${address.category}" id="category" />
-				<input type="hidden" th:field="${address.type_id}" id="type_id" />
+				<input type="hidden" th:field="${address.incident_addr_id}" id="incident_addr_id"/>
+
         <fieldset>
           <legend>Location</legend>
           <ul>
@@ -63,8 +63,6 @@
 							start typing the street address in the 'Street address' field below. A list of matching
               addresses will be populated.
             </li>
-						<li>If the incident address is different than the business address you will enter the incident address in later step.
-						</li>
             <li>
               <i>
 								Please note that City, Zip code and State fields are
@@ -98,7 +96,7 @@
             <button
 							type="button"
               class="next-button"
-              th:attr="onclick=|window.location.href='@{/businessSelectCategory}'|"
+              th:attr="onclick=|window.location.href='@{/businessIncidentAddrEdit/{id}(id=${address.incident_addr_id})}'|"
               >
                 Back
               </button>

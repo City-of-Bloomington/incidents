@@ -125,6 +125,41 @@ function verifyIncidentInput() {
   }
   return true;
 }
+function verifyBusinessIncidentInput() {
+		var start_date = $("#start_date").val();
+		var start_time = $("#start_time").val();
+		var date_description = $("#date_description").val().trim();
+		var end_date = $("#end_date").val();
+		var end_time = $("#end_time").val();
+		var type = $("incident_type").val();
+		if (start_date === "" && start_time === "" && date_description === "") {
+				alert("Please provide incident date and time");
+				$("#start_date").focus();
+				return false;
+		}
+		if (start_date != "" && start_time === "") {
+				alert("Please provide incident start time");
+				$("#start_time").focus();
+				return false;
+		}
+		if (end_date != "" && end_time === "") {
+				alert("Please provide incident end time");
+				$("#end_time").focus();
+				return false;
+		}
+		if(type == ''){
+				alert("Please provide incident type");
+				$("#incident_type").focus();
+				return false;
+		}
+		var details = $("#details_id").val();
+		if (details === "") {
+				alert("Please provide incident details");
+				$("#detail_id").focus();
+				return false;
+		}
+		return true;
+}
 function verifyAddress() {
   var addr = $("#addr_id").val();
   if (addr === "") {

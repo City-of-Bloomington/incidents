@@ -26,17 +26,13 @@
 
       <p>* indicates required fields</p>
       <form
-        th:action="@{/businessIncidentNext/{id}(id=${incident.id})}"
+        th:action="@{/businessIncident/save}"
         th:object="${incident}"
-        onsubmit="return verifyIncidentInput()"
+        onsubmit="return verifyBusinessIncidentInput()"
         method="post"
       >
-        <input type="hidden" th:field="${incident.email}" />
-        <input type="hidden" th:field="${incident.receivedStr}" />
-        <input type="hidden" th:field="${incident.incidentType} " />
         <input type="hidden" th:field="${incident.addr_id} " />
-        <input type="hidden" th:field="${incident.business} " />
-        <input type="hidden" th:field="${incident.category} " />				
+        <input type="hidden" th:field="${incident.bus_id} " />				
         <fieldset>
           <legend>Incident Date and Time</legend>
 
@@ -118,39 +114,18 @@
         </fieldset>
         <fieldset>
           <legend>Incident Details</legend>
-          <p>
-            <strong>Incident Type: </strong>
-            <span th:text="${incident.incidentType}"> </span>
-          </p>
-
-          <div th:if="${incident.showGainedEntry()}">
-            <!-- we do not show these fields for lost or vandal cases -->
-
-            <div class="field-group">
-              <label for="entry_type">
-                Identify how entry was gained to commit the act:
-              </label>
-              <select th:field="${incident.entryType}" id="entry_type">
-                <option value="">Does not apply</option>
-                <option
-                  th:each="r : ${entryTypes}"
-                  th:value="${r}"
-                  th:text="${r}"
+					<div class="field-group">
+            <label for="incident_type">* Incident Type: </label>
+						<select th:field="${incident.incidentType}" id="incident_type"
+										required="required">
+							<option value="">Pick Incident Type</option>
+              <option
+                th:each="r : ${types}"
+                th:value="${r.id}"
+                th:text="${r.name}"
                 ></option>
-              </select>
-
-              <label for="other_entry">Other entry gained details:</label>
-              <textarea
-                th:field="${incident.otherEntry}"
-                id="other_entry"
-                rows="3"
-                cols="60"
-                placeholder="Other entry details"
-              ></textarea>
-              <!-- end gained entry section -->
-            </div>
-          </div>
-
+            </select>
+					</div>
           <div class="field-group">
             <label for="details_id" class="required">*Incident details:</label>
             <textarea

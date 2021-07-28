@@ -55,17 +55,13 @@
         />
         <input type="hidden" th:field="${address.zipcode}" id="zip" />
         <input type="hidden" th:field="${address.state}" id="state" />
-				<input type="hidden" th:field="${address.incident_id}" id="incid_id"/>
         <fieldset>
           <legend>Location of Incident</legend>
           <ul>
-						<li><i>If the incident address is the same as establishment address, then just click on 'Next'.</i></li>
             <li>
-							<i>
-							If the incident address is different from the establishment address
-              you need to add the incident street address,
-							start typing the street
-              address in the 'Street address' field below. A list of matching
+							<i> If the incident address is different than the one showing
+								start typing the street address in the 'Street address'
+								field below. A list of matching
               addresses will be populated, please select from the list the
               correct one for where the incident occured.
 							</i>

@@ -73,50 +73,85 @@ public class BusinessAddressController extends TopController{
 		 * business address (could be different from incident address)
 		 */ 
     @CrossOrigin(origins = "https://bloomington.in.gov")
-    @GetMapping("/businessAddrAdd/{type_id}")
-    public String businessAddrAdd(@PathVariable("type_id") int type_id,
-																			 Model model) {
+    @GetMapping("/businessAddrAdd/{incident_addr_id}") 
+    public String businessAddrAdd(@PathVariable("incident_addr_id") int incident_addr_id,
+																	Model model) {
 				Address address = new Address();
-				address.setType_id(type_id);
+				address.setIncident_addr_id(incident_addr_id);
 				model.addAttribute("address", address);
         return "businessAddressAdd";
     }
     @CrossOrigin(origins = "https://bloomington.in.gov")
-    @GetMapping("/businessAddrEdit/{id}/{type_id}")
+    @GetMapping("/businessAddrEdit/{id}/{incident_addr_id}")
     public String businessAddrUpdate(@PathVariable("id") int id,
-																			 @PathVariable("type_id") int type_id,
+																		 @PathVariable("incident_addr_id") int incident_addr_id,																		 
 																			 Model model) {
 				Address address = addressService.findById(id);
 				address.setOld_id(id);
-				address.setType_id(type_id);
-				address.setCategory("Business");
+				address.setIncident_addr_id(incident_addr_id);
 				model.addAttribute("address", address);
         return "businessAddressUpdate";
-    }		
+    }
+    @PostMapping("/businessAddrSave")
+    public String businessAddrSave(@Valid Address addr,
+														 BindingResult result,
+														 Model model
+														 ) {
+				boolean pass = true;
+				Address address = null;
+        if (result.hasErrors()) {
+						addError(Helper.extractErrors(result));
+						pass = false;
+        }
+				if(pass && checkAddress(addr)){
+						address = saveOrUpdate(addr);
+						return "redirect:/business/add/"+address.getId()+"/"+address.getIncident_addr_id();
+				}
+				addMessagesAndErrorsToSession(session);
+				return "redirect:/businessAddrAdd/"+address.getIncident_addr_id();
+		}
+    @PostMapping("/businessAddrChange")
+    public String businessAddrChange(@Valid Address addr,
+														 BindingResult result,
+														 Model model
+														 ) {
+				boolean pass = true;
+        if (result.hasErrors()) {
+						addError(Helper.extractErrors(result));
+						pass = false;
+        }
+				if(pass){
+						int old_id = addr.getOld_id();
+						Address old_address = addressService.findById(old_id);
+						//
+						// check if the same address
+						if(old_address.equals(addr)){
+								//
+								// go to next
+								//
+								return "redirect:/business/add/"+addr.getOld_id()+"/"+addr.getIncident_addr_id();
+						}
+						else if(checkAddress(addr)){
+							Address	address = saveOrUpdate(addr);
+								return "redirect:/business/add/"+address.getId()+"/"+address.getIncident_addr_id();
+						}
+						
+				}
+				addMessagesAndErrorsToSession(session);
+				return "redirect:/businessAddrEdit/"+addr.getOld_id()+"/"+addr.getIncident_addr_id();
+		}
+		
 		/**
 		 * incident address for a given business
 		 */
     @CrossOrigin(origins = "https://bloomington.in.gov")
-    @GetMapping("/businessIncidentAddressAdd/{bus_id}/{type_id}")
-    public String busIncidentAddrAdd(@PathVariable("type_id") int type_id,
-																		 @PathVariable("bus_id") int bus_id,
+    @GetMapping("/businessIncidentAddressAdd")
+    public String busIncidentAddrAdd(
 																		 Model model) {
-				Business bus = businessService.findById(bus_id);
-				Address address = null;
-				if(bus != null){
-						address = bus.getAddress();
-				}
-				if(address != null){
-						address.setType_id(type_id);
-						// address.setCategory("Business");
-						address.setBus_id(bus_id);
-						model.addAttribute("address", address);
-						return "businessIncidentAddressAdd";
-				}
-				else{
-						addError("business address not found");
-						return "redirect:/business/"+bus_id;
-				}
+				Address address = new Address();
+				// address.setIncident_addr_id(incident_addr_id);
+				model.addAttribute("address", address);
+				return "businessIncidentAddressAdd";
     }
     @PostMapping("/busIncidentAddrSave")
     public String busIncidentAddrSave(@Valid Address addr,
@@ -131,19 +166,18 @@ public class BusinessAddressController extends TopController{
         }
 				if(pass && checkAddress(addr)){
 						address = saveOrUpdate(addr);
-						return "redirect:/businessIncidentAdd/"+address.getId()+"/"+addr.getType_id()+"/"+addr.getBus_id();
+						return "redirect:/businessAddrAdd/"+address.getId();
 				}
 				addMessagesAndErrorsToSession(session);
-				return "redirect:/businessIncidentAddressAdd/"+addr.getBus_id()+"/"+addr.getType_id();
+				return "redirect:/businessIncidentAddressAdd";
 		}		
 		// from incident we find other parameters
     @CrossOrigin(origins = "https://bloomington.in.gov")
     @GetMapping("/businessIncidentAddrEdit/{id}")
 		public String busIncidentAddrEdit(@PathVariable("id") int id,
 																			Model model) {
-				Incident incident = incidentService.findById(id);
-				Address address = incident.getAddress();
-				address.setIncident_id(incident.getId());
+				Address address = addressService.findById(id);
+				address.setOld_id(id);				
 				model.addAttribute("address", address);
 				return "businessIncidentAddressUpdate";
     }				
@@ -189,72 +223,6 @@ public class BusinessAddressController extends TopController{
 				return address;
 		}
 
-    @PostMapping("/businessAddrSave")
-    public String businessAddrSave(@Valid Address addr,
-														 BindingResult result,
-														 Model model
-														 ) {
-				boolean pass = true;
-				Address address = null;
-        if (result.hasErrors()) {
-						addError(Helper.extractErrors(result));
-						pass = false;
-        }
-				if(pass && checkAddress(addr)){
-						address = saveOrUpdate(addr);
-						if(address.hasBusId()){
-								// redirect to add incident
-								return "redirect:/businessIncidentAdd/"+address.getId()+"/"+address.getType_id()+"/"+address.getBus_id();
-						}
-						else{
-								return "redirect:/business/add/"+address.getId()+"/"+address.getType_id();
-						}
-				}
-				addMessagesAndErrorsToSession(session);
-				return "redirect:/businessAddrAdd/"+address.getType_id();
-		}
-    @PostMapping("/businessAddrChange")
-    public String businessAddrChange(@Valid Address addr,
-														 BindingResult result,
-														 Model model
-														 ) {
-				boolean pass = true;
-				Address address = null;
-        if (result.hasErrors()) {
-						addError(Helper.extractErrors(result));
-						pass = false;
-        }
-				if(pass){
-						int old_id = addr.getOld_id();
-						Address old_address = addressService.findById(old_id);
-						//
-						// check if the same address
-						if(old_address.equals(addr)){
-								//
-								// go to next
-								//
-								if(address.hasBusId()){
-										// redirect to add incident
-										return "redirect:/businessIncidentAdd/"+address.getId()+"/"+address.getType_id()+"/"+address.getBus_id();
-								}
-								else{
-										return "redirect:/business/add/"+address.getId()+"/"+address.getType_id();
-								}
-						}
-						else if(checkAddress(addr)){
-								address = saveOrUpdate(addr);
-								if(address.hasBusId()){
-										// redirect to add incident
-										return "redirect:/businessIncidentAdd/"+address.getId()+"/"+address.getType_id()+"/"+address.getBus_id();
-								}
-								else{
-										return "redirect:/business/add/"+address.getId()+"/"+address.getType_id();
-								}
-						}
-				}
-				addMessagesAndErrorsToSession(session);
-				return "redirect:/businessAddrAdd/"+address.getType_id();
-		}
     @PostMapping("/businessIncidentAddrChange")
     public String businessIncidentAddrChange(@Valid Address addr,
 														 BindingResult result,
@@ -285,7 +253,7 @@ public class BusinessAddressController extends TopController{
 						}
 				}
 				addMessagesAndErrorsToSession(session);
-				return "redirect:/businessIncidentAddrEdit/"+address.getIncident_id();
+				return "redirect:/businessIncidentAddrEdit/"+address.getOld_id();
 		}					
 }
 

@@ -82,6 +82,8 @@ public class Business extends TopModel implements java.io.Serializable{
 		private String oldEmail;
 		@Transient
 		private Integer incident_id;
+		@Transient
+		private Integer incident_addr_id;
     //
     public Business(){
 
@@ -145,6 +147,7 @@ public class Business extends TopModel implements java.io.Serializable{
 		public void setType_id(int val){
 				type_id = val;
 		}
+		
     public void setBusinessNumber(String val) {
 				if(val != null && !val.isEmpty())
 						this.businessNumber = val;
@@ -226,6 +229,14 @@ public class Business extends TopModel implements java.io.Serializable{
 		public void setIncident_id(Integer val){
 				incident_id = val;
 		}
+		@Transient
+		public Integer getIncident_addr_id(){
+				return incident_addr_id;
+		}
+		@Transient
+		public void setIncident_addr_id(Integer val){
+				incident_addr_id = val;
+		}		
 		@Transient
 		public boolean hasIncidentId(){
 				return incident_id != null;

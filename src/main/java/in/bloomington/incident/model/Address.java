@@ -10,6 +10,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
+
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -64,7 +66,9 @@ public class Address extends TopModel implements java.io.Serializable{
 		@Transient
 		private Integer bus_id;		
 		@Transient
-		private Integer incident_id;		
+		private Integer incident_id;
+		@Transient
+		private Integer incident_addr_id;
 		
     public Address(){
 				super();
@@ -221,6 +225,14 @@ public class Address extends TopModel implements java.io.Serializable{
 				return bus_id;
 		}
 		@Transient
+		public void setIncident_addr_id(Integer val){
+			 incident_addr_id = val;
+		}
+		@Transient
+		public Integer getIncident_addr_id(){
+				return incident_addr_id;
+		}		
+		@Transient
 		public void setIncident_id(Integer val){
 			 incident_id = val;
 		}
@@ -342,11 +354,19 @@ public class Address extends TopModel implements java.io.Serializable{
 						return false;
 				}
 				else if(zipcode != null && !zipcode.equals("")){
+						boolean ret = default_zip_codes.stream()
+								.anyMatch(t->t.equals(zipcode));
+						System.err.println(" Address zip code check is "+ret);
+						if(ret){
+								return true;
+						}
+						/**
 						for(String str:default_zip_codes){
 								if(zipcode.equals(str)){
 										return true;
 								}
 						}
+						*/
 						addError("invalid zipcode "+zipcode);
 						return false;
 				}
