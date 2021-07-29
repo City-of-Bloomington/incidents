@@ -69,15 +69,6 @@ public class WebController extends TopController{
 				getMessagesAndErrorsFromSession(session, model);
 				return "introSelectType";
     }
-		/**
-		 * not needed anymore
-    @RequestMapping(value = "/businessSelectCategory")
-    public String busSelectCategory(Model model,
-																 HttpSession session){
-				getMessagesAndErrorsFromSession(session, model);
-				return "introBusinessSelectType";
-    }
-		*/
 		
     @RequestMapping("/introTheft/{type_id}")
     public String introTheft(@PathVariable("type_id") int type_id,
@@ -87,6 +78,7 @@ public class WebController extends TopController{
 				model.addAttribute("type_id", type_id);
 				return "theft_questions";
     }
+		/**
     @RequestMapping("/businessIncident/{type_id}")
     public String businessIncident(@PathVariable("type_id") int type_id,
 																	 Model model,
@@ -94,7 +86,7 @@ public class WebController extends TopController{
 				getMessagesAndErrorsFromSession(session, model);
 				return "redirect:/businessAddrAdd/"+type_id;
     }		
-
+		*/
     @RequestMapping("/introFraud")
     public String introFraud(Model model,
 														 HttpSession session) {
@@ -115,6 +107,12 @@ public class WebController extends TopController{
 				getMessagesAndErrorsFromSession(session, model);
 				return "lost_questions";
     }
+    @RequestMapping("/businessSteps")
+    public String busSteps(Model model,
+														HttpSession session) {
+				getMessagesAndErrorsFromSession(session, model);
+				return "introBusinessSteps";
+    }		
 
     @RequestMapping("/emailAdd")
     public String emailAdd(@RequestParam(required=true) int type_id,

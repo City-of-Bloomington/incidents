@@ -354,6 +354,9 @@ public class ProcessController extends TopController{
 								}
 						}
 						model.addAttribute("incident", incident);
+						if(incident.hasBusinessRecord()){
+								model.addAttribute("business", incident.getBusiness());
+						}
 				}catch(Exception ex){
 						logger.error("Error incident "+id+" not found "+ex);
 						addError("Invalid incident ID "+id);

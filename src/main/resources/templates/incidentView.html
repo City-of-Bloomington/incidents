@@ -104,7 +104,7 @@
 				</div>
 			</div>
 			</fieldset>
-			<div th:if="${incident.hasBusinessRecord()}">
+			<div th:if="${business != null}">
         <div th:insert="businessView::business(${business})"></div>
 			</div>
       <div th:if="${incident.hasOffenderList()}">

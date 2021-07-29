@@ -184,17 +184,17 @@ public class BusinessIncidentController extends TopController{
 								return "redirect:/businessMedia/add/"+id;
 						}
 						Business business = incident.getBusiness();
+						Address address = incident.getAddress();
+						incident.setBusiness(business);
+						incident.setAddress(address);
 						model.addAttribute("incident", incident);
-						if(business == null){
-								System.err.println(" *** bus is null ");
-						}
-						// getMessagesAndErrorsFromSession(session, model);
+						model.addAttribute("business", business);
 						return "businessIncident";
 				}
 				else {
 						addError("No more changes can be made to this incident");
 						addMessagesAndErrorsToSession(session);
-						return "redirect:/";
+						return "redirect:/forBusiness";
 				}
     }
 		//
@@ -290,7 +290,7 @@ public class BusinessIncidentController extends TopController{
 		}
 		
     //
-    @PostMapping("/businessIncident/finalPage/{id}")
+    @GetMapping("/businessIncident/finalPage/{id}")
     public String busIncidentFinalPage(@PathVariable("id") int id,
 																		Model model,
 																		HttpSession session,
@@ -340,7 +340,7 @@ public class BusinessIncidentController extends TopController{
 						addMessage("Incident can not be submitted ");
 						addMessages(incident.getErrors());
 						addMessagesAndErrorsToSession(session);
-						return "redirect:/";
+						return "redirect:/forBusiness";
 				}
 				try{
 						ActionLog actionLog = new ActionLog();
