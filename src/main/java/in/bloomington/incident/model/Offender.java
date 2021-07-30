@@ -381,7 +381,18 @@ public class Offender extends TopModel implements java.io.Serializable{
 						}
 				}
     }
-		
+		@Transient
+		public boolean hasPhones(){
+				return phone != null && !phone.isEmpty();
+		}
+		@Transient
+		public boolean hasEmails(){
+				return email != null && !email.isEmpty();
+		}
+		@Transient
+		public boolean hasOccupation(){
+				return occupation != null && !occupation.isEmpty();
+		}		
     public String getSsn() {
 				return ssn;
     }

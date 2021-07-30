@@ -222,6 +222,7 @@ public class BusinessIncidentController extends TopController{
 				incident.setEmail(business.getEmail());
 
 				model.addAttribute("incident", incident);
+				model.addAttribute("business", business);				
 				model.addAttribute("types", types);
         return "businessIncidentAdd";
 		}

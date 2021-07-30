@@ -92,7 +92,7 @@
 					 <li class="button-group">
 						 <input
 							 type="button"
-							 th:attr="onclick=|window.location.href='@{/business/edit/{id}/{incident_id}(id=${incident.business.id},incident_id=${incident.id})}'|"
+							 th:attr="onclick=|window.location.href='@{/businessEdit/{id}/{incident_addr_id}/{incident_id}(id=${incident.business.id},incident_id=${incident.id},incident_addr_id=${incident.addr_id})}'|"
 							 value="Edit Establishment"
 								 />
 					 </li>					

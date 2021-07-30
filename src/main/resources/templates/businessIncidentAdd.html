@@ -142,7 +142,7 @@
           <li>
             <button
               class="next-button"
-              th:attr="onclick=|window.location.href='@{/businessIncidentAddrEdit/{id}(id=${incident.id})}'|"
+              th:attr="onclick=|window.location.href='@{/businessEdit/{id}/{addr_id}/{incident_id}(id=${business.id},addr_id=${incident.addr_id},incident_id=${incident.id})}'|"
               >
                 Back
               </button>

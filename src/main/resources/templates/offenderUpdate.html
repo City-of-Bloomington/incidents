@@ -51,12 +51,12 @@
 					<input type="text" th:field="${offender.zip}" id="zip_id" size="10" required="required" maxlength="10"
 								 placeholder="Zip code" />
 					
-					<label for="phone_type_id" class="required">*Primary phone: </label>
+					<label for="phone_type_id" class="required">Primary phone: </label>
 					<select id="phone_type_id" th:field="${offender.phoneType}">
 						<option th:each="r : ${phoneTypes}" th:value="${r}" th:text="${r}">
 						</option>
 					</select>
-					<input type="text" th:field="${offender.phone}" id="phone" size="10" required="required" maxlength="30"
+					<input type="text" th:field="${offender.phone}" id="phone" size="10" maxlength="30"
 								 placeholder="Phone #" />
 					
 					<label for="email_id">Email: </label>

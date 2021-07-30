@@ -131,7 +131,7 @@
 
           <div class="field-group">
             <label for="phone_type_id" class="required"
-              >*Primary phone:
+              > Primary phone:
               <select id="phone_type_id" th:field="${offender.phoneType}">
                 <option
                   th:each="r : ${phoneTypes}"
@@ -145,7 +145,6 @@
               th:field="${offender.phone}"
               id="phone"
               size="20"
-              required="required"
               maxlength="30"
               placeholder="Phone number"
             />

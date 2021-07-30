@@ -97,8 +97,9 @@ public class BusinessController extends TopController{
 				return "redirect:/businessIncidentAdd/"+id+"/"+business.getIncident_addr_id();
     }
 
-    @GetMapping("/business/edit/{id}/{incident_id}")
+    @GetMapping("/businessEdit/{id}/{incident_addr_id}/{incident_id}")
     public String showEditForm(@PathVariable("id") int id,
+															 @PathVariable("incident_addr_id") Integer incident_addr_id,															 
 															 @PathVariable("incident_id") Integer incident_id,
 															 Model model
 															 ) {
@@ -113,6 +114,9 @@ public class BusinessController extends TopController{
 				}
 				if(incident_id != null){
 						business.setIncident_id(incident_id);
+				}
+				if(incident_addr_id != null){
+						business.setIncident_addr_id(incident_addr_id);
 				}
 				model.addAttribute("business", business);
 				handleErrorsAndMessages(model);
@@ -130,14 +134,14 @@ public class BusinessController extends TopController{
 						logger.error(error);
 						business.setId(id);
 						addMessagesAndErrorsToSession(session);
-						return "redirect:/business/edit/"+id+"/"+business.getIncident_id();
+						return "redirect:/business/edit/"+id+"/"+business.getIncident_addr_id()+"/"+business.getIncident_id();
 				}
 				if(!business.verify()){
 						String error = business.getErrorInfo();
 						addError(error);
 						logger.error(error);
 						handleErrorsAndMessages(model);
-						return "redirect:/business/edit/"+id+"/"+business.getIncident_id();
+						return "redirect:/business/edit/"+id+"/"+business.getIncident_addr_id()+"/"+business.getIncident_id();
 				}
 				business.setId(id);
 				businessService.update(business);				
@@ -147,6 +151,7 @@ public class BusinessController extends TopController{
 						return "redirect:/businessIncident/"+business.getIncident_id();
 				}
 				return "redirect:/businessIncidentAdd/"+id+"/"+business.getIncident_addr_id();
+
     }
 		
     @GetMapping("/business/{id}")

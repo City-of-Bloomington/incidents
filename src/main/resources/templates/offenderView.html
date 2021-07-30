@@ -38,11 +38,11 @@
 						<strong>City, State Zipcode:</strong>
 						<span th:text="${offender.cityStateZip}"> </span>
 					</li>
-					<li>
+					<li th:if="${offender.hasPhones()}">
 						<strong>Phone(s):</strong>
 						<span th:text="${offender.phones}"></span>
 					</li>
-					<li>
+					<li th:if="${offender.hasEmails()}">
 						<strong>Email(s):</strong>
 						<span th:text="${offender.emails}"></span>
 					</li>
@@ -63,7 +63,7 @@
 					<li th:if="${offender.hasRaceAndEthnicity()}">
 						<span th:text="${offender.raceAndEthnicity}"></span>
 					</li>
-					<li>
+					<li th:if="${offender.hasOccupation()}">
 						<strong>Occupation:</strong>
 						<span th:text="${offender.occupation}"></span>
 					</li>

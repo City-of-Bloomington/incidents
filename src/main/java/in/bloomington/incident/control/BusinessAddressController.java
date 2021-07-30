@@ -124,18 +124,18 @@ public class BusinessAddressController extends TopController{
 						int old_id = addr.getOld_id();
 						Address old_address = addressService.findById(old_id);
 						//
+						Address address = null;
 						// check if the same address
 						if(old_address.equals(addr)){
 								//
 								// go to next
 								//
-								return "redirect:/business/add/"+addr.getOld_id()+"/"+addr.getIncident_addr_id();
+								address = addr;
 						}
 						else if(checkAddress(addr)){
-							Address	address = saveOrUpdate(addr);
-								return "redirect:/business/add/"+address.getId()+"/"+address.getIncident_addr_id();
+							address = saveOrUpdate(addr);
 						}
-						
+						return "redirect:/business/add/"+address.getId()+"/"+addr.getIncident_addr_id();
 				}
 				addMessagesAndErrorsToSession(session);
 				return "redirect:/businessAddrEdit/"+addr.getOld_id()+"/"+addr.getIncident_addr_id();
@@ -240,20 +240,16 @@ public class BusinessAddressController extends TopController{
 						//
 						// check if the same address
 						if(old_address.equals(addr)){
-								//
-								// go to next
-								//
-								// redirect to add incident
-								return "redirect:/businessIncident/"+address.getIncident_id();
+								address = old_address;
 						}
 						else if(checkAddress(addr)){
 								address = saveOrUpdate(addr);
-								// redirect to add incident
-								return "redirect:/businessIncident/"+address.getIncident_id();
 						}
+						// redirect to add business address
+						return "redirect:/businessAddrAdd/"+address.getId();
 				}
 				addMessagesAndErrorsToSession(session);
-				return "redirect:/businessIncidentAddrEdit/"+address.getOld_id();
+				return "redirect:/businessIncidentAddrEdit/"+addr.getOld_id();
 		}					
 }
 

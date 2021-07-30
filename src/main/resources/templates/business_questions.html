@@ -160,8 +160,27 @@
           </p>
         </div>
         <div id="finalStep" class="question" style="display: none">
-          <p>In the following page you will see the steps needed to add an incident</p>
-          <form action="#" th:action="@{/businessSteps}" method="get">
+					<p>
+						To add an incident you would go through a number of steps.
+						The following information are needed to complete an incident. 
+          </p>						
+					<ul>
+						<li>Add incident address</li>
+						<li>Establishment address</li>
+						<li>Establishment: corporation, contact, etc</li>
+						<li>Incident details: type, date, time, etc</li>
+						<li>Offender(s) involved in the incident</li>
+						<li>Stolen/vandalized property(ies) (if applicable)</li>
+						<li>Upload photo(s)/receipt(s) of damaged property(ies)</li>
+						<li>Submit the incident</li>
+						<li>You will receive a notification email about your report submission using the email you will provide</li>
+						<li>The BPD staff will check the incident, they may approve or reject the incident</li>
+						<li>You will receive an email notification from BPD staff regarding the approval or rejection of your report.</li>
+						<li>Please make sure you have all the needed information before you continue</li>
+					</ul>
+          <form action="#"
+								th:action="@{/businessIncidentAddressAdd}"
+								method="get">
             <p>
               Click on
               <button type="submit" class="next-button">Next</button> to

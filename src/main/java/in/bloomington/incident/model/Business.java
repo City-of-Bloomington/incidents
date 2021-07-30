@@ -239,7 +239,7 @@ public class Business extends TopModel implements java.io.Serializable{
 		}		
 		@Transient
 		public boolean hasIncidentId(){
-				return incident_id != null;
+				return incident_id != null && incident_id != 0;
 		}
     public String getInfo(){
 				String ret = name != null?name:"";

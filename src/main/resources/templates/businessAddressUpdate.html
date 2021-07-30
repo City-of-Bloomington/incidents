@@ -56,8 +56,7 @@
         />
         <input type="hidden" th:field="${address.zipcode}" id="zip" />
         <input type="hidden" th:field="${address.state}" id="state" />
-				<input type="hidden" th:field="${address.category}" id="category" />
-				<input type="hidden" th:field="${address.type_id}" id="type_id" />
+				<input type="hidden" th:field="${address.incident_addr_id}" id="incident_addr_id"/>
         <fieldset>
           <legend>Location of Business</legend>
           <ul>
@@ -98,7 +97,7 @@
         <p>Click on Next to continue</p>
         <ul class="button-group">
           <li>
-            <button type="submit" class="next-button">Next</button>
+            <button type="submit" class="next-button">Save Changes</button>
           </li>
         </ul>
       </form>

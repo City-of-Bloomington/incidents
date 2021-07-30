@@ -95,16 +95,8 @@
         </fieldset>
         <p>Click on Next to continue</p>
         <ul class="button-group">
-					<li>
-            <button
-              class="next-button"
-              th:attr="onclick=|window.location.href='@{/business/{id}(id=${address.bus_id})}'|"
-            >
-              Back
-            </button>
-          </li>					
           <li>
-            <button type="submit" class="next-button">Next</button>
+            <button type="submit" class="next-button">Save Changes</button>
           </li>
         </ul>
       </form>
