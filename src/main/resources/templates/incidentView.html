@@ -28,7 +28,7 @@
 
 		<div th:fragment="incidentView(incident,business)">				
 			<fieldset>
-				<div th:fragment="incident(incident)">
+				<div th:fragment="incident(${incident})">
 				<div class="m-b-10">
 					<label>ID: </label>
 					<span th:text="${incident.id}"> </span>

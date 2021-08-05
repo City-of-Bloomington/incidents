@@ -164,7 +164,10 @@ public class Address extends TopModel implements java.io.Serializable{
     public Integer getAddressId() {
 				return addressId;
     }
-
+		@Transient
+		public boolean hasAddressId(){
+				return addressId != null && addressId > 0;
+		}
     public void setSubunitId(Integer val) {
 				this.subunitId = val;
     }
@@ -285,7 +288,9 @@ public class Address extends TopModel implements java.io.Serializable{
 				if(this.id > 0 &&
 					 one.getId() > 0 &&
 					 this.id == one.getId()) return true;
-				if(one.getAddressId() != this.getAddressId()) return false;
+				if(one.hasAddressId()){
+						if(one.getAddressId() != this.getAddressId()) return false;
+				}
 				if((one.getSubunitId() != null && this.getSubunitId() == null) ||
 					 (one.getSubunitId() == null && this.getSubunitId() != null) ||
 					 (one.getSubunitId() != this.getSubunitId())) return false;
@@ -371,6 +376,26 @@ public class Address extends TopModel implements java.io.Serializable{
 						return false;
 				}
 				return true;
-    }		
+    }
+    @Transient
+    public boolean verifyBusinessAddress(){
+				if(name == null || name.trim().isEmpty()){
+						addError("Address is required");
+						return false;
+				}
+				else if(city == null || city.isEmpty()){
+						addError("City is required");
+						return false;
+				}
+				else if(state == null || state.isEmpty()){
+						addError("State is required");
+						return false;
+				}
+				else if(zipcode == null || zipcode.equals("")){
+						addError("Zip code is required");
+						return false;
+				}
+				return true;
+    }				
 		
 }

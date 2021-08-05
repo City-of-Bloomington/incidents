@@ -269,19 +269,19 @@ insert into actions select * from statuses;
 ;;
 ;; received but not confirmed
 ;; modified
-  create or Replace view incident_received AS                                  select i.id from incidents i,action_logs l where l.incident_id=i.id and l.action_id = 2 and l.action_id in (select max(l2.action_id) from action_logs l2 where l2.incident_id=i.id) order by i.id desc;
+  create or Replace view incident_received AS                                  select i.id from incidents i,action_logs l where l.incident_id=i.id and l.action_id = 2 and l.action_id in (select max(l2.action_id) from action_logs l2 where l2.incident_id=i.id and l2.cancelled is null) order by i.id desc;
 
 ;;
 ;; confirmed
 ;;
-  create or Replace view incident_confirmed AS                                  select i.id from incidents i,action_logs l where l.incident_id=i.id and l.action_id = 3 and l.action_id in (select max(l2.action_id) from action_logs l2 where l2.incident_id=i.id);
+  create or Replace view incident_confirmed AS                                  select i.id from incidents i,action_logs l where l.incident_id=i.id and l.action_id = 3 and l.action_id in (select max(l2.action_id) from action_logs l2 where l2.incident_id=i.id and l2.cancelled is null);
 
 ;; approved
-     create or Replace view incident_approved AS                                     select i.id from incidents i,action_logs l where l.incident_id=i.id and l.action_id = 4 and l.action_id in (select max(l2.action_id) from action_logs l2 where l2.incident_id=i.id);				 
+     create or Replace view incident_approved AS                                     select i.id from incidents i,action_logs l where l.incident_id=i.id and l.action_id = 4 and l.action_id in (select max(l2.action_id) from action_logs l2 where l2.incident_id=i.id and l2.cancelled is null);				 
 ;;
 ;; rejected (not used)
 ;;
-    create or Replace view incident_rejected AS                                   select i.id from incidents i,action_logs l where l.incident_id=i.id and l.action_id = 5 and l.action_id in (select max(l2.action_id) from action_logs l2 where l2.incident_id=i.id) order by i.id desc;
+    create or Replace view incident_rejected AS                                   select i.id from incidents i,action_logs l where l.incident_id=i.id and l.action_id = 5 and l.action_id in (select max(l2.action_id) from action_logs l2 where l2.incident_id=i.id and l2.cancelled is null) order by i.id desc;
 ;;
 ;; processed
      create or Replace view incident_processed AS                                    select i.id from incidents i,action_logs l where l.incident_id=i.id and l.action_id = 6 and l.action_id in (select max(l2.action_id) from action_logs l2 where l2.incident_id=i.id);
@@ -640,9 +640,24 @@ alter table offenders drop column email2;
 alter table offenders drop column phone2;
 alter table offenders drop column phone_type2;
 alter table offenders add foreign key(incident_id) references incidents(id);
-//
-// for business incidents we have two incident types only, theft and vandal
-//
+;;
+;; for business incidents we have two incident types only, theft and vandal
+;;
 alter table incident_types add used_in_business char(1);
 update incident_types set used_in_business='y' where id in (1,2);
 
+;;
+;; 8/4/2021
+;; adding roll back action
+;; we are adding cancelled and cancelled by rows to the action_logs
+;; so the table becomes as follows
+;;
+  create table action_logs(                                                             id int unsigned auto_increment primary key,                                     incident_id int unsigned not null,                                              date datetime,                                                                  action_id int unsigned,                                                         user_id int unsigned,                                                           comments text,                                                                  cancelled char(1),                                                              cancelled_by int unsigned,                                                      FOREIGN KEY (incident_id) REFERENCES incidents (id),                            FOREIGN KEY (action_id) REFERENCES actions (id),                                FOREIGN KEY (user_id) REFERENCES users (id),                                    foreign key(cancelled_by) references users(id)	                               )engine=InnoDB;
+
+alter table action_logs add cancelled char(1);
+alter table action_logs add cancelled_by int unsigned;
+alter table action_logs add foreign key(cancelled_by) references users(id);
+;;
+;; 8/5
+;; update views in top received, confirmed, approved, rejected
+;;

@@ -220,6 +220,10 @@ public class User implements java.io.Serializable{
     }
     @Override
     public String toString() {
+				return getFullname();
+    } 	
+		@Transient
+		public String getFullname(){
 				String ret = "";
 				if(firstname != null && !firstname.isEmpty()){
 						ret = firstname;
@@ -229,6 +233,5 @@ public class User implements java.io.Serializable{
 						ret += lastname;
 				}				
 				return ret;
-    } 	
-		
+		}
 }

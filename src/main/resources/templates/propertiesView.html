@@ -24,14 +24,16 @@
 				<div th:case="*">
 					<ul th:each="one,istat : ${properties}">
 						<li th:if="${one.hasDamageTypeInfo()}"><span th:text="${istat.count+' - Damage Type: '+one.damageType.name}"></span></li>
-						<li th:if="${one.hasBrandInfo()}"><span th:text="${one.brandInfo}"></span></li>
+						<ul>
+							<li th:if="${one.hasBrandInfo()}"><span th:text="${one.brandInfo}"></span></li>
 
-						<li th:if="${one.hasOwner()}"><span th:text="${'Owner: '+ one.owner}"></span></li>
-						<li th:if="${one.hasDescription()}"><span th:text="${'Description: '+ one.description}"></span></li>						
-						<li th:text="${'Value: '+one.valueFr}">&#36;</li>
+							<li th:if="${one.hasOwner()}"><span th:text="${'Owner: '+ one.owner}"></span></li>
+							<li th:if="${one.hasDescription()}"><span th:text="${'Description: '+ one.description}"></span></li>						
+							<li th:text="${'Value: '+one.valueFr}">&#36;</li>
+						</ul>
 						<li th:if="${istat.last}">
-              <strong>Total Reported Properties Value: </strong>
-              <span th:text="${totalBalance}"></span>
+							<strong>Total Reported Properties Value: </strong>
+							<span th:text="${totalBalance}"></span>
 						</li>
 					</ul>	      
 				</div>      

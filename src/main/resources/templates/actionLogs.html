@@ -24,10 +24,19 @@
 				<h2 th:case="null">No logs found</h2>
 				<div th:case="*">
 					<h2>Action History</h2>
-					<ul th:each="one : ${actionLogs}">
-						<li th:text="${one.action.toString()+', '+one.dateStr}"></li>
-						<li th:if="${one.hasUserInfo()}"><span th:text="|By: ${one.user}|"></span></li>
-						<li th:if="${one.hasCommentsInfo()}"><span th:text="|Comments: ${one.comments}|"></span></li>						
+					<ul th:each="one,status : ${actionLogs}">
+						<li th:text="${status.size-status.index}+' - '+${one.info}"></li>
+						<ul>						
+							<li th:if="${one.canBeCancelled()}"><span>
+									<input
+										type="button"
+										th:attr="onclick=|window.location.href='@{/cancelAction/{id}(id=${one.id})}'|"
+										value="Cancel This Action"
+										/>
+								</span>
+							</li>
+							<li th:if="${one.hasCommentsInfo()}"><span th:text="|Comments: ${one.comments}|"></span></li>							
+						</ul>
 					</ul>
 				</div>      
       </div>

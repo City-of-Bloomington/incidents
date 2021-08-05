@@ -21,14 +21,18 @@
       <form
         th:action="@{/businessAddrChange}"
         th:object="${address}"
-        onsubmit="return verifyAddress()"
+        onsubmit="return verifyBusinessAddress()"
         method="post"
       >
         <input type="hidden" th:field="${address.addressId}" id="addressId" />
 				<input type="hidden"
           th:field="${address.old_id}"
           id="old_id"
-          />
+							 />
+				<input type="hidden"
+          th:field="${address.id}"
+          id="id"
+							 />				
         <input
           type="hidden"
           th:field="${address.subunitId}"
@@ -47,35 +51,24 @@
           id="longitude"
           size="20"
         />
-        <input type="hidden" th:field="${address.city}" id="city" size="60" />
         <input
           type="hidden"
           th:field="${address.jurisdiction}"
           id="jurisdiction"
           size="60"
         />
-        <input type="hidden" th:field="${address.zipcode}" id="zip" />
-        <input type="hidden" th:field="${address.state}" id="state" />
 				<input type="hidden" th:field="${address.incident_addr_id}" id="incident_addr_id"/>
         <fieldset>
           <legend>Location of Business</legend>
           <ul>
-            <li>
+            <li>If the address is in Bloomington or Monroe County. 
               To add the local establishment address,
-							start typing the street address in the 'Street address' field below. A list of matching
-              addresses will be populated.
+							start typing the street address in the 'Street address' field below. If the address is in Bloomington or Monroe County you will be able to pick from the list of matching addresses that will be populated.
             </li>
-						<li>If the incident address is different than the establishment address you will enter the incident address in later step.
-						</li>
-            <li>
-              <i>
-								Please note that City, Zip code and State fields are
-                automatically filled when you pick the right address.
-							</i>
-            </li>
+						<li>If the address is not in Bloomington nor in Monroe County then type all the required fields below</li>
           </ul>
           <label for="addr_id" class="required">
-            Street address where the local establishment is located
+            Street address where the establishment is located
           </label>
           <div class="form-group autocomplete-wrapper">
             <span id="address-full"></span>
@@ -89,10 +82,42 @@
               required="required"
             />
           </div>
+					<div class="form-group">
+						<label for="city" class="required">City</label>
+						<input type="text"
+              autocomplete="off"
+              th:field="${address.city}"
+              id="city"
+              size="60"
+              placeholder="Enter City"
+              required="required"
+            />
+          </div>
+					<div class="form-group">
+						<label for="state" class="required">State</label>
+						<input type="text"
+              autocomplete="off"
+              th:field="${address.state}"
+              id="state"
+              size="2"
+              required="required"
+            />
+          </div>
+					<div class="form-group">
+						<label for="zip" class="required">Zip Code</label>
+						<input type="text"
+              autocomplete="off"
+              th:field="${address.zipcode}"
+              id="zip"
+              size="10"
+              required="required"
+            />
+          </div>									
           <div id="address_display" class="form-group" style="display: none">
             <label for="address_info">City, State Zipcode</label>
             <p id="address_info">&nbsp;</p>
           </div>
+					
         </fieldset>
         <p>Click on Next to continue</p>
         <ul class="button-group">

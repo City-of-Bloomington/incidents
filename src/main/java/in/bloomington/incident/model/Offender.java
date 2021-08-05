@@ -490,12 +490,6 @@ public class Offender extends TopModel implements java.io.Serializable{
 				if(!isMoreThan18()){
 						ret = false;
 				}
-				String str = getContactInfo();
-				if(str.isEmpty()){
-						addError("A contact phone number or email is required");
-						ret = false;
-				}
-				
 				return ret;
     }
     @Transient

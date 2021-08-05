@@ -24,9 +24,14 @@
       <ul th:switch="${offenders}">
         <h4 th:case="null">No offender found</h4>
         <div th:case="*">
-          <li th:each="offender : ${offenders}">
-            <span th:replace="offenderView::offender(${offender})"></span>
-          </li>
+					<ul th:each="offender,iter : ${offenders}">
+						<li th:if="${iter.size > 1}"><span th:text="${iter.count}"> </span> -
+							<span th:replace="offenderView::offender(${offender})"></span>
+						</li>
+						<li th:if="${iter.size == 1}">
+							<span th:replace="offenderView::offender(${offender})"></span>
+						</li>						
+          </ul>
         </div>
       </ul>
     </div>

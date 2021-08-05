@@ -194,6 +194,33 @@ function verifyAddress() {
   }
   return true;
 }
+function verifyBusinessAddress() {
+  var addr = $("#addr_id").val();
+  if (addr === "") {
+    alert("Please provide incident address");
+    $("#addr_id").focus();
+    return false;
+  }
+  var city = $("#city").val();
+  if (city === "") {
+			alert("Please provide city");
+			$("#city").focus();
+    return false;
+  }
+  var state = $("#state").val();
+  if (state === "") {
+    alert("Please provide state");
+    $("#state").focus();
+    return false;
+  }
+  var zip = $("#zip").val();
+  if (zip === "") {
+			alert("Please provide zip code");
+			$("#zip").focus();
+    return false;
+  }
+  return true;
+}
 function verifyFraudInput() {
   var type = $("#fraudType option:selected").val();
   if (type === "") {

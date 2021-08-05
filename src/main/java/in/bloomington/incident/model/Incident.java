@@ -130,12 +130,14 @@ public class Incident extends TopModel implements java.io.Serializable{
     @OneToMany
     @JoinColumn(name="incident_id",insertable=false, updatable=false)
     private List<ActionLog> actionLogs;
-
+		@Transient
+		private List<ActionLog> validActionLogs; // ingore cancelled
+		
 		@Convert(converter = AddressConverter.class)
 		@OneToOne
 		@JoinColumn(name="address_id", updatable=false, referencedColumnName="id")
     Address address;
-
+		
 		
     public Incident(){
 				super();
@@ -643,9 +645,13 @@ public class Incident extends TopModel implements java.io.Serializable{
     @Transient
     public void sortActionLogs(){
 				List<ActionLog> list = new ArrayList<>();
+				List<ActionLog> list2 = new ArrayList<>();
 				if(actionLogs != null){
 						for(ActionLog log:actionLogs){
 								list.add(log);
+								if(!log.getCancelled()){
+										list2.add(log);
+								}
 						}
 						if(list.size() > 1){
 								// reverse order last first
@@ -654,7 +660,16 @@ public class Incident extends TopModel implements java.io.Serializable{
 													 compareTo(o1.getAction().getObjId())).
 										collect(Collectors.toList());
 						}
-						System.err.println(" logs  "+actionLogs);						
+						if(list2.size() > 1){
+								// reverse order last first
+								validActionLogs = list2.stream().
+										sorted((o1, o2)->o2.getAction().getObjId().
+													 compareTo(o1.getAction().getObjId())).
+										collect(Collectors.toList());
+						}
+						else{
+								validActionLogs = list2;
+						}
 				}
     }		
     // status is the last action
@@ -662,8 +677,8 @@ public class Incident extends TopModel implements java.io.Serializable{
     public String getStatus(){
 				if(status.isEmpty()){
 						sortActionLogs();
-						if(actionLogs != null && actionLogs.size() > 0){
-								ActionLog actionLog = actionLogs.get(0);
+						if(validActionLogs != null && validActionLogs.size() > 0){
+								ActionLog actionLog = validActionLogs.get(0);
 								lastAction = actionLog.getAction();
 								status = lastAction.getDescription();
 						}

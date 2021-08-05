@@ -222,6 +222,33 @@ public class ProcessController extends TopController{
 				addMessagesAndErrorsToSession(session);
 				return "redirect:/search/confirmed";	    
     }
+    //cancell action
+    @GetMapping("/cancelAction/{id}")
+    public String cancelAction(@PathVariable("id") int id,
+																Model model
+																) {
+				User user = findUserFromSession(session);
+				if(user == null ){
+						return "redirect:/login";
+				}
+				Incident incident = null;
+				ActionLog actionLog = actionLogService.findById(id);
+				incident = actionLog.getIncident();				
+				if(user.canApprove()){
+						actionLog.setId(id);
+						actionLog.setCancelled(true);
+						actionLog.setCancelledByUser(user);
+						actionLogService.update(actionLog);
+						if(incident != null){
+								addMessage("Cancelled successfully");
+						}
+						addMessagesAndErrorsToSession(session);								
+						return "redirect:/staff/"+incident.getId();						
+				}
+				addMessage("You can not cancell incident");
+				addMessagesAndErrorsToSession(session);								
+				return "redirect:/staff";		
+		}
     //reject email form
     @GetMapping("/rejectForm/{id}")
     public String rejectForm(@PathVariable("id") int id,
@@ -246,6 +273,7 @@ public class ProcessController extends TopController{
 						return "redirect:/staff";	   
 				}
     }
+		
     //login staff
     @PostMapping("/rejectEmail")
     public String sendRejectEmail(Email email, 

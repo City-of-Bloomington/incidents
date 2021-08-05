@@ -103,7 +103,7 @@ public class BusinessAddressController extends TopController{
 						addError(Helper.extractErrors(result));
 						pass = false;
         }
-				if(pass && checkAddress(addr)){
+				if(pass && checkBusinessAddress(addr)){
 						address = saveOrUpdate(addr);
 						return "redirect:/business/add/"+address.getId()+"/"+address.getIncident_addr_id();
 				}
@@ -132,7 +132,7 @@ public class BusinessAddressController extends TopController{
 								//
 								address = addr;
 						}
-						else if(checkAddress(addr)){
+						else if(checkBusinessAddress(addr)){
 							address = saveOrUpdate(addr);
 						}
 						return "redirect:/business/add/"+address.getId()+"/"+addr.getIncident_addr_id();
@@ -200,6 +200,21 @@ public class BusinessAddressController extends TopController{
 				}
 				return pass;
 		}
+		private boolean checkBusinessAddress(Address address){
+				boolean pass = false;
+				if(address != null){
+						if(!address.verifyBusinessAddress()){
+								addError(address.getErrorInfo());
+						}
+						else{
+								pass = true;
+						}
+				}
+				else{
+						addError("Business address is required");
+				}
+				return pass;
+		}		
 		private Address saveOrUpdate(Address address){
 				/**
 				 * first we need to check if this address exist
