@@ -20,18 +20,14 @@ public class WebController extends TopController{
 
 
 		
-    @RequestMapping(value = "/")
-    public String index() {
-				return "redirect:/introStart";
-    }
     @GetMapping("/index")		
     public String indexStart(Model model,
 														 HttpSession session) {
 				getMessagesAndErrorsFromSession(session, model);
-				return "intro_all";
+				return "intro_questions";
     }
     
-    @RequestMapping(value = "/introStart")
+    @RequestMapping(value = "/all")
     public String introStart(Model model,
 														 HttpSession session){
 				getMessagesAndErrorsFromSession(session, model);
@@ -43,19 +39,21 @@ public class WebController extends TopController{
 														 HttpSession session){
 				getMessagesAndErrorsFromSession(session, model);
 				return "staff_menu";
-    }		
-    @RequestMapping(value = "/introPersonal")
+    }
+    @RequestMapping(value = "/")
     public String introPersonal(Model model,
 														 HttpSession session){
 				getMessagesAndErrorsFromSession(session, model);
 				return "intro_questions";
-    }		
+    }
+		/**
     @RequestMapping(value = "/introBusiness")
     public String introBusiness(Model model,
 														 HttpSession session){
 				getMessagesAndErrorsFromSession(session, model);
 				return "business_questions";
     }
+		*/
     @RequestMapping(value = "/forBusiness")
     public String forBusiness(Model model,
 														 HttpSession session){

@@ -98,7 +98,9 @@ public class Incident extends TopModel implements java.io.Serializable{
 		@Transient
 		private int addr_id = 0;
 		@Transient
-		private Integer bus_id;    
+		private Integer bus_id;
+		@Transient
+		private boolean ignoreStatus = false;
     @OneToMany
     @JoinColumn(name="incident_id",insertable=false, updatable=false)		
     private List<Person> persons;
@@ -282,6 +284,10 @@ public class Incident extends TopModel implements java.io.Serializable{
 		@Transient
 		public boolean hasCategory(){
 				return category != null && !category.isEmpty();
+		}
+		@Transient
+		public void setIgnoreStatus(boolean val){
+				ignoreStatus = val;
 		}
 		@Transient
 		public boolean isBusinessRelated(){
@@ -550,7 +556,11 @@ public class Incident extends TopModel implements java.io.Serializable{
 						return hasMediaList() && medias.size() > 1;
 				}
 				return true;
-		}		
+		}
+		@Transient
+		public boolean ignoreStatus(){
+				return ignoreStatus;
+		}
     public String getEntryType() {
 				return entryType;
     }
@@ -631,6 +641,7 @@ public class Incident extends TopModel implements java.io.Serializable{
     //sorted at the same time
     public void setActionLogs(List<ActionLog> list){
 				if(list != null){
+						/**
 						if(list.size() > 1){ 
 								actionLogs = list.stream().
 										sorted((o1, o2)->o1.getAction().getObjId().
@@ -640,6 +651,8 @@ public class Incident extends TopModel implements java.io.Serializable{
 						else{
 								actionLogs = list;
 						}
+						*/
+						actionLogs = list;
 				}
     }
     @Transient
@@ -653,6 +666,7 @@ public class Incident extends TopModel implements java.io.Serializable{
 										list2.add(log);
 								}
 						}
+						/**
 						if(list.size() > 1){
 								// reverse order last first
 								actionLogs = list.stream().
@@ -660,6 +674,7 @@ public class Incident extends TopModel implements java.io.Serializable{
 													 compareTo(o1.getAction().getObjId())).
 										collect(Collectors.toList());
 						}
+						*/
 						if(list2.size() > 1){
 								// reverse order last first
 								validActionLogs = list2.stream().
@@ -682,11 +697,15 @@ public class Incident extends TopModel implements java.io.Serializable{
 								lastAction = actionLog.getAction();
 								status = lastAction.getDescription();
 						}
+						else{
+								status="incomplete (No action can be made)";
+						}
 				}
 				return status;
     }
 		@Transient
 		public boolean hasStatusInfo(){
+				if(ignoreStatus) return false;
 				getStatus();
 				return !status.isEmpty();
 		}

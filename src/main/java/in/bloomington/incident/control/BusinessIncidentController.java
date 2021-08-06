@@ -187,6 +187,7 @@ public class BusinessIncidentController extends TopController{
 						Address address = incident.getAddress();
 						incident.setBusiness(business);
 						incident.setAddress(address);
+						incident.setIgnoreStatus(true);
 						model.addAttribute("incident", incident);
 						model.addAttribute("business", business);
 						return "businessIncident";
@@ -363,7 +364,7 @@ public class BusinessIncidentController extends TopController{
 						addError("Invalid incident Id "+id);
 						logger.error(errors+" "+ex);
 						model.addAttribute("errors", errors);
-						return "redirect:/"; 
+						return "redirect:/forBusiness"; 
 				}
 				handleErrorsAndMessages(model);
 				return "businessSuccessSubmission";

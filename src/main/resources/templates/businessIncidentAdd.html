@@ -21,10 +21,9 @@
       <div th:if="${messages}">
         <div th:replace="general::messages(${messages})"></div>
       </div>
-
+      <p>* indicates required fields</p>
       <p th:insert="general::incidentInstructions"></p>
 
-      <p>* indicates required fields</p>
       <form
         th:action="@{/businessIncident/save}"
         th:object="${incident}"

@@ -51,10 +51,6 @@
 					<span th:text="${incident.status}"> </span>
 					<br />
 				</div>
-				<div class="m-b-10" th:unless="${incident.hasActionLogs()}">
-					<label>Status: </label>					
-					Incomplete (No action can be made)
-				</div>						
 				<div class="m-b-10">
 					<label>Incident type:</label>
 					<span th:text="${incident.incidentType}"> </span>

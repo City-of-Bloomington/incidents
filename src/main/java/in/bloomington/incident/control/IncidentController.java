@@ -280,6 +280,7 @@ public class IncidentController extends TopController{
 								addMessagesAndErrorsToSession(session);
 								return "redirect:/vehicle/add/"+id;
 						}
+						incident.setIgnoreStatus(true);
 						model.addAttribute("incident", incident);
 						getMessagesAndErrorsFromSession(session, model);
 						return "incident";								

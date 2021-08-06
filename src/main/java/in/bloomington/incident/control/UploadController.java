@@ -100,6 +100,10 @@ public class UploadController extends TopController{
 				Incident incident = incidentService.findById(id);				
 				try{
 						int media_count = incident.getMediaCount();
+						if(media_count == 0){
+								addMessage("You are required to upload a photo of the incident or receipt");
+								model.addAttribute("messages", messages);
+						}
 						if(media_count < mediaMaxCount){
 								model.addAttribute("incident_id", id);
 								model.addAttribute("incident",incident);

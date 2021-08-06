@@ -25,7 +25,7 @@
 				<div th:case="*">
 					<h2>Action History</h2>
 					<ul th:each="one,status : ${actionLogs}">
-						<li th:text="${status.size-status.index}+' - '+${one.info}"></li>
+						<li th:text="${status.count}+' - '+${one.info}"></li>
 						<ul>						
 							<li th:if="${one.canBeCancelled()}"><span>
 									<input
