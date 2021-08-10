@@ -77,7 +77,7 @@
 
 				<label for="email2_id">Alternate email: </label>
 
-				<input type="text" th:field="${person.email2}" id="email2_id" size="70" maxlength="80" placeholder="Alternate email" />
+				<input type="email" th:field="${person.email2}" id="email2_id" size="70" maxlength="80" placeholder="Alternate email" />
 				<label for="dob_mm" class="required">*Date of Birth: </label>
 				<select id="dob_mm" th:field="${person.dobMonth}" required="required">
 					<option value="">Month</option>

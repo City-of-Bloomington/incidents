@@ -56,11 +56,11 @@
 						<option th:each="r : ${phoneTypes}" th:value="${r}" th:text="${r}">
 						</option>
 					</select>
-					<input type="text" th:field="${offender.phone}" id="phone" size="10" maxlength="30"
+					<input type="tel" th:field="${offender.phone}" id="phone" size="10" maxlength="30"
 								 placeholder="Phone #" />
 					
 					<label for="email_id">Email: </label>
-					<input type="text" th:field="${offender.email}" id="email_id" size="70" maxlength="80" placeholder="Email" />
+					<input type="email" th:field="${offender.email}" id="email_id" size="70" maxlength="80" placeholder="Email" />
 					
 					<label for="dob_mm" class="required">*Date of Birth: </label>
 					<select id="dob_mm" th:field="${offender.dobMonth}" required="required">

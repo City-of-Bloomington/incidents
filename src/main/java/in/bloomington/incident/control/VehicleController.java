@@ -40,6 +40,9 @@ public class VehicleController extends TopController{
     IncidentService incidentService;		
     @Autowired
     CarDamageTypeService damageTypeService;
+		@Autowired 
+    private HttpSession session;	
+		
     private Environment env;		
     // max total value of damaged properties claim allowed
     // default $2000.0 if not set in properties file
@@ -48,8 +51,7 @@ public class VehicleController extends TopController{
 		
     @GetMapping("/vehicle/add/{incident_id}")
     public String newVehicle(@PathVariable("incident_id") int incident_id,
-														 Model model,
-														 HttpSession session
+														 Model model
 														 ) {
 				
 				Vehicle vehicle = new Vehicle();
@@ -82,9 +84,10 @@ public class VehicleController extends TopController{
         return "vehicleAdd";
     }     
     @PostMapping("/vehicle/save")
-    public String addVehicle(@Valid Vehicle vehicle, BindingResult result,
-														 Model model,
-														 HttpSession session
+    public String addVehicle(@RequestParam String action,
+														 @Valid Vehicle vehicle,
+														 BindingResult result,
+														 Model model
 														 ) {
         if (result.hasErrors()) {
 						String error = Helper.extractErrors(result);						
@@ -118,6 +121,9 @@ public class VehicleController extends TopController{
         vehicleService.save(vehicle);
 				addMessage("Added Successfully");
 				addMessagesAndErrorsToSession(session);
+				if(!action.equals("Next")){ // more
+						return "redirect:/vehicle/add/"+incident_id;						
+				}				
 				if(incident.isBusinessRelated()){
 						return "redirect:/businessIncident/"+incident_id;
 				}
@@ -126,8 +132,8 @@ public class VehicleController extends TopController{
 
     @GetMapping("/vehicle/edit/{id}")
     public String showEditForm(@PathVariable("id") int id,
-															 Model model,
-															 HttpSession session) {
+															 Model model
+															 ) {
 				Vehicle vehicle = null;
 				try{
 						vehicle = vehicleService.findById(id);
@@ -161,8 +167,7 @@ public class VehicleController extends TopController{
     @PostMapping("/vehicle/update")
     public String updateVehicle(@Valid Vehicle vehicle, 
 																BindingResult result,
-																Model model,
-																HttpSession session
+																Model model
 																) {
 				if (result.hasErrors()) {
 						String error = Helper.extractErrors(result);
@@ -204,8 +209,7 @@ public class VehicleController extends TopController{
 		
     @GetMapping("/vehicle/delete/{id}")
     public String deleteVehicle(@PathVariable("id") int id,
-																Model model,
-																HttpSession session
+																Model model
 																) {
 
 				Incident incident = null;

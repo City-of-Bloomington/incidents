@@ -160,7 +160,7 @@
               </select>
             </label>
             <input
-              type="text"
+              type="tel"
               th:field="${person.phone}"
               id="phone"
               size="20"
@@ -182,7 +182,7 @@
               </select>
             </label>
             <input
-              type="text"
+              type="tel"
               th:field="${person.phone2}"
               id="phone2"
               size="20"
@@ -194,7 +194,7 @@
           <div class="field-group">
             <label for="email2">Alternate email: </label>
             <input
-              type="text"
+              type="email"
               th:field="${person.email2}"
               id="email2"
               size="70"
@@ -328,8 +328,7 @@
               placeholder="Occupation"
             />
           </div>
-
-          <p>All required fields must be filled in to Save and move on</p>
+					<p>If you want to add more people click 'Next, Add Another' otherwise click on 'Next'</p>
           <ul class="button-group">
             <li th:unless="${person.incident.hasPersonList()}">
               <button
@@ -339,7 +338,8 @@
                 Back
               </button>
             </li>
-            <li><button type="submit" class="next-button">Next</button></li>
+            <li><button type="submit" class="next-button" name="action" value="Next">Next</button></li>
+						<li><button type="submit" class="next-button" name="action" value="More">Next, Add Another</button></li>	
           </ul>
         </fieldset>
       </form>

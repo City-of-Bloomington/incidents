@@ -212,6 +212,8 @@ public class Incident extends TopModel implements java.io.Serializable{
 				
 				if(val != null && !val.isEmpty())						
 						this.caseNumber = val.trim();
+				else
+						this.caseNumber = val;
     }
     @Transient
     public boolean hasCaseNumber(){

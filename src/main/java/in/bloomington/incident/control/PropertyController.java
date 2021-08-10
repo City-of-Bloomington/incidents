@@ -42,7 +42,9 @@ public class PropertyController extends TopController{
     @Autowired
     DamageTypeService damageTypeService;
     @Autowired
-    private Environment env;		
+    private Environment env;
+		@Autowired 
+    private HttpSession session;	
     // max total value of damaged properties claim allowed
     // default 0 if not set in properties file, 0 means no limit
 		// to set a limit add a value such as 1000.0
@@ -51,8 +53,8 @@ public class PropertyController extends TopController{
 
     @GetMapping("/property/add/{incident_id}")
     public String newProperty(@PathVariable("incident_id") int incident_id,
-															Model model,
-															HttpSession session) {
+															Model model
+															) {
 				
 				Property property = new Property();
 				Incident incident = null;
@@ -91,10 +93,10 @@ public class PropertyController extends TopController{
         return "propertyAdd";
     }     
     @PostMapping("/property/save")
-    public String addProperty(@Valid Property property,
+    public String addProperty(@RequestParam String action,
+															@Valid Property property,
 															BindingResult result,
-															Model model,
-															HttpSession session
+															Model model
 															) {
         if (result.hasErrors()) {
 						String error = Helper.extractErrors(result);
@@ -129,22 +131,16 @@ public class PropertyController extends TopController{
         propertyService.save(property);
 				addMessage("Added Successfully");
 				addMessagesAndErrorsToSession(session);
-				// for business
-				if(incident.isBusinessRelated()){
-						return "redirect:/businessIncident/"+incident_id;
-				}
-				//
-				// next add vehicle if required
-				if(incident.isVehicleRequired() && !incident.hasVehicleList()){
-						return "redirect:/vehicle/add/"+incident_id;
+				if(!action.equals("Next")){ // more
+						return "redirect:/property/add/"+incident_id;						
 				}
 				return "redirect:/incident/"+incident_id;
     }
 
     @GetMapping("/property/edit/{id}")
     public String showEditForm(@PathVariable("id") int id,
-															 Model model,
-															 HttpSession session) {
+															 Model model
+															 ) {
 				Property property = null;
 				Incident incident = null;
 				try{
@@ -181,8 +177,8 @@ public class PropertyController extends TopController{
     @PostMapping("/property/update/{id}")
     public String updateProperty(@PathVariable("id") int id, @Valid Property property, 
 																 BindingResult result,
-																 Model model,
-																 HttpSession session) {
+																 Model model
+																 ) {
 				if (result.hasErrors()) {
 						String error = Helper.extractErrors(result);
 						error += " Error update property "+id;
@@ -224,8 +220,8 @@ public class PropertyController extends TopController{
 		
     @GetMapping("/property/delete/{id}")
     public String deleteProperty(@PathVariable("id") int id,
-																 Model model,
-																 HttpSession session) {
+																 Model model
+																 ) {
 
 				Incident incident = null;
 				int incident_id=0;

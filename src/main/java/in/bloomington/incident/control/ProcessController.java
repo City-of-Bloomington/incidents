@@ -8,7 +8,7 @@ package in.bloomington.incident.control;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
-
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -222,7 +222,7 @@ public class ProcessController extends TopController{
 				addMessagesAndErrorsToSession(session);
 				return "redirect:/search/confirmed";	    
     }
-    //cancell action
+    //cancel action
     @GetMapping("/cancelAction/{id}")
     public String cancelAction(@PathVariable("id") int id,
 																Model model
@@ -242,7 +242,25 @@ public class ProcessController extends TopController{
 						if(incident != null){
 								addMessage("Cancelled successfully");
 						}
-						addMessagesAndErrorsToSession(session);								
+						addMessagesAndErrorsToSession(session);
+						incident.setCaseNumber(null);
+						incidentService.update(incident);
+						// check if there were actions after the cancelled one
+						// if so we need to cancel as well
+						List<ActionLog> logs = incident.getActionLogs();
+						List<ActionLog> tmpLogs = null;
+						if(logs != null && logs.size() > 1){ 
+								tmpLogs = logs.stream().
+										filter(o1->o1.getId() > id).
+										collect(Collectors.toList());
+						}
+						if(tmpLogs != null && tmpLogs.size() > 0){
+								for(ActionLog log:tmpLogs){
+										log.setCancelled(true);
+										log.setCancelledByUser(user);
+										actionLogService.update(log);
+								}
+						}
 						return "redirect:/staff/"+incident.getId();						
 				}
 				addMessage("You can not cancell incident");
@@ -291,6 +309,10 @@ public class ProcessController extends TopController{
 				}
 				if(user.canApprove()){
 						email.setSender(email_sender);
+						String message = email.getMessage();
+						message += "<br />";
+						message += "Please do not reply to this email as this is an automated system.<br />\n\n";
+						email.setMessage(message);
 						//
 						// send the email
 						//

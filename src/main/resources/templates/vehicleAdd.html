@@ -40,170 +40,173 @@
               >Back to Incident</a
             >
           </dd>
-
-          <div class="field-group">
-            <label for="damageType_id" class="required">*Damage Type</label>
-            <select
-              id="damageType_id"
-              th:field="${vehicle.carDamageType}"
-              required="required"
+				</dl>
+        <div class="field-group">
+          <label for="damageType_id" class="required">*Damage Type</label>
+          <select
+            id="damageType_id"
+            th:field="${vehicle.carDamageType}"
+            required="required"
             >
-              <option value="">Damage Type</option>
-              <option
-                th:each="r : ${damageTypes}"
-                th:value="${r.id}"
-                th:text="${r.name}"
+            <option value="">Damage Type</option>
+            <option
+              th:each="r : ${damageTypes}"
+              th:value="${r.id}"
+              th:text="${r.name}"
               ></option>
-            </select>
-          </div>
-
-          <div class="field-group">
-            <label for="year">Vehicle Year</label>
-            <input
-              type="text"
+          </select>
+        </div>
+				
+        <div class="field-group">
+          <label for="year">Vehicle Year</label>
+          <input
+            type="text"
               th:field="${vehicle.year}"
-              id="year"
-              placeholder="year"
+            id="year"
+            placeholder="year"
             />
-            <span
-              th:if="${#fields.hasErrors('year')}"
-              th:errors="*{year}"
+          <span
+            th:if="${#fields.hasErrors('year')}"
+            th:errors="*{year}"
             ></span>
-          </div>
-
-          <div class="field-group">
-            <label for="model">Make</label>
-            <input
-              type="text"
-              th:field="${vehicle.make}"
-              id="make"
+        </div>
+				
+        <div class="field-group">
+          <label for="model">Make</label>
+          <input
+            type="text"
+            th:field="${vehicle.make}"
+            id="make"
               placeholder="Make"
             />
-            <span
-              th:if="${#fields.hasErrors('make')}"
-              th:errors="*{make}"
+          <span
+            th:if="${#fields.hasErrors('make')}"
+            th:errors="*{make}"
             ></span>
-          </div>
-
-          <div class="field-group">
-            <label for="model">Model</label>
-            <input
-              type="text"
-              th:field="${vehicle.model}"
-              id="model"
+        </div>
+				
+        <div class="field-group">
+          <label for="model">Model</label>
+          <input
+            type="text"
+            th:field="${vehicle.model}"
+            id="model"
               placeholder="Model"
             />
-            <span
-              th:if="${#fields.hasErrors('model')}"
-              th:errors="*{model}"
+          <span
+            th:if="${#fields.hasErrors('model')}"
+            th:errors="*{model}"
             ></span>
-          </div>
-
-          <div class="field-group">
-            <label for="color">Color</label>
-
-            <input
-              type="text"
-              th:field="${vehicle.color}"
-              id="color"
-              placeholder="Color"
+        </div>
+				
+        <div class="field-group">
+          <label for="color">Color</label>
+					
+          <input
+            type="text"
+            th:field="${vehicle.color}"
+            id="color"
+            placeholder="Color"
             />
-            <span
-              th:if="${#fields.hasErrors('color')}"
-              th:errors="*{color}"
+          <span
+            th:if="${#fields.hasErrors('color')}"
+            th:errors="*{color}"
             ></span>
-          </div>
-
-          <div class="field-group">
-            <label for="plateNum">License Plate Number</label>
-            <input
-              type="text"
-              th:field="${vehicle.plateNumber}"
-              id="plateNum"
-              placeholder="Plate Number"
+        </div>
+				
+        <div class="field-group">
+          <label for="plateNum">License Plate Number</label>
+          <input
+            type="text"
+            th:field="${vehicle.plateNumber}"
+            id="plateNum"
+            placeholder="Plate Number"
             />
-            <span
-              th:if="${#fields.hasErrors('plateNumber')}"
-              th:errors="*{plateNumber}"
+          <span
+            th:if="${#fields.hasErrors('plateNumber')}"
+            th:errors="*{plateNumber}"
             ></span>
-          </div>
+        </div>
 
-          <div class="field-group">
-            <label for="plateYear">License Plate Year</label>
-            <input
-              type="text"
-              th:field="${vehicle.plateYear}"
-              id="plateYear"
-              placeholder="Plate Year"
+        <div class="field-group">
+          <label for="plateYear">License Plate Year</label>
+          <input
+            type="text"
+            th:field="${vehicle.plateYear}"
+            id="plateYear"
+            placeholder="Plate Year"
             />
-            <span
-              th:if="${#fields.hasErrors('plateYear')}"
-              th:errors="*{plateYear}"
+          <span
+            th:if="${#fields.hasErrors('plateYear')}"
+            th:errors="*{plateYear}"
             ></span>
           </div>
 
-          <div class="field-group">
-            <label for="plateState">Plate State</label>
-
-            <input
-              type="text"
-              th:field="${vehicle.state}"
-              id="plateState"
-              size="2"
-              maxlength="2"
-              required="required"
+        <div class="field-group">
+          <label for="plateState">Plate State</label>
+					
+          <input
+            type="text"
+            th:field="${vehicle.state}"
+            id="plateState"
+            size="2"
+            maxlength="2"
+            required="required"
             />
-            <span
-              th:if="${#fields.hasErrors('state')}"
-              th:errors="*{state}"
+          <span
+            th:if="${#fields.hasErrors('state')}"
+            th:errors="*{state}"
             ></span>
-          </div>
-
-          <div class="field-group">
-            <label for="value_id">Damage Value (USD $)</label>
-            <input
-              type="text"
-              th:field="${vehicle.valueFr}"
-              id="value_id"
-              placeholder="ddd.dd"
+        </div>
+				
+        <div class="field-group">
+          <label for="value_id">Damage Value (USD $)</label>
+          <input
+            type="text"
+            th:field="${vehicle.valueFr}"
+            id="value_id"
+            placeholder="ddd.dd"
             />(damage value related to this incident only)
-            <span
-              th:if="${#fields.hasErrors('valueFr')}"
-              th:errors="*{valueFr}"
+          <span
+            th:if="${#fields.hasErrors('valueFr')}"
+            th:errors="*{valueFr}"
             ></span>
-						</div>
-
-						<div class="field-group">
-            <label for="owener">Owner</label>
-            <input
-              type="text"
-              th:field="${vehicle.owner}"
-              id="owner"
-              placeholder="vehicle owner if not yours"
-              size="30"
-              maxlength="70"
+				</div>
+				
+				<div class="field-group">
+          <label for="owener">Owner</label>
+          <input
+            type="text"
+            th:field="${vehicle.owner}"
+            id="owner"
+            placeholder="vehicle owner if not yours"
+            size="30"
+            maxlength="70"
             />
-            <span
-              th:if="${#fields.hasErrors('owner')}"
-              th:errors="*{owner}"
+          <span
+            th:if="${#fields.hasErrors('owner')}"
+            th:errors="*{owner}"
             ></span>
-						</div>
-          
-						<div class="field-group">
-            <label for="description" class="required">*Description</label>
-
-            <textarea
-              th:field="${vehicle.description}"
-              id="description"
-              placeholder="Description"
-              rows="5"
-              columns="50"
-              required="required"
+				</div>
+        
+				<div class="field-group">
+          <label for="description" class="required">*Description</label>
+					
+          <textarea
+            th:field="${vehicle.description}"
+            id="description"
+            placeholder="Description"
+            rows="5"
+            columns="50"
+            required="required"
             ></textarea>
-				    <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></span>
+				  <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></span>
 						
-            </div>
-            <input type="submit" value="Save" />
+        </div>
+				<ul>
+					<li><button type="submit" class="next-button" name="action" value="Next">Next</button></li>
+					<li><button type="submit" class="next-button" name="action" value="More">Next, Add Another</button></li>
+				</ul>
       </form>
     </main>
   </body>

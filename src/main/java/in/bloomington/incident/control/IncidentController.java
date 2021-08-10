@@ -84,6 +84,8 @@ public class IncidentController extends TopController{
 		AddressService addressService;		
     @Autowired
     private JavaMailSender mailSender;
+		@Autowired 
+    private HttpSession session;		
 		//
     @Value("${incident.email.sender}")
     private String email_sender;
@@ -94,8 +96,7 @@ public class IncidentController extends TopController{
 
     @RequestMapping("/emailUpdate/{id}")
     public String emailUpdate(@PathVariable("id") int id,
-															Model model,
-															HttpSession session
+															Model model
 															){
 				getMessagesAndErrorsFromSession(session, model);
 				Incident incident = incidentService.findById(id);
@@ -109,8 +110,7 @@ public class IncidentController extends TopController{
 															 @RequestParam(required = true) String email2,
 															 @RequestParam(required = true) int type_id,
 															 @RequestParam(required = true) int address_id,
-															 Model model,
-															 HttpSession session
+															 Model model
 															 ){
 				boolean emailProblem = false;
 				if(email == null || email.isEmpty() ||
@@ -190,8 +190,7 @@ public class IncidentController extends TopController{
     public String incidentNext(@PathVariable("id") int id,
 															 @Valid Incident incident,
 															 BindingResult result,
-															 Model model,
-															 HttpSession session
+															 Model model
 															 ) {
 				boolean pass = true;
         if (result.hasErrors()) {
@@ -238,8 +237,7 @@ public class IncidentController extends TopController{
     public String showIncident(@PathVariable("id") int id,
 															 Model model,
 															 HttpServletRequest req,
-															 RedirectAttributes redirectAttributes,
-															 HttpSession session
+															 RedirectAttributes redirectAttributes
 															 ) {
 				Incident incident = null;
 				if(!verifySession(session, ""+id)){
@@ -295,7 +293,6 @@ public class IncidentController extends TopController{
     @GetMapping("/incident/finalPage/{id}")
     public String incidentFinalPage(@PathVariable("id") int id,
 																		Model model,
-																		HttpSession session,
 																		RedirectAttributes redirectAttributes
 																		) {
 				Incident incident = null;
@@ -332,7 +329,6 @@ public class IncidentController extends TopController{
 																 RedirectAttributes redirectAttributes,
 																 HttpServletRequest req
 																 ) {
-				HttpSession session = req.getSession();
 				if(!verifySession(session, ""+id)){
 						addMessage("no more changes can be made ");
 						addMessagesAndErrorsToSession(session);
@@ -443,8 +439,7 @@ public class IncidentController extends TopController{
     }
     @GetMapping("/incidentEdit/{id}")
     public String showEditForm(@PathVariable("id") int id,
-															 Model model,
-															 HttpSession session
+															 Model model
 															 ) {
 				if(!verifySession(session, ""+id)){
 						addMessage("no more changes can be made ");
@@ -483,8 +478,7 @@ public class IncidentController extends TopController{
     public String updateIncident(@PathVariable("id") int id,
 																 @Valid Incident incident, 
 																 BindingResult result,
-																 Model model,
-																 HttpSession session
+																 Model model
 																 ) {
 				if (result.hasErrors()) {
 						String error = Helper.extractErrors(result);
@@ -527,8 +521,7 @@ public class IncidentController extends TopController{
     }
     @GetMapping("/incident/delete/{id}")
     public String deleteIncident(@PathVariable("id") int id,
-																 Model model,
-																 HttpSession session
+																 Model model
 																 ) {
 				if(!verifySession(session, ""+id)){
 						addMessage("no more changes can be made ");
@@ -585,14 +578,14 @@ public class IncidentController extends TopController{
 				String subject = " Bloomington's Police Department Online Reporting Confirmation ";
 				String to = incident.getEmail();
 				String body = "Click on the link ";
-				body += url+id+"/"+hash+" to confirm.\n\n ";
-				body += " Once your report is reviewed it will either be accepted or rejected, at which time you will receive another email explaining the reason for denial or a report reference number.\n\n";
+				body += url+id+"/"+hash+" to confirm.<br />\n\n ";
+				body += " Once your report is reviewed it will either be accepted or rejected, at which time you will receive another email explaining the reason for denial or a report reference number.<br />\n\n";
 				body += "Please do not reply to this email as this is an automated system.";
-				body += "\n\n";
-				body += "Bloomington Police Department (BPD)\n";
-				body += "220 E 3rd St, Bloomington, IN 47401\n";
-				body += "(812) 339-4477\n";
-				body += "https://bloomington.in.gov/police";
+				body += "<br />\n\n";
+				body += "Bloomington Police Department (BPD)<br />\n";
+				body += "220 E 3rd St, Bloomington, IN 47401<br />\n";
+				body += "(812) 339-4477<br />\n";
+				body += "https://bloomington.in.gov/police<br />";
 				body += "\n";
 				EmailHelper emailHelper = new EmailHelper(mailSender, email_sender, to, subject, body);
 				String back = emailHelper.send();

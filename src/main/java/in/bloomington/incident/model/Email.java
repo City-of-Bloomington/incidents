@@ -106,8 +106,8 @@ public class Email{
 	    receiver = incident.getEmail();
 	    if(type.equals("reject")){
 		subject = "Incident Report Rejection Reasons";
-		message = "We received an incident report from you on "+incident.getReceivedStr()+"\n\n"+
-		    incident.getDetails()+"\n\n"+
+		message = "We received an incident report from you on "+incident.getReceivedStr()+"<br />\n\n"+
+		    incident.getDetails()+"<br />\n\n"+
 		    "Your request was rejected for the reasons below:";
 	    }
 	    else if(type.equals("approve")){
@@ -117,12 +117,12 @@ public class Email{
 		    person = persons.get(0); // we need one
 		subject = "Incident Reporting Approval";
 		if(person != null)
-		    message = "Dear "+person.getFullname()+"\n\n ";
+		    message = "Dear "+person.getFullname()+"<br />\n\n ";
 		message += " Your report has been approved. "+
 		    "The Case Number of your report is "+incident.getCaseNumber()+
 	    
-		    " You can use this number in your future contacts with the Bloomington Police Department. \n\n"+
-		    "Please do not reply to this email as this is an automated system.";
+		    " You can use this number in your future contacts with the Bloomington Police Department. <br />\n\n"+
+		    "Please do not reply to this email as this is an automated system.<br />\n\n";
 	    }
 	}
     }
