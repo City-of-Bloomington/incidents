@@ -88,6 +88,7 @@ public class SearchController extends TopController{
 						addMessage("Found "+all.size()+" incidents");
 						model.addAttribute("incidents", all);
 						model.addAttribute("messages", messages);
+						resetAll();
 				}
 				model.addAttribute("statusOutcome", "Received");						
         return "staff/status_outcomes";
@@ -114,6 +115,7 @@ public class SearchController extends TopController{
 						addMessage("Found "+all.size()+" incidents");
 						model.addAttribute("incidents", all);
 						model.addAttribute("messages", messages);
+						resetAll();
 				}
 				model.addAttribute("statusOutcome", "Incomplete");										
         return "staff/status_outcomes";
@@ -140,6 +142,7 @@ public class SearchController extends TopController{
 						addMessage("Found "+all.size()+" incidents");
 						model.addAttribute("incidents", all);
 						model.addAttribute("messages", messages);
+						resetAll();
 				}
 				model.addAttribute("statusOutcome", "Confirmed");					
         return "staff/status_outcomes";
@@ -167,6 +170,7 @@ public class SearchController extends TopController{
 						addMessage("Found "+all.size()+" incidents");
 						model.addAttribute("incidents", all);
 						model.addAttribute("messages", messages);
+						resetAll();
 				}
 				model.addAttribute("statusOutcome", "Approved");	
         return "staff/status_outcomes";
@@ -222,7 +226,8 @@ public class SearchController extends TopController{
 						return "redirect:/search";
 				}
         model.addAttribute("incidents", incidents);
-				model.addAttribute("messages", getMessages());				
+				model.addAttribute("messages", getMessages());
+				resetAll();
         return "staff/searchResult";
     }    
     private User findUserFromSession(HttpSession session){

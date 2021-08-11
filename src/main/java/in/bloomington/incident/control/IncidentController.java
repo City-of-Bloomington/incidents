@@ -222,7 +222,7 @@ public class IncidentController extends TopController{
 						}						
 						incidentService.update(incident);
 						//
-						// this redirect will decide the next step
+						// this redirect will descide the next step
 						//
 						return "redirect:/incident/"+id;
 				}
@@ -286,7 +286,7 @@ public class IncidentController extends TopController{
 				else {
 						addError("No more changes can be made to this incident");
 						addMessagesAndErrorsToSession(session);
-						return "redirect:/intro_all";
+						return "redirect:/";
 				}
     }
     //
@@ -299,7 +299,7 @@ public class IncidentController extends TopController{
 				if(!verifySession(session, ""+id)){
 						addMessage("no more changes can be made ");
 						addMessagesAndErrorsToSession(session);
-						return "redirect:/index";
+						return "redirect:/";
 				}
 				try{
 						incident = incidentService.findById(id);
@@ -318,7 +318,7 @@ public class IncidentController extends TopController{
 						addMessage("incident can be submitted ");
 						addMessages(incident.getErrors());
 						addMessagesAndErrorsToSession(session);
-						return "redirect:/introStart";
+						return "redirect:/";
 				}
     }
     
@@ -332,7 +332,7 @@ public class IncidentController extends TopController{
 				if(!verifySession(session, ""+id)){
 						addMessage("no more changes can be made ");
 						addMessagesAndErrorsToSession(session);
-						return "redirect:/index";
+						return "redirect:/";
 				}
 				Incident incident = null;
 				incident = incidentService.findById(id);
@@ -340,7 +340,7 @@ public class IncidentController extends TopController{
 						addMessage("Incident can not be submitted ");
 						addMessages(incident.getErrors());
 						addMessagesAndErrorsToSession(session);
-						return "redirect:/index";
+						return "redirect:/";
 				}
 				try{
 						String host_forward = req.getHeader("X-Forwarded-Host");
@@ -381,7 +381,7 @@ public class IncidentController extends TopController{
 						addError("Invalid incident Id "+id);
 						logger.error(errors+" "+ex);
 						model.addAttribute("errors", errors);
-						return "redirect:/index"; 
+						return "redirect:/"; 
 				}
 				handleErrorsAndMessages(model);
 				return "successSubmission";
@@ -398,8 +398,6 @@ public class IncidentController extends TopController{
 						request = requestService.findById(id);
 						incident = incidentService.findById(id);
 				}catch(Exception ex){}
-				System.err.println("hash: "+hash);
-				System.err.println("req hash: "+request.getHash());
 				if(request == null){
 						error = "Incident not found ";
 				}
@@ -471,7 +469,7 @@ public class IncidentController extends TopController{
 				else {
 						addError("No more changes can be made to this incident");
 						addMessagesAndErrorsToSession(session);
-						return "redirect:/index";
+						return "redirect:/";
 				}
     }
     @PostMapping("/incidentUpdate/{id}")
@@ -490,7 +488,7 @@ public class IncidentController extends TopController{
 				if(!verifySession(session, ""+id)){
 						addMessage("no more changes can be made ");
 						addMessagesAndErrorsToSession(session);
-						return "redirect:/index";
+						return "redirect:/";
 				}
 				if(incident.canBeChanged()){
 						boolean pass = true;
@@ -516,7 +514,7 @@ public class IncidentController extends TopController{
 				else{
 						addError("No more changes can be made to this incident");
 						addMessagesAndErrorsToSession(session);
-						return "redirect:/index";
+						return "redirect:/";
 				}
     }
     @GetMapping("/incident/delete/{id}")
@@ -540,7 +538,7 @@ public class IncidentController extends TopController{
 						addError("Invalid incident ID "+id);
 				}
 				addMessagesAndErrorsToSession(session);
-				return "redirect:/index";
+				return "redirect:/";
 
     }
     private String createRequestAndEmail(String url,

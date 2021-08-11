@@ -217,12 +217,12 @@ public class AddressController extends TopController{
 						// next go to email request
 						model.addAttribute("type_id", address.getType_id());
 						model.addAttribute("address_id", address.getId());
-						// model.addAttribute("category", address.getCategory());
 						return "emailAdd";								
 				}
 				// no pass then we send the user to address input again with error message
 				model.addAttribute("address", address);
 				model.addAttribute("errors", errors);
+				resetAll();
 				return "addressInput";
 		}
 		//
@@ -269,6 +269,7 @@ public class AddressController extends TopController{
 				model.addAttribute("old_id", addr.getId());
 				model.addAttribute("address", addr);
 				model.addAttribute("errors", errors);
+				resetAll();
 				return "addressUpdate";
 				
 		}		

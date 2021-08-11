@@ -105,7 +105,7 @@ public abstract class TopController {
 				}
     }
     @SuppressWarnings("unchecked")		
-    public void getMessagesAndErrorsFromSession(final HttpSession session,
+    public void getMessagesAndErrorsFromSession(HttpSession session,
 																								Model model){
 				if(session != null){
 						Object obj = session.getAttribute("messages");
@@ -155,7 +155,6 @@ public abstract class TopController {
 				if(session != null){
 						List<String> ids = (List<String>) session.getAttribute("incident_ids");
 						if(ids != null){
-								// System.err.println(" ** ids ** "+ids);
 								if(ids.contains(id)){
 										return true;
 								}
