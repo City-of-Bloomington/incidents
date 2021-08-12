@@ -264,7 +264,7 @@ public class BusinessIncidentController extends TopController{
 				else{
 						addError(incident.getErrorInfo());
 						addMessagesAndErrorsToSession(session);
-						return "redirect:/businessIncidentAdd/"+address.getId()+"/"+business.getId();
+						return "redirect:/businessIncidentAdd/"+business.getId()+"/"+address.getId();
 				}
 		}
 		@GetMapping("/businessIncidentEdit/{id}")
