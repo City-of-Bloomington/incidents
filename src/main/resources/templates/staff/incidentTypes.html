@@ -46,7 +46,7 @@
               <tr th:each="type : ${types}">
                 <td th:text="${type.id}"></td>
                 <td th:text="${type.name}"></td>
-								<td th:text="${type.usedInBusiness}?'Yes':'No'}" /></td>
+								<td th:text="${type.usedInBusiness?'Yes':'No'}" /></td>
                 <td>
                   <a th:href="@{/incidentType/edit/{id}(id=${type.id})}"
                     >Edit</a

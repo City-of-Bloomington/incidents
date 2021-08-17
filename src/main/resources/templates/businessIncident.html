@@ -25,7 +25,7 @@
         If you need to add additional information please use the links below
       </p>
       <ul class="button-group">
-        <li>
+        <li th:if="${incident.hasNoTransientOffender()}">
           <input
             type="button"
             th:attr="onclick=|window.location.href='@{/offender/add/{id}(id=${incident.id})}'|"
@@ -62,14 +62,14 @@
         <ul>
           <li>Review your incident report below.</li>
           <li>
-            If you want to change any information. Click on the corresponding edit link below.
+            If you want to change any information click on the corresponding edit link below.
           </li>
 					<li>
-						If you mistakenly added duplicates information you can click on the 'Delete' link underneath the duplicate to remove it.						
+						If you mistakenly added duplicate information you can click on the 'Delete' link underneath the duplicate to remove it.						
 					</li>
           <li>Once your report has been submitted, no changes can be made.</li>
           <li>
-            If no further changes are needed, click on the 'Next' at the bottom
+            If no further changes are needed, click on 'Next' at the bottom
             of this page.
           </li>
         </ul>

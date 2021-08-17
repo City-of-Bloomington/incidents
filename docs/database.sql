@@ -661,3 +661,6 @@ alter table action_logs add foreign key(cancelled_by) references users(id);
 ;; 8/5
 ;; update views in top received, confirmed, approved, rejected
 ;;
+;;
+alter table incidents add transient_offender char(1);
+alter table offenders add transient_address char(1);

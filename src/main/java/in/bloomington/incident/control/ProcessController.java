@@ -163,7 +163,7 @@ public class ProcessController extends TopController{
 						addError(error);
 						logger.error("Error saving action "+error);
 						addMessagesAndErrorsToSession(session);
-						return "redirect:/search/confirmed";
+						return "redirect:/search/received";
 				}
 				user = findUserFromSession(session);
 				if(user == null ){
@@ -204,9 +204,8 @@ public class ProcessController extends TopController{
 										email.populateEmail(incident, "approve");
 										sendApproveEmail(email);
 										addMessage("Email sent successfully ");
-										// handleErrorsAndMessages(model);
 										getMessagesAndErrorsFromSession(session, model);
-										return "redirect:/staff";
+										return "redirect:/search/received";
 								}
 								else if(action.isRejected()){
 										addMessagesAndErrorsToSession(session);

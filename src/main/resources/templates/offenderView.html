@@ -30,11 +30,15 @@
 						<strong>Name:</strong>
 						<span th:text="${offender.fullname}"></span>
 					</li>
-					<li>
+					<li th:if="${offender.hasNoTransientAddress()}">
 						<strong>Address:</strong>
 						<span th:text="${offender.address}"></span>
 					</li>
-					<li>
+					<li th:if="${offender.getTransientAddress()}">
+						<strong>Address:</strong>
+						<span th:text="'Transient'"></span>
+					</li>					
+					<li th:if="${offender.hasNoTransientAddress()}">
 						<strong>City, State Zipcode:</strong>
 						<span th:text="${offender.cityStateZip}"> </span>
 					</li>

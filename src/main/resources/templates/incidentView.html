@@ -98,6 +98,9 @@
 					<label>Evidence left behind:</label>
 					<span th:text="${incident.evidence}"></span>
 				</div>
+				<div th:if="${business != null && incident.getTransientOffender()}">
+					<span th:text="'Transient Offender'"></span>
+				</div>				
 			</div>
 			</fieldset>
 			<div th:if="${business != null}">

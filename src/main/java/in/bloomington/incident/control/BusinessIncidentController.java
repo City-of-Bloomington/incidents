@@ -97,19 +97,14 @@ public class BusinessIncidentController extends TopController{
 				if(!verifySession(session, ""+id)){				
 						addMessage("No more changes can be made ");
 						addMessagesAndErrorsToSession(session);
-						return "redirect:/";
+						return "redirect:/forBusiness";
 				}
 				incident.setId(id);
 				if(incident.canBeChanged()){	
 						if(!incident.verifyAll()){
 								addError(incident.getErrorInfo());
-								pass = false;
-						}
-						if(!pass){
-								model.addAttribute("incident", incident);
-								handleErrorsAndMessages(model);
-								resetAll();
-								return "businessIncidentAdd";
+								addMessagesAndErrorsToSession(session);								
+								return "redirect:/businessIncidentEdit/"+incident.getId();
 						}
 						int addr_id = incident.getAddr_id();
 						if(addr_id > 0){
@@ -167,10 +162,12 @@ public class BusinessIncidentController extends TopController{
 								addMessagesAndErrorsToSession(session);	    
 								return "redirect:/business/add/"+id;
 						}
-						if(!incident.hasOffenderList()){
-								addMessage("You need to add offender");
-								addMessagesAndErrorsToSession(session);	    
-								return "redirect:/offender/add/"+id;
+						if(incident.hasNoTransientOffender()){
+								if(!incident.hasOffenderList()){
+										addMessage("You need to add offender");
+										addMessagesAndErrorsToSession(session);	    
+										return "redirect:/offender/add/"+id;
+								}
 						}
 						if(!incident.hasPropertyList()){
 								addMessage("You need to add a property");

@@ -45,12 +45,14 @@ public class WebController extends TopController{
     public String introPersonal(Model model
 														 ){
 				getMessagesAndErrorsFromSession(session, model);
+				resetAll();
 				return "intro_questions";
     }
     @RequestMapping(value = "/forBusiness")
     public String forBusiness(Model model
 														 ){
 				getMessagesAndErrorsFromSession(session, model);
+				resetAll();
 				return "business_questions";
     }
     @RequestMapping(value = "/forbusiness")
@@ -63,6 +65,7 @@ public class WebController extends TopController{
     public String selectCategory(Model model
 																 ){
 				getMessagesAndErrorsFromSession(session, model);
+				resetAll();
 				return "introSelectType";
     }
 		
@@ -71,6 +74,7 @@ public class WebController extends TopController{
 														 Model model
 														 ) {
 				getMessagesAndErrorsFromSession(session, model);
+				resetAll();
 				model.addAttribute("type_id", type_id);
 				return "theft_questions";
     }

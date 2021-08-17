@@ -71,6 +71,8 @@ public class Offender extends TopModel implements java.io.Serializable{
 		String gender; // emum('Male','Female','Tramsgender'),
 		String ethnicity; // enum('Hispanic','Non-hispanic','Unknown');
     String occupation;
+		@Column(name="transient_address")
+		Character transientAddress;
     // the following are temp var 
     @Transient
     Integer dobDay;
@@ -78,6 +80,8 @@ public class Offender extends TopModel implements java.io.Serializable{
     Integer dobMonth;
     @Transient
     Integer dobYear;
+		@Transient
+		boolean transientOffender;
 		
     public Offender(){
 
@@ -107,7 +111,8 @@ public class Offender extends TopModel implements java.io.Serializable{
 									String sex,
 									String gender,
 									String ethnicity,
-									String occupation
+										String occupation,
+										Character transientAddress
 									) {
 				super();
 				this.id = id;
@@ -135,6 +140,7 @@ public class Offender extends TopModel implements java.io.Serializable{
 				this.gender = gender;
 				this.ethnicity = ethnicity;
 				this.occupation = occupation;
+				this.transientAddress = transientAddress;
     }
 
     public int getId() {
@@ -233,6 +239,21 @@ public class Offender extends TopModel implements java.io.Serializable{
 				if(val != null && !val.isEmpty())
 						this.zip = val;
     }
+		public boolean getTransientAddress(){
+				return transientAddress != null;
+		}
+		public void setTransientAddress(boolean val){
+				if(val)
+						transientAddress = 'y';
+		}
+		@Transient
+		public boolean getTransientOffender(){
+				return transientOffender;
+		}
+		@Transient
+		public void setTransientOffender(boolean val){
+				transientOffender = val;
+		}
     @Transient
     public String getCityStateZip(){
 				String ret = "";
@@ -471,24 +492,44 @@ public class Offender extends TopModel implements java.io.Serializable{
 				if(val != null && !val.isEmpty())
 						this.occupation = val;
     }
+		@Transient
+		public boolean hasNoTransientAddress(){
+				return !getTransientAddress();
+		}
 
     @Transient
     public boolean verify(){
 				boolean ret = true;
-				if(firstname == null || firstname.isEmpty()){
-						addError("First name is required");
-						ret = false;
-				}
-				if(lastname == null || lastname.isEmpty()){
-						addError("Last name is required");
-						ret = false;
-				}
-				if(address == null || address.isEmpty()){
-						addError("Address is required");
-						ret = false;
-				}
-				if(!isMoreThan18()){
-						ret = false;
+				if(!getTransientOffender()){
+						if(firstname == null || firstname.isEmpty()){
+								addError("First name is required");
+								ret = false;
+						}
+						if(lastname == null || lastname.isEmpty()){
+								addError("Last name is required");
+								ret = false;
+						}
+						if(hasNoTransientAddress()){
+								if(address == null || address.isEmpty()){
+										addError("Street address is required");
+										ret = false;
+								}
+								if(city == null || city.isEmpty()){
+										addError("City is required");
+										ret = false;										
+								}
+								if(state == null || state.isEmpty()){
+										addError("State is required");
+										ret = false;										
+								}
+								if(zip == null || zip.isEmpty()){
+										addError("Zip code is required");
+										ret = false;										
+								}								
+						}
+						if(!isMoreThan18()){
+								ret = false;
+						}
 				}
 				return ret;
     }

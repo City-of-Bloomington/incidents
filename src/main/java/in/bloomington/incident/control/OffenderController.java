@@ -73,7 +73,7 @@ public class OffenderController extends TopController{
 						logger.error(""+ex);
 						model.addAttribute("errors", errors);
 						addMessagesAndErrorsToSession(session);
-						return "redirect:/start";
+						return "redirect:/forBusiness";
 				}
 				if(incident == null || !incident.canBeChanged()){
 						addMessage("No more changes can be made");
@@ -99,7 +99,7 @@ public class OffenderController extends TopController{
     }
     @PostMapping("/offender/save")
     public String offenderSave(@RequestParam String action,
-															 @Valid Offender offender,
+															 Offender offender,
 															 BindingResult result,
 															 Model model,
 															 HttpSession session
@@ -125,14 +125,19 @@ public class OffenderController extends TopController{
 				if(incident == null || !incident.canBeChanged()){
 						addMessage("No more changes can be made");
 						addMessagesAndErrorsToSession(session);
-						return "redirect:/";
+						return "redirect:/forBusiness";
 				}
 				int incident_id = incident.getId();
 				if(!verifySession(session, ""+incident_id)){				
 						addMessage("No more changes can be made ");
 						addMessagesAndErrorsToSession(session);
-						return "redirect:/";
-				}							
+						return "redirect:/forBusiness";
+				}
+				if(offender.getTransientOffender()){
+						incident.setTransientOffender(true);
+						incidentService.update(incident);
+						return "redirect:/businessIncident/"+incident_id;
+				}
 				if(!offender.verify()){
 						String error = offender.getErrorInfo();
 						addError(error);

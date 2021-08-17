@@ -72,6 +72,8 @@ public class Incident extends TopModel implements java.io.Serializable{
     private String otherEntry;
 		@Column(name="have_media")
     private Character haveMedia;
+		@Column(name="transient_offender")
+		private Character transientOffender;
 
     private String email;
 
@@ -157,6 +159,7 @@ public class Incident extends TopModel implements java.io.Serializable{
 										String entryType,
 										String otherEntry,
 										Character haveMedia,
+										Character transientOffender,
 										String email,
 										Address address,
 										List<Person> persons,
@@ -183,6 +186,7 @@ public class Incident extends TopModel implements java.io.Serializable{
 				this.entryType = entryType;
 				this.otherEntry = otherEntry;
 				this.haveMedia = haveMedia;
+				this.transientOffender = transientOffender;
 				this.email = email;
 				this.persons = persons;
 				this.offenders = offenders;
@@ -590,7 +594,17 @@ public class Incident extends TopModel implements java.io.Serializable{
     public Character getHaveMedia() {
 				return haveMedia;
     }
-
+    public boolean getTransientOffender() {
+				return transientOffender != null;
+    }
+		public void setTransientOffender(boolean val){
+				if(val)
+						transientOffender = 'y';
+		}
+		@Transient
+		public boolean requireOffenders(){
+				return !getTransientOffender();
+		}
     public void setHaveMedia(Character haveMedia) {
 				this.haveMedia = haveMedia;
     }
@@ -719,6 +733,10 @@ public class Incident extends TopModel implements java.io.Serializable{
 				}
 				return false;
     }
+		@Transient
+		public boolean hasNoTransientOffender(){
+				return !getTransientOffender();
+		}
     @Transient
     public Action getLastAction(){		
 				return lastAction;
@@ -766,9 +784,11 @@ public class Incident extends TopModel implements java.io.Serializable{
     @Transient
     public boolean canBeSubmitted(){
 				if(isBusinessRelated()){
-						if(!hasOffenderList()){
-								addError("Offender information are required");
-								return false;
+						if(hasNoTransientOffender()){
+								if(!hasOffenderList()){
+										addError("Offender information is required");
+										return false;
+								}
 						}
 						if(!hasPropertyList()){
 								addError("You need to add property information");
@@ -781,7 +801,7 @@ public class Incident extends TopModel implements java.io.Serializable{
 				}
 				else{
 						if(!hasPersonList()){
-								addError("Person information are required");
+								addError("Person information is required");
 								return false;
 						}
 						if(isFraudRelated() && !hasFraudList()){
