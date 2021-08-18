@@ -25,20 +25,17 @@
 
       <div th:insert="general::offenderInstructions"></div>
 
-      <form
-        th:action="@{/offender/save}"
-        th:object="${offender}"
-        method="post"
-      >
+      <form th:action="@{/offender/save}" th:object="${offender}" method="post">
         <input type="hidden" th:field="${offender.incident}" />
         <fieldset>
-					<div style="text-align:left">
+          <div class="field-group checkbox">
             <input
               type="checkbox"
               th:field="${offender.transientOffender}"
               id="transient_offender"
-							/> Transient Offender
-					</div>					
+            />
+            <label for="transient_offender">Transient Offender</label>
+          </div>
           <div class="field-group">
             <label for="firstname_id" class="required">First name</label>
             <input
@@ -83,13 +80,16 @@
               placeholder="Jr, Sr, .."
             />
           </div>
-					<div class="field-group">
+          <div class="field-group checkbox">
             <input
               type="checkbox"
               th:field="${offender.transientAddress}"
               id="transient_addr"
-							/> Transient Address (Unknown address)
-					</div>
+            />
+            <label for="transient_offender"
+              >Transient Address (Unknown address)</label
+            >
+          </div>
           <div class="field-group">
             <label for="address_id" class="required">Address: </label>
             <input
@@ -137,8 +137,8 @@
           </div>
 
           <div class="field-group">
-            <label for="phone_type_id" class="required"
-              > Primary phone:
+            <label for="phone_type_id" class="required">
+              Primary phone:
               <select id="phone_type_id" th:field="${offender.phoneType}">
                 <option
                   th:each="r : ${phoneTypes}"
@@ -294,7 +294,10 @@
               placeholder="Occupation"
             />
           </div>
-					<p>If there are more offenders click 'Next, Add Another' otherwise click on 'Next'</p>
+          <p>
+            If there are more offenders click 'Next, Add Another' otherwise
+            click on 'Next'
+          </p>
           <ul class="button-group">
             <li th:unless="${offender.incident.hasOffenderList()}">
               <button
@@ -304,8 +307,26 @@
                 Back
               </button>
             </li>
-            <li><button type="submit" class="next-button" name="action" value="Next">Next</button></li>
-						<li><button type="submit" class="next-button" name="action" value="More">Next, Add Another</button></li>						
+            <li>
+              <button
+                type="submit"
+                class="next-button"
+                name="action"
+                value="Next"
+              >
+                Next
+              </button>
+            </li>
+            <li>
+              <button
+                type="submit"
+                class="next-button"
+                name="action"
+                value="More"
+              >
+                Next, Add Another
+              </button>
+            </li>
           </ul>
         </fieldset>
       </form>

@@ -747,6 +747,14 @@ form fieldset legend {
   margin: 0 0 20px 0;
   width: 100%;
 }
+.field-group.checkbox {
+  display: flex;
+  align-items: center;
+}
+.field-group.checkbox input[type=checkbox] {
+  width: auto;
+  margin: 0 10px 0 0;
+}
 
 .m-b-10 {
   margin-bottom: 10px;
