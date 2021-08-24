@@ -10,7 +10,6 @@
 
   <body>
     <header th:replace="general::header"></header>
-
     <main class="public-questions-wrapper">
       <h2>Add Offender</h2>
       <div th:if="${errors}">
@@ -33,301 +32,306 @@
               type="checkbox"
               th:field="${offender.transientOffender}"
               id="transient_offender"
+							onclick="showOrHide('offender_info',this)"
             />
             <label for="transient_offender">Transient Offender</label>
           </div>
-          <div class="field-group">
-            <label for="firstname_id" class="required">First name</label>
-            <input
+					<div id="offender_info" style="display: block">
+						<div class="field-group">
+							<label for="firstname_id" class="required">*First name</label>
+							<input
+								type="text"
+								th:field="${offender.firstname}"
+								id="firstname_id"
+								size="30"
+								placeholder="First Name"
+								/>
+						</div>
+
+						<div class="field-group">
+							<label for="midname_id">MI</label>
+							<input
+								type="text"
+								th:field="${offender.midname}"
+								id="midname_id"
+								size="2"
+								maxlength="2"
+								placeholder="MI"
+								/>
+						</div>
+
+						<div class="field-group">
+							<label for="lastnaame_id" class="required">*Last name</label>
+							<input
               type="text"
-              th:field="${offender.firstname}"
-              id="firstname_id"
-              size="30"
-              placeholder="First Name"
-            />
-          </div>
+								th:field="${offender.lastname}"
+								id="lastname_id"
+								size="30"
+								placeholder="Last Name"
+								/>
+						</div>
+						
+						<div class="field-group">
+							<label for="suffix_id"> Suffix</label>
+							<input
+								type="text"
+								th:field="${offender.suffix}"
+								id="suffix_id"
+								size="6"
+								placeholder="Jr, Sr, .."
+								/>
+						</div>
+						<div class="field-group checkbox">
+							<input
+								type="checkbox"
+								th:field="${offender.transientAddress}"
+								id="transient_addr"
+								onclick="showOrHide('offender_address',this)"
+								/>
+							<label for="transient_offender"
+										 >Transient Address (Offender address unknown)</label>
+						</div>
+						<div id="offender_address" style="display: block">
+							<div class="field-group">
+								<label for="address_id" class="required">*Address: </label>
+								<input
+									type="text"
+									th:field="${offender.address}"
+									id="address_id"
+									size="70"
+									placeholder="Address"
+									/>
+							</div>
+							
+							<div class="field-group">
+								<label for="city_id" class="required">*City: </label>
+								<input
+									type="text"
+									th:field="${offender.city}"
+									id="city_id"
+									size="50"
+									placeholder="City"
+									/>
+							</div>
+							
+							<div class="field-group">
+								<label for="state_id" class="required">*State: </label>
+								<input
+									type="text"
+									th:field="${offender.state}"
+									id="state_id"
+									size="2"
+									maxlength="2"
+									placeholder="State"
+									/>
+							</div>
+						
+							<div class="field-group">
+								<label for="zip_id" class="required">*Zip code: </label>
+								<input
+									type="text"
+									th:field="${offender.zip}"
+									id="zip_id"
+									size="10"
+									maxlength="10"
+									placeholder="Zip code"
+									/>
+							</div>
+						</div>
+						<div class="field-group">
+							<label for="phone_type_id" class="required">
+								Primary phone:
+								<select id="phone_type_id" th:field="${offender.phoneType}">
+									<option
+										th:each="r : ${phoneTypes}"
+										th:value="${r}"
+										th:text="${r}"
+										></option>
+								</select>
+							</label>
+							<input
+								type="tel"
+								th:field="${offender.phone}"
+								id="phone"
+								size="20"
+								maxlength="30"
+								placeholder="Phone number"
+								/>
+						</div>
+						
+						<div class="field-group">
+							<label for="email">Email: </label>
+							<input
+								type="email"
+								th:field="${offender.email}"
+								id="email"
+								size="70"
+								maxlength="80"
+								placeholder="Email"
+								/>
+						</div>
+						
+						<div class="field-group">
+							<label for="dob_id" class="required">*Date of birth: </label>
+							<input
+								type="date"
+								th:field="${offender.dobStr}"
+								id="dob_id"
+								value=""
+								size="15"
+								placeholder="mm/dd/yyyy"
+								/>
+						</div>
+						
+						<div class="field-group">
+							<label for="dln_id">Driver's License Number: </label>
+							<input
+								type="text"
+								th:field="${offender.dln}"
+								id="dln_id"
+								size="20"
+								maxlength="20"
+								placeholder="DLN"
+								/>
+						</div>
+						
+						<div class="field-group">
+							<label for="ssn_id">Last 4 Social Security Number: </label>
+							<input
+								type="text"
+								th:field="${offender.ssn}"
+								id="ssn_id"
+								size="4"
+								maxlength="4"
+								placeholder="SSN"
+								/>
+						</div>
+						
+						<div class="field-group">
+							<label for="race_id">Race:</label>
+							<select id="race_id" th:field="${offender.raceType}">
+								<option value="">Race options</option>
+								<option
+									th:each="r : ${raceTypes}"
+									th:value="${r.id}"
+									th:text="${r.name}"
+									></option>
+							</select>
+						</div>
 
-          <div class="field-group">
-            <label for="midname_id">MI</label>
-            <input
-              type="text"
-              th:field="${offender.midname}"
-              id="midname_id"
-              size="2"
-              maxlength="2"
-              placeholder="MI"
-            />
-          </div>
+						<div class="field-group">
+							<label for="height_ft_id">Height:</label>
+							<select id="height_ft_id" th:field="${offender.heightFeet}">
+								<option value="">ft.</option>
+								<option
+									th:each="r : ${#numbers.sequence(2,7)}"
+									th:value="${r}"
+									th:text="${r}"
+									></option>
+							</select>
+							
+							<select id="height_in_id" th:field="${offender.heightInch}">
+								<option value="">in.</option>
+								<option
+									th:each="r : ${#numbers.sequence(0,11)}"
+									th:value="${r}"
+									th:text="${r}"
+									></option>
+							</select>
+						</div>
+						
+						<div class="field-group">
+						<label for="weight_id">Weight:</label>
+						<input
+							type="text"
+							th:field="${offender.weight}"
+							id="weight_id"
+							size="3"
+							placeholder="weight lb"
+							/>
+						</div>
+						<div class="field-group">
+							<label for="sex_id">Sex:</label>
+							<select id="sex_id" th:field="${offender.sex}">
+								<option value="">Sex options</option>
+								<option
+									th:each="r : ${sexTypes}"
+									th:value="${r}"
+									th:text="${r}"
+									></option>
+							</select>
+						</div>
 
-          <div class="field-group">
-            <label for="lastnaame_id" class="required">Last name</label>
-            <input
-              type="text"
-              th:field="${offender.lastname}"
-              id="lastname_id"
-              size="30"
-              placeholder="Last Name"
-            />
-          </div>
-
-          <div class="field-group">
-            <label for="suffix_id"> Suffix</label>
-            <input
-              type="text"
-              th:field="${offender.suffix}"
-              id="suffix_id"
-              size="6"
-              placeholder="Jr, Sr, .."
-            />
-          </div>
-          <div class="field-group checkbox">
-            <input
-              type="checkbox"
-              th:field="${offender.transientAddress}"
-              id="transient_addr"
-            />
-            <label for="transient_offender"
-              >Transient Address (Unknown address)</label
-            >
-          </div>
-          <div class="field-group">
-            <label for="address_id" class="required">Address: </label>
-            <input
-              type="text"
-              th:field="${offender.address}"
-              id="address_id"
-              size="70"
-              placeholder="Address"
-            />
-          </div>
-
-          <div class="field-group">
-            <label for="city_id" class="required">City: </label>
-            <input
-              type="text"
-              th:field="${offender.city}"
-              id="city_id"
-              size="50"
-              placeholder="City"
-            />
-          </div>
-
-          <div class="field-group">
-            <label for="state_id" class="required">State: </label>
-            <input
-              type="text"
-              th:field="${offender.state}"
-              id="state_id"
-              size="2"
-              maxlength="2"
-              placeholder="State"
-            />
-          </div>
-
-          <div class="field-group">
-            <label for="zip_id" class="required">Zip code: </label>
-            <input
-              type="text"
-              th:field="${offender.zip}"
-              id="zip_id"
-              size="10"
-              maxlength="10"
-              placeholder="Zip code"
-            />
-          </div>
-
-          <div class="field-group">
-            <label for="phone_type_id" class="required">
-              Primary phone:
-              <select id="phone_type_id" th:field="${offender.phoneType}">
-                <option
-                  th:each="r : ${phoneTypes}"
-                  th:value="${r}"
-                  th:text="${r}"
-                ></option>
-              </select>
-            </label>
-            <input
-              type="tel"
-              th:field="${offender.phone}"
-              id="phone"
-              size="20"
-              maxlength="30"
-              placeholder="Phone number"
-            />
-          </div>
-
-          <div class="field-group">
-            <label for="email">Email: </label>
-            <input
-              type="email"
-              th:field="${offender.email}"
-              id="email"
-              size="70"
-              maxlength="80"
-              placeholder="Email"
-            />
-          </div>
-
-          <div class="field-group">
-            <label for="dob_id" class="required">Date of birth: </label>
-            <input
-              type="date"
-              th:field="${offender.dobStr}"
-              id="dob_id"
-              value=""
-              size="15"
-              placeholder="mm/dd/yyyy"
-            />
-          </div>
-
-          <div class="field-group">
-            <label for="dln_id">Driver's License Number: </label>
-            <input
-              type="text"
-              th:field="${offender.dln}"
-              id="dln_id"
-              size="20"
-              maxlength="20"
-              placeholder="DLN"
-            />
-          </div>
-
-          <div class="field-group">
-            <label for="ssn_id">Last 4 Social Security Number: </label>
-            <input
-              type="text"
-              th:field="${offender.ssn}"
-              id="ssn_id"
-              size="4"
-              maxlength="4"
-              placeholder="SSN"
-            />
-          </div>
-
-          <div class="field-group">
-            <label for="race_id">Race:</label>
-            <select id="race_id" th:field="${offender.raceType}">
-              <option value="">Race options</option>
-              <option
-                th:each="r : ${raceTypes}"
-                th:value="${r.id}"
-                th:text="${r.name}"
-              ></option>
-            </select>
-          </div>
-
-          <div class="field-group">
-            <label for="height_ft_id">Height:</label>
-            <select id="height_ft_id" th:field="${offender.heightFeet}">
-              <option value="">ft.</option>
-              <option
-                th:each="r : ${#numbers.sequence(2,7)}"
-                th:value="${r}"
-                th:text="${r}"
-              ></option>
-            </select>
-
-            <select id="height_in_id" th:field="${offender.heightInch}">
-              <option value="">in.</option>
-              <option
-                th:each="r : ${#numbers.sequence(0,11)}"
-                th:value="${r}"
-                th:text="${r}"
-              ></option>
-            </select>
-          </div>
-
-          <div class="field-group"></div>
-          <label for="weight_id">Weight:</label>
-          <input
-            type="text"
-            th:field="${offender.weight}"
-            id="weight_id"
-            size="3"
-            placeholder="weight lb"
-          />
-
-          <div class="field-group">
-            <label for="sex_id">Sex:</label>
-            <select id="sex_id" th:field="${offender.sex}">
-              <option value="">Sex options</option>
-              <option
-                th:each="r : ${sexTypes}"
-                th:value="${r}"
-                th:text="${r}"
-              ></option>
-            </select>
-          </div>
-
-          <div class="field-group">
-            <label for="gender_id">Gender:</label>
-            <select id="gender_id" th:field="${offender.gender}">
-              <option value="">Gender options</option>
-              <option
-                th:each="r : ${genderTypes}"
-                th:value="${r}"
-                th:text="${r}"
-              ></option>
-            </select>
-          </div>
-
-          <div class="field-group">
-            <label for="eth_id">Ethnicity:</label>
-            <select id="eth_id" th:field="${offender.ethnicity}">
-              <option value="">Ethnicity options</option>
-              <option
-                th:each="r : ${ethnicityTypes}"
-                th:value="${r}"
-                th:text="${r}"
-              ></option>
-            </select>
-          </div>
-
-          <div class="field-group">
-            <label for="occupation_id">Occupation: </label>
-            <input
-              type="text"
-              th:field="${offender.occupation}"
-              id="occupation_id"
-              size="70"
-              placeholder="Occupation"
-            />
-          </div>
-          <p>
-            If there are more offenders click 'Next, Add Another' otherwise
-            click on 'Next'
-          </p>
-          <ul class="button-group">
-            <li th:unless="${offender.incident.hasOffenderList()}">
-              <button
-                class="next-button"
-                th:attr="onclick=|window.location.href='@{/businessIncidentEdit/{id}(id=${offender.incident.id})}'|"
-              >
-                Back
-              </button>
-            </li>
-            <li>
-              <button
-                type="submit"
-                class="next-button"
-                name="action"
-                value="Next"
-              >
-                Next
-              </button>
-            </li>
-            <li>
-              <button
-                type="submit"
-                class="next-button"
-                name="action"
-                value="More"
-              >
-                Next, Add Another
-              </button>
-            </li>
-          </ul>
+						<div class="field-group">
+							<label for="gender_id">Gender:</label>
+							<select id="gender_id" th:field="${offender.gender}">
+								<option value="">Gender options</option>
+								<option
+									th:each="r : ${genderTypes}"
+									th:value="${r}"
+									th:text="${r}"
+									></option>
+							</select>
+						</div>
+						
+						<div class="field-group">
+							<label for="eth_id">Ethnicity:</label>
+							<select id="eth_id" th:field="${offender.ethnicity}">
+								<option value="">Ethnicity options</option>
+								<option
+									th:each="r : ${ethnicityTypes}"
+									th:value="${r}"
+									th:text="${r}"
+									></option>
+							</select>
+						</div>
+						
+						<div class="field-group">
+							<label for="occupation_id">Occupation: </label>
+							<input
+								type="text"
+								th:field="${offender.occupation}"
+								id="occupation_id"
+								size="70"
+								placeholder="Occupation"
+								/>
+						</div>
+						<p>
+							If there are more offenders click 'Next, Add Another' otherwise
+							click on 'Next'
+						</p>
+					</div>
+					<ul class="button-group">
+						<li th:unless="${offender.incident.hasOffenderList()}">
+							<button
+								type="button"
+								class="next-button"
+								th:attr="onclick=|window.location.href='@{/businessIncidentEdit/{id}(id=${offender.incident.id})}'|"
+								>
+								Back
+							</button>
+						</li>
+						<li>
+							<button
+								type="submit"
+								class="next-button"
+								name="action"
+								value="Next"
+								>
+								Next
+							</button>
+						</li>
+						<li>
+							<button
+								type="submit"
+								class="next-button"
+								name="action"
+								value="More"
+								>
+								Next, Add Another
+							</button>
+						</li>
+					</ul>
         </fieldset>
       </form>
     </main>

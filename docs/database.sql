@@ -664,3 +664,12 @@ alter table action_logs add foreign key(cancelled_by) references users(id);
 ;;
 alter table incidents add transient_offender char(1);
 alter table offenders add transient_address char(1);
+;;
+;;
+;; 8/24
+;; add to application.properties
+;; max size in MB
+incident.media.max.size=5
+incident.person.media.count=3
+incident.business.media.count=10
+

@@ -67,6 +67,10 @@ $(document).ready(function(){
 	});
     });
 });
+function showOrHide(item,obj){
+		var vis_state = (obj.checked) ? "none":"block";
+		document.getElementById(item).style.display= vis_state;
+}
 
 function resetForms() {
     for (i = 0; i < document.forms.length; i++) {

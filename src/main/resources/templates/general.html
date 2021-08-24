@@ -323,11 +323,11 @@
     <div th:fragment="businessInstructions">
       <p>Information about Business data entry</p>
 			<ul>
-				<li>Business local address added in previous step </li>
 				<li>Business name and email are required</li>
+				<li>Use '(123) 456-7890' format for each phone number</li>
 				<li>
-					For multiple phone numbers, use comma or semicolon to separate
-					and use '(ddd) ddd-dddd' format for each number
+					For multiple phone numbers, use comma or semicolon to separate each number
+					
 				</li>
 			</ul>
 		</div>
@@ -355,7 +355,7 @@
 			<li>
 				If the offender's address is unknown check the 'Transiant address' checkbox.</li>
       <li>
-        After adding one offender, you can add another one.
+        If reporting multiple offenders, click “Next, Add Another” after adding information for each offender.
       </li>
     </ul>
     <div th:fragment="propertyInstructions">
@@ -378,10 +378,11 @@
           If you are reporting damage to a vehicle, please give the description
           and value of the damage in the vehicle screen.
         </li>
-				<li> If you are reporting a large number of properties, you can report all in this screen and give appropriate total value and description below.
+				<li> If you are reporting multiple properties on one entry or
+					add them individually by clicking ‘Next, Add Another’.
 				</li>
         <li>
-          If you prefer, you can add one stolen or damaged property at a time.
+					If reporting multiple properties on one entry, give the appropriate total value and description below.
         </li>
       </ul>
     </div>		
@@ -419,7 +420,7 @@
       </ul>
     </div>
 
-    <ul th:fragment="mediaInstructions(media_max_count)">
+    <ul th:fragment="mediaInstructions(media_max_count,media_max_size)">
       <li>You can upload up to <span th:text="${media_max_count}"> </span> photos related to incident.</li>
       <li>
         Optional, you may add explantions about these image in the text field
@@ -428,30 +429,31 @@
       <li>
         The accepted photo files types are jpg, gif, png and pdf only, any other type will be ignored
       </li>
-      <li>Photo size should not exceed 5 MB each</li>
+      <li>Photo size should not exceed <span th:text="${media_max_size}"> </span> MB each</li>
       <li>
         If the photo file size is more than 5 MB, you need to resize it using one of
         the photo editing tools such as MS paint
       </li>
-      <li>Total max upload limit should not exceed <span th:text="${media_max_count*5}"> </span> MB</li>
+      <li>Total max upload limit should not exceed <span th:text="${media_max_count*media_max_size}"> </span> MB</li>
       <li>When your are done with photo uploads, click on 'Submit'</li>
     </ul>
-    <ul th:fragment="mediaBusinessInstructions(media_max_count)">
+    <ul th:fragment="mediaBusinessInstructions(media_max_count,media_max_size)">
+			<li> You are required to upload photo(s)/receipt(s) of the incident </li>
       <li>You can upload up to <span th:text="${media_max_count}"> </span> photos of the incident or photos of the receipts related to incident.</li>
       <li>
-        Optional, you may add explantions about these image in the text field
-        below.
+        Optional, you may also add explantions about these image in the text field below.
       </li>
       <li>
         The accepted photo files types are jpg, gif, png and pdf only, any other type will be ignored
       </li>
-      <li>Photo size should not exceed 5 MB each</li>
+      <li>Photo size should not exceed <span th:text="${media_max_size}"> </span> MB each</li>
       <li>
-        If the photo file size is more than 5 MB, you need to resize it using one of
+        If the photo file size is more than <span th:text="${media_max_size}"> </span> MB, you need to resize it using one of
         the photo editing tools such as MS paint
       </li>
-      <li>Total max upload limit should not exceed <span th:text="${media_max_count*5}"> </span> MB</li>
-      <li>When you are done with photo uploads, click on 'Submit'</li>
+      <li>Total max upload limit should not exceed <span th:text="${media_max_count*media_max_size}"> </span> MB</li>
+			<li>When you are done with photo uploads, click on ‘Next.’
+				</li>
     </ul>
     <div th:fragment="introMoreInfo">
       <p>

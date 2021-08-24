@@ -34,7 +34,9 @@
         <input type="hidden" th:field="${incident.bus_id} " />				
         <fieldset>
           <legend>Incident Date and Time</legend>
-
+					<p>
+						Please complete the fields below. The information you provide for your case is critical to the Department's overall crime analysis efforts.
+					</p>
           <div class="field-group">
             <label for="start_date" class="required">
               *Incident occurred, Date:
@@ -115,15 +117,17 @@
           <legend>Incident Details</legend>
 					<div class="field-group">
             <label for="incident_type">* Incident Type: </label>
-						<select th:field="${incident.incidentType}" id="incident_type"
-										required="required">
-							<option value="">Pick Incident Type</option>
-              <option
-                th:each="r : ${types}"
-                th:value="${r.id}"
-                th:text="${r.name}"
-                ></option>
-            </select>
+						<ul>
+              <li th:each="r : ${types}">
+                <input
+                  type="radio"
+                  th:field="${incident.incidentType}"
+                  th:value="${r.id}"
+                  required="required"
+                />
+                <span th:text="${r.name}"></span>
+              </li>
+            </ul>
 					</div>
           <div class="field-group">
             <label for="details_id" class="required">*Incident details:</label>
@@ -140,6 +144,7 @@
 				<ul class="button-group">
           <li>
             <button
+							type="button"
               class="next-button"
               th:attr="onclick=|window.location.href='@{/businessEdit/{id}/{addr_id}/{incident_id}(id=${business.id},addr_id=${incident.addr_id},incident_id=${incident.id})}'|"
               >
