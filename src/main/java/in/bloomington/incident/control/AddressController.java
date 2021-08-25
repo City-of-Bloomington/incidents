@@ -185,14 +185,14 @@ public class AddressController extends TopController{
 				List<Address> addresses = addressService.findDistinctAddressByName(address.getName());
 						
 				if(addresses == null || addresses.size() == 0){
-						System.err.println(" find address by name not found ");
+						// System.err.println(" find address by name not found ");
 						/**
 						 * if not then we save
 						 */
 						addressService.save(address);								
 				}
 				else{
-						System.err.println(" find address by name found "+addresses.size());
+						// System.err.println("find address by name found "+addresses.size());
 						// if exist we update 
 						Address addr = addresses.get(0);
 						address.setId(addr.getId());
@@ -246,12 +246,12 @@ public class AddressController extends TopController{
 						//
 						// no change in address, so we go to next step
 						//
-						System.err.println("The same address, no change");
+						// System.err.println("The same address, no change");
 						model.addAttribute("type_id", addr.getType_id());
 						model.addAttribute("address_id", old_id);						
 						return "emailAdd";
 				}
-				System.err.println("The address changed");				
+				// System.err.println("The address changed");				
 				if(pass && checkAddress(addr)){
 						Address address = null;
 						/**
@@ -370,7 +370,7 @@ public class AddressController extends TopController{
 	
 				boolean answer = addressCheck.isInIUPDLayer(lati, longi);
 				String msg = "";
-				System.err.println(" answer "+answer);
+				// System.err.println(" answer "+answer);
 				if(answer)
 						msg = "In IU Compus PD ";
 				else
@@ -451,7 +451,7 @@ class AddressServiceController{
 																 Model model)
     {
         String json = "";
-				System.err.println(" term "+term);
+				// System.err.println(" term "+term);
         if (term != null && term.length() >= 5) {
 						// if term has at least two parts
 						String[] arr = term.split("\\s+");
@@ -460,7 +460,7 @@ class AddressServiceController{
 								if(back.indexOf("Exception") == -1){
 										json = back;
 								}
-								System.err.println(back);
+								// System.err.println(back);
 						}
         }
         return json;

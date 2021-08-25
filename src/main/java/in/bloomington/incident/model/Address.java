@@ -361,7 +361,7 @@ public class Address extends TopModel implements java.io.Serializable{
 				else if(zipcode != null && !zipcode.equals("")){
 						boolean ret = default_zip_codes.stream()
 								.anyMatch(t->t.equals(zipcode));
-						System.err.println(" Address zip code check is "+ret);
+						// System.err.println(" Address zip code check is "+ret);
 						if(ret){
 								return true;
 						}

@@ -222,14 +222,14 @@ public class BusinessAddressController extends TopController{
 				List<Address> addresses = addressService.findDistinctAddressByName(address.getName());
 						
 				if(addresses == null || addresses.size() == 0){
-						System.err.println(" find address by name not found ");
+						// System.err.println(" find address by name not found ");
 						/**
 						 * if not then we save
 						 */
 						addressService.save(address);								
 				}
 				else{
-						System.err.println(" find address by name found "+addresses.size());
+						// System.err.println(" find address by name found "+addresses.size());
 						// if exist we update 
 								Address addr = addresses.get(0);
 								address.setId(addr.getId());

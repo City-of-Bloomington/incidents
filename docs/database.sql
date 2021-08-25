@@ -609,7 +609,7 @@ create table businesses(                                                        
 ;;
 ;; this table will not be used right now
 ;; 
-;; create table credentials(                                                            id int unsigned auto_increment primary key,                                     business_id int unsigned not null,                                              email varchar(256) not null unique,                                             password varchar(256),                                                          last_update datetime,                                                           foreign key(business_id) references businesses(id)                              )engine=InnoDB;
+ create table credentials(                                                            id int unsigned auto_increment primary key,                                     business_id int unsigned not null,                                              email varchar(256) not null unique,                                             password varchar(256),                                                          last_update datetime,                                                           foreign key(business_id) references businesses(id)                              )engine=InnoDB;
 ;;
 
 ;;
@@ -672,4 +672,14 @@ alter table offenders add transient_address char(1);
 incident.media.max.size=5
 incident.person.media.count=3
 incident.business.media.count=10
-
+;;
+;; Steps for upgrade
+;;
+;; copy old war file
+;; stop tomcat
+;; dump mysql db
+;; add to properties file
+;; modify database
+;; move new war file
+;; restart
+;; test

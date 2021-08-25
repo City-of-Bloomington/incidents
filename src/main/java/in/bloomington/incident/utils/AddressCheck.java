@@ -108,7 +108,7 @@ public class AddressCheck{
 								JSONArray jsonArr = jsonObj.getJSONArray("locations");
 								String str = jsonArr.toString();
 								json = str.replaceAll("streetAddress","value");
-								System.err.println(" json "+json);
+								// System.err.println(" json "+json);
 						}
 						if(json != null && !json.isEmpty()){
 								return json;
@@ -122,8 +122,8 @@ public class AddressCheck{
 		}
     public String isInTheLayer(String xmlStr){
 				String back = "";
-				System.err.println(" xml "+xmlStr);
-				System.err.println(" geo url "+geoUrl);
+				// System.err.println(" xml "+xmlStr);
+				// System.err.println(" geo url "+geoUrl);
 				try{
 						URL url = new URL(geoUrl+"/wfs/Service?");
 						HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -157,7 +157,7 @@ public class AddressCheck{
 						}
 						inputStream.close();
 						back = response.toString();
-						System.out.println("Response: " + back);
+						// System.out.println("Response: " + back);
 				}catch(Exception ex){
 						System.err.println(" "+ex);
 						back += ex;
@@ -231,7 +231,7 @@ public class AddressCheck{
 						}
 				}
 				urlStr = url+"/?";
-				System.err.println(" addr url "+urlStr);
+				// System.err.println(" addr url "+urlStr);
 				if(address == null){
 						back = " No address set ";
 						return back;
@@ -248,10 +248,10 @@ public class AddressCheck{
 						query +="+Bloomington;";
 						urlStr += query;
 						HttpGet httpget = new HttpGet(urlStr);
-						System.err.println(urlStr);
+						// System.err.println(urlStr);
 						logger.debug(urlStr);
             String responseBody = httpclient.execute(httpget, responseHandler);
-						System.err.println(" response "+responseBody);
+						// System.err.println(" response "+responseBody);
             logger.debug("----------------------------------------");
             logger.debug(responseBody);
             logger.debug("----------------------------------------");
