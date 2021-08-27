@@ -173,7 +173,7 @@ public class SearchController extends TopController{
 						resetAll();
 				}
 				model.addAttribute("statusOutcome", "Approved");	
-        return "staff/status_outcomes";
+        return "staff/approved_outcomes";
     }
     @GetMapping("/search")
     public String search(Model model) {

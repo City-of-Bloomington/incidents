@@ -139,11 +139,17 @@ public class ProcessController extends TopController{
 				try{
 						incident = incidentService.findById(id);
 						actionLog.setIncident(incident);
+						actionLog.setUser(user);
 						actions = getNextActions(incident);
 						model.addAttribute("incident", incident);
 						model.addAttribute("actionLog", actionLog);
 						model.addAttribute("actions", actions);
-	    
+						if(incident.isBusinessRelated()){
+								Business business = incident.getBusiness();
+								if(business != null){
+										model.addAttribute("business", business);
+								}
+						}
 				}catch(Exception ex){
 						logger.error("Error no incident "+id+" not found "+ex);
 						addError("Invalid incident ID "+id);
@@ -168,18 +174,24 @@ public class ProcessController extends TopController{
 				user = findUserFromSession(session);
 				if(user == null ){
 						return "redirect:/login";
-				}	
+				}
+				
 				if(user.canApprove()){
 						actionLog.setUser(user);
 						actionLog.setDateNow();
 						Action action = actionLog.getAction();
 						actionLogService.save(actionLog);
 						String caseNumber = actionLog.getCaseNumber();
-						Incident incident = actionLog.getIncident();	    
+						Incident incident = actionLog.getIncident();
+						System.err.println(" case # "+caseNumber);
 						if(caseNumber != null && !caseNumber.isEmpty()){
 								if(incident != null){
+										System.err.println(" saving case # in Incident");
 										incident.setCaseNumber(caseNumber);
 										incidentService.update(incident);
+								}
+								else{
+										System.err.println(" incident is null ");
 								}
 								// we need to add another action log as processed
 								// since caseNumber is provided

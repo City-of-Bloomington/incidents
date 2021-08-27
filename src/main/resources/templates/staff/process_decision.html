@@ -21,7 +21,7 @@
       <div th:if="${messages}">
         <div th:insert="general::messages(${messages})"></div>
       </div>
-      <div th:replace="incidentView::incidentView(${incident})">
+			<div th:replace="incidentView::incidentView(${incident},${business})">
       </div>
       <h2>Incident Status</h2>
 			<p><strong> Update Status</strong></p>
