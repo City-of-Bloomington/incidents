@@ -232,7 +232,7 @@ public class IncidentController extends TopController{
 						return "redirect:/";	    
 				}
     }
-    // view mode
+    // view/next step
     @GetMapping("/incident/{id}")
     public String showIncident(@PathVariable("id") int id,
 															 Model model,
