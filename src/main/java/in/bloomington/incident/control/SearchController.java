@@ -117,8 +117,7 @@ public class SearchController extends TopController{
 						model.addAttribute("messages", messages);
 						resetAll();
 				}
-				model.addAttribute("statusOutcome", "Incomplete");										
-        return "staff/status_outcomes";
+        return "staff/incompletes";
     }
     
     @GetMapping("/search/confirmed")

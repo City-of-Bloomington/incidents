@@ -241,6 +241,17 @@ public class Incident extends TopModel implements java.io.Serializable{
 				}
 				return str;
     }
+    public String getReceivedNoSep() {
+				String str = "";
+				if(received != null){
+						try{
+								str = Helper.dfDateTimeNoSep.format(received);
+						}catch(Exception ex){
+								System.err.println(ex);
+						}
+				}
+				return str;
+    }		
 
     public void setReceivedStr(String val) {
 				if(val != null && !val.equals("")){

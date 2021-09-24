@@ -110,7 +110,8 @@ public class IncidentController extends TopController{
 															 @RequestParam(required = true) String email2,
 															 @RequestParam(required = true) int type_id,
 															 @RequestParam(required = true) int address_id,
-															 Model model
+															 Model model,
+															 HttpServletRequest req
 															 ){
 				boolean emailProblem = false;
 				if(email == null || email.isEmpty() ||
@@ -179,6 +180,11 @@ public class IncidentController extends TopController{
 						//						
 						ids.add(""+incident.getId());
 						session.setAttribute("incident_ids", ids);
+						//
+						// send resume email
+						String url = prepareUrl(req);
+						String back = sendResumeEmail(incident, url);
+						
 				}
 				model.addAttribute("incident", incident);
 				model.addAttribute("entryTypes", entryTypes);
@@ -343,6 +349,7 @@ public class IncidentController extends TopController{
 						return "redirect:/";
 				}
 				try{
+						/**
 						String host_forward = req.getHeader("X-Forwarded-Host");
 
 						String host = req.getServerName();
@@ -361,7 +368,9 @@ public class IncidentController extends TopController{
 						}	    
 						if(hostPath != null)
 								url += hostPath;
-						url += "/incident/confirm/";
+						*/
+						String url = prepareUrl(req);
+						// url += "/incident/confirm/";
 						ActionLog actionLog = new ActionLog();
 						actionLog.setIncident(incident);
 						Action action = actionService.findById(2); // received action
@@ -576,7 +585,7 @@ public class IncidentController extends TopController{
 				String subject = " Bloomington's Police Department Online Reporting Confirmation ";
 				String to = incident.getEmail();
 				String body = "Click on the link ";
-				body += url+id+"/"+hash+" to confirm.<br />\n\n ";
+				body += url+"/incident/confirm/"+id+"/"+hash+" to confirm.<br />\n\n ";
 				body += " Once your report is reviewed it will either be accepted or rejected, at which time you will receive another email explaining the reason for denial or a report reference number.<br />\n\n";
 				body += "Please do not reply to this email as this is an automated system.";
 				body += "<br />\n\n";
@@ -598,17 +607,58 @@ public class IncidentController extends TopController{
 					 System.err.println(" to "+to);
 					 System.err.println(" from "+email_sender);
 				*/
-				/**
-					 EmailHandle emailer = new EmailHandle(email_host,
-					 to,
-					 email_sender,
-					 subject,
-					 message);
-				*/
 				//
 				// uncomment in production to send email
 				//
 				return ret;
     }
-
+		private String prepareUrl(HttpServletRequest req){
+				String host_forward = req.getHeader("X-Forwarded-Host");
+				String host = req.getServerName();
+				String uri = req.getRequestURI();
+				String scheme = req.getScheme();
+				int port = req.getServerPort();
+				String url = scheme+"://";
+				if(host_forward != null){
+						url += host_forward;
+				}
+				else{
+						url += host;
+				}
+				if(port == 8080){ // for localhost
+						url += ":"+port;
+				}	    
+				if(hostPath != null)
+						url += hostPath;
+				return url;
+		}		
+    private String sendResumeEmail(Incident one, String url){
+				String message = "";
+				if(one != null){
+						String subject = "Incident reporting resume link";
+						
+						if(one.hasEmail()){
+								String body = "If for any reason, you stopped from completing your report, you may click on <a href='"+url+"/incomplete/resume/"+one.getId()+"/"+one.getReceivedNoSep()+"'>here</a> to resume and submit your report. If you completed your report you may discard this email. Thanks<br />\n\n";
+								body += "Please do not reply to this email as this is an automated system.";
+								body += "<br />\n\n";
+								body += "Bloomington Police Department (BPD)<br />\n";
+								body += "220 E 3rd St, Bloomington, IN 47401<br />\n";
+								body += "(812) 339-4477<br />\n";
+								body += "https://bloomington.in.gov/police<br />";
+								body += "\n";
+								
+								String toEmail = one.getEmail();
+								EmailHelper emailHelper = new EmailHelper(mailSender, email_sender, toEmail, subject, body);
+								message = emailHelper.send();
+								if(!message.isEmpty()){
+										addError(message);
+										logger.error(message);
+								}
+						}
+						else{
+								message = "No email address available in the incident";
+						}
+				}
+				return message;
+    }		
 }

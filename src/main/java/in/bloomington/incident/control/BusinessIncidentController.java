@@ -81,6 +81,8 @@ public class BusinessIncidentController extends TopController{
     private String email_sender;
     @Value("${incident.application.name}")
     private String application_name;
+		@Value("${server.servlet.context-path}")
+    private String hostPath;
 		//
 		// incident is already save, so we do update for the new fields
     @PostMapping("/businessIncidentChange/{id}")
@@ -229,7 +231,8 @@ public class BusinessIncidentController extends TopController{
     public String busIncidentSave(
 																	@Valid Incident incident,
 																	Model model,
-																	BindingResult result
+																	BindingResult result,
+																	HttpServletRequest req
 																	) {
 				List<String> ids = null;
 				int id = 0;
@@ -253,6 +256,8 @@ public class BusinessIncidentController extends TopController{
 						id = incident.getId();
 						ids.add(""+id);
 						session.setAttribute("incident_ids", ids);
+						String url = prepareUrl(req);
+						String back = sendResumeEmail(incident, url);						
 						//
 						// this redirect will decide what is next
 						//
@@ -365,6 +370,55 @@ public class BusinessIncidentController extends TopController{
 				handleErrorsAndMessages(model);
 				return "businessSuccessSubmission";
     }
+		private String prepareUrl(HttpServletRequest req){
+				String host_forward = req.getHeader("X-Forwarded-Host");
+				String host = req.getServerName();
+				String uri = req.getRequestURI();
+				String scheme = req.getScheme();
+				int port = req.getServerPort();
+				String url = scheme+"://";
+				if(host_forward != null){
+						url += host_forward;
+				}
+				else{
+						url += host;
+				}
+				if(port == 8080){ // for localhost
+						url += ":"+port;
+				}	    
+				if(hostPath != null)
+						url += hostPath;
+				return url;
+		}				
+    private String sendResumeEmail(Incident one, String url){
+				String message = "";
+				if(one != null){
+						String subject = "Incident reporting resume link";
+						
+						if(one.hasEmail()){
+								String body = "If for any reason, you stopped from completing your report, you may click on <a href='"+url+"/incomplete/resume/"+one.getId()+"/"+one.getReceivedNoSep()+"'>here</a> to resume and submit your report. If you completed your report you may discard this email. Thanks<br />\n\n";
+								body += "Please do not reply to this email as this is an automated system.";
+								body += "<br />\n\n";
+								body += "Bloomington Police Department (BPD)<br />\n";
+								body += "220 E 3rd St, Bloomington, IN 47401<br />\n";
+								body += "(812) 339-4477<br />\n";
+								body += "https://bloomington.in.gov/police<br />";
+								body += "\n";
+								
+								String toEmail = one.getEmail();
+								EmailHelper emailHelper = new EmailHelper(mailSender, email_sender, toEmail, subject, body);
+								message = emailHelper.send();
+								if(!message.isEmpty()){
+										addError(message);
+										logger.error(message);
+								}
+						}
+						else{
+								message = "No email address available in the incident";
+						}
+				}
+				return message;
+    }				
 		private String createRequestAndEmail(Incident incident){
 				String ret = "";
 				String lastname = "";
