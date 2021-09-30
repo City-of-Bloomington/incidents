@@ -355,6 +355,7 @@ alter table vehicles add value decimal(10,2);
 |  4 | approved  | Approved                 |             2 | 3
 |  5 | rejected  | Rejected                 |             2 | null
 |  6 | processed | Processed                |             3 | null
+|  7 | discarded | Discarded                |             1 } null
 
 
  alter table action_logs drop foreign key action_logs_ibfk_2;
@@ -683,3 +684,10 @@ incident.business.media.count=10
 ;; move new war file
 ;; restart
 ;; test
+;;
+;; adding discard action to the action list
+;; 9/30/21
+;;
+insert into actions values( 7,'discarded','Discarded',1, null);
+insert into role_actions values(1,7),(2,7);
+insert into action_roles values(7,1),(7,2);

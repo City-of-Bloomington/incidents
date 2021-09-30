@@ -156,7 +156,51 @@ public class ProcessController extends TopController{
 				}
 				getMessagesAndErrorsFromSession(session, model);
 				return "staff/process_decision";
-    }    
+    }
+    @GetMapping("/discard/{id}")
+    public String discardIncident(@PathVariable("id") int id,
+																	Model model
+																	) {
+				Incident incident = null;
+				User user = findUserFromSession(session);
+				if(user == null ){
+						return "redirect:/login";
+				}
+				if(!user.canApprove()){
+						addMessage("You do not have enough privileges");
+						addMessagesAndErrorsToSession(session);
+						return "redirect:/staff/staff_intro";
+				}
+				incident = incidentService.findById(id);
+				if(!incident.canBeChanged()){ // if can not be changed
+						addMessage("This incident can not be discarded");
+						addMessagesAndErrorsToSession(session);
+						return "redirect:/staff/staff_intro";
+				}
+				ActionLog actionLog = new ActionLog();
+				List<Action> actions = new ArrayList<>();
+				try{
+
+						actionLog.setIncident(incident);
+						actionLog.setUser(user);
+						Action action = actionService.findById(7); // discard action
+						if(action != null) actions.add(action);
+						model.addAttribute("incident", incident);
+						model.addAttribute("actionLog", actionLog);
+						model.addAttribute("actions", actions);
+						if(incident.isBusinessRelated()){
+								Business business = incident.getBusiness();
+								if(business != null){
+										model.addAttribute("business", business);
+								}
+						}
+				}catch(Exception ex){
+						logger.error("Error no incident "+id+" not found "+ex);
+						addError("Invalid incident ID "+id);
+				}
+				getMessagesAndErrorsFromSession(session, model);
+				return "staff/discard_decision";
+    }  		
     //
     @PostMapping("/staff/decision") // approve or reject
     public String staffDecision(@Valid ActionLog actionLog, 
@@ -394,7 +438,39 @@ public class ProcessController extends TopController{
 						addMessagesAndErrorsToSession(session);
 						return "redirect:/staff";
 				}
-    }        
+    }
+    // process of adding case number to complete incident actions
+    @PostMapping("/discard/final")
+    public String discardFinal(@Valid ActionLog actionLog, 
+																	BindingResult result,
+																	Model model
+																	) {
+				if (result.hasErrors()) {
+						String error = extractErrors(result);
+						addError(error);
+						logger.error("Error saving action "+error);
+						addMessagesAndErrorsToSession(session);
+						return "redirect:/search/incomplete";
+				}
+				User user = findUserFromSession(session);
+				if(user == null){
+						return "redirect:/login";
+				}
+				if(user.canApprove()){
+						actionLog.setDateNow();
+						actionLog.setUser(user);
+						actionLogService.save(actionLog);
+						addMessage("Saved Successfully");				
+						model.addAttribute("messages", messages);
+						addMessagesAndErrorsToSession(session);
+								return "redirect:/search/incomplete";
+				}
+				else{
+						addMessage("You do not have enough privileges ");
+						addMessagesAndErrorsToSession(session);
+						return "redirect:/staff";
+				}
+    }        		
     
     // 
     @GetMapping("/incidentView/{id}")

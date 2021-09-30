@@ -23,6 +23,9 @@
       </div>
 			<p>These incidents are incomplete, you may ask the entities to resume their report by clicking on 'Inform Entity', an email will be sent containing a link to the corresponding incident, if the entity might decide to resume the report.
 			</p>
+			<p>
+				If you think the incident is a duplicate of another similar incident you may descide to discard it because you do not want to inform the entity twice. Click on the link 'Discard Incident' to complete the discard process.
+			</p>
       <div th:switch="${incidents}">
 				<div class="message alert" th:case="null">No incident found </div>
 				<div th:case="*">
@@ -53,6 +56,9 @@
 								<td th:text="${incident.details}"></td>
 								<td>
 									<a th:href="@{/incomplete/inform/{id}(id=${incident.id})}" th:text="${'Inform Entity'}"></a>
+								</td>
+								<td>
+									<a th:href="@{/discard/{id}(id=${incident.id})}" th:text="${'Discard Incident'}"></a>
 								</td>								
 							</tr>
 						</tbody>
