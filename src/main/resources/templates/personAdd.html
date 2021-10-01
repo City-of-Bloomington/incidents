@@ -57,7 +57,8 @@
               type="text"
               th:field="${person.firstname}"
               id="firstname_id"
-              size="30"
+              size="70"
+							maslength="70"
               required="required"
               placeholder="First Name"
             />
@@ -81,7 +82,8 @@
               type="text"
               th:field="${person.lastname}"
               id="lastname_id"
-              size="30"
+              size="70"
+							maxlength="70"
               required="required"
               placeholder="Last Name"
             />
@@ -93,7 +95,8 @@
               type="text"
               th:field="${person.suffix}"
               id="suffix_id"
-              size="6"
+              size="10"
+							maxlength="10"
               placeholder="Jr, Sr, .."
             />
           </div>
@@ -105,6 +108,7 @@
               th:field="${person.address}"
               id="address_id"
               size="70"
+							maxlength="70"
               required="required"
               placeholder="Address"
             />
@@ -117,6 +121,7 @@
               th:field="${person.city}"
               id="city_id"
               size="50"
+							maxlength="50"
               required="required"
               placeholder="City"
             />
@@ -163,7 +168,7 @@
               type="tel"
               th:field="${person.phone}"
               id="phone"
-              size="20"
+              size="30"
               required="required"
               maxlength="30"
               placeholder="Phone number"
@@ -185,7 +190,7 @@
               type="tel"
               th:field="${person.phone2}"
               id="phone2"
-              size="20"
+              size="30"
               maxlength="30"
               placeholder="Alternate phone"
             />
@@ -197,8 +202,8 @@
               type="email"
               th:field="${person.email2}"
               id="email2"
-              size="70"
-              maxlength="80"
+              size="80"
+              maxlength="100"
               placeholder="Alternate email"
             />
           </div>
@@ -233,8 +238,8 @@
               type="text"
               th:field="${person.ssn}"
               id="ssn_id"
-              size="12"
-              maxlength="12"
+              size="11"
+              maxlength="11"
               placeholder="SSN"
             />
           </div>
@@ -325,6 +330,7 @@
               th:field="${person.occupation}"
               id="occupation_id"
               size="70"
+							maxlength="128"
               placeholder="Occupation"
             />
           </div>

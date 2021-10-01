@@ -45,6 +45,8 @@
               th:field="${business.name}"
               id="name"
               placeholder="Business name"
+							size="80"
+							maxlength="80"
 							required="required"
             />
           </div>
@@ -55,6 +57,8 @@
               th:field="${business.corporateAddress}"
               id="corporateAddress"
               placeholder="Corporate address"
+							size="80"
+							maxlength="160"
             />
           </div>
           <div class="field-group">
@@ -63,6 +67,8 @@
               type="text"
               th:field="${business.businessNumber}"
               id="businessNumber"
+							size="32"
+							maxlength="32"
               placeholder="Business number"
             />
           </div>					
@@ -73,6 +79,8 @@
               th:field="${business.phone}"
               id="phone"
               placeholder="Business phone(s)"
+							size="80"
+							maxlength="80"
 							required="required"
             />
           </div>
@@ -87,6 +95,8 @@
               type="email"
               th:field="${business.email}"
               id="email"
+							size="80"
+							maxlength="160"
               placeholder="business email"
 							required="required"
             />
@@ -97,6 +107,8 @@
               type="email"
               th:field="${business.email2}"
               id="email2"
+							size="80"
+							maxlength="160"
               placeholder="business email2"
 							required="required"
             />
@@ -107,6 +119,8 @@
               type="text"
               th:field="${business.reporterName}"
               id="reporterName"
+							size="80"
+							maxlength="160"
               placeholder="full name"
 							required="required"
             />
@@ -117,6 +131,8 @@
               type="text"
               th:field="${business.reporterTitle}"
               id="reporterTitle"
+							size="80"
+							maxlength="80"
               placeholder="Your business title"
 							required="required"
             />

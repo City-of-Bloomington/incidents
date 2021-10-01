@@ -50,13 +50,26 @@
 			</div>
 			<div id="personal" th:attr="style=${fraud.isPersonal()}?'display:inline':'display:none'">			
 				<label for="identityUsed">Identity used</label>
-				<input type="text" th:field="${fraud.identityUsed}" id="identityUsed" placeholder="Identity Used" />
+				<input type="text"
+							 th:field="${fraud.identityUsed}"
+							 id="identityUsed"
+							 size="80"
+							 placeholder="Identity Used" />
 			</div>
 			<div id="account" th:attr="style=${fraud.isAccountRelated()}?'display:inline':'display:none'">
 				<label for="accountUsed">Account used</label>
-				<input type="text" th:field="${fraud.accountUsed}" id="accountUsed" placeholder="Account Used" />
+				<input type="text"
+							 th:field="${fraud.accountUsed}"
+							 id="accountUsed"
+							 size="80"
+							 placeholder="Account Used" />
 				<label for="amountTaken">Amount taken ($)</label>
-				<input type="text" th:field="${fraud.amountTaken}" id="amountTaken" placeholder="Amount taken in dddd.dd format" />
+				<input type="text"
+							 th:field="${fraud.amountTaken}"
+							 id="amountTaken"
+							 size="12"
+							 maxlength="12"
+							 placeholder="dddd.dd" />
 			</div>
 			<label for="details" class="required">*Fraud/Scam details</label>
 			<textarea th:field="${fraud.details}" id="details" placeholder="Fraud or scam details" rows="5" cols="50" required="required">

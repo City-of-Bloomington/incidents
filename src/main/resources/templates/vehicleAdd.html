@@ -61,8 +61,10 @@
           <label for="year">Vehicle Year</label>
           <input
             type="text"
-              th:field="${vehicle.year}"
+            th:field="${vehicle.year}"
             id="year"
+						size="4"
+						maxlength="4"
             placeholder="year"
             />
           <span
@@ -77,7 +79,9 @@
             type="text"
             th:field="${vehicle.make}"
             id="make"
-              placeholder="Make"
+						size="40"
+						maxlength="80"
+            placeholder="Make"
             />
           <span
             th:if="${#fields.hasErrors('make')}"
@@ -91,7 +95,9 @@
             type="text"
             th:field="${vehicle.model}"
             id="model"
-              placeholder="Model"
+						size="40"
+						maxlength="80"
+            placeholder="Model"
             />
           <span
             th:if="${#fields.hasErrors('model')}"
@@ -106,6 +112,8 @@
             type="text"
             th:field="${vehicle.color}"
             id="color"
+						size="30"
+						maxlength="30"
             placeholder="Color"
             />
           <span
@@ -120,6 +128,8 @@
             type="text"
             th:field="${vehicle.plateNumber}"
             id="plateNum"
+						size="20"
+						maxlength="20"
             placeholder="Plate Number"
             />
           <span
@@ -134,7 +144,9 @@
             type="text"
             th:field="${vehicle.plateYear}"
             id="plateYear"
-            placeholder="Plate Year"
+						size="4"
+						maxlength="4"
+            placeholder="Year"
             />
           <span
             th:if="${#fields.hasErrors('plateYear')}"
@@ -165,6 +177,8 @@
             type="text"
             th:field="${vehicle.valueFr}"
             id="value_id"
+						size="10"
+						maxlength="10"
             placeholder="ddd.dd"
             />(damage value related to this incident only)
           <span
@@ -180,7 +194,7 @@
             th:field="${vehicle.owner}"
             id="owner"
             placeholder="vehicle owner if not yours"
-            size="30"
+            size="40"
             maxlength="70"
             />
           <span

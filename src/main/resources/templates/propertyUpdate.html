@@ -51,31 +51,58 @@
 				</div>
 				<div>
 					<label for="brand">Brand</label>
-					<input type="text" th:field="${property.brand}" id="brand" placeholder="Brand" />
+					<input type="text"
+								 th:field="${property.brand}"
+								 id="brand"
+								 size="40"
+								 maxlength="80"
+								 placeholder="Brand" />
 					<span th:if="${#fields.hasErrors('brand')}" th:errors="*{brand}"></span>
 				</div>
 				
 				<div>
 					<label for="model">Model</label>
-				  <input type="text" th:field="${property.model}" id="model" placeholder="Model" />
+				  <input type="text"
+								 th:field="${property.model}"
+								 id="model"
+								 size="40"
+								 maxlength="80"
+								 placeholder="Model" />
 				  <span th:if="${#fields.hasErrors('model')}" th:errors="*{model}"></span>
 				</div>
 				
 				<div>
 					<label for="serialNum">Serial Number</label>
-				  <input type="text" th:field="${property.serialNum}" id="serialNum" placeholder="Serial Number" />
+				  <input type="text"
+								 th:field="${property.serialNum}"
+								 id="serialNum"
+								 size="40"
+								 maxlength="80"
+								 placeholder="Serial Number" />
 				  <span th:if="${#fields.hasErrors('serialNum')}" th:errors="*{serialNum}"></span>
 				</div>
 
 				<div>
 					<label for="value_id" class="required">*Value ($)</label>
-					<input type="text" th:field="${property.value}" id="value_id" placeholder="dddd.dd" required="required" />
+					<input type="text"
+								 th:field="${property.value}"
+								 id="value_id"
+								 size="10"
+								 maxlength="10"
+								 placeholder="dddd.dd"
+								 required="required" />
 					<span th:if="${#fields.hasErrors('value')}" th:errors="*{value}"></span>
 				</div>
 				
 				<div>
 					<label for="owener">*Owner</label>
-					<input type="text" th:field="${property.owner}" id="owner" placeholder="property owner" required="required" />
+					<input type="text"
+								 th:field="${property.owner}"
+								 id="owner"
+								 size="40"
+								 maxlength="70"
+								 placeholder="property owner"
+								 required="required" />
 					<span th:if="${#fields.hasErrors('owner')}" th:errors="*{owner}"></span>
 				</div>
 

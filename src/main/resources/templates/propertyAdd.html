@@ -68,6 +68,8 @@
               type="text"
               th:field="${property.brand}"
               id="brand"
+							size="40"
+							maxlength="80"
               placeholder="Brand"
             />
             <span
@@ -82,6 +84,8 @@
               type="text"
               th:field="${property.model}"
               id="model"
+							size="40"
+							maxlength="80"
               placeholder="Model"
             />
             <span
@@ -96,6 +100,8 @@
               type="text"
               th:field="${property.serialNum}"
               id="serialNum"
+							size="40"
+							maxlength="80"
               placeholder="Serial Number"
             />
             <span
@@ -110,6 +116,8 @@
               type="text"
               th:field="${property.valueFr}"
               id="value_id"
+							maxlength="10"
+							size="10"
               placeholder="dddd.dd"
               required="required"
             />
@@ -126,7 +134,7 @@
               th:field="${property.owner}"
               id="owner"
               placeholder="property owner"
-              size="30"
+              size="40"
               maxlength="70"
               required="required"
             />
