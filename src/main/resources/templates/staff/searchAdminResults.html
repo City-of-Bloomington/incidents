@@ -21,11 +21,6 @@
 			<div th:if="${messages}">
 				<div th:insert="general::messages(${messages})"></div>			
       </div>
-			<p>These incidents are incomplete, you may ask the entities to resume their report by clicking on 'Inform Entity', an email will be sent containing a link to the corresponding incident, if the entity might decide to resume the report.
-			</p>
-			<p>
-				If you think the incident is a duplicate of another similar incident you may descide to discard it because you do not want to inform the entity twice. Click on the link 'Discard Incident' to complete the discard process.
-			</p>
       <div th:switch="${incidents}">
 				<div class="message alert" th:case="null">No incident found </div>
 				<div th:case="*">
@@ -34,13 +29,13 @@
 						<thead>
 							<tr>
 								<th>ID</th>
+								<th>Status</th>
 								<th>Category</th>
 								<th>Incident Type</th>
 								<th>Received Date & Time</th>
 								<th>Incident Date & Time</th>
 								<th>Address </th>
 								<th>Details </th>
-								<th>Inform </th>
 								<th>Action </th>
 							</tr>
 						</thead>
@@ -49,16 +44,14 @@
 								<td>
 									<a th:href="@{/staff/{id}(id=${incident.id})}" th:text="${incident.id}"></a>
 								</td>
+								<td th:text="${incident.status}"></td>
 								<td th:text="${incident.category}"></td>								
 								<td th:text="${incident.incidentType}"></td>
 								<td th:text="${incident.receivedStr}"></td>
 								<td th:text="${incident.dateTimeInfo}"></td>
 								<td th:text="${incident.addressInfo}"></td>
 								<td th:text="${incident.details}"></td>
-								<td>
-									<a th:href="@{/incomplete/inform/{id}(id=${incident.id})}" th:text="${'Inform Entity'}"></a>
-								</td>
-								<td>
+								<td th:if="${incident.canBeDiscarded()}">
 									<a th:href="@{/discard/{id}(id=${incident.id})}" th:text="${'Discard Incident'}"></a>
 								</td>								
 							</tr>

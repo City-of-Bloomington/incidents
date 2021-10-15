@@ -92,12 +92,16 @@ public class ProcessController extends TopController{
 				if(user == null ){
 						return "redirect:/login";
 				}	
-
+				//
+				// adding the discard action
+				Action discardAction = actionService.findById(7);// discard action = 7
 				List<Action> actions = null;
 				try{
 						incident = incidentService.findById(id);
 						actions = getNextActions(incident);
 						if(actions != null && actions.size() > 0){
+								if(discardAction != null)
+										actions.add(discardAction);
 								ActionLog actionLog = new ActionLog();
 								actionLog.setIncident(incident);								
 								model.addAttribute("actionLog", actionLog);
@@ -133,7 +137,9 @@ public class ProcessController extends TopController{
 						addMessagesAndErrorsToSession(session);
 						return "redirect:/staff/staff_intro";
 				}
-
+				// adding the discard action
+				Action discardAction = actionService.findById(7);// discard action = 7
+				//
 				ActionLog actionLog = new ActionLog();
 				List<Action> actions = null;
 				try{
@@ -141,6 +147,9 @@ public class ProcessController extends TopController{
 						actionLog.setIncident(incident);
 						actionLog.setUser(user);
 						actions = getNextActions(incident);
+						if(user.canApprove()){
+								actions.add(discardAction);
+						}
 						model.addAttribute("incident", incident);
 						model.addAttribute("actionLog", actionLog);
 						model.addAttribute("actions", actions);
@@ -172,11 +181,13 @@ public class ProcessController extends TopController{
 						return "redirect:/staff/staff_intro";
 				}
 				incident = incidentService.findById(id);
+				/**
 				if(!incident.canBeChanged()){ // if can not be changed
 						addMessage("This incident can not be discarded");
 						addMessagesAndErrorsToSession(session);
 						return "redirect:/staff/staff_intro";
 				}
+				*/
 				ActionLog actionLog = new ActionLog();
 				List<Action> actions = new ArrayList<>();
 				try{
@@ -227,10 +238,8 @@ public class ProcessController extends TopController{
 						actionLogService.save(actionLog);
 						String caseNumber = actionLog.getCaseNumber();
 						Incident incident = actionLog.getIncident();
-						System.err.println(" case # "+caseNumber);
 						if(caseNumber != null && !caseNumber.isEmpty()){
 								if(incident != null){
-										System.err.println(" saving case # in Incident");
 										incident.setCaseNumber(caseNumber);
 										incidentService.update(incident);
 								}

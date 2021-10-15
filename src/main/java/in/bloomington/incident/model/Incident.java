@@ -886,6 +886,26 @@ public class Incident extends TopModel implements java.io.Serializable{
 				}
 				return false;
     }
+		@Transient
+		public boolean canBeDiscarded(){
+				return !hasDiscardAction();
+		}
+    @Transient
+    public boolean hasDiscardAction(){
+				if(hasActionLogs()){
+						if(actionLogs.size() > 0){
+								for(ActionLog log:actionLogs){
+										Action action = log.getAction();
+										if(action != null &&
+											 action.getName().indexOf("discard") > -1){
+												return true;
+										}
+								}
+						}
+				}
+				return false;
+    }		
+		
     @Transient
     public Double getLatitude(){
 				return latitude;

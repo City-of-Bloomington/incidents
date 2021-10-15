@@ -227,6 +227,9 @@ public class SearchController extends TopController{
         model.addAttribute("incidents", incidents);
 				model.addAttribute("messages", getMessages());
 				resetAll();
+				if(user.canApprove()){ // or admins
+						return "staff/searchAdminResults";
+				}
         return "staff/searchResult";
     }    
     private User findUserFromSession(HttpSession session){
