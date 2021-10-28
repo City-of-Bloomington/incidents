@@ -211,7 +211,8 @@ public class ProcessController extends TopController{
 				}
 				getMessagesAndErrorsFromSession(session, model);
 				return "staff/discard_decision";
-    }  		
+    }
+		
     //
     @PostMapping("/staff/decision") // approve or reject
     public String staffDecision(@Valid ActionLog actionLog, 
@@ -448,7 +449,7 @@ public class ProcessController extends TopController{
 						return "redirect:/staff";
 				}
     }
-    // process of adding case number to complete incident actions
+    // discard an incident
     @PostMapping("/discard/final")
     public String discardFinal(@Valid ActionLog actionLog, 
 																	BindingResult result,
@@ -479,7 +480,44 @@ public class ProcessController extends TopController{
 						addMessagesAndErrorsToSession(session);
 						return "redirect:/staff";
 				}
-    }        		
+    }
+    // discard batch of incidents
+    @PostMapping("/discard/batch")
+    public String discardBatch(@RequestParam(required=true) Integer[] incident_ids,
+															 @RequestParam(required=true) String comments,
+															 Model model
+															 ) {
+				User user = findUserFromSession(session);
+				if(user == null){
+						return "redirect:/login";
+				}
+				if(user.canApprove()){
+						if(incident_ids != null && incident_ids.length > 0){
+								Action action = actionService.findById(7); 								
+								for(Integer id:incident_ids){
+										Incident incident = incidentService.findById(id);
+										if(incident != null){
+												ActionLog actionLog = new ActionLog();
+												actionLog.setAction(action);
+												actionLog.setIncident(incident);
+												actionLog.setDateNow();
+												actionLog.setUser(user);
+												actionLog.setComments(comments);
+												actionLogService.save(actionLog);
+										}
+								}
+								addMessage("Saved Successfully");				
+								model.addAttribute("messages", messages);
+						}
+						addMessagesAndErrorsToSession(session);
+								return "redirect:/search/incomplete";
+				}
+				else{
+						addMessage("You do not have enough privileges ");
+						addMessagesAndErrorsToSession(session);
+						return "redirect:/staff";
+				}
+    }        				
     
     // 
     @GetMapping("/incidentView/{id}")

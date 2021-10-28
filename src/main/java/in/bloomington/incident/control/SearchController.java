@@ -32,6 +32,7 @@ import in.bloomington.incident.service.IncidentApprovedService;
 import in.bloomington.incident.service.IncidentTypeService;
 import in.bloomington.incident.service.SearchService;
 import in.bloomington.incident.service.ActionService;
+import in.bloomington.incident.service.IncidentService;
 import in.bloomington.incident.service.UserService;
 import in.bloomington.incident.model.Incident;
 import in.bloomington.incident.model.IncidentIncomplete;
@@ -63,6 +64,8 @@ public class SearchController extends TopController{
     ActionService actionService;
     @Autowired
     UserService userService;
+    @Autowired
+    IncidentService incidentService;		
 		@Autowired 
     private HttpSession session;
 		
@@ -208,16 +211,31 @@ public class SearchController extends TopController{
 	    
 						return "redirect:/search";
 				}
+				List<Incident> incidents = null;				
 				if(!search.getId().isEmpty()){
-						return "redirect:/incidentView/"+search.getId();
+						int id = search.getIdInt();
+						if(id > 0){						
+								if(user.canApprove()){
+										Incident incident = incidentService.findById(id);
+										if(incident != null && !incident.canBeDiscarded()){
+												return "redirect:/incidentView/"+id;
+										}
+										else{
+												incidents = new ArrayList<>();
+												incidents.add(incident);
+										}
+								}
+								else{
+										return "redirect:/incidentView/"+id;										
+								}								
+						}
 				}
 				resetAll();
-        List<Incident> incidents = searchService.find(search);
+				if(incidents == null){
+						incidents = searchService.find(search);
+				}
 				if(incidents != null && incidents.size() > 0){
 						addMessage(" found "+incidents.size()+" incidents");
-						if(incidents.size() == 1){
-								return "redirect:/incidentView/"+incidents.get(0).getId();
-						}
 				}
 				else{
 						addMessage(" No match found ");

@@ -62,6 +62,18 @@ public class Search implements java.io.Serializable{
     public void setId(String id) {
 				this.id = id;
     }
+		@Transient
+		public int getIdInt(){
+				int id_int = 0;
+				if(!id.isEmpty()){
+						if(id != null){
+								try{
+										id_int = Integer.parseInt(id);
+								}catch(Exception ex){}
+						}
+				}
+				return id_int;
+		}
     public String getActionId() {
 				return actionId;
     }

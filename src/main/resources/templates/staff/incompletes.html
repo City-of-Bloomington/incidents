@@ -21,51 +21,66 @@
 			<div th:if="${messages}">
 				<div th:insert="general::messages(${messages})"></div>			
       </div>
-			<p>These incidents are incomplete, you may ask the entities to resume their report by clicking on 'Inform Entity', an email will be sent containing a link to the corresponding incident, if the entity might decide to resume the report.
+			<p>These incidents are incomplete, you may ask the entities to resume their report by clicking on 'Inform Entity', an email will be sent containing a link to the corresponding incident so that the entity may decide to resume the report.
 			</p>
 			<p>
 				If you think the incident is a duplicate of another similar incident you may descide to discard it because you do not want to inform the entity twice. Click on the link 'Discard Incident' to complete the discard process.
 			</p>
-      <div th:switch="${incidents}">
-				<div class="message alert" th:case="null">No incident found </div>
-				<div th:case="*">
-
-					<table>
-						<thead>
-							<tr>
-								<th>ID</th>
-								<th>Category</th>
-								<th>Incident Type</th>
-								<th>Received Date & Time</th>
-								<th>Incident Date & Time</th>
-								<th>Address </th>
-								<th>Details </th>
-								<th>Inform </th>
-								<th>Action </th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr th:each="incident : ${incidents}">
-								<td>
-									<a th:href="@{/staff/{id}(id=${incident.id})}" th:text="${incident.id}"></a>
-								</td>
-								<td th:text="${incident.category}"></td>								
-								<td th:text="${incident.incidentType}"></td>
-								<td th:text="${incident.receivedStr}"></td>
-								<td th:text="${incident.dateTimeInfo}"></td>
-								<td th:text="${incident.addressInfo}"></td>
-								<td th:text="${incident.details}"></td>
-								<td>
-									<a th:href="@{/incomplete/inform/{id}(id=${incident.id})}" th:text="${'Inform Entity'}"></a>
-								</td>
-								<td>
-									<a th:href="@{/discard/{id}(id=${incident.id})}" th:text="${'Discard Incident'}"></a>
-								</td>								
-							</tr>
-						</tbody>
-					</table>
-				</div>      
-      </div>
+			<p>
+				You may discard a batch of the incidents at once by selecting the ones you want to discard by marking their corresponding checkbox next to their ID, adding the discard notes and then clicking on 'Discard Selected' submit button.
+			</p>
+      <form action="#" th:action="@{/discard/batch}" method="post">			
+				<div th:switch="${incidents}">
+					<div class="message alert" th:case="null">No incident found </div>
+					<div th:case="*">
+						<table>
+							<thead>
+								<tr>
+									<th>ID</th>
+									<th>Select to Discard</th>
+									<th>Category</th>
+									<th>Incident Type</th>
+									<th>Received Date & Time</th>
+									<th>Incident Date & Time</th>
+									<th>Address </th>
+									<th>Details </th>
+									<th>Inform </th>
+									<th>Action </th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="incident : ${incidents}">
+									<td>
+										<a th:href="@{/staff/{id}(id=${incident.id})}" th:text="${incident.id}"></a>
+									</td>
+									<td>
+										<input type="checkbox" name="incident_ids" th:value="${incident.id}" />
+									</td>									
+									<td th:text="${incident.category}"></td>								
+									<td th:text="${incident.incidentType}"></td>
+									<td th:text="${incident.receivedStr}"></td>
+									<td th:text="${incident.dateTimeInfo}"></td>
+									<td th:text="${incident.addressInfo}"></td>
+									<td th:text="${incident.details}"></td>
+									<td>
+										<a th:href="@{/incomplete/inform/{id}(id=${incident.id})}" th:text="${'Inform Entity'}"></a>
+									</td>
+									<td>
+										<a th:href="@{/discard/{id}(id=${incident.id})}" th:text="${'Discard Incident'}"></a>
+									</td>								
+								</tr>
+							</tbody>
+						</table>
+						<div class="field-group">
+							<label>Discard Notes (apply to all selected incidents)</label>
+							<textarea name="comments" rows="5" cols="50"></textarea>
+						</div>
+					<ul class="button-group">
+            <li><button type="submit" class="next-button">Discard Selected</button></li>
+          </ul>						
+					</div>      
+				</div>
+			</form>
     </main>
   </body>
 </htmL>

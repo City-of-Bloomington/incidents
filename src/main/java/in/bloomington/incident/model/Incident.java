@@ -668,17 +668,6 @@ public class Incident extends TopModel implements java.io.Serializable{
     //sorted at the same time
     public void setActionLogs(List<ActionLog> list){
 				if(list != null){
-						/**
-						if(list.size() > 1){ 
-								actionLogs = list.stream().
-										sorted((o1, o2)->o1.getAction().getObjId().
-													 compareTo(o2.getAction().getObjId())).
-										collect(Collectors.toList());
-						}
-						else{
-								actionLogs = list;
-						}
-						*/
 						actionLogs = list;
 				}
     }
@@ -693,15 +682,6 @@ public class Incident extends TopModel implements java.io.Serializable{
 										list2.add(log);
 								}
 						}
-						/**
-						if(list.size() > 1){
-								// reverse order last first
-								actionLogs = list.stream().
-										sorted((o1, o2)->o2.getAction().getObjId().
-													 compareTo(o1.getAction().getObjId())).
-										collect(Collectors.toList());
-						}
-						*/
 						if(list2.size() > 1){
 								// reverse order last first
 								validActionLogs = list2.stream().

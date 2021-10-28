@@ -194,7 +194,6 @@ public class ActionLog implements java.io.Serializable{
 								cal.add(Calendar.DATE, -days);
 								Date old_date = cal.getTime();
 								int ret = old_date.compareTo(date); // it should be negative
-								System.err.println(" date compare "+ret);
 								return ret <= 0;
 						}
 						catch(Exception ex){
