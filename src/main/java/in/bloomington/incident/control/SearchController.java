@@ -93,8 +93,7 @@ public class SearchController extends TopController{
 						model.addAttribute("messages", messages);
 						resetAll();
 				}
-				model.addAttribute("statusOutcome", "Received");						
-        return "staff/status_outcomes";
+        return "staff/received_list";
     }
     @GetMapping("/search/incomplete")
     public String findIncomplete(Model model){
@@ -147,7 +146,7 @@ public class SearchController extends TopController{
 						resetAll();
 				}
 				model.addAttribute("statusOutcome", "Confirmed");					
-        return "staff/status_outcomes";
+        return "staff/confirmed_list";
     }    
     
     @GetMapping("/search/approved")

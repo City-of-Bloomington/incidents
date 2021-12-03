@@ -485,6 +485,7 @@ public class ProcessController extends TopController{
     @PostMapping("/discard/batch")
     public String discardBatch(@RequestParam(required=true) Integer[] incident_ids,
 															 @RequestParam(required=true) String comments,
+															 @RequestParam String target,
 															 Model model
 															 ) {
 				User user = findUserFromSession(session);
@@ -510,6 +511,9 @@ public class ProcessController extends TopController{
 								model.addAttribute("messages", messages);
 						}
 						addMessagesAndErrorsToSession(session);
+						if(target != null)
+								return "redirect:/search/"+target;
+						else
 								return "redirect:/search/incomplete";
 				}
 				else{

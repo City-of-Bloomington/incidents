@@ -29,7 +29,8 @@
 			<p>
 				You may discard a batch of the incidents at once by selecting the ones you want to discard by marking their corresponding checkbox next to their ID, adding the discard notes and then clicking on 'Discard Selected' submit button.
 			</p>
-      <form action="#" th:action="@{/discard/batch}" method="post">			
+      <form action="#" th:action="@{/discard/batch}" method="post">
+				<input type="hidden" name="target" value="incomplete" />
 				<div th:switch="${incidents}">
 					<div class="message alert" th:case="null">No incident found </div>
 					<div th:case="*">
