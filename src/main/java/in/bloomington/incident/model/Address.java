@@ -213,6 +213,11 @@ public class Address extends TopModel implements java.io.Serializable{
 				old_id = val;
 		}
 		@Transient
+		public boolean hasLatitudeLongitude(){
+				if(latitude == null || longitude == null) return false;
+				return true;
+		}
+		@Transient
 		public Integer getOld_id(){
 				if(old_id == null)
 						return id;

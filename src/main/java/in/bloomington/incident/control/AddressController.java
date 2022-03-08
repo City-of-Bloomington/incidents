@@ -137,6 +137,11 @@ public class AddressController extends TopController{
 				Address address = new Address();
 				address.setType_id(type_id);
 				model.addAttribute("address", address);
+				if(hasErrors()){
+						System.err.println(" addresInput "+hasErrors());
+						model.addAttribute("errors", errors);
+				}
+				resetAll();
         return "addressInput";
     }
 		
@@ -167,13 +172,15 @@ public class AddressController extends TopController{
 																			defaultJurisdiction,
 																			defaultState,
 																			zipCodes)){
-								pass = false;						
 								addError(address.getErrorInfo());
+								return false;
 						}
-						if(pass && addressCheck.isInIUPDLayer(address.getLatitude(),
-																							address.getLongitude())){
-								pass = false;
-								addError("This address is in IU Police Department district");
+						if(address.hasLatitudeLongitude()){
+								if(addressCheck.isInIUPDLayer(address.getLatitude(),
+																									address.getLongitude())){
+										addError("This address is in IU Police Department district");
+										return false;
+								}
 						}
 				}
 				return pass;
@@ -208,6 +215,7 @@ public class AddressController extends TopController{
 														 ) {
 				boolean pass = true;
 				Address address = null;
+				resetAll();
         if (result.hasErrors()) {
 						addError(Helper.extractErrors(result));
 						pass = false;
@@ -220,10 +228,7 @@ public class AddressController extends TopController{
 						return "emailAdd";								
 				}
 				// no pass then we send the user to address input again with error message
-				model.addAttribute("address", address);
-				model.addAttribute("errors", errors);
-				resetAll();
-				return "addressInput";
+				return "redirect:/addressInput/"+addr.getType_id();
 		}
 		//
 		// we come here when back button is pressed
