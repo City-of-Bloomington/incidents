@@ -38,10 +38,12 @@ import in.bloomington.incident.service.ActionService;
 import in.bloomington.incident.service.ActionLogService;
 import in.bloomington.incident.service.RequestService;
 import in.bloomington.incident.service.UserService;
+import in.bloomington.incident.service.BusinessService;
 import in.bloomington.incident.service.AddressService;
 import in.bloomington.incident.model.Incident;
 import in.bloomington.incident.model.IncidentType;
 import in.bloomington.incident.model.Action;
+import in.bloomington.incident.model.Business;
 import in.bloomington.incident.model.Address;
 import in.bloomington.incident.model.ActionLog;
 import in.bloomington.incident.model.Person;
@@ -49,7 +51,6 @@ import in.bloomington.incident.model.Request;
 import in.bloomington.incident.model.User;
 import in.bloomington.incident.utils.Helper;
 import in.bloomington.incident.utils.EmailHelper;
-// import in.bloomington.incident.utils.AddressCheck;
 
 @Controller
 public class IncidentController extends TopController{
@@ -66,7 +67,9 @@ public class IncidentController extends TopController{
 																			"Unlocked vehicle",
 																			"Other specify"));
     @Autowired
-    IncidentService incidentService;		
+    IncidentService incidentService;
+    @Autowired
+    BusinessService businessService;			
     @Autowired
     IncidentTypeService incidentTypeService;
     @Autowired
@@ -81,6 +84,8 @@ public class IncidentController extends TopController{
 		AddressService addressService;		
     @Autowired
     private JavaMailSender mailSender;
+		@Autowired 
+    private HttpSession session;		
 		//
     @Value("${incident.email.sender}")
     private String email_sender;
@@ -91,23 +96,23 @@ public class IncidentController extends TopController{
 
     @RequestMapping("/emailUpdate/{id}")
     public String emailUpdate(@PathVariable("id") int id,
-															Model model,
-															HttpSession session
+															Model model
 															){
 				getMessagesAndErrorsFromSession(session, model);
 				Incident incident = incidentService.findById(id);
 				model.addAttribute("address_id", incident.getAddress().getId());
 				model.addAttribute("type_id", incident.getIncidentType().getId());
 				return "emailAdd";
-    }		
+    }
+		// 
     @RequestMapping("/emailRequest")
     public String emailRequest(@RequestParam(required = true) String email,
-															@RequestParam(required = true) String email2,
-															@RequestParam(required = true) int type_id,
-															@RequestParam(required = true) int address_id,
-															Model model,
-															HttpSession session
-															){
+															 @RequestParam(required = true) String email2,
+															 @RequestParam(required = true) int type_id,
+															 @RequestParam(required = true) int address_id,
+															 Model model,
+															 HttpServletRequest req
+															 ){
 				boolean emailProblem = false;
 				if(email == null || email.isEmpty() ||
 					 email2 == null || email2.isEmpty()){
@@ -154,6 +159,7 @@ public class IncidentController extends TopController{
 						incident.setEmail(email);
 						incident.setIncidentType(type);
 						incident.setAddress(address);
+						incident.setCategory("Person");
 						incidentService.update(incident);
 				}
 				else{
@@ -162,20 +168,24 @@ public class IncidentController extends TopController{
 						incident.setReceivedNow();
 						incident.setIncidentType(type);
 						incident.setAddress(address);
+						incident.setCategory("Person");						
 						incidentService.save(incident);
 						if(ids == null){
 								ids = new ArrayList<>();
 						}
+						//
+						// this is the only place we are adding
+						// incident ID in the session
+						//
+						//						
 						ids.add(""+incident.getId());
 						session.setAttribute("incident_ids", ids);
+						//
+						// send resume email
+						String url = prepareUrl(req);
+						String back = sendResumeEmail(incident, url);
+						
 				}
-				//
-				// this is the only place we are adding
-				// incident ID in the session
-				//
-				//
-				// return "redirect:/incidentStart/"+incident.getId();
-				//
 				model.addAttribute("incident", incident);
 				model.addAttribute("entryTypes", entryTypes);
 				handleErrorsAndMessages(model);
@@ -186,8 +196,7 @@ public class IncidentController extends TopController{
     public String incidentNext(@PathVariable("id") int id,
 															 @Valid Incident incident,
 															 BindingResult result,
-															 Model model,
-															 HttpSession session
+															 Model model
 															 ) {
 				boolean pass = true;
         if (result.hasErrors()) {
@@ -219,7 +228,7 @@ public class IncidentController extends TopController{
 						}						
 						incidentService.update(incident);
 						//
-						// this redirect will decide the next step
+						// this redirect will descide the next step
 						//
 						return "redirect:/incident/"+id;
 				}
@@ -229,13 +238,12 @@ public class IncidentController extends TopController{
 						return "redirect:/";	    
 				}
     }
-    // view mode
+    // view/next step
     @GetMapping("/incident/{id}")
     public String showIncident(@PathVariable("id") int id,
 															 Model model,
 															 HttpServletRequest req,
-															 RedirectAttributes redirectAttributes,
-															 HttpSession session
+															 RedirectAttributes redirectAttributes
 															 ) {
 				Incident incident = null;
 				if(!verifySession(session, ""+id)){
@@ -251,7 +259,11 @@ public class IncidentController extends TopController{
 						redirectAttributes.addFlashAttribute("errors", errors);
 						return "redirect:/error";
 				}
-				if(incident.canBeChanged()){	
+				if(incident.canBeChanged()){
+						// need to add details
+						if(!incident.verifyDetails()){
+								return "redirect:/incidentEdit/"+id;
+						}
 						if(!incident.hasPersonList()){
 								addMessage("You need to add a person");
 								addMessagesAndErrorsToSession(session);	    
@@ -272,30 +284,28 @@ public class IncidentController extends TopController{
 								addMessagesAndErrorsToSession(session);
 								return "redirect:/vehicle/add/"+id;
 						}
+						incident.setIgnoreStatus(true);
 						model.addAttribute("incident", incident);
-						model.addAttribute("hostPath", hostPath);	    
 						getMessagesAndErrorsFromSession(session, model);
-						return "incident";	    
+						return "incident";								
 				}
 				else {
 						addError("No more changes can be made to this incident");
 						addMessagesAndErrorsToSession(session);
-						return "redirect:/introStart";
+						return "redirect:/";
 				}
-
     }
     //
     @GetMapping("/incident/finalPage/{id}")
     public String incidentFinalPage(@PathVariable("id") int id,
 																		Model model,
-																		HttpSession session,
 																		RedirectAttributes redirectAttributes
 																		) {
 				Incident incident = null;
 				if(!verifySession(session, ""+id)){
 						addMessage("no more changes can be made ");
 						addMessagesAndErrorsToSession(session);
-						return "redirect:/index";
+						return "redirect:/";
 				}
 				try{
 						incident = incidentService.findById(id);
@@ -314,7 +324,7 @@ public class IncidentController extends TopController{
 						addMessage("incident can be submitted ");
 						addMessages(incident.getErrors());
 						addMessagesAndErrorsToSession(session);
-						return "redirect:/introStart";
+						return "redirect:/";
 				}
     }
     
@@ -325,11 +335,10 @@ public class IncidentController extends TopController{
 																 RedirectAttributes redirectAttributes,
 																 HttpServletRequest req
 																 ) {
-				HttpSession session = req.getSession();
 				if(!verifySession(session, ""+id)){
 						addMessage("no more changes can be made ");
 						addMessagesAndErrorsToSession(session);
-						return "redirect:/index";
+						return "redirect:/";
 				}
 				Incident incident = null;
 				incident = incidentService.findById(id);
@@ -337,9 +346,10 @@ public class IncidentController extends TopController{
 						addMessage("Incident can not be submitted ");
 						addMessages(incident.getErrors());
 						addMessagesAndErrorsToSession(session);
-						return "redirect:/index";
+						return "redirect:/";
 				}
 				try{
+						/**
 						String host_forward = req.getHeader("X-Forwarded-Host");
 
 						String host = req.getServerName();
@@ -358,7 +368,9 @@ public class IncidentController extends TopController{
 						}	    
 						if(hostPath != null)
 								url += hostPath;
-						url += "/incident/confirm/";
+						*/
+						String url = prepareUrl(req);
+						// url += "/incident/confirm/";
 						ActionLog actionLog = new ActionLog();
 						actionLog.setIncident(incident);
 						Action action = actionService.findById(2); // received action
@@ -378,7 +390,7 @@ public class IncidentController extends TopController{
 						addError("Invalid incident Id "+id);
 						logger.error(errors+" "+ex);
 						model.addAttribute("errors", errors);
-						return "redirect:/index"; 
+						return "redirect:/"; 
 				}
 				handleErrorsAndMessages(model);
 				return "successSubmission";
@@ -395,8 +407,6 @@ public class IncidentController extends TopController{
 						request = requestService.findById(id);
 						incident = incidentService.findById(id);
 				}catch(Exception ex){}
-				System.err.println("hash: "+hash);
-				System.err.println("req hash: "+request.getHash());
 				if(request == null){
 						error = "Incident not found ";
 				}
@@ -436,8 +446,7 @@ public class IncidentController extends TopController{
     }
     @GetMapping("/incidentEdit/{id}")
     public String showEditForm(@PathVariable("id") int id,
-															 Model model,
-															 HttpSession session
+															 Model model
 															 ) {
 				if(!verifySession(session, ""+id)){
 						addMessage("no more changes can be made ");
@@ -469,27 +478,26 @@ public class IncidentController extends TopController{
 				else {
 						addError("No more changes can be made to this incident");
 						addMessagesAndErrorsToSession(session);
-						return "redirect:/index";
+						return "redirect:/";
 				}
     }
     @PostMapping("/incidentUpdate/{id}")
     public String updateIncident(@PathVariable("id") int id,
 																 @Valid Incident incident, 
 																 BindingResult result,
-																 Model model,
-																 HttpSession session
+																 Model model
 																 ) {
 				if (result.hasErrors()) {
 						String error = Helper.extractErrors(result);
 						addError(error);
 						logger.error("Error update incident "+id+" "+error);
 						handleErrorsAndMessages(model);
-						return "incidentUpdate";
+						return "redirect:/incidentEdit/"+id;
 				}
 				if(!verifySession(session, ""+id)){
 						addMessage("no more changes can be made ");
 						addMessagesAndErrorsToSession(session);
-						return "redirect:/index";
+						return "redirect:/";
 				}
 				if(incident.canBeChanged()){
 						boolean pass = true;
@@ -499,7 +507,7 @@ public class IncidentController extends TopController{
 								pass = false;
 						}
 						if(!pass){
-								return "redirect:/incidentEdit/"+incident.getId();
+								return "redirect:/incidentEdit/"+id;
 						}
 						int addr_id = incident.getAddr_id();
 						if(addr_id > 0){
@@ -515,14 +523,12 @@ public class IncidentController extends TopController{
 				else{
 						addError("No more changes can be made to this incident");
 						addMessagesAndErrorsToSession(session);
-						return "redirect:/index";
+						return "redirect:/";
 				}
     }
-		
     @GetMapping("/incident/delete/{id}")
     public String deleteIncident(@PathVariable("id") int id,
-																 Model model,
-																 HttpSession session
+																 Model model
 																 ) {
 				if(!verifySession(session, ""+id)){
 						addMessage("no more changes can be made ");
@@ -541,7 +547,7 @@ public class IncidentController extends TopController{
 						addError("Invalid incident ID "+id);
 				}
 				addMessagesAndErrorsToSession(session);
-				return "redirect:/index";
+				return "redirect:/";
 
     }
     private String createRequestAndEmail(String url,
@@ -579,14 +585,14 @@ public class IncidentController extends TopController{
 				String subject = " Bloomington's Police Department Online Reporting Confirmation ";
 				String to = incident.getEmail();
 				String body = "Click on the link ";
-				body += url+id+"/"+hash+" to confirm.\n\n ";
-				body += " Once your report is reviewed it will either be accepted or rejected, at which time you will receive another email explaining the reason for denial or a report reference number.\n\n";
+				body += url+"/incident/confirm/"+id+"/"+hash+" to confirm.<br />\n\n ";
+				body += " Once your report is reviewed it will either be accepted or rejected, at which time you will receive another email explaining the reason for denial or a report reference number.<br />\n\n";
 				body += "Please do not reply to this email as this is an automated system.";
-				body += "\n\n";
-				body += "Bloomington Police Department (BPD)\n";
-				body += "220 E 3rd St, Bloomington, IN 47401\n";
-				body += "(812) 339-4477\n";
-				body += "https://bloomington.in.gov/police";
+				body += "<br />\n\n";
+				body += "Bloomington Police Department (BPD)<br />\n";
+				body += "220 E 3rd St, Bloomington, IN 47401<br />\n";
+				body += "(812) 339-4477<br />\n";
+				body += "https://bloomington.in.gov/police<br />";
 				body += "\n";
 				EmailHelper emailHelper = new EmailHelper(mailSender, email_sender, to, subject, body);
 				String back = emailHelper.send();
@@ -601,17 +607,58 @@ public class IncidentController extends TopController{
 					 System.err.println(" to "+to);
 					 System.err.println(" from "+email_sender);
 				*/
-				/**
-					 EmailHandle emailer = new EmailHandle(email_host,
-					 to,
-					 email_sender,
-					 subject,
-					 message);
-				*/
 				//
 				// uncomment in production to send email
 				//
 				return ret;
     }
-
+		private String prepareUrl(HttpServletRequest req){
+				String host_forward = req.getHeader("X-Forwarded-Host");
+				String host = req.getServerName();
+				String uri = req.getRequestURI();
+				String scheme = req.getScheme();
+				int port = req.getServerPort();
+				String url = scheme+"://";
+				if(host_forward != null){
+						url += host_forward;
+				}
+				else{
+						url += host;
+				}
+				if(port == 8080){ // for localhost
+						url += ":"+port;
+				}	    
+				if(hostPath != null)
+						url += hostPath;
+				return url;
+		}		
+    private String sendResumeEmail(Incident one, String url){
+				String message = "";
+				if(one != null){
+						String subject = "Incident reporting resume link";
+						
+						if(one.hasEmail()){
+								String body = "If for any reason, you stopped from completing your report, you may click on <a href='"+url+"/incomplete/resume/"+one.getId()+"/"+one.getReceivedNoSep()+"'>here</a> to resume and submit your report. If you completed your report you may discard this email. Thanks<br />\n\n";
+								body += "Please do not reply to this email as this is an automated system.";
+								body += "<br />\n\n";
+								body += "Bloomington Police Department (BPD)<br />\n";
+								body += "220 E 3rd St, Bloomington, IN 47401<br />\n";
+								body += "(812) 339-4477<br />\n";
+								body += "https://bloomington.in.gov/police<br />";
+								body += "\n";
+								
+								String toEmail = one.getEmail();
+								EmailHelper emailHelper = new EmailHelper(mailSender, email_sender, toEmail, subject, body);
+								message = emailHelper.send();
+								if(!message.isEmpty()){
+										addError(message);
+										logger.error(message);
+								}
+						}
+						else{
+								message = "No email address available in the incident";
+						}
+				}
+				return message;
+    }		
 }

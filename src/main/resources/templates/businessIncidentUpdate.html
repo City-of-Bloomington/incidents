@@ -1,0 +1,155 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--
+ - @copyright Copyright (C) 2014-2015 City of Bloomington, Indiana. All rights reserved.
+ - @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
+ - @author W. Sibo <sibow@bloomington.in.gov>
+ -
+ -->
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head th:replace="general::head('Incident')"></head>
+
+  <body>
+    <header th:replace="general::header"></header>
+
+    <main class="public-questions-wrapper">
+      <h2>Report Incident Details</h2>
+
+      <div th:if="${errors}">
+        <div th:replace="general::errors(${errors})"></div>
+      </div>
+
+      <div th:if="${messages}">
+        <div th:replace="general::messages(${messages})"></div>
+      </div>
+
+      <p th:insert="general::incidentInstructions"></p>
+
+      <p>* indicates required fields</p>
+      <form
+        th:action="@{/businessIncidentChange/{id}(id=${incident.id})}"
+        th:object="${incident}"
+        onsubmit="return verifyBusinessIncidentInput()"
+        method="post"
+				>
+				<input type="hidden" th:field="${incident.addr_id} " />
+        <input type="hidden" th:field="${incident.bus_id} " />
+				<input type="hidden" th:field="${incident.receivedStr} "/>
+				<input type="hidden" th:field="${incident.category} " />
+        <input type="hidden" th:field="${incident.business} " />
+        <input type="hidden" th:field="${incident.address} " />
+        <input type="hidden" th:field="${incident.email} " />				
+        <input type="hidden" th:field="${incident.transientOffender} " />
+        <fieldset>
+          <legend>Incident Date and Time</legend>
+
+          <div class="field-group">
+            <label for="start_date" class="required">
+              *Incident occurred, Date:
+            </label>
+
+            <input
+              type="date"
+              th:field="${incident.dateStr}"
+              id="start_date"
+              size="15"
+              placeholder="mm/dd/yyyy"
+            />
+          </div>
+
+          <div class="field-group">
+            <label for="start_time" class="required"> Time: </label>
+
+            <input
+              type="text"
+              th:field="${incident.timeStr}"
+              id="start_time"
+              size="15"
+              class="timepicker"
+              placeholder="hh:mm am/pm"
+            />
+          </div>
+
+          <div class="field-group">
+            <label for="end_date"> End Incident, Date: </label>
+
+            <input
+              type="date"
+              th:field="${incident.endDateStr}"
+              id="end_date"
+              value=""
+              size="15"
+              placeholder="mm/dd/yyyy"
+            />
+          </div>
+
+          <div class="field-group">
+            <label for="end_time" class="required"> Time: </label>
+
+            <input
+              type="text"
+              th:field="${incident.endTimeStr}"
+              id="end_time"
+              value=""
+              size="15"
+              class="timepicker"
+              placeholder="hh:mm am/pm"
+            />
+          </div>
+
+          <div class="field-group">
+            <p>
+              If unsure of exact dates/times, please give approximate
+              dates/times below.
+            </p>
+
+            <textarea
+              th:field="${incident.dateDescription}"
+              id="date_description"
+              rows="3"
+              cols="60"
+            ></textarea>
+          </div>
+        </fieldset>
+        <fieldset>
+          <legend>Establishment Info</legend>
+          <span th:text="${incident.business.info}"></span>
+        </fieldset>				
+        <fieldset>
+          <legend>Location of Incident</legend>
+          <span th:text="${incident.addressInfo}"></span>
+        </fieldset>
+        <fieldset>
+          <legend>Incident Details</legend>
+					<div class="field-group">
+            <label for="incident_type">* Incident Type: </label>
+						<select th:field="${incident.incidentType}" id="incident_type"
+										required="required">
+							<option value="">Pick Incident Type</option>
+              <option
+                th:each="r : ${types}"
+                th:value="${r.id}"
+                th:text="${r.name}"
+                ></option>
+            </select>
+					</div>
+          <div class="field-group">
+            <label for="details_id" class="required">*Incident details:</label>
+            <textarea
+              th:field="${incident.details}"
+              id="details_id"
+              rows="3"
+              cols="60"
+              required="reguired"
+              placeholder="Incident Details"
+            ></textarea>
+          </div>
+        </fieldset>
+				<ul class="button-group">
+          <li>
+            <button type="submit" class="next-button">Save Changes</button>
+          </li>
+				</ul>
+      </form>
+    </main>
+  </body>
+</html>

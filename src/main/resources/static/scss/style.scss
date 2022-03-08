@@ -387,6 +387,18 @@ form {
 .field-group {
   margin: 0 0 20px 0;
   width: 100%;
+
+  &.checkbox {
+    display: flex;
+    align-items: center;
+
+    input {
+      &[type="checkbox"] {
+        width: auto;
+        margin: 0 10px 0 0;
+      }
+    }
+  }
 }
 
 @mixin visuallyHidden() {
@@ -707,6 +719,15 @@ main {
     &:hover {
       background: darken($color-fern, 5%);
     }
+
+    &.intro {
+      margin: 10px 0 10px 0;
+      display: inline-block;
+
+      // &:nth-child(2n) {
+      //   margin: 10px 0 10px 0;
+      // }
+    }
   }
 
   #next_div,
@@ -803,7 +824,8 @@ form .button-group {
   color: #1f4620;
 }
 
-#typeOptions {
+#typeOptions,
+.type-options {
   ul {
     list-style: none;
     display: flex;

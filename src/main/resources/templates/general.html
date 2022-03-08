@@ -252,12 +252,23 @@
       </p>
       <div class="field-group">
         <label for="email" class="required">*Email</label>
-        <input id="email" name="email" value="" />
+        <input id="email"
+							 type="email"
+							 name="email"
+							 size="80"
+							 maxlength="80"
+							 value="" />
       </div>
       <p>Please re-enter the same email to confirm</p>
       <div class="field-group">
-        <label for="email2" class="required">*Confirm Email</label>
-        <input id="email2" name="email2" value="" />
+        <label for="email2"
+							 class="required">*Confirm Email</label>
+        <input id="email2"
+							 type="email"
+							 name="email2"
+							 size="80"
+							 maxlength="80"
+							 value="" />
       </div>
     </div>
 
@@ -320,7 +331,17 @@
       Please complete the fields below. The information you provide for your
       case is critical to the Department's overall crime analysis efforts.
     </p>
-
+    <div th:fragment="businessInstructions">
+      <p>Information about Business data entry</p>
+			<ul>
+				<li>Business name and email are required</li>
+				<li>Use '(123) 456-7890' format for each phone number</li>
+				<li>
+					For multiple phone numbers, use comma or semicolon to separate each number
+					
+				</li>
+			</ul>
+		</div>
     <ul th:fragment="personInstructions">
       <li>Information about the Person Reporting this Incident</li>
       <li>
@@ -334,7 +355,20 @@
         and witnesses.
       </li>
     </ul>
-
+    <ul th:fragment="offenderInstructions">
+      <li>Information about the incident offender</li>
+      <li>
+        Please add information about the offender related to this incident.
+			</li>
+			<li>
+				If the offender is unknown check the 'Transient offender' checkbox.
+      </li>
+			<li>
+				If the offender's address is unknown check the 'Transiant address' checkbox.</li>
+      <li>
+        If reporting multiple offenders, click “Next, Add Another” after adding information for each offender.
+      </li>
+    </ul>
     <div th:fragment="propertyInstructions">
       <p>Use this page to report property that was lost, stolen or damaged.</p>
       <ul>
@@ -348,6 +382,21 @@
         </li>
       </ul>
     </div>
+    <div th:fragment="businessPropertyInstructions">
+      <p>Use this page to report stolen or vandalized properties</p>
+      <ul>
+        <li>
+          If you are reporting damage to a vehicle, please give the description
+          and value of the damage in the vehicle screen.
+        </li>
+				<li> If you are reporting multiple properties on one entry or
+					add them individually by clicking ‘Next, Add Another’.
+				</li>
+        <li>
+					If reporting multiple properties on one entry, give the appropriate total value and description below.
+        </li>
+      </ul>
+    </div>		
     <div th:fragment="fraudInstructions">
       <p>Use this page to report any fraud or scam.</p>
       <ul>
@@ -382,26 +431,41 @@
       </ul>
     </div>
 
-    <ul th:fragment="uploadInstructions">
-      <li>You can upload up to 3 images related to incident.</li>
+    <ul th:fragment="mediaInstructions(media_max_count,media_max_size)">
+      <li>You can upload up to <span th:text="${media_max_count}"> </span> photos related to incident.</li>
       <li>
         Optional, you may add explantions about these image in the text field
         below.
       </li>
       <li>
-        The accepted image files are jpeg, gif, png and pdf only any other type
-        will be ignored
+        The accepted photo files types are jpg, gif, png and pdf only, any other type will be ignored
       </li>
-      <li>Images size should not exceed 5 MG each</li>
+      <li>Photo size should not exceed <span th:text="${media_max_size}"> </span> MB each</li>
       <li>
-        If image file size is more than 5 MB, you need to resize it using one of
-        the image editing tools such as MS paint
+        If the photo file size is more than 5 MB, you need to resize it using one of
+        the photo editing tools such as MS paint
       </li>
-      <li>Total max upload limit should not exceed 15MB</li>
-      <li>When done with image uploads, click on 'Submit'</li>
-      <li>You can upload one file at a time</li>
+      <li>Total max upload limit should not exceed <span th:text="${media_max_count*media_max_size}"> </span> MB</li>
+      <li>When your are done with photo uploads, click on 'Submit'</li>
     </ul>
-
+    <ul th:fragment="mediaBusinessInstructions(media_max_count,media_max_size)">
+			<li> You are required to upload photo(s)/receipt(s) of the incident </li>
+      <li>You can upload up to <span th:text="${media_max_count}"> </span> photos of the incident or photos of the receipts related to incident.</li>
+      <li>
+        Optional, you may also add explantions about these image in the text field below.
+      </li>
+      <li>
+        The accepted photo files types are jpg, gif, png and pdf only, any other type will be ignored
+      </li>
+      <li>Photo size should not exceed <span th:text="${media_max_size}"> </span> MB each</li>
+      <li>
+        If the photo file size is more than <span th:text="${media_max_size}"> </span> MB, you need to resize it using one of
+        the photo editing tools such as MS paint
+      </li>
+      <li>Total max upload limit should not exceed <span th:text="${media_max_count*media_max_size}"> </span> MB</li>
+			<li>When you are done with photo uploads, click on ‘Next.’
+				</li>
+    </ul>
     <div th:fragment="introMoreInfo">
       <p>
         To report a crime that does not fit the specifications of this system,

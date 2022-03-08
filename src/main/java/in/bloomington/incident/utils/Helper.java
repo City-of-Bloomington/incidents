@@ -54,7 +54,8 @@ public class Helper{
     public final static SimpleDateFormat dfTime = new SimpleDateFormat("HH:mm");
     public final static SimpleDateFormat dfTimeAmPm = new SimpleDateFormat("hh:mm aa");
     public final static SimpleDateFormat dfDateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-    public final static SimpleDateFormat dfDateTimeAmPm = new SimpleDateFormat("yyyy-MM-dd hh:mm aa");    
+    public final static SimpleDateFormat dfDateTimeNoSep = new SimpleDateFormat("yyyyMMddHHmm");		
+    public final static SimpleDateFormat dfDateTimeAmPm = new SimpleDateFormat("yyyy-MM-dd hh:mm aa");
     public final static NumberFormat curFr = NumberFormat.getCurrencyInstance(Locale.US);
     public final static DecimalFormat dblFr = new DecimalFormat("###.##");
     final static Map<String, String>       mimeTypes = new HashMap<>();
@@ -299,7 +300,7 @@ public class Helper{
     public final static String getToday()
     {
         // LocalDate date  = LocalDate.now();
-	Date date = new Date();
+				Date date = new Date();
         String today = df.format(date);
         return today;
     }

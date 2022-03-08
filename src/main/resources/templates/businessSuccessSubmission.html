@@ -1,0 +1,44 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--
+ - @copyright Copyright (C) 2014-2015 City of Bloomington, Indiana. All rights reserved.
+ - @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
+ - @author W. Sibo <sibow@bloomington.in.gov>
+ -
+ -->
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head th:replace="general::head('Confirmation')"></head>
+  <body>
+    <header th:replace="general::header"></header>		
+    
+    <main class="public-questions-wrapper">
+      <div th:if="${errors}">
+        <div th:insert="general::errors(${errors})"></div>			
+      </div>
+      
+      <div th:if="${messages}">
+        <div th:insert="general::messages(${messages})"></div>			
+      </div>
+      
+      <h2>Incident Report Submission Success</h2>
+			<p>
+				Thank you for your submission to the Bloomington Police Department Establishment Incident Reporting system. Your diligence to submit this report allows our Department to successfully record crime that occurs within our jurisdiction.
+			</p>
+			<ul>
+				<li>Once a member of the BPD staff processes your submission, you will receive a confirmation email (to the email address you provided for your establishment), which will include the BPD case number associated with your report.
+				</li>
+				<li>Since you do not require additional services from the Bloomington Police Department in reference to the reported incident, you can proceed with the policy/procedure set forth by your establishment. In order to pursue criminal actions against the offender(s) in your incident, you can make contact with the Monroe County Prosecutor's Office by emailing them at charging@co.monroe.in.us.
+				</li>
+			</ul>
+      <p>Thank you for using the Bloomington Police Department's Incident Reporting System.</p>
+			<ul>
+				<li>
+					<a th:href="@{/forBusiness}">Report another establishment incident</a>
+				</li>
+				<li>
+					<a href="https://bloomington.in.gov">Back to the City of Bloomington
+						home page</a>
+				</li>
+			</ul>
+    </main>
+  </body>
+</htmL>

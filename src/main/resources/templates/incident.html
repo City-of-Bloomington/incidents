@@ -23,13 +23,13 @@
       </div>
       <p>
         If you need to add additional information relating to a person or upload
-        supporting images, please use the links below
+        supporting photos, please use the links below
       </p>
       <ul class="button-group">
         <li>
           <input
             type="button"
-            th:attr="onclick=|window.location.href='${hostPath}/person/add/${incident.id}'|"
+            th:attr="onclick=|window.location.href='@{/person/add/{id}(id=${incident.id})}'|"
             value="Add Person"
           />
         </li>
@@ -37,27 +37,21 @@
         <li th:if="${!incident.isFraudRelated()}">
           <input
             type="button"
-            th:attr="onclick=|window.location.href='${hostPath}/property/add/${incident.id}'|"
+            th:attr="onclick=|window.location.href='@{/property/add/{id}(id=${incident.id})}'|"
             value="Add Property"
           />
         </li>
         <li th:if="${!incident.isFraudRelated()}">
           <input
             type="button"
-            th:attr="onclick=|window.location.href='${hostPath}/vehicle/add/${incident.id}'|"
+            th:attr="onclick=|window.location.href='@{/vehicle/add/{id}(id=${incident.id})}'|"
             value="Add Vehicle"
           />
         </li>
-        <!--
-			<li th:if="${incident.isFraudRelated()}">
-				<input type="button" th:attr="onclick=|window.location.href='${hostPath}/fraud/add/${incident.id}'|"
-					value="Add Fraud/Scam" />
-			</li>
-			-->
         <li>
           <input
             type="button"
-            th:attr="onclick=|window.location.href='${hostPath}/media/add/${incident.id}'|"
+            th:attr="onclick=|window.location.href='@{/media/add/{id}(id=${incident.id})}'|"
             value="Upload Image"
           />
         </li>
@@ -89,40 +83,39 @@
           <li>
             <input
               type="button"
-              th:attr="onclick=|window.location.href='${hostPath}/incidentEdit/${incident.id}'|"
+              th:attr="onclick=|window.location.href='@{/incidentEdit/{id}(id=${incident.id})}'|"
               value="Edit Incident"
             />
           </li>
         </ul>
-
         <div th:if="${incident.hasPersonList()}">
           <div
-            th:insert="persons::persons(${incident.persons},${hostPath})"
+            th:insert="persons::persons(${incident.persons},${incident.canDeletePerson()})"
           ></div>
         </div>
 
         <div th:if="${incident.hasPropertyList()}">
           <div
-            th:insert="properties::properties(${incident.properties},${incident.totalValueFr},${hostPath})"
+            th:insert="properties::properties(${incident.properties},${incident.totalValueFr},${incident.canDeleteProperty()})"
           ></div>
         </div>
 
         <div th:if="${incident.hasVehicleList()}">
           <div
-            th:insert="vehicles::vehicles(${incident.vehicles},${hostPath})"
+            th:insert="vehicles::vehicles(${incident.vehicles},${incident.canDeleteVehicle()})"
           ></div>
         </div>
         <div th:if="${incident.hasFraudList()}">
-          <div th:insert="frauds::frauds(${incident.frauds},${hostPath})"></div>
+          <div th:insert="frauds::frauds(${incident.frauds},${incident.canDeleteFraud()})"></div>
         </div>
         <div th:if="${incident.hasMediaList()}">
-          <div th:insert="medias::medias(${incident.medias})"></div>
+          <div th:insert="medias::medias(${incident.medias},${incident.canDeleteMedia()})"></div>
         </div>
 
         <div class="next_div" th:if="${incident.canBeSubmitted()}">
           <input
             type="button"
-            th:attr="onclick=|window.location.href='${hostPath}/incident/finalPage/${incident.id}'|"
+            th:attr="onclick=|window.location.href='@{/incident/finalPage/{id}(id=${incident.id})}'|"
             value="Next"
           />
         </div>

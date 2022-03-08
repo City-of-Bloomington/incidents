@@ -747,6 +747,14 @@ form fieldset legend {
   margin: 0 0 20px 0;
   width: 100%;
 }
+.field-group.checkbox {
+  display: flex;
+  align-items: center;
+}
+.field-group.checkbox input[type=checkbox] {
+  width: auto;
+  margin: 0 10px 0 0;
+}
 
 .m-b-10 {
   margin-bottom: 10px;
@@ -962,6 +970,10 @@ main .next-button {
 main .next-button:focus, main .next-button:hover {
   background: #449d48;
 }
+main .next-button.intro {
+  margin: 10px 0 10px 0;
+  display: inline-block;
+}
 main #next_div,
 main .next_div {
   border-top: 1px solid #dbdbdb;
@@ -1065,14 +1077,16 @@ form .button-group {
   color: #1f4620;
 }
 
-#typeOptions ul {
+#typeOptions ul,
+.type-options ul {
   list-style: none;
   display: flex;
   flex-wrap: wrap;
   margin: 0 0 10px 0;
   padding: 0;
 }
-#typeOptions ul li {
+#typeOptions ul li,
+.type-options ul li {
   background: #dbdbdb;
   border-radius: 3px;
   font-weight: 500;

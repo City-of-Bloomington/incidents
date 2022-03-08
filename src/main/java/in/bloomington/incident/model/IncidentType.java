@@ -37,16 +37,19 @@ public class IncidentType implements java.io.Serializable{
     private int id;
     @NotNull(message = "Incident type may not be null")
     private String name;
+		@Column(name="used_in_business")
+		private Character usedInBusiness;
     //
 		
     public IncidentType(){
 
     }
 		
-    public IncidentType(int id, @NotNull(message = "Incident type may not be null") String name) {
+    public IncidentType(int id, @NotNull(message = "Incident type may not be null") String name, Character usedInBusiness) {
 				super();
 				this.id = id;
 				this.name = name;
+				this.usedInBusiness = usedInBusiness;
     }
 
     public int getId() {
@@ -64,6 +67,13 @@ public class IncidentType implements java.io.Serializable{
     public void setName(String name) {
 				this.name = name;
     }
+		public boolean getUsedInBusiness(){
+				return usedInBusiness != null;
+		}
+		public void setUsedInBusiness(boolean val){
+				if(val)
+						usedInBusiness = 'y';
+		}
     @Transient
     public boolean isLostRelated(){
 				return name != null && name.indexOf("Lost") > -1;

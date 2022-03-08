@@ -169,7 +169,7 @@ public class Action implements java.io.Serializable{
     @Override
     public String toString() {
 				if(name == null || name.isEmpty()) {
-						return name;
+						return "";
 				}
 				return name.substring(0, 1).toUpperCase() + name.substring(1);
     } 	

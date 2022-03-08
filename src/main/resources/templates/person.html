@@ -22,13 +22,13 @@
 				<caption>View Person</caption>
 				<div th:insert="personView::person(${person})">
 					<ul>
-					<li>
-						<a th:href="@{/person/edit/{id}(id=${person.id})}">Edit</a>
-					</li>
-					<li>
-						<a th:href="@{/incident/{id}(id=${person.incident.id})}">Back to Incident</a>
-					</li>
-				</ul>						
+						<li>
+							<a th:href="@{/person/edit/{id}(id=${person.id})}">Edit</a>
+						</li>
+						<li>
+							<a th:href="@{/incident/{id}(id=${person.incident.id})}">Back to Incident</a>
+						</li>
+					</ul>						
 				</div>
 			</fieldset>
 		</main>

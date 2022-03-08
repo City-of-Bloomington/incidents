@@ -15,12 +15,12 @@
     <div th:if="${messages}">
       <div th:insert="general::messages(${messages})"></div>
     </div>
-    <div th:fragment="properties(properties,totalBalance,hostPath)">
+    <div th:fragment="properties(properties,totalBalance,canDelete)">
       <h2>Reported Properties</h2>
       <div th:switch="${properties}">
         <h4 th:case="null">No properties found</h4>
         <div th:case="*">
-          <ul th:each="one : ${properties}">
+          <ul th:each="one,istat : ${properties}">
             <li th:if="${one.hasDamageTypeInfo()}">
               <strong>Damage Type:</strong>
               <span th:text="${one.damageType}"></span>
@@ -33,19 +33,24 @@
               <strong>Value:</strong>
               <span th:text="${one.valueFr}"></span>
             </li>
-
-            <li>
-              <strong>Total Reported Properties Value: </strong>
-              <span th:text="${totalBalance}"></span>
-            </li>
-
             <li class="button-group">
               <input
                 type="button"
-                th:attr="onclick=|window.location.href='${hostPath}/property/edit/${one.id}'|"
+                th:attr="onclick=|window.location.href='@{/property/edit/{id}(id=${one.id})}'|"
                 value="Edit Property"
               />
             </li>
+            <li class="button-group" th:if="${canDelete}">
+              <input
+                type="button"
+                th:attr="onclick=|window.location.href='@{/property/delete/{id}(id=${one.id})}'|"
+                value="Delete Property"
+              />
+            </li>						
+						<li th:if="${istat.last}">
+              <strong>Total Reported Properties Value: </strong>
+              <span th:text="${totalBalance}"></span>
+						</li>
           </ul>
         </div>
       </div>

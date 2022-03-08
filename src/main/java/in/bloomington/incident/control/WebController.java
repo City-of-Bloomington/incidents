@@ -18,71 +18,101 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class WebController extends TopController{
 
-
+		@Autowired 
+    private HttpSession session;	
 		
-    @RequestMapping(value = "/")
-    public String index() {
-				return "redirect:/introStart";
-    }
     @GetMapping("/index")		
-    public String indexStart(Model model,
-														 HttpSession session) {
+    public String indexStart(Model model
+														 ) {
 				getMessagesAndErrorsFromSession(session, model);
 				return "intro_questions";
     }
     
-    @RequestMapping(value = "/introStart")
-    public String introStart(Model model,
-														 HttpSession session){
+    @RequestMapping(value = "/all")
+    public String introStart(Model model
+														 ){
 				getMessagesAndErrorsFromSession(session, model);
+				return "intro_all";
+    }
+		// for testing purpose only
+    @RequestMapping(value = "/staff_menu")
+    public String staffMenu(Model model
+														){
+				getMessagesAndErrorsFromSession(session, model);
+				return "staff_menu";
+    }
+    @RequestMapping(value = "/")
+    public String introPersonal(Model model
+														 ){
+				getMessagesAndErrorsFromSession(session, model);
+				resetAll();
 				return "intro_questions";
     }
-    @RequestMapping(value = "/selectCategory")
-    public String selectCategory(Model model,
-																 HttpSession session){
+    @RequestMapping(value = "/forBusiness")
+    public String forBusiness(Model model
+														 ){
 				getMessagesAndErrorsFromSession(session, model);
+				resetAll();
+				return "business_questions";
+    }
+    @RequestMapping(value = "/forbusiness")
+    public String forBusLower(Model model
+														 ){
+				return "redirect/forBusiness";
+    }						
+		
+    @RequestMapping(value = "/selectCategory")
+    public String selectCategory(Model model
+																 ){
+				getMessagesAndErrorsFromSession(session, model);
+				resetAll();
 				return "introSelectType";
-    }		
+    }
+		
     @RequestMapping("/introTheft/{type_id}")
     public String introTheft(@PathVariable("type_id") int type_id,
-														 Model model,
-														 HttpSession session) {
+														 Model model
+														 ) {
 				getMessagesAndErrorsFromSession(session, model);
+				resetAll();
 				model.addAttribute("type_id", type_id);
 				return "theft_questions";
     }
-
     @RequestMapping("/introFraud")
-    public String introFraud(Model model,
-														 HttpSession session) {
+    public String introFraud(Model model
+														 ) {
 				getMessagesAndErrorsFromSession(session, model);
-				// model.addAttribute("type_id", 6); // fraud is 6 in incident_types table
 				// we do not have special questions for fraud right now
 				// so we go to email page directly
 				return "redirect:/addressInput/6";				
     }   		
     @RequestMapping("/introVandal")
-    public String introVandal(Model model,
-															HttpSession session) {
+    public String introVandal(Model model
+															) {
 				getMessagesAndErrorsFromSession(session, model);
 				return "redirect:/addressInput/2";
     }       
     @RequestMapping("/introLost")
-    public String introLost(Model model,
-														HttpSession session) {
+    public String introLost(Model model
+														) {
 				getMessagesAndErrorsFromSession(session, model);
 				return "lost_questions";
     }
+    @RequestMapping("/businessSteps")
+    public String busSteps(Model model
+														) {
+				getMessagesAndErrorsFromSession(session, model);
+				return "introBusinessSteps";
+    }		
 
     @RequestMapping("/emailAdd")
     public String emailAdd(@RequestParam(required=true) int type_id,
 													 @RequestParam(required=true) int address_id,
-													 Model model,
-													 HttpSession session
+													 Model model
 													 ){
 				getMessagesAndErrorsFromSession(session, model);
         model.addAttribute("type_id", type_id);
-				model.addAttribute("address_id", address_id);				
+				model.addAttribute("address_id", address_id);
 				return "emailAdd";
     }
 

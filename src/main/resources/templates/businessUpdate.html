@@ -1,0 +1,126 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--
+ - @copyright Copyright (C) 2014-2015 City of Bloomington, Indiana. All rights reserved.
+ - @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
+ - @author W. Sibo <sibow@bloomington.in.gov>
+ -
+ -->
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head th:replace="general::head('Business')"></head>
+
+  <body>
+    <header th:replace="general::header"></header>
+
+    <div th:if="${errors}">
+      <div th:insert="general::errors(${errors})"></div>
+    </div>
+
+    <div th:if="${messages}">
+      <div th:insert="general::messages(${messages})"></div>
+    </div>
+
+    <main class="public-questions-wrapper">
+      <h2>Edit Establishment Info</h2>
+      <p>*Indicate required fields</p>
+
+      <div th:insert="general::businessInstructions"></div>
+			<form
+				th:action="@{/business/update/{id}(id=${business.id})}"
+				th:object="${business}"
+				onsubmit="return verifyConfirm()"				
+				method="post">
+				<input type="hidden" th:field="${business.addr_id} " />
+				<input type="hidden" th:field="${business.oldEmail}" />
+				<input type="hidden" th:field="${business.incident_addr_id}" />
+				<input type="hidden" th:field="${business.incident_id}" />				
+				<fieldset>
+          <legend>Location</legend>
+          <span th:text="${business.addressInfo}"></span>
+        </fieldset>
+        <fieldset>
+          <div class="field-group">
+            <label for="name">* Name</label>
+            <input
+              type="text"
+              th:field="${business.name}"
+              id="name"
+              placeholder="Business name"
+							required="required"
+            />
+          </div>
+          <div class="field-group">
+            <label for="corporateAddress">Corporate Address</label>
+            <input
+              type="text"
+              th:field="${business.corporateAddress}"
+              id="corporateAddress"
+              placeholder="Corporate address"
+            />
+          </div>
+          <div class="field-group">
+            <label for="businessNumber">Store Number (if applicable)</label>
+            <input
+              type="text"
+              th:field="${business.businessNumber}"
+              id="businessNumber"
+              placeholder="Business number"
+            />
+          </div>					
+          <div class="field-group">
+            <label for="phone">*Phone</label>
+            <input
+              type="text"
+              th:field="${business.phone}"
+              id="phone"
+              placeholder="Business phone(s)"
+            />
+          </div>
+          <div class="field-group">
+            <label for="email">*Email</label>
+            <input
+              type="text"
+              th:field="${business.email}"
+              id="email"
+              placeholder="Business email"
+							required="required"
+            />
+          </div>
+          <div class="field-group">
+            <label for="email2">*Verify email</label>
+            <input
+              type="text"
+              th:field="${business.email2}"
+              id="email2"
+              placeholder="business email2"
+							required="required"
+            />
+          </div>					
+          <div class="field-group">
+            <label for="reporterName">Your full name</label>
+            <input
+              type="text"
+              th:field="${business.reporterName}"
+              id="reporterName"
+              placeholder="full name"
+							required="required"
+            />
+          </div>
+          <div class="field-group">
+            <label for="reporterTitle">Your job title</label>
+            <input
+              type="text"
+              th:field="${business.reporterTitle}"
+              id="reporterTitle"
+              placeholder="Your business title"
+							required="required"
+            />
+          </div>						
+					<ul class="button-group">
+            <li><button type="submit" class="next-button">Save Changes</button></li>
+          </ul>
+        </fieldset>
+				
+      </form>
+    </main>
+  </body>
+</html>

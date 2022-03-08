@@ -26,8 +26,7 @@
 			<div th:insert="general::messages(${messages})"></div>
 		</div>
 
-		<div th:fragment="incidentView(${incident})">				
-		
+		<div th:fragment="incidentView(incident,business)">				
 			<fieldset>
 				<div th:fragment="incident(${incident})">
 				<div class="m-b-10">
@@ -41,16 +40,17 @@
 					<span th:text="${incident.caseNumber}"> </span>
 					<br />
 				</div>
+				<div class="m-b-10" th:if="${incident.hasCategory()}">
+					<label>Category:</label>
+					<span th:text="${incident.category}"> </span>
+					<br />
+				</div>				
 				
 				<div class="m-b-10" th:if="${incident.hasStatusInfo()}">
 					<label>Status: </label>
 					<span th:text="${incident.status}"> </span>
 					<br />
 				</div>
-				<div class="m-b-10" th:unless="${incident.hasActionLogs()}">
-					<label>Status: </label>					
-					Incomplete (No action can be made)
-				</div>						
 				<div class="m-b-10">
 					<label>Incident type:</label>
 					<span th:text="${incident.incidentType}"> </span>
@@ -98,11 +98,20 @@
 					<label>Evidence left behind:</label>
 					<span th:text="${incident.evidence}"></span>
 				</div>
+				<div th:if="${business != null && incident.getTransientOffender()}">
+					<span th:text="'Transient Offender'"></span>
+				</div>				
 			</div>
-		</fieldset>
-		<div th:if="${incident.hasPersonList()}">
-			<div th:insert="personsView::persons(${incident.persons})"></div>
-		</div>
+			</fieldset>
+			<div th:if="${business != null}">
+        <div th:insert="businessView::business(${business})"></div>
+			</div>
+      <div th:if="${incident.hasOffenderList()}">
+        <div th:insert="offendersView::offenders(${incident.offenders})"></div>
+      </div>			
+			<div th:if="${incident.hasPersonList()}">
+				<div th:insert="personsView::persons(${incident.persons})"></div>
+			</div>
 		<div th:if="${incident.hasPropertyList()}">
 			<div th:insert="propertiesView::properties(${incident.properties},${incident.totalValueFr})"></div>
 		</div>

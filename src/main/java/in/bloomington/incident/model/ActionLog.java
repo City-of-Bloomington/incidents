@@ -7,6 +7,7 @@ package in.bloomington.incident.model;
  */
 
 import java.util.Date;
+import java.util.Calendar;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -34,6 +35,8 @@ public class ActionLog implements java.io.Serializable{
     private int id;
     private Date date;
     private String comments;
+		private Character cancelled;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "incident_id")
     private Incident incident;
@@ -43,8 +46,13 @@ public class ActionLog implements java.io.Serializable{
     private Action action;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id")				
+    @JoinColumn(name = "user_id")
     private User user;
+		
+		@ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "cancelled_by")						
+		private User cancelledByUser;		
+
 
     // temporary place holder for adding new action logs
     @Transient
@@ -59,7 +67,9 @@ public class ActionLog implements java.io.Serializable{
 										 Date date,
 										 Action action,
 										 User user,
-										 String comments) {
+										 String comments,
+										 Character cancelled,
+										 User cancelledByUser) {
 				super();
 				this.id = id;
 				this.incident = incident;
@@ -67,6 +77,8 @@ public class ActionLog implements java.io.Serializable{
 				this.action = action;
 				this.user = user;
 				this.comments = comments;
+				this.cancelled = cancelled;
+				this.cancelledByUser = cancelledByUser;
     }
     public int getId() {
 				return id;
@@ -109,9 +121,23 @@ public class ActionLog implements java.io.Serializable{
     public void setUser(User user) {
 				this.user = user;
     }
+    public User getCancelledByUser() {
+				return cancelledByUser;
+    }
+    public void setCancelledByUser(User val) {
+				this.cancelledByUser = val;
+    }		
 		@Transient
 		public boolean hasUserInfo(){
 				return user != null;
+		}
+		public boolean getCancelled(){
+				return cancelled != null;
+		}
+		public void setCancelled(boolean val){
+				if(val){
+						cancelled = 'y';
+				}
 		}
     public String getComments() {
 				return comments;
@@ -127,6 +153,56 @@ public class ActionLog implements java.io.Serializable{
     public void setDateNow(){
 				date = new Date();
     }
+		@Transient
+		public boolean canBeCancelled(){
+			 return (id > 0 &&
+							 cancelled == null &&
+							 action != null &&
+							 (action.isApproved() || action.isRejected()) &&
+							 isDateLessThanBy(7));
+		}
+		@Transient
+		public String getInfo(){
+				String ret = "";
+				if(id > 0){
+						if(action != null){
+								ret += action;
+						}
+						if(user != null){
+								ret += " by "+user.getFullname();
+						}
+						if(date != null){
+								ret += ", "+getDateStr();
+						}
+						if(getCancelled()){
+								if(cancelledByUser != null){
+										ret += " (Cancelled by "+cancelledByUser.getFullname()+")";
+								}
+								else{
+										ret += " (Cancelled)";
+								}
+						}
+				}
+				return ret;
+		}
+		@Transient
+		private boolean isDateLessThanBy(int days){
+				// creating a Calendar object
+				if(date != null && days >= 0){
+						try{
+								Calendar cal = Calendar.getInstance();
+								cal.add(Calendar.DATE, -days);
+								Date old_date = cal.getTime();
+								int ret = old_date.compareTo(date); // it should be negative
+								return ret <= 0;
+						}
+						catch(Exception ex){
+								System.err.println(ex);
+						}
+				}
+				return false;
+		}
+		
     @Transient
     public void setCaseNumber(String val){    
 				if(val != null)

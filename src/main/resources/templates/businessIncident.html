@@ -1,0 +1,129 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--
+ - @copyright Copyright (C) 2014-2015 City of Bloomington, Indiana. All rights reserved.
+ - @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
+ - @author W. Sibo <sibow@bloomington.in.gov>
+ -
+ -->
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head th:replace="general::head('Incident Details')"></head>
+
+  <body>
+    <header th:replace="general::header"></header>
+
+    <main class="public-questions-wrapper">
+      <h2>View Incident</h2>
+
+      <div th:if="${errors}">
+        <div th:replace="general::errors(${errors})"></div>
+      </div>
+
+      <div th:if="${messages}">
+        <div th:replace="general::messages(${messages})"></div>
+      </div>
+      <p>
+        If you need to add additional information please use the links below
+      </p>
+      <ul class="button-group">
+        <li th:if="${incident.hasNoTransientOffender()}">
+          <input
+            type="button"
+            th:attr="onclick=|window.location.href='@{/offender/add/{id}(id=${incident.id})}'|"
+            value="Add Offender"
+          />
+        </li>
+
+        <li>
+          <input
+            type="button"
+            th:attr="onclick=|window.location.href='@{/businessProperty/add/{id}(id=${incident.id})}'|"
+            value="Add Property"
+          />
+        </li>
+        <li>
+          <input
+            type="button"
+            th:attr="onclick=|window.location.href='@{/vehicle/add/{id}(id=${incident.id})}'|"
+            value="Add Vehicle"
+          />
+        </li>
+        <li>
+          <input
+            type="button"
+            th:attr="onclick=|window.location.href='@{/businessMedia/add/{id}(id=${incident.id})}'|"
+            value="Upload Photo"
+          />
+        </li>
+      </ul>
+      <p>
+
+      </p>
+      <div th:if="${incident.canBeSubmitted()}">
+        <ul>
+          <li>Review your incident report below.</li>
+          <li>
+            If you want to change any information click on the corresponding edit link below.
+          </li>
+					<li>
+						If you mistakenly added duplicate information you can click on the 'Delete' link underneath the duplicate to remove it.						
+					</li>
+          <li>Once your report has been submitted, no changes can be made.</li>
+          <li>
+            If no further changes are needed, click on 'Next' at the bottom
+            of this page.
+          </li>
+        </ul>
+      </div>
+
+      <h2>Incident General Info</h2>
+      <div>
+        <div th:replace="incidentView::incident(${incident})"></div>
+
+        <li class="button-group">
+          <input
+            type="button"
+            th:attr="onclick=|window.location.href='@{/businessIncidentEdit/{id}(id=${incident.id})}'|"
+            value="Edit Incident"
+            />
+        </li>
+        <div th:if="${incident.hasBusinessRecord()}">
+          <div th:insert="businessView::business(${business})">
+          </div>
+					 <li class="button-group">
+						 <input
+							 type="button"
+							 th:attr="onclick=|window.location.href='@{/businessEdit/{id}/{incident_addr_id}/{incident_id}(id=${incident.business.id},incident_id=${incident.id},incident_addr_id=${incident.addr_id})}'|"
+							 value="Edit Establishment"
+								 />
+					 </li>					
+        </div>
+        <div th:if="${incident.hasOffenderList()}">
+          <div th:insert="offenders::offenders(${incident.offenders},${incident.canDeleteOffender()})">
+          </div>
+        </div>
+        <div th:if="${incident.hasPropertyList()}">
+          <div
+            th:insert="businessProperties::properties(${incident.properties},${incident.totalValueFr},${incident.canDeleteProperty()})"
+          ></div>
+        </div>
+
+        <div th:if="${incident.hasVehicleList()}">
+          <div
+            th:insert="vehicles::vehicles(${incident.vehicles},${incident.canDeleteVehicle()})"
+          ></div>
+        </div>
+        <div th:if="${incident.hasMediaList()}">
+          <div th:insert="medias::medias(${incident.medias},${incident.canDeleteMedia()})"></div>
+        </div>
+
+        <div class="next_div" th:if="${incident.canBeSubmitted()}">
+          <input
+            type="button"
+            th:attr="onclick=|window.location.href='@{/businessIncident/finalPage/{id}(id=${incident.id})}'|"
+            value="Next"
+          />
+        </div>
+      </div>
+    </main>
+  </body>
+</html>

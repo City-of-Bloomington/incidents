@@ -25,7 +25,7 @@
       <div th:insert="general::messages(${messages})"></div>
     </div>
     <fieldset>
-      <div th:replace="incidentView::incidentView(${incident})">
+      <div th:replace="incidentView::incidentView(${incident},${business})">
       </div>
     </fieldset>
 		<h2>Incident Status</h2>		

@@ -1,0 +1,46 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--
+ - @copyright Copyright (C) 2014-2015 City of Bloomington, Indiana. All rights reserved.
+ - @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
+ - @author W. Sibo <sibow@bloomington.in.gov>
+ -
+ -->
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head th:replace="general::head('Person')"></head>
+  <body>
+    <header th:replace="general::header"></header>
+    <h2>Incident Related People</h2>
+    <div th:if="${errors}">
+      <div th:insert="general::errors(${errors})"></div>
+    </div>
+
+    <div th:if="${messages}">
+      <div th:insert="general::messages(${messages})"></div>
+    </div>
+    <div th:fragment="offenders(offenders,canDelete)">
+      <h2>Reported Offender(s)</h2>
+      <div th:switch="${offenders}">
+        <h4 th:case="null">No offender found</h4>
+        <div th:case="*">
+          <div th:each="offender : ${offenders}">
+            <li th:replace="offenderView::offender(${offender})"></li>
+            <li class="button-group">
+              <input
+                type="button"
+                th:attr="onclick=|window.location.href='@{/offender/edit/{id}(id=${offender.id})}'|"
+                value="Edit Offender"
+              />
+            </li>
+            <li class="button-group" th:if="${canDelete}">
+              <input
+                type="button"
+                th:attr="onclick=|window.location.href='@{/offender/delete/{id}(id=${offender.id})}'|"
+                value="Delete Offender"
+              />
+            </li>						
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

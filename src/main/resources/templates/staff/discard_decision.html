@@ -1,0 +1,54 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--
+ - @copyright Copyright (C) 2014-2015 City of Bloomington, Indiana. All rights reserved.
+ - @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
+ - @author W. Sibo <sibow@bloomington.in.gov>
+ -
+ -->
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head th:replace="general::head('Incident Details')"></head>
+  <body class="staff">
+    <header>
+      <div th:replace="general::header-staff"></div>
+    </header>
+    <main class="staff">
+		<div th:replace="general::staffMenu('Approved')">
+		</div>
+      <h2>Incident</h2>
+      <div th:if="${errors}">
+        <div th:insert="general::errors(${errors})"></div>
+      </div>
+      <div th:if="${messages}">
+        <div th:insert="general::messages(${messages})"></div>
+      </div>
+			<div th:replace="incidentView::incidentView(${incident},${business})">
+      </div>
+      <h2>Discard Incident</h2>
+			<p>Note: An incident can be discarded if there are multiple reports for the same incidents (duplicates) or the entity changed its mind and no need for report any more, or it is faulty and invalid, ..etc. The incident will stay in the system but will be marked as discarded and will not be processed any more.</p>
+      <form action="#" th:action="@{/discard/final}" th:object="${actionLog}" method="post">
+        <input type="hidden" th:field="${actionLog.incident}" />
+        <table>
+          <tr>
+            <td>Change Status</td>
+            <td>
+              <select th:field="${actionLog.action}" id="ation_id">
+                <option th:each="r : ${actions}" th:value="${r.id}" th:text="${r.description}">
+                </option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td>State the reasons for discard</td>
+            <td><textarea th:field="${actionLog.comments}" rows="5" cols="50"></textarea></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td>
+              <input type="submit" value="Submit" />
+            </td>
+          </tr>
+      </form>
+    </main>
+    
+  </body>
+</html>

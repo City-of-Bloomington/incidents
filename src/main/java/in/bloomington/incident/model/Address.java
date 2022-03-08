@@ -10,6 +10,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
+
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -58,7 +60,15 @@ public class Address extends TopModel implements java.io.Serializable{
 		@Transient
 		private Integer type_id;
 		@Transient
+		private String category="";
+		@Transient
 		private Integer old_id;
+		@Transient
+		private Integer bus_id;		
+		@Transient
+		private Integer incident_id;
+		@Transient
+		private Integer incident_addr_id;
 		
     public Address(){
 				super();
@@ -154,7 +164,10 @@ public class Address extends TopModel implements java.io.Serializable{
     public Integer getAddressId() {
 				return addressId;
     }
-
+		@Transient
+		public boolean hasAddressId(){
+				return addressId != null && addressId > 0;
+		}
     public void setSubunitId(Integer val) {
 				this.subunitId = val;
     }
@@ -182,8 +195,27 @@ public class Address extends TopModel implements java.io.Serializable{
 				return type_id;
 		}
 		@Transient
+		public void setCategory(String val){
+				if(val != null)
+						category = val;
+		}
+		@Transient
+		public String getCategory(){
+				return category;
+		}
+		// only business category will have a value
+		@Transient
+		public boolean hasBusinessCategory(){
+				return category != null && !category.isEmpty();
+		}
+		@Transient
 		public void setOld_id(Integer val){
 				old_id = val;
+		}
+		@Transient
+		public boolean hasLatitudeLongitude(){
+				if(latitude == null || longitude == null) return false;
+				return true;
 		}
 		@Transient
 		public Integer getOld_id(){
@@ -191,7 +223,40 @@ public class Address extends TopModel implements java.io.Serializable{
 						return id;
 				else
 						return old_id;
+		}
+		@Transient
+		public void setBus_id(Integer val){
+			 bus_id = val;
+		}
+		@Transient
+		public Integer getBus_id(){
+				return bus_id;
+		}
+		@Transient
+		public void setIncident_addr_id(Integer val){
+			 incident_addr_id = val;
+		}
+		@Transient
+		public Integer getIncident_addr_id(){
+				return incident_addr_id;
 		}		
+		@Transient
+		public void setIncident_id(Integer val){
+			 incident_id = val;
+		}
+		@Transient
+		public Integer getIncident_id(){
+				return incident_id;
+		}
+		@Transient
+		public boolean hasIncident(){
+				return incident_id != null;
+		}
+		@Transient
+		public boolean hasBusId(){
+				return bus_id != null;
+		}
+		
 		@Transient
 		public boolean isValid(){
 				return invalidAddress == null;
@@ -228,7 +293,9 @@ public class Address extends TopModel implements java.io.Serializable{
 				if(this.id > 0 &&
 					 one.getId() > 0 &&
 					 this.id == one.getId()) return true;
-				if(one.getAddressId() != this.getAddressId()) return false;
+				if(one.hasAddressId()){
+						if(one.getAddressId() != this.getAddressId()) return false;
+				}
 				if((one.getSubunitId() != null && this.getSubunitId() == null) ||
 					 (one.getSubunitId() == null && this.getSubunitId() != null) ||
 					 (one.getSubunitId() != this.getSubunitId())) return false;
@@ -297,15 +364,43 @@ public class Address extends TopModel implements java.io.Serializable{
 						return false;
 				}
 				else if(zipcode != null && !zipcode.equals("")){
+						boolean ret = default_zip_codes.stream()
+								.anyMatch(t->t.equals(zipcode));
+						// System.err.println(" Address zip code check is "+ret);
+						if(ret){
+								return true;
+						}
+						/**
 						for(String str:default_zip_codes){
 								if(zipcode.equals(str)){
 										return true;
 								}
 						}
+						*/
 						addError("invalid zipcode "+zipcode);
 						return false;
 				}
 				return true;
-    }		
+    }
+    @Transient
+    public boolean verifyBusinessAddress(){
+				if(name == null || name.trim().isEmpty()){
+						addError("Address is required");
+						return false;
+				}
+				else if(city == null || city.isEmpty()){
+						addError("City is required");
+						return false;
+				}
+				else if(state == null || state.isEmpty()){
+						addError("State is required");
+						return false;
+				}
+				else if(zipcode == null || zipcode.equals("")){
+						addError("Zip code is required");
+						return false;
+				}
+				return true;
+    }				
 		
 }

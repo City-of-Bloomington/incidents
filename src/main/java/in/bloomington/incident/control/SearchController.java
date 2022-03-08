@@ -32,6 +32,7 @@ import in.bloomington.incident.service.IncidentApprovedService;
 import in.bloomington.incident.service.IncidentTypeService;
 import in.bloomington.incident.service.SearchService;
 import in.bloomington.incident.service.ActionService;
+import in.bloomington.incident.service.IncidentService;
 import in.bloomington.incident.service.UserService;
 import in.bloomington.incident.model.Incident;
 import in.bloomington.incident.model.IncidentIncomplete;
@@ -63,6 +64,8 @@ public class SearchController extends TopController{
     ActionService actionService;
     @Autowired
     UserService userService;
+    @Autowired
+    IncidentService incidentService;		
 		@Autowired 
     private HttpSession session;
 		
@@ -88,8 +91,9 @@ public class SearchController extends TopController{
 						addMessage("Found "+all.size()+" incidents");
 						model.addAttribute("incidents", all);
 						model.addAttribute("messages", messages);
+						resetAll();
 				}
-        return "staff/received";
+        return "staff/received_list";
     }
     @GetMapping("/search/incomplete")
     public String findIncomplete(Model model){
@@ -113,8 +117,9 @@ public class SearchController extends TopController{
 						addMessage("Found "+all.size()+" incidents");
 						model.addAttribute("incidents", all);
 						model.addAttribute("messages", messages);
+						resetAll();
 				}
-        return "staff/incomplete";
+        return "staff/incompletes";
     }
     
     @GetMapping("/search/confirmed")
@@ -137,9 +142,11 @@ public class SearchController extends TopController{
 				if(all != null && all.size() > 0){
 						addMessage("Found "+all.size()+" incidents");
 						model.addAttribute("incidents", all);
-						model.addAttribute("messages", messages);						
+						model.addAttribute("messages", messages);
+						resetAll();
 				}
-        return "staff/confirmed";
+				model.addAttribute("statusOutcome", "Confirmed");					
+        return "staff/confirmed_list";
     }    
     
     @GetMapping("/search/approved")
@@ -164,8 +171,10 @@ public class SearchController extends TopController{
 						addMessage("Found "+all.size()+" incidents");
 						model.addAttribute("incidents", all);
 						model.addAttribute("messages", messages);
+						resetAll();
 				}
-        return "staff/approved";
+				model.addAttribute("statusOutcome", "Approved");	
+        return "staff/approved_outcomes";
     }
     @GetMapping("/search")
     public String search(Model model) {
@@ -201,16 +210,31 @@ public class SearchController extends TopController{
 	    
 						return "redirect:/search";
 				}
+				List<Incident> incidents = null;				
 				if(!search.getId().isEmpty()){
-						return "redirect:/incidentView/"+search.getId();
+						int id = search.getIdInt();
+						if(id > 0){						
+								if(user.canApprove()){
+										Incident incident = incidentService.findById(id);
+										if(incident != null && !incident.canBeDiscarded()){
+												return "redirect:/incidentView/"+id;
+										}
+										else{
+												incidents = new ArrayList<>();
+												incidents.add(incident);
+										}
+								}
+								else{
+										return "redirect:/incidentView/"+id;										
+								}								
+						}
 				}
 				resetAll();
-        List<Incident> incidents = searchService.find(search);
+				if(incidents == null){
+						incidents = searchService.find(search);
+				}
 				if(incidents != null && incidents.size() > 0){
 						addMessage(" found "+incidents.size()+" incidents");
-						if(incidents.size() == 1){
-								return "redirect:/incidentView/"+incidents.get(0).getId();
-						}
 				}
 				else{
 						addMessage(" No match found ");
@@ -218,7 +242,11 @@ public class SearchController extends TopController{
 						return "redirect:/search";
 				}
         model.addAttribute("incidents", incidents);
-				model.addAttribute("messages", getMessages());				
+				model.addAttribute("messages", getMessages());
+				resetAll();
+				if(user.canApprove()){ // or admins
+						return "staff/searchAdminResults";
+				}
         return "staff/searchResult";
     }    
     private User findUserFromSession(HttpSession session){

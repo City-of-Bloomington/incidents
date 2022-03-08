@@ -53,35 +53,60 @@
 	  <label for="make">Make</label>
 	</dt>
 	<dd>
-	  <input type="text" th:field="${vehicle.make}" id="make" placeholder="Make" />
+	  <input type="text"
+					 th:field="${vehicle.make}"
+					 id="make"
+					 size="40"
+           maxlength="80"
+					 placeholder="Make" />
 	  <span th:if="${#fields.hasErrors('make')}" th:errors="*{make}"></span>
 	</dd>
 	<dt>
 	  <label for="model">Model</label>
 	</dt>
 	<dd>
-	  <input type="text" th:field="${vehicle.model}" id="model" placeholder="Model" />
+	  <input type="text"
+					 th:field="${vehicle.model}"
+					 id="model"
+					 size="40"
+           maxlength="80"
+					 placeholder="Model" />
 	  <span th:if="${#fields.hasErrors('model')}" th:errors="*{model}"></span>
 	</dd>
 	<dt>
 	  <label for="color">Color</label>
 	</dt>
 	<dd>
-	  <input type="text" th:field="${vehicle.color}" id="color" placeholder="Color" />
+	  <input type="text"
+					 th:field="${vehicle.color}"
+					 id="color"
+					 size="30"
+           maxlength="30"
+					 placeholder="Color" />
 	  <span th:if="${#fields.hasErrors('color')}" th:errors="*{color}"></span>
 	</dd>
 	<dt>
 	  <label for="plateNum">License Plate Number</label>
 	</dt>
 	<dd>
-	  <input type="text" th:field="${vehicle.plateNumber}" id="plateNum" placeholder="Plate Number" />
+	  <input type="text"
+					 th:field="${vehicle.plateNumber}"
+					 id="plateNum"
+					 size="20"
+           maxlength="20"
+					 placeholder="Plate Number" />
 	  <span th:if="${#fields.hasErrors('plateNumber')}" th:errors="*{plateNumber}"></span>
 	</dd>
 	<dt>
 	  <label for="plateYear">License Plate Year</label>
 	</dt>
 	<dd>
-	  <input type="text" th:field="${vehicle.plateYear}" id="plateYear" placeholder="Plate Year" />
+	  <input type="text"
+					 th:field="${vehicle.plateYear}"
+					 id="plateYear"
+					 size="4"
+           maxlength="4"
+					 placeholder="Plate Year" />
 	  <span th:if="${#fields.hasErrors('plateYear')}" th:errors="*{plateYear}"></span>
 	</dd>
 	<dt>
@@ -92,17 +117,27 @@
 	  <span th:if="${#fields.hasErrors('state')}" th:errors="*{state}"></span>
 	</dd>
 	<dt>
-	  <label for="value_id">Damage Value</label>
+	  <label for="value_id">Damage Value Related to This Incident</label>
 	</dt>
 	<dd>$
-	  <input type="text" th:field="${vehicle.value}" id="value_id" placeholder="Value" />
+	  <input type="text"
+					 th:field="${vehicle.value}"
+					 id="value_id"
+					 size="10"
+           maxlength="10"
+					 placeholder="Value" />
 	  <span th:if="${#fields.hasErrors('value')}" th:errors="*{value}"></span>
 	</dd>	
 	<dt>
 	  <label for="owener">Owner</label>
 	</dt>
 	<dd>
-	  <input type="text" th:field="${vehicle.owner}" id="owner" placeholder="vehicle owner if not yours" size="30" maxlength="70" />
+	  <input type="text"
+					 th:field="${vehicle.owner}"
+					 id="owner"
+					 placeholder="vehicle owner if not yours"
+					 size="40"
+					 maxlength="70" />
 	  <span th:if="${#fields.hasErrors('owner')}" th:errors="*{owner}"></span>
 	</dd>
 	<dt>

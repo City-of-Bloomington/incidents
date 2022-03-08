@@ -11,7 +11,7 @@
     <header th:replace="general::header"></header>
 
     <main class="public-questions-wrapper">
-      <h2>Add/Upload Image File</h2>
+      <h2>Add/Upload Photo(s)/Receipt(s)</h2>
       <div th:if="${errors}">
         <div th:insert="general::errors(${errors})"></div>
       </div>
@@ -22,10 +22,10 @@
 
       <fieldset>
         <caption>
-          <p>Upload Images of the Incident</p>
+          <p>Upload Photo(s)/Receipts of the Incident</p>
         </caption>
 
-        <ul th:replace="general::uploadInstructions"></ul>
+        <ul th:replace="general::mediaInstructions(${media_max_count},${media_max_size})"></ul>
 
         <div>
           <form
@@ -38,7 +38,7 @@
               class="field-group"
               th:each="i:${#numbers.sequence(media_count+1,media_max_count)}"
             >
-              <label for="file_id">Image File to Upload</label>
+              <label for="file_id"><span th:text="${i}"> </span> - Photo File to Upload</label>
               <input
                 type="file"
                 name="files"
@@ -48,7 +48,7 @@
             </div>
 
             <div class="field-group">
-              <p>Notes (any explanation of the picture, optional)</p>
+              <p>Notes (any explanation of the photo, optional)</p>
               <textarea
                 name="notes"
                 rows="5"

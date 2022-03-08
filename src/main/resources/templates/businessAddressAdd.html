@@ -1,0 +1,133 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--
+ - @copyright Copyright (C) 2014-2015 City of Bloomington, Indiana. All rights reserved.
+ - @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
+ - @author W. Sibo <sibow@bloomington.in.gov>
+ -
+ -->
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head th:replace="general::head('Incident')"></head>
+  <body>
+    <header th:replace="general::header"></header>
+    <main class="public-questions-wrapper">
+      <h2>Establishment Address</h2>
+      <div th:if="${errors}">
+        <div th:replace="general::errors(${errors})"></div>
+      </div>
+      <div th:if="${messages}">
+        <div th:replace="general::messages(${messages})"></div>
+      </div>
+			<div>To add a new establishment we need to know the establishment local street address</div>
+      <form
+        action="#"
+        th:action="@{/businessAddrSave}"
+        th:object="${address}"
+        onsubmit="return verifyBusinessAddress()"
+        method="post"
+      >
+        <input type="hidden" th:field="${address.addressId}" id="addressId" />
+        <input
+          type="hidden"
+          th:field="${address.subunitId}"
+          value=""
+          id="subunitId"
+        />
+        <input
+          type="hidden"
+          th:field="${address.latitude}"
+          id="latitude"
+          size="20"
+        />
+        <input
+          type="hidden"
+          th:field="${address.longitude}"
+          id="longitude"
+          size="20"
+        />
+        <input
+          type="hidden"
+          th:field="${address.jurisdiction}"
+          id="jurisdiction"
+          size="60"
+        />
+				<input type="hidden" th:field="${address.incident_addr_id}" id="incident_addr_id"/>
+
+        <fieldset>
+          <legend>Location</legend>
+          <ul>
+            <li>If the establishment is in Bloomington City or Monroe County. 
+              To add the local establishment address,
+							start typing the street address in the 'Street address' field below. If the address is in Bloomington or Monroe County you will be able to pick from the list of matching addresses that will be populated.
+            </li>
+						<li>If the establishment is not in Bloomington City nor in Monroe County then type all the required fields below.</li>
+          </ul>
+          <label for="addr_id" class="required">
+            Street address where the establishment is located
+          </label>
+          <div class="form-group autocomplete-wrapper">
+            <span id="address-full"></span>
+            <input
+              type="text"
+              autocomplete="off"
+              th:field="${address.name}"
+              id="addr_id"
+              size="60"
+              placeholder="Enter a street address."
+              required="required"
+            />
+          </div>
+					<div class="form-group">
+						<label for="city" class="required">*City</label>
+						<input type="text"
+              autocomplete="off"
+              th:field="${address.city}"
+              id="city"
+              size="60"
+              placeholder="Enter City"
+              required="required"
+            />
+          </div>
+					<div class="form-group">
+						<label for="state" class="required">*State</label>
+						<input type="text"
+              autocomplete="off"
+              th:field="${address.state}"
+              id="state"
+              size="2"
+              required="required"
+            />
+          </div>
+					<div class="form-group">
+						<label for="zip" class="required">*Zip Code</label>
+						<input type="text"
+              autocomplete="off"
+              th:field="${address.zipcode}"
+              id="zip"
+              size="10"
+              required="required"
+            />
+          </div>						
+          <div id="address_display" class="form-group" style="display: none">
+            <label for="address_info">City, State Zipcode</label>
+            <p id="address_info">&nbsp;</p>
+          </div>
+        </fieldset>
+        <p>Click on Next to continue</p>
+        <ul class="button-group">
+					<li>
+            <button
+							type="button"
+              class="next-button"
+              th:attr="onclick=|window.location.href='@{/businessIncidentAddrEdit/{id}(id=${address.incident_addr_id})}'|"
+              >
+                Back
+              </button>
+            </li>			
+          <li>
+            <button type="submit" class="next-button">Next</button>
+          </li>
+        </ul>
+      </form>
+    </main>
+  </body>
+</html>

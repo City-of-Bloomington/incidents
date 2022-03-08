@@ -12,5 +12,5 @@ import in.bloomington.incident.model.Search;
 import in.bloomington.incident.model.User;
 public interface SearchService{
     public abstract List<Incident> find(Search val);		
-		public abstract User findUser(String username) throws IOException;
+
 }

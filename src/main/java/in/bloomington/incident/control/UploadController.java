@@ -65,32 +65,73 @@ public class UploadController extends TopController{
 
     @Value("${spring.servlet.multipart.location}")
     private String storagePath;
-		@Value("${incident.media.max_count}")
-    private int mediaMaxCount;
+		//		@Value("${incident.media.max_count}")
+    // private int mediaMaxSize;
+		@Value("${incident.media.max.size}")
+    private int mediaMaxSize; // MB
+		@Value("${incident.person.media.count}")
+    private int mediaPersonMaxCount;
+		@Value("${incident.business.media.count}")
+    private int mediaBusinessMaxCount;		
+		
     @GetMapping("/media/add/{id}")
     public String mediaForm(@PathVariable("id") int id,
 														Model model,
-														RedirectAttributes redirectAttributes)
-    {
+														RedirectAttributes redirectAttributes){
+				Incident incident = incidentService.findById(id);				
 				try{
-						Incident incident = incidentService.findById(id);
+						int mediaMaxCount = mediaPersonMaxCount;
 						int media_count = incident.getMediaCount();
 						if(media_count < mediaMaxCount){
 								model.addAttribute("incident_id", id);
 								model.addAttribute("media_count", media_count);
-								model.addAttribute("media_max_count", mediaMaxCount);						
+								model.addAttribute("media_max_count", mediaMaxCount);
+								model.addAttribute("media_max_size", mediaMaxSize);
 								return "mediaAdd";
 						}
 						else{
 								redirectAttributes.addFlashAttribute("message","No more images can be uploaded");
 						}
 				}catch(Exception ex){
-						addError("invalid incident "+id);
-						redirectAttributes.addFlashAttribute("error","Invalid incident "+id);						
+						redirectAttributes.addFlashAttribute("error",ex);						
 						System.err.println(""+ ex);
 				}
+				if(incident.isBusinessRelated()){
+						return "redirect:/businessIncident/"+id;
+				}
 				return "redirect:/incident/"+id;
+    }
+    @GetMapping("/businessMedia/add/{id}")
+    public String busMediaForm(@PathVariable("id") int id,
+															 Model model,
+															 RedirectAttributes redirectAttributes){
+				Incident incident = incidentService.findById(id);				
+				try{
+						int media_count = incident.getMediaCount();
+						if(media_count == 0){
+								addMessage("You are required to upload a photo of the incident or receipt");
+								model.addAttribute("messages", messages);
+						}
+						int mediaMaxCount = mediaBusinessMaxCount;
+						if(media_count < mediaMaxCount){
+								model.addAttribute("incident_id", id);
+								model.addAttribute("incident",incident);
+								model.addAttribute("media_count", media_count);
+								model.addAttribute("media_max_count", mediaMaxCount);
+								model.addAttribute("media_max_size", mediaMaxSize);
+								return "businessMediaAdd";
+						}
+						else{
+								redirectAttributes.addFlashAttribute("message","No more images can be uploaded");
+						}
+				}catch(Exception ex){
+						addError(""+ex);
+						redirectAttributes.addFlashAttribute("error",""+ex);						
+						System.err.println(""+ ex);
+				}
+				return "redirect:/businessIncident/"+id;
     }		
+		
     // delete by id
     @GetMapping("/media/delete/{id}")
     public String deleteAttachment(@PathVariable("id") int id)
@@ -98,7 +139,11 @@ public class UploadController extends TopController{
         Media media  = mediaService.findById(id);
         Incident     incident       = media.getIncident();
         mediaService.delete(id);
-				addMessage("Attachment deleted successfully");
+				addMessage("Photo deleted successfully");
+				
+				if(incident.isBusinessRelated()){
+						return "redirect:/businessIncident/"+incident.getId();
+				}
         return 
             "redirect:/incident/" + incident.getId();
 
@@ -167,7 +212,10 @@ public class UploadController extends TopController{
 								addError(""+e);
 						}
 				}
-
+				Incident incident = incidentService.findById(incident_id);
+				if(incident.isBusinessRelated()){
+						return "redirect:/businessIncident/" +  incident_id;
+				}
         return "redirect:/incident/" +  incident_id;
     }
     @GetMapping("/media/download/{id}")

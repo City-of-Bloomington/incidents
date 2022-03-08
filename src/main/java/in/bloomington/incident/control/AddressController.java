@@ -11,6 +11,7 @@ import java.util.Locale;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,9 +34,10 @@ import org.slf4j.LoggerFactory;
 //
 import in.bloomington.incident.util.AddressCheck;
 import in.bloomington.incident.model.Item;
+import in.bloomington.incident.model.Incident;
 import in.bloomington.incident.model.Address;
 import in.bloomington.incident.service.AddressService;
-// import in.bloomington.incident.service.AddrService;
+import in.bloomington.incident.service.IncidentService;
 import in.bloomington.incident.utils.Helper;
 
 
@@ -43,11 +45,14 @@ import in.bloomington.incident.utils.Helper;
 public class AddressController extends TopController{
 
     final static Logger logger = LoggerFactory.getLogger(AddressController.class);
-
     @Autowired
     AddressCheck addressCheck;
     @Autowired
     AddressService addressService;
+    @Autowired
+    IncidentService incidentService;
+		@Autowired 
+    private HttpSession session;		
 		
     @Value( "${incident.defaultcity}" )
     private String defaultCity;
@@ -57,24 +62,8 @@ public class AddressController extends TopController{
     private String defaultState;		
     @Value( "${incident.zipcodes}" )
     private List<String> zipCodes;
-    @Value("${server.servlet.context-path}")
-    private String hostPath; // incidents in production
 		
-		/**
-		@PostMapping("/address/add")
-    public String addressAdd(@Valid Address address, BindingResult result, Model model) {
-        if (result.hasErrors()) {
-						logger.error(" Error creating new action ");
-            return "addressInput";
-        }
-        addressService.save(address);
-				addMessage("Added Successfully");
-				logger.debug("Address added successfully");
-        // model.addAttribute("actions", actionService.getAll());
-				model.addAttribute("messages", messages);				
-        return "redirect:address/"+address.getId();
-    }
-		*/
+
     @PostMapping("/address/update/{id}")
     public String addressUpdate(@PathVariable("id") int id,
 															 @Valid Address address, 
@@ -143,12 +132,19 @@ public class AddressController extends TopController{
     @GetMapping("/addressInput/{type_id}")
     public String addressInput(@PathVariable("type_id") int type_id,
 															 Model model) {
+				getMessagesAndErrorsFromSession(session, model);		
+				handleErrorsAndMessages(model);
 				Address address = new Address();
 				address.setType_id(type_id);
 				model.addAttribute("address", address);
-				model.addAttribute("hostPath", hostPath);
+				if(hasErrors()){
+						System.err.println(" addresInput "+hasErrors());
+						model.addAttribute("errors", errors);
+				}
+				resetAll();
         return "addressInput";
     }
+		
     @CrossOrigin(origins = "https://bloomington.in.gov")
     @GetMapping("/addressUpdate/{id}/{type_id}")
     public String addressInput(@PathVariable("id") int id,
@@ -158,9 +154,8 @@ public class AddressController extends TopController{
 				address.setOld_id(id);
 				address.setType_id(type_id);
 				model.addAttribute("address", address);
-				model.addAttribute("hostPath", hostPath);
         return "addressUpdate";
-    }		
+    }
 		// for testing purpose
     // @CrossOrigin(origins = "https://bloomington.in.gov")
     @GetMapping("/addressTest")
@@ -170,65 +165,76 @@ public class AddressController extends TopController{
 				model.addAttribute("address", address);
         return "addressTest";				
     }
-		//
-    @PostMapping("/addressCheck")
-    public String addressCheck(@Valid Address address,
-															 BindingResult result,
-															 Model model
-															 ) {
+		private boolean checkAddress(Address address){
 				boolean pass = true;
+				if(address != null){
+						if(!address.verifyAddress(defaultCity,
+																			defaultJurisdiction,
+																			defaultState,
+																			zipCodes)){
+								addError(address.getErrorInfo());
+								return false;
+						}
+						if(address.hasLatitudeLongitude()){
+								if(addressCheck.isInIUPDLayer(address.getLatitude(),
+																									address.getLongitude())){
+										addError("This address is in IU Police Department district");
+										return false;
+								}
+						}
+				}
+				return pass;
+		}
+		private Address saveOrUpdate(Address address){
+				/**
+				 * first we need to check if this address exist
+				 */
+				List<Address> addresses = addressService.findDistinctAddressByName(address.getName());
+						
+				if(addresses == null || addresses.size() == 0){
+						// System.err.println(" find address by name not found ");
+						/**
+						 * if not then we save
+						 */
+						addressService.save(address);								
+				}
+				else{
+						// System.err.println("find address by name found "+addresses.size());
+						// if exist we update 
+						Address addr = addresses.get(0);
+						address.setId(addr.getId());
+						addressService.update(address);								
+				}
+				return address;
+		}
+		//
+    @PostMapping("/addressSave")
+    public String addressSave(@Valid Address addr,
+														 BindingResult result,
+														 Model model
+														 ) {
+				boolean pass = true;
+				Address address = null;
+				resetAll();
         if (result.hasErrors()) {
 						addError(Helper.extractErrors(result));
 						pass = false;
         }
-				if(!address.verifyAddress(defaultCity,
-																	defaultJurisdiction,
-																	defaultState,
-																	zipCodes)){
-						pass = false;						
-						addError(address.getErrorInfo());
-				}
-				if(pass && addressCheck.isInIUPDLayer(address.getLatitude(),
-																							address.getLongitude())){
-						pass = false;
-						addError("This address is in IU Police Department district");
-				}
-				if(pass){ //Success: save and go to next, email questions
-						/**
-						 * first we need to check if this address exist
-						 */
-						List<Address> addresses = addressService.findDistinctAddressByName(address.getName());
-						
-						if(addresses == null || addresses.size() == 0){
-								System.err.println(" find address by name not found ");
-								/**
-								 * if not then we save
-								 */
-								addressService.save(address);								
-						}
-						else{
-								System.err.println(" find address by name found "+addresses.size());
-								// if exist we update 
-								Address addr = addresses.get(0);
-								address.setId(addr.getId());
-								addressService.update(address);								
-						}
+				if(pass && checkAddress(addr)){
+						address = saveOrUpdate(addr);
 						// next go to email request
 						model.addAttribute("type_id", address.getType_id());
-						model.addAttribute("address_id", address.getId());						
-						return "emailAdd";
+						model.addAttribute("address_id", address.getId());
+						return "emailAdd";								
 				}
 				// no pass then we send the user to address input again with error message
-				model.addAttribute("address", address);
-				model.addAttribute("errors", errors);
-				return "addressInput";
-				
+				return "redirect:/addressInput/"+addr.getType_id();
 		}
 		//
 		// we come here when back button is pressed
 		//
     @PostMapping("/addressUpdateCheck")
-    public String addressUpdateCheck(@Valid Address address,
+    public String addressUpdateCheck(@Valid Address addr,
 																		 BindingResult result,
 																		 Model model
 																		 ) {
@@ -237,61 +243,39 @@ public class AddressController extends TopController{
 						addError(Helper.extractErrors(result));
 						pass = false;
         }
-				int old_id = address.getOld_id();
+				int old_id = addr.getOld_id();
 				Address old_address = addressService.findById(old_id);
 				//
 				// check if the same address
-				if(old_address.equals(address)){
+				if(old_address.equals(addr)){
 						//
 						// no change in address, so we go to next step
 						//
-						System.err.println("The same address, no change");
-						model.addAttribute("type_id", address.getType_id());
+						// System.err.println("The same address, no change");
+						model.addAttribute("type_id", addr.getType_id());
 						model.addAttribute("address_id", old_id);						
 						return "emailAdd";
 				}
-				System.err.println("The address changed");				
-				if(!address.verifyAddress(defaultCity,
-																	defaultJurisdiction,
-																	defaultState,
-																	zipCodes)){
-						pass = false;						
-						addError(address.getErrorInfo());
-				}
-				if(pass && addressCheck.isInIUPDLayer(address.getLatitude(),
-																							address.getLongitude())){
-						pass = false;
-						addError("This address is in IU Police Department district");
-				}
-				if(pass){ //Success: save and go to next, email questions
+				// System.err.println("The address changed");				
+				if(pass && checkAddress(addr)){
+						Address address = null;
 						/**
 						 * first we need to check if this address exist
 						 */
 						List<Address> addresses = addressService.findDistinctAddressByName(address.getName());
-						
-						if(addresses == null || addresses.size() == 0){
-								System.err.println(" find address by name not found ");
-								/**
-								 * if not then we save
-								 */
-								addressService.save(address);								
-						}
-						else{
-								System.err.println(" find address by name found "+addresses.size());
-								// if exist we update 
-								Address addr = addresses.get(0);
-								address.setId(addr.getId());
-								addressService.update(address);								
-						}
+						address = saveOrUpdate(addr);
 						// next go to email request
 						model.addAttribute("type_id", address.getType_id());
-						model.addAttribute("address_id", address.getId());						
+						model.addAttribute("address_id", address.getId());
 						return "emailAdd";
 				}
-				// no pass then we send the user to address input again with error message
-				model.addAttribute("address", address);
+				// no pass then we send the user to address input again with error messa
+				model.addAttribute("type_id",addr.getType_id());
+				model.addAttribute("old_id", addr.getId());
+				model.addAttribute("address", addr);
 				model.addAttribute("errors", errors);
-				return "addressInput";
+				resetAll();
+				return "addressUpdate";
 				
 		}		
     /**
@@ -391,7 +375,7 @@ public class AddressController extends TopController{
 	
 				boolean answer = addressCheck.isInIUPDLayer(lati, longi);
 				String msg = "";
-				System.err.println(" answer "+answer);
+				// System.err.println(" answer "+answer);
 				if(answer)
 						msg = "In IU Compus PD ";
 				else
@@ -472,23 +456,16 @@ class AddressServiceController{
 																 Model model)
     {
         String json = "";
-				System.err.println(" term "+term);
+				// System.err.println(" term "+term);
         if (term != null && term.length() >= 5) {
 						// if term has at least two parts
 						String[] arr = term.split("\\s+");
 						if(arr.length >= 2){
-								/**
-								List<Address>addrs = addressService.findByNameContaining(term);
-								if (addrs != null && addrs.size() > 0) {
-										json = buildJson(addrs, term);
-										System.err.println(json);
-								}
-								*/
 								String back = addressCheck.findMatchedAddresses(term);
 								if(back.indexOf("Exception") == -1){
 										json = back;
 								}
-								System.err.println(back);
+								// System.err.println(back);
 						}
         }
         return json;

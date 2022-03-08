@@ -43,6 +43,7 @@ public class Search implements java.io.Serializable{
     private String name="";
     private String dln="";
     private String dob="";
+		private String category="";// All, Person, Business
     //
     // the following not used
     private String race="",sex="";
@@ -61,6 +62,18 @@ public class Search implements java.io.Serializable{
     public void setId(String id) {
 				this.id = id;
     }
+		@Transient
+		public int getIdInt(){
+				int id_int = 0;
+				if(!id.isEmpty()){
+						if(id != null){
+								try{
+										id_int = Integer.parseInt(id);
+								}catch(Exception ex){}
+						}
+				}
+				return id_int;
+		}
     public String getActionId() {
 				return actionId;
     }
@@ -130,6 +143,14 @@ public class Search implements java.io.Serializable{
 				if(val != null && !val.isEmpty())
 						incidentTypeId = val;
     }
+    public String getCategory() {
+				return category;
+    }
+
+    public void setCategory(String val) {
+				if(val != null && !val.isEmpty())
+						category = val;
+    }		
     //
     // person related
     public String getName() {
@@ -140,6 +161,7 @@ public class Search implements java.io.Serializable{
 				if(val != null && !val.isEmpty())
 						name = val;
     }
+		
     public String getDln() {
 				return dln;
     }
@@ -188,6 +210,7 @@ public class Search implements java.io.Serializable{
 					 dob.isEmpty() &&
 					 race.isEmpty() &&
 					 actionId.isEmpty() &&
+					 category.isEmpty() &&
 					 sex.isEmpty()){
 						return false;
 				}

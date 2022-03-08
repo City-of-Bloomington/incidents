@@ -41,6 +41,7 @@ import in.bloomington.incident.service.IncidentIncompleteService;
 import in.bloomington.incident.service.ActionService;
 import in.bloomington.incident.service.ActionLogService;
 import in.bloomington.incident.service.UserService;
+import in.bloomington.incident.service.IncidentService;
 
 @Controller
 public class IncompleteController extends TopController{
@@ -56,14 +57,17 @@ public class IncompleteController extends TopController{
     @Autowired
     ActionService actionService;
     @Autowired
-    UserService userService;    
+    UserService userService;
+		@Autowired
+    IncidentService incidentService;   
     @Autowired
     ActionLogService actionLogService;
-    
+		@Autowired 
+    private HttpSession session;		    
     @Value("${incident.email.sender}")
     private String sender;
     @Value("${server.servlet.context-path}")
-    private String host_path;
+    private String hostPath; // incidents in production
     String jobName = "incomplete_job";
     String groupName = "incomplete_group";
 
@@ -116,14 +120,11 @@ public class IncompleteController extends TopController{
     }
     
     @GetMapping("/incompleteOptions")
-    public String incompleteOptions(Model model,
-																		HttpSession session
+    public String incompleteOptions(Model model
 																		) {
 				User user = findUserFromSession(session);
 				if(user == null){
-						// addMessage("user not found "+username);
-						// addMessagesAndErrorsToSession(session);
-						return "staff/loginForm";
+						return "redirect:/login";
 				}
 				List<Incident> all = null;
 				List<IncidentIncomplete> plist = incompleteService.getAll();
@@ -144,18 +145,98 @@ public class IncompleteController extends TopController{
 						model.addAttribute("messages", messages);
 				}
         return "staff/incompleteOptions";
-    }    
+    }
+    @GetMapping("/incomplete/resume/{id}/{dt}")
+    public String resume(@PathVariable("id") int id,
+												 @PathVariable("dt") String dt,
+												 Model model
+												 ) {
+				Incident incident = incidentService.findById(id);
+				if(incident != null && !dt.isEmpty()){
+						String receivedDt = incident.getReceivedNoSep();
+						if(!receivedDt.equals(dt)){
+								addMessage("Invalid incident reference "+id);
+								addMessagesAndErrorsToSession(session);
+						}
+						else if(incident.canBeChanged()){
+								List<String> ids = null;
+								int sid = 0;
+								try{
+										ids = (List<String>) session.getAttribute("incident_ids");
+								}catch(Exception ex){
+										System.err.println(ex);
+								}
+								if(ids != null && ids.size() > 0){
+										String str =  ids.get(ids.size() - 1);
+										if(str != null){
+												try{
+														sid = Integer.parseInt(str);
+												}catch(Exception ex){}
+										}
+								}
+								if(ids == null){
+										ids = new ArrayList<>();
+										ids.add(""+id);
+										session.setAttribute("incident_ids", ids);								
+								}
+								if(incident.isBusinessRelated()){
+										return "redirect:/businessIncident/"+id;
+								}
+								else{
+										return "redirect:/incident/"+id;
+								}								
+						}
+						addMessage("No more changes can be made to this incident");
+						addMessagesAndErrorsToSession(session);
+						if(incident.isBusinessRelated()){
+								return "redirect:/forBusiness";
+						}
+						return "redirect:/";
+				}
+				addMessage("invalid incident "+id);
+				addMessagesAndErrorsToSession(session);
+				return "redirect:/";
+				
+    }
+    @GetMapping("/incomplete/inform/{id}")
+    public String incompleteInform(@PathVariable("id") int id,
+																	 Model model,
+																	 HttpServletRequest req
+																		) {
+				User user = findUserFromSession(session);
+				if(user == null){
+						return "redirect:/login";
+				}
+				Incident incident = incidentService.findById(id);
+				if(incident != null){
+						if(incident.canBeChanged()){
+								String email = incident.getEmail();
+								String url = prepareUrl(req);								
+								String message = sendResumeEmail(incident, url);
+								if(message.isEmpty()){
+										ActionLog actionLog = new ActionLog();
+										actionLog.setIncident(incident);
+										Action action = actionService.findById(1); // emailed
+										actionLog.setAction(action);
+										actionLog.setDateNow();
+										actionLog.setUser(user);
+										actionLogService.save(actionLog);
+								}
+						}
+				}
+				return "redirect:/search/incomplete";
+				
+    }
+		// not used for now
     @GetMapping("/incompleteAction")
     public String incompleteAction(@RequestParam String action,
 																	 Model model,
-																	 HttpSession session
+																	 HttpServletRequest req
 																	 ){
 				boolean schedule_flag = false, run_flag=false;
 				User user = findUserFromSession(session);
 				if(user == null){
-						// addMessage("user not found "+username);
-						// addMessagesAndErrorsToSession(session);
-						return "staff/loginForm";
+						return "redirect:/login";
 				}	
 				if(action !=null){
 						if(action.equals("Schedule")){
@@ -177,7 +258,8 @@ public class IncompleteController extends TopController{
 								}
 						}
 						if(all != null && all.size() > 0){
-								String back = sendSubmissionEmails(all);
+								String url = prepareUrl(req);
+								String back = sendResumeEmails(all, url);
 								if(back.isEmpty()){
 										addMessage("Emails sent successfully");
 								}
@@ -191,41 +273,64 @@ public class IncompleteController extends TopController{
 				}
         return "staff/incompleteOptions";
     }
-    private String sendSubmissionEmails(List<Incident> all){
+		private String prepareUrl(HttpServletRequest req){
+				String host_forward = req.getHeader("X-Forwarded-Host");
+				String host = req.getServerName();
+				String uri = req.getRequestURI();
+				String scheme = req.getScheme();
+				int port = req.getServerPort();
+				String url = scheme+"://";
+				if(host_forward != null){
+						url += host_forward;
+				}
+				else{
+						url += host;
+				}
+				if(port == 8080){ // for localhost
+						url += ":"+port;
+				}	    
+				if(hostPath != null)
+						url += hostPath;
+				url += "/incomplete/resume/";
+				return url;
+		}
+    private String sendResumeEmails(List<Incident> all, String url){
 				String messages = "";
 				if(all != null && all.size() > 0){
-						String subject = "Incident reporting submission request";
-						String url = "https://"+host_path;
-						if(host_path.isEmpty()){
-								url = "http://localhost:8080";
-						}
-						Incident one = all.get(0);
-						if(one.hasEmail()){
-								String body = "We noticed that you haven't completed your report. Please click <a href='"+url+"/incident/"+one.getId()+"'>here</a> to finish and submit your report. If not, your report will not be seen or processed by a representative of the Bloomington Police Department.";
-								String toEmail = one.getEmail();
-								EmailHelper emailHelper = new EmailHelper(mailSender, sender, toEmail, subject, body);
-								String back = emailHelper.send();
-								if(back.isEmpty()){
-										// success
-										// action log
-										ActionLog actionLog = new ActionLog();
-										actionLog.setIncident(one);
-										Action action = actionService.findById(1); // emailed
-										actionLog.setAction(action);
-										actionLog.setDateNow();
-										actionLogService.save(actionLog);
-								}
-								else{
-										addError(back);
-										messages += back;
-										logger.error(back);
-										// failure
-										// add email log
-								}
+						for(Incident one: all){
+								messages += sendResumeEmail(one, url);
 						}
 				}
 				return messages;
     }
+    private String sendResumeEmail(Incident one, String url){
+				String message = "";
+				if(one != null){
+						String subject = "Incident reporting submission request";
+						if(one.hasEmail()){
+								String body = "We noticed that you haven't completed your report. Please click <a href='"+url+one.getId()+"/"+one.getReceivedNoSep()+"'>here</a> to resume and submit your report. If not, your report will not be seen or processed by a representative of the Bloomington Police Department.<br />\n\n Thank you<br />\n\n";
+								body += "Please do not reply to this email as this is an automated system.";
+								body += "<br />\n\n";
+								body += "Bloomington Police Department (BPD)<br />\n";
+								body += "220 E 3rd St, Bloomington, IN 47401<br />\n";
+								body += "(812) 339-4477<br />\n";
+								body += "https://bloomington.in.gov/police<br />";
+								body += "\n";
+								
+								String toEmail = one.getEmail();
+								EmailHelper emailHelper = new EmailHelper(mailSender, sender, toEmail, subject, body);
+								message = emailHelper.send();
+								if(!message.isEmpty()){
+										addError(message);
+										logger.error(message);
+								}
+						}
+						else{
+								message = "No email address available in the incident";
+						}
+				}
+				return message;
+    }		
     private User findUserFromSession(HttpSession session){
 				User user = null;
 				User user2 = getUserFromSession(session);

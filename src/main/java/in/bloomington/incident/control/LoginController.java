@@ -51,6 +51,8 @@ import in.bloomington.incident.service.UserService;
 import in.bloomington.incident.service.SearchService;
 import in.bloomington.incident.model.User;
 import in.bloomington.incident.model.Action;
+import in.bloomington.incident.model.Credential;
+import in.bloomington.incident.model.Business;
 import in.bloomington.incident.utils.Helper;
 
 @Controller
@@ -59,8 +61,8 @@ public class LoginController extends TopController{
     final static Logger logger = LoggerFactory.getLogger(LoginController.class);
     @Autowired
     UserService userService;
-		@Autowired
-		SearchService searchService;
+		// @Autowired
+		// SearchService searchService;
 		
     @Value("${incident.ldap.host}")    
     private String ldap_host;
@@ -79,8 +81,25 @@ public class LoginController extends TopController{
 												) {
 				HttpSession session = req.getSession(true);
 				getMessagesAndErrorsFromSession(session, model);
+				if(session.getAttribute("user") != null){ // already logged in
+						return "staff/staff_intro";						
+				}
 				return "staff/loginForm";
-    }		
+    }
+		/**
+		 // not used right now
+    @GetMapping("/businessLogin")
+    public String buslogin(HttpServletRequest req,
+													 Model model
+												) {
+				HttpSession session = req.getSession(true);
+				getMessagesAndErrorsFromSession(session, model);
+				if(session.getAttribute("business") != null){ // already logged in
+						return "TODO"; 						
+				}
+				return "businessLoginForm";
+    }
+		*/		
 		//non CAS after login action
     @PostMapping("/loginUser")
     public String tryLogin(@RequestParam("username") String username,
@@ -102,7 +121,7 @@ public class LoginController extends TopController{
 				}
 				// userService was not working
 				try{
-						User user = searchService.findUser(username);
+						User user = userService.findUser(username);
 						if(user == null){
 								// addMessage("user not found "+username);
 								// addMessagesAndErrorsToSession(session);
@@ -127,6 +146,49 @@ public class LoginController extends TopController{
 				}
 				return "redirect:/login";						
     }
+		
+		/**
+    @PostMapping("/businessLoginVerify")
+    public String busLoginVerify(@RequestParam("email") String email,
+													 @RequestParam("password") String password,
+													 HttpServletRequest req
+													 ) {
+				HttpSession session = req.getSession(true);
+				if(email == null || email.isEmpty()){
+						return "businessLoginForm";
+				}
+
+				try{
+						Credential credit = userService.findCredential(email);
+						if(credit == null){
+								// addMessage("user not found "+username);
+								// addMessagesAndErrorsToSession(session);
+								addMessage("you do not have access to this system ");
+						}
+						else{
+								// we need to check the password after encryption
+								String encrypted = userService.encryptString(password);
+								if(credit.checkPassword(encrypted)){
+										Business business = credit.getBusiness();
+										if(business != null){
+												// temp
+												return "redirect:/business/"+business.getId(); // adding incident
+										}
+										else{
+												System.err.println(" business is null");
+										}
+								}
+								else{
+										addMessage("Your password does not match");
+								}
+						}
+				}catch(Exception ex){
+						addMessage("you do not have access to this system ");
+				}
+				addMessagesAndErrorsToSession(session);
+				return "redirect:/businessLogin";						
+    }
+		*/
     @GetMapping("/settings")
     public String showSettings(Model model,
 															 HttpSession session) {
@@ -153,7 +215,7 @@ public class LoginController extends TopController{
 				if(!user.isAdmin()){
 						addMessage("you can not access");
 						addMessagesAndErrorsToSession(session);
-						return "redirect:staff";
+						return "redirect:/staff";
 				}
 				return "";
 		}		

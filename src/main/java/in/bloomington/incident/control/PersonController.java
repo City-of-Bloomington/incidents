@@ -104,7 +104,8 @@ public class PersonController extends TopController{
         return "personAdd";
     }
     @PostMapping("/person/save")
-    public String personSave(@Valid Person person,
+    public String personSave(@RequestParam String action,
+														 @Valid Person person,
 														 BindingResult result,
 														 Model model,
 														 HttpSession session
@@ -158,6 +159,9 @@ public class PersonController extends TopController{
         personService.save(person);
 				addMessage("Saved Successfully");
 				addMessagesAndErrorsToSession(session);
+				if(!action.equals("Next")){ // more
+						return "redirect:/person/add/"+incident_id;						
+				}				
 				return "redirect:/incident/"+incident.getId(); 
     }
     

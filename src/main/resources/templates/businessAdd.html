@@ -1,0 +1,157 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--
+ - @copyright Copyright (C) 2014-2015 City of Bloomington, Indiana. All rights reserved.
+ - @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
+ - @author W. Sibo <sibow@bloomington.in.gov>
+ -
+ -->
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head th:replace="general::head('Business')"></head>
+
+  <body>
+    <header th:replace="general::header"></header>
+
+    <div th:if="${errors}">
+      <div th:insert="general::errors(${errors})"></div>
+    </div>
+
+    <div th:if="${messages}">
+      <div th:insert="general::messages(${messages})"></div>
+    </div>
+
+    <main class="public-questions-wrapper">
+      <h2>Add Establishment Info</h2>
+      <p>* Indicates required fields</p>
+
+      <div th:insert="general::businessInstructions"></div>
+
+      <form
+        th:action="@{/business/save}"
+        th:object="${business}"
+				onsubmit="return verifyConfirm()"
+        method="post"
+      >
+				<input type="hidden" th:field="${business.addr_id} " />
+				<input type="hidden" th:field="${business.incident_addr_id} " />				
+				<fieldset>
+          <legend>Establishment Location</legend>
+          <span th:text="${business.addressInfo}"></span>
+        </fieldset>
+        <fieldset>
+          <div class="field-group">
+            <label for="name">* Establishment Name</label>
+            <input
+              type="text"
+              th:field="${business.name}"
+              id="name"
+              placeholder="Business name"
+							size="80"
+							maxlength="80"
+							required="required"
+            />
+          </div>
+          <div class="field-group">
+            <label for="corporateAddress">Corporate Address</label>
+            <input
+              type="text"
+              th:field="${business.corporateAddress}"
+              id="corporateAddress"
+              placeholder="Corporate address"
+							size="80"
+							maxlength="160"
+            />
+          </div>
+          <div class="field-group">
+            <label for="businessNumber">Store Number (if applicable)</label>
+            <input
+              type="text"
+              th:field="${business.businessNumber}"
+              id="businessNumber"
+							size="32"
+							maxlength="32"
+              placeholder="Business number"
+            />
+          </div>					
+          <div class="field-group">
+            <label for="phone">* Phone</label>
+            <input
+              type="tel"
+              th:field="${business.phone}"
+              id="phone"
+              placeholder="Business phone(s)"
+							size="80"
+							maxlength="80"
+							required="required"
+            />
+          </div>
+					<div class="field-group">
+						<p>
+							Please provide a valid email in the field below so the BPD staff can communicate with your establishment about the final decision.
+						</p>
+					</div>
+          <div class="field-group">
+            <label for="email">* Establishment email</label>
+            <input
+              type="email"
+              th:field="${business.email}"
+              id="email"
+							size="80"
+							maxlength="160"
+              placeholder="business email"
+							required="required"
+            />
+          </div>
+          <div class="field-group">
+            <label for="email2">* Verify establishment email</label>
+            <input
+              type="email"
+              th:field="${business.email2}"
+              id="email2"
+							size="80"
+							maxlength="160"
+              placeholder="business email2"
+							required="required"
+            />
+          </div>
+          <div class="field-group">
+            <label for="reporterName">* Your full name</label>
+            <input
+              type="text"
+              th:field="${business.reporterName}"
+              id="reporterName"
+							size="80"
+							maxlength="160"
+              placeholder="full name"
+							required="required"
+            />
+          </div>
+          <div class="field-group">
+            <label for="reporterTitle">* Your job title</label>
+            <input
+              type="text"
+              th:field="${business.reporterTitle}"
+              id="reporterTitle"
+							size="80"
+							maxlength="80"
+              placeholder="Your business title"
+							required="required"
+            />
+          </div>							
+					<ul class="button-group">
+            <li>
+              <button
+								type="button"
+                class="next-button"
+                th:attr="onclick=|window.location.href='@{/businessAddrEdit/{id}/{incident_addr_id}(id=${business.address.id},incident_addr_id=${business.incident_addr_id})}'|"
+              >
+                Back
+              </button>
+            </li>						
+            <li><button type="submit" class="next-button">Next</button></li>
+          </ul>
+        </fieldset>
+				
+      </form>
+    </main>
+  </body>
+</html>

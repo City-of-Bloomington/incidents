@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--
+ - @copyright Copyright (C) 2014-2015 City of Bloomington, Indiana. All rights reserved.
+ - @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
+ - @author W. Sibo <sibow@bloomington.in.gov>
+ -
+ -->
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head th:replace="general::head('Upload Image')"></head>
+  <body>
+    <header th:replace="general::header"></header>
+
+    <main class="public-questions-wrapper">
+      <h2>Add/Upload Photo(s)/Receipt</h2>
+      <div th:if="${errors}">
+        <div th:insert="general::errors(${errors})"></div>
+      </div>
+
+      <div th:if="${messages}">
+        <div th:insert="general::messages(${messages})"></div>
+      </div>
+
+      <fieldset>
+        <caption>
+          <p>Upload Photo(s) or Receipt(s) of the Incident</p>
+        </caption>
+
+        <ul th:replace="general::mediaBusinessInstructions(${media_max_count},${media_max_size})"></ul>
+
+        <div>
+          <form
+            enctype="multipart/form-data"
+            th:action="@{/media/save}"
+            method="post"
+          >
+            <input type="hidden" name="incident_id" th:value="${incident_id}" />
+            <div
+              class="field-group"
+              th:each="i:${#numbers.sequence(media_count+1,media_max_count)}"
+            >
+              <label for="file_id"><span th:text="${i}"> </span> - Photo/Receipt File to Upload</label>
+              <input
+                type="file"
+                name="files"
+                id="file_id"
+                placeholder="Select file"
+              />
+            </div>
+
+            <div class="field-group">
+              <p>Notes (any explanation of the photo, optional)</p>
+              <textarea
+                name="notes"
+                rows="5"
+                cols="60"
+                placeholder="Image description"
+              ></textarea>
+            </div>
+					</div>
+				</fieldset>
+				<ul class="button-group">
+					<li th:unless="${incident.hasMediaList()}">
+            <button type="button"
+              class="next-button"
+                th:attr="onclick=|window.location.href='@{/businessProperty/edit/{id}(id=${incident.getFirstPropertyId()})}'|">							
+							Back
+						</button>
+					</li>
+					<li>
+						<button class="next-button" type="submit">Next</button>							
+					</li>
+				</ul>
+      </form>
+    </main>
+  </body>
+</html>

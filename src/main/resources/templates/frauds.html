@@ -15,7 +15,7 @@
     <div th:if="${messages}">
       <div th:insert="general::messages(${messages})"></div>
     </div>
-    <div th:fragment="frauds(frauds, hostPath)">
+    <div th:fragment="frauds(frauds,canDelete)">
       <h2>Reported Frauds/Scams</h2>
       <div th:switch="${frauds}">
         <h4 th:case="null">No fraud/scam found</h4>
@@ -36,10 +36,14 @@
             <li class="button-group">
               <input
                 type="button"
-                th:attr="onclick=|window.location.href='${hostPath}/fraud/edit/${one.id}'|"
+                th:attr="onclick=|window.location.href='@{/fraud/edit/{id}(id=${one.id})}'|"
                 value="Edit Fraud/Scam"
               />
             </li>
+						<li th:if="${canDelete}">
+							<strong>Delete:</strong>
+							<a th:href="@{/fraud/delete/{id}(id=${one.id})}">Delete</a>
+						</li>						
           </ul>
         </div>
       </div>

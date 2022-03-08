@@ -17,8 +17,8 @@
     <div th:if="${messages}">
       <div th:insert="general::messages(${messages})"></div>
     </div>
-    <div th:fragment="persons(persons,hostPath)">
-      <h2>Reported Peoplee</h2>
+    <div th:fragment="persons(persons,canDelete)">
+      <h2>Reported People</h2>
       <div th:switch="${persons}">
         <h4 th:case="null">No person found</h4>
         <div th:case="*">
@@ -27,10 +27,17 @@
             <li class="button-group">
               <input
                 type="button"
-                th:attr="onclick=|window.location.href='${hostPath}/person/edit/${person.id}'|"
+                th:attr="onclick=|window.location.href='@{/person/edit/{id}(id=${person.id})}'|"
                 value="Edit Person"
               />
             </li>
+            <li th:if="${canDelete}" class="button-group">
+              <input
+                type="button"
+                th:attr="onclick=|window.location.href='@{/person/delete/{id}(id=${person.id})}'|"
+                value="Delete Person"
+              />
+            </li>						
           </div>
         </div>
       </div>

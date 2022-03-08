@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--
+ - @copyright Copyright (C) 2014-2015 City of Bloomington, Indiana. All rights reserved.
+ - @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
+ - @author W. Sibo <sibow@bloomington.in.gov>
+ -
+ -->
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head th:replace="general::head('Offender')"></head>
+
+<body class="staff">
+	<header>
+		<div th:replace="general::header-staff"></div>
+	</header>
+
+	<main class="staff">
+		<h2>Offender Info</h2>
+		<div th:if="${errors}">
+			<div th:insert="general::errors(${errors})"></div>
+		</div>
+		<div th:if="${messages}">
+			<div th:insert="general::messages(${messages})"></div>
+		</div>
+		<fieldset>
+			<caption>Offender</caption>
+			<div th:fragment="offender(${offender})">			
+				<ul>
+					<li>
+						<strong>Name:</strong>
+						<span th:text="${offender.fullname}"></span>
+					</li>
+					<li th:if="${offender.hasNoTransientAddress()}">
+						<strong>Address:</strong>
+						<span th:text="${offender.address}"></span>
+					</li>
+					<li th:if="${offender.getTransientAddress()}">
+						<strong>Address:</strong>
+						<span th:text="'Transient'"></span>
+					</li>					
+					<li th:if="${offender.hasNoTransientAddress()}">
+						<strong>City, State Zipcode:</strong>
+						<span th:text="${offender.cityStateZip}"> </span>
+					</li>
+					<li th:if="${offender.hasPhones()}">
+						<strong>Phone(s):</strong>
+						<span th:text="${offender.phones}"></span>
+					</li>
+					<li th:if="${offender.hasEmails()}">
+						<strong>Email(s):</strong>
+						<span th:text="${offender.emails}"></span>
+					</li>
+					<li>
+						<strong>Date of Birth:</strong>
+						<span th:text="${offender.dobStr}"></span>
+					</li>
+					
+					<li th:if="${offender.hasDlnAndSsn()}">
+						<span th:text="${offender.dlnAndSsn}"></span>
+					</li>
+					<li th:if="${offender.hasHeightAndWeight()}">
+						<span th:text="${offender.heightAndWeight}"></span>
+					</li>
+					<li th:if="${offender.hasSexAndGender()}">
+						<span th:text="${offender.sexAndGender}"></span>
+					</li>
+					<li th:if="${offender.hasRaceAndEthnicity()}">
+						<span th:text="${offender.raceAndEthnicity}"></span>
+					</li>
+					<li th:if="${offender.hasOccupation()}">
+						<strong>Occupation:</strong>
+						<span th:text="${offender.occupation}"></span>
+					</li>
+				</ul>
+			</div>				
+		</fielset>
+	</main>
+</body>
+</htmL>

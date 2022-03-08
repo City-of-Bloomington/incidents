@@ -52,6 +52,7 @@ public class Incident extends TopModel implements java.io.Serializable{
 		@JoinColumn(name="incident_type_id", referencedColumnName="id")
     private IncidentType incidentType;
 
+		private String category="Person"; // Person, Business
     private Date received;
 
     private Date date;
@@ -71,6 +72,8 @@ public class Incident extends TopModel implements java.io.Serializable{
     private String otherEntry;
 		@Column(name="have_media")
     private Character haveMedia;
+		@Column(name="transient_offender")
+		private Character transientOffender;
 
     private String email;
 
@@ -96,11 +99,22 @@ public class Incident extends TopModel implements java.io.Serializable{
     private String oldAddress;
 		@Transient
 		private int addr_id = 0;
-    
+		@Transient
+		private Integer bus_id;
+		@Transient
+		private boolean ignoreStatus = false;
     @OneToMany
     @JoinColumn(name="incident_id",insertable=false, updatable=false)		
-    private List<Person> persons;		
+    private List<Person> persons;
 
+    @OneToMany
+    @JoinColumn(name="incident_id",insertable=false, updatable=false)		
+    private List<Offender> offenders;		
+		
+		@OneToOne
+		@JoinColumn(name="business_id", updatable=false, referencedColumnName="id")
+    private Business business;
+		
     @OneToMany
     @JoinColumn(name="incident_id", insertable=false, updatable=false)
     private List<Property> properties;
@@ -120,12 +134,14 @@ public class Incident extends TopModel implements java.io.Serializable{
     @OneToMany
     @JoinColumn(name="incident_id",insertable=false, updatable=false)
     private List<ActionLog> actionLogs;
-
+		@Transient
+		private List<ActionLog> validActionLogs; // ingore cancelled
+		
 		@Convert(converter = AddressConverter.class)
 		@OneToOne
-		// @ManyToOne(optional=false, fetch=FetchType.EAGER)
 		@JoinColumn(name="address_id", updatable=false, referencedColumnName="id")
     Address address;
+		
 		
     public Incident(){
 				super();
@@ -143,14 +159,18 @@ public class Incident extends TopModel implements java.io.Serializable{
 										String entryType,
 										String otherEntry,
 										Character haveMedia,
+										Character transientOffender,
 										String email,
 										Address address,
-										List<Person> persons,										
+										List<Person> persons,
+										List<Offender> offenders,
 										List<Property> properties,
 										List<Vehicle> vehicles,
 										List<ActionLog> actionLogs,
 										List<Media> medias,
-										List<Fraud> frauds
+										List<Fraud> frauds,
+										String category,
+										Business business
 										
 										) {
 				super();
@@ -166,14 +186,18 @@ public class Incident extends TopModel implements java.io.Serializable{
 				this.entryType = entryType;
 				this.otherEntry = otherEntry;
 				this.haveMedia = haveMedia;
+				this.transientOffender = transientOffender;
 				this.email = email;
-				this.persons = persons;				
+				this.persons = persons;
+				this.offenders = offenders;
 				this.properties = properties;
 				this.vehicles = vehicles;
 				setActionLogs(actionLogs);
 				this.medias = medias;
 				this.frauds = frauds;
 				this.address = address;
+				this.setCategory(category);
+				setBusiness(business);
     }
 
     public int getId() {
@@ -192,6 +216,8 @@ public class Incident extends TopModel implements java.io.Serializable{
 				
 				if(val != null && !val.isEmpty())						
 						this.caseNumber = val.trim();
+				else
+						this.caseNumber = val;
     }
     @Transient
     public boolean hasCaseNumber(){
@@ -215,6 +241,17 @@ public class Incident extends TopModel implements java.io.Serializable{
 				}
 				return str;
     }
+    public String getReceivedNoSep() {
+				String str = "";
+				if(received != null){
+						try{
+								str = Helper.dfDateTimeNoSep.format(received);
+						}catch(Exception ex){
+								System.err.println(ex);
+						}
+				}
+				return str;
+    }		
 
     public void setReceivedStr(String val) {
 				if(val != null && !val.equals("")){
@@ -254,7 +291,38 @@ public class Incident extends TopModel implements java.io.Serializable{
 				}
 				return str;
     }		
-
+		public void setCategory(String val){
+				if(val != null)
+						this.category = val;
+		}
+		public String getCategory(){
+				return category;
+		}
+		@Transient
+		public boolean hasCategory(){
+				return category != null && !category.isEmpty();
+		}
+		@Transient
+		public void setIgnoreStatus(boolean val){
+				ignoreStatus = val;
+		}
+		@Transient
+		public boolean isBusinessRelated(){
+				return category != null && category.equals("Business");
+		}
+		public void setBusiness(Business val){
+				if(val != null){
+						business = val;
+						bus_id = business.getId();
+				}
+		}
+		public Business getBusiness(){
+				return business;
+		}
+		@Transient
+		public boolean hasBusinessRecord(){
+				return business != null;
+		}
     public void setDate(Date date) {
 				this.date = date;
     }
@@ -320,12 +388,6 @@ public class Incident extends TopModel implements java.io.Serializable{
 						this.evidence = val.trim();
 				
     }		
-		/*
-    @Transient
-    public boolean hasValidAddress(){
-				return this.invalidAddress == null;
-    }
-		*/		
     @Transient
     public boolean hasEvidenceInfo(){
 				return this.evidence != null && !this.evidence.isEmpty();
@@ -383,8 +445,14 @@ public class Incident extends TopModel implements java.io.Serializable{
 		// entry gained is not required for lost property or vandalism
     @Transient
     public boolean showGainedEntry(){
-				return !(isVandalRelated() || isLostRelated() || isFraudRelated());
-    }				
+				return !(isVandalRelated() || isLostRelated() || isFraudRelated()
+								 || isBusinessRelated());
+    }
+		// we do not show evidence field for business related
+		@Transient
+		public boolean showEvidence(){
+				return !isBusinessRelated();
+		}
     @Transient
     public boolean canEdit(){
 				return canBeChanged();
@@ -399,6 +467,16 @@ public class Incident extends TopModel implements java.io.Serializable{
 		public void setAddr_id(int val){
 				addr_id = val;
 		}
+		@Transient
+		public Integer getBus_id(){
+				if(business != null)
+						bus_id = business.getId();
+				return bus_id;
+		}
+		@Transient
+		public void setBus_id(Integer val){
+				bus_id = val;
+		}		
     @Transient
     public String getStartEndDate(){
 				String ret = "";
@@ -468,6 +546,38 @@ public class Incident extends TopModel implements java.io.Serializable{
     public boolean hasAccessInfo(){
 				return isNotLostRelated() && !getEntryInfo().isEmpty();
     }
+		// we can if there is more than one
+		@Transient
+		public boolean canDeleteProperty(){
+				return hasPropertyList() && properties.size() > 1;
+		}
+		@Transient
+		public boolean canDeletePerson(){
+				return hasPersonList() && persons.size() > 1;
+		}		
+		@Transient
+		public boolean canDeleteOffender(){
+				return hasOffenderList() && offenders.size() > 1;
+		}
+		@Transient
+		public boolean canDeleteFraud(){
+				return hasFraudList() && frauds.size() > 1;
+		}
+		@Transient
+		public boolean canDeleteVehicle(){
+				return hasVehicleList() && vehicles.size() > 1;
+		}		
+		@Transient
+		public boolean canDeleteMedia(){
+				if(isBusinessRelated()){
+						return hasMediaList() && medias.size() > 1;
+				}
+				return true;
+		}
+		@Transient
+		public boolean ignoreStatus(){
+				return ignoreStatus;
+		}
     public String getEntryType() {
 				return entryType;
     }
@@ -495,7 +605,17 @@ public class Incident extends TopModel implements java.io.Serializable{
     public Character getHaveMedia() {
 				return haveMedia;
     }
-
+    public boolean getTransientOffender() {
+				return transientOffender != null;
+    }
+		public void setTransientOffender(boolean val){
+				if(val)
+						transientOffender = 'y';
+		}
+		@Transient
+		public boolean requireOffenders(){
+				return !getTransientOffender();
+		}
     public void setHaveMedia(Character haveMedia) {
 				this.haveMedia = haveMedia;
     }
@@ -524,6 +644,12 @@ public class Incident extends TopModel implements java.io.Serializable{
     public void setPersons(List<Person> vals){
 				this.persons = vals;
     }
+    public List<Offender> getOffenders(){
+				return this.offenders;
+    }		
+    public void setOffenders(List<Offender> vals){
+				this.offenders = vals;
+    }		
     public List<Fraud> getFrauds(){
 				return this.frauds;
     }		
@@ -542,32 +668,30 @@ public class Incident extends TopModel implements java.io.Serializable{
     //sorted at the same time
     public void setActionLogs(List<ActionLog> list){
 				if(list != null){
-						if(list.size() > 1){ 
-								actionLogs = list.stream().
-										sorted((o1, o2)->o1.getAction().getObjId().
-													 compareTo(o2.getAction().getObjId())).
-										collect(Collectors.toList());
-						}
-						else{
-								actionLogs = list;
-						}
+						actionLogs = list;
 				}
     }
     @Transient
     public void sortActionLogs(){
 				List<ActionLog> list = new ArrayList<>();
+				List<ActionLog> list2 = new ArrayList<>();
 				if(actionLogs != null){
 						for(ActionLog log:actionLogs){
 								list.add(log);
+								if(!log.getCancelled()){
+										list2.add(log);
+								}
 						}
-						if(list.size() > 1){
+						if(list2.size() > 1){
 								// reverse order last first
-								actionLogs = list.stream().
+								validActionLogs = list2.stream().
 										sorted((o1, o2)->o2.getAction().getObjId().
 													 compareTo(o1.getAction().getObjId())).
 										collect(Collectors.toList());
 						}
-						System.err.println(" logs  "+actionLogs);						
+						else{
+								validActionLogs = list2;
+						}
 				}
     }		
     // status is the last action
@@ -575,16 +699,20 @@ public class Incident extends TopModel implements java.io.Serializable{
     public String getStatus(){
 				if(status.isEmpty()){
 						sortActionLogs();
-						if(actionLogs != null && actionLogs.size() > 0){
-								ActionLog actionLog = actionLogs.get(0);
+						if(validActionLogs != null && validActionLogs.size() > 0){
+								ActionLog actionLog = validActionLogs.get(0);
 								lastAction = actionLog.getAction();
 								status = lastAction.getDescription();
+						}
+						else{
+								status="incomplete (No action can be made)";
 						}
 				}
 				return status;
     }
 		@Transient
 		public boolean hasStatusInfo(){
+				if(ignoreStatus) return false;
 				getStatus();
 				return !status.isEmpty();
 		}
@@ -596,6 +724,10 @@ public class Incident extends TopModel implements java.io.Serializable{
 				}
 				return false;
     }
+		@Transient
+		public boolean hasNoTransientOffender(){
+				return !getTransientOffender();
+		}
     @Transient
     public Action getLastAction(){		
 				return lastAction;
@@ -613,6 +745,26 @@ public class Incident extends TopModel implements java.io.Serializable{
 				}
 				return "";
 		}
+		@Transient
+		public String getFirstPropertyId(){
+				if(hasPropertyList()){
+						return ""+properties.get(0).getId();
+				}
+				return "";
+		}		
+		@Transient
+		public String getFirstOffenderId(){
+				if(hasOffenderList()){
+						return ""+offenders.get(0).getId();
+				}
+				return "";
+		}
+		public String getFirstMediaId(){
+				if(hasMediaList()){
+						return ""+medias.get(0).getId();
+				}
+				return "";
+		}		
     /**
      *
      the incident can be submitted if the following conditions are met
@@ -622,25 +774,43 @@ public class Incident extends TopModel implements java.io.Serializable{
     */
     @Transient
     public boolean canBeSubmitted(){
-				if(!hasPersonList()){
-						addError("Person information are required");
-						return false;
+				if(isBusinessRelated()){
+						if(hasNoTransientOffender()){
+								if(!hasOffenderList()){
+										addError("Offender information is required");
+										return false;
+								}
+						}
+						if(!hasPropertyList()){
+								addError("You need to add property information");
+								return false;
+						}
+						if(!hasMediaList()){
+								addError("You need to add receipt photo of the theft or photo of the vandalism");
+								return false;
+						}
 				}
-				if(isFraudRelated() && !hasFraudList()){
-						addError("You need to add fraud/scam information");
-						return false;
-				}
-				if(!isFraudRelated() && !hasPropertyList()){
-						addError("You need to add property information");
-						return false;
-				}
-				if(isVehicleRequired() && !hasVehicleList()){
-						addError("You need to add vehicle information");
-						return false;
-				}
-				if(hasActionLogs() && !hasEmailActionLogOnly()){
-						addError("The incident is already submitted");
-						return false;
+				else{
+						if(!hasPersonList()){
+								addError("Person information is required");
+								return false;
+						}
+						if(isFraudRelated() && !hasFraudList()){
+								addError("You need to add fraud/scam information");
+								return false;
+						}
+						if(!isFraudRelated() && !hasPropertyList()){
+								addError("You need to add property information");
+								return false;
+						}
+						if(isVehicleRequired() && !hasVehicleList()){
+								addError("You need to add vehicle information");
+								return false;
+						}
+						if(hasActionLogs() && !hasEmailActionLogOnly()){
+								addError("The incident is already submitted");
+								return false;
+						}
 				}
 				return true;
     }
@@ -659,6 +829,10 @@ public class Incident extends TopModel implements java.io.Serializable{
     public boolean hasPersonList(){
 				return persons != null && persons.size() > 0;
     }
+    @Transient
+    public boolean hasOffenderList(){
+				return offenders != null && offenders.size() > 0;
+    }		
     @Transient		
     public boolean hasPropertyList(){
 				return properties != null && properties.size() > 0;
@@ -692,6 +866,26 @@ public class Incident extends TopModel implements java.io.Serializable{
 				}
 				return false;
     }
+		@Transient
+		public boolean canBeDiscarded(){
+				return !hasDiscardAction();
+		}
+    @Transient
+    public boolean hasDiscardAction(){
+				if(hasActionLogs()){
+						if(actionLogs.size() > 0){
+								for(ActionLog log:actionLogs){
+										Action action = log.getAction();
+										if(action != null &&
+											 action.getName().indexOf("discard") > -1){
+												return true;
+										}
+								}
+						}
+				}
+				return false;
+    }		
+		
     @Transient
     public Double getLatitude(){
 				return latitude;

@@ -269,19 +269,19 @@ insert into actions select * from statuses;
 ;;
 ;; received but not confirmed
 ;; modified
-  create or Replace view incident_received AS                                  select i.id from incidents i,action_logs l where l.incident_id=i.id and l.action_id = 2 and l.action_id in (select max(l2.action_id) from action_logs l2 where l2.incident_id=i.id) order by i.id desc;
+  create or Replace view incident_received AS                                  select i.id from incidents i,action_logs l where l.incident_id=i.id and l.action_id = 2 and l.action_id in (select max(l2.action_id) from action_logs l2 where l2.incident_id=i.id and l2.cancelled is null) order by i.id desc;
 
 ;;
 ;; confirmed
 ;;
-  create or Replace view incident_confirmed AS                                  select i.id from incidents i,action_logs l where l.incident_id=i.id and l.action_id = 3 and l.action_id in (select max(l2.action_id) from action_logs l2 where l2.incident_id=i.id);
+  create or Replace view incident_confirmed AS                                  select i.id from incidents i,action_logs l where l.incident_id=i.id and l.action_id = 3 and l.action_id in (select max(l2.action_id) from action_logs l2 where l2.incident_id=i.id and l2.cancelled is null);
 
 ;; approved
-     create or Replace view incident_approved AS                                     select i.id from incidents i,action_logs l where l.incident_id=i.id and l.action_id = 4 and l.action_id in (select max(l2.action_id) from action_logs l2 where l2.incident_id=i.id);				 
+     create or Replace view incident_approved AS                                     select i.id from incidents i,action_logs l where l.incident_id=i.id and l.action_id = 4 and l.action_id in (select max(l2.action_id) from action_logs l2 where l2.incident_id=i.id and l2.cancelled is null);				 
 ;;
 ;; rejected (not used)
 ;;
-    create or Replace view incident_rejected AS                                   select i.id from incidents i,action_logs l where l.incident_id=i.id and l.action_id = 5 and l.action_id in (select max(l2.action_id) from action_logs l2 where l2.incident_id=i.id) order by i.id desc;
+    create or Replace view incident_rejected AS                                   select i.id from incidents i,action_logs l where l.incident_id=i.id and l.action_id = 5 and l.action_id in (select max(l2.action_id) from action_logs l2 where l2.incident_id=i.id and l2.cancelled is null) order by i.id desc;
 ;;
 ;; processed
      create or Replace view incident_processed AS                                    select i.id from incidents i,action_logs l where l.incident_id=i.id and l.action_id = 6 and l.action_id in (select max(l2.action_id) from action_logs l2 where l2.incident_id=i.id);
@@ -355,6 +355,7 @@ alter table vehicles add value decimal(10,2);
 |  4 | approved  | Approved                 |             2 | 3
 |  5 | rejected  | Rejected                 |             2 | null
 |  6 | processed | Processed                |             3 | null
+|  7 | discarded | Discarded                |             1 } null
 
 
  alter table action_logs drop foreign key action_logs_ibfk_2;
@@ -593,4 +594,100 @@ service tomcat9 restart
 ;; /srv/data/incidents/files/
 ;;
 
+;;
+;; modify incidents table add category 
+;; 
+alter table incidents add category enum('Person','Business') after incident_type_id;
+;; for the old incidents 
+update incidents set category='Person' where category is null;
 
+;;
+;; database tables related to business portion of incidents
+;; business local address is entered separately, so not needed here
+;;
+create table businesses(                                                            id int unsigned auto_increment primary key,                                     name varchar(80) not null,                                                      corporate_address varchar(160),                                                 business_number varchar(32),                                                    phone varchar(32),                                                              email varchar(160),                                                             address_id int unsigned,                                                        reporter_name varchar(160),                                                     reporter_title varchar(80),                                                     foreign key(address_id) references addresses(id)                                )engine=InnoDB;
+;;
+;;
+;; this table will not be used right now
+;; 
+ create table credentials(                                                            id int unsigned auto_increment primary key,                                     business_id int unsigned not null,                                              email varchar(256) not null unique,                                             password varchar(256),                                                          last_update datetime,                                                           foreign key(business_id) references businesses(id)                              )engine=InnoDB;
+;;
+
+;;
+;; we will be using sha2(string, 256) for encryption
+;; something like select sha2(str, 256) = password; => 1 if match
+;;
+alter table incidents add business_id int unsigned after address_id;
+alter table incidents add foreign key(business_id) references businesses(id);
+;;
+;; 6/10/2021 changes
+alter table businesses add reporter_name varchar(160);
+alter table businesses add reporter_title varchar(80);
+;;
+;; probably will not hurt keeping the foreign key for credentials table
+;; since we are not going to use it right now.
+alter table credentials drop constraint credentials_ibfk_1;
+;;
+;; modified credentials table just to keep it around
+;;
+create table credentials(                                                            id int unsigned auto_increment primary key,                                     email varchar(256) not null unique,                                             password varchar(256),                                                          last_update datetime                                                           )engine=InnoDB;
+
+;;
+;;
+create table offenders like persons;
+alter table offenders drop column person_type_id;
+alter table offenders drop column reporter;
+alter table offenders drop column email2;
+alter table offenders drop column phone2;
+alter table offenders drop column phone_type2;
+alter table offenders add foreign key(incident_id) references incidents(id);
+;;
+;; for business incidents we have two incident types only, theft and vandal
+;;
+alter table incident_types add used_in_business char(1);
+update incident_types set used_in_business='y' where id in (1,2);
+
+;;
+;; 8/4/2021
+;; adding roll back action
+;; we are adding cancelled and cancelled by rows to the action_logs
+;; so the table becomes as follows
+;;
+  create table action_logs(                                                             id int unsigned auto_increment primary key,                                     incident_id int unsigned not null,                                              date datetime,                                                                  action_id int unsigned,                                                         user_id int unsigned,                                                           comments text,                                                                  cancelled char(1),                                                              cancelled_by int unsigned,                                                      FOREIGN KEY (incident_id) REFERENCES incidents (id),                            FOREIGN KEY (action_id) REFERENCES actions (id),                                FOREIGN KEY (user_id) REFERENCES users (id),                                    foreign key(cancelled_by) references users(id)	                               )engine=InnoDB;
+
+alter table action_logs add cancelled char(1);
+alter table action_logs add cancelled_by int unsigned;
+alter table action_logs add foreign key(cancelled_by) references users(id);
+;;
+;; 8/5
+;; update views in top received, confirmed, approved, rejected
+;;
+;;
+alter table incidents add transient_offender char(1);
+alter table offenders add transient_address char(1);
+;;
+;;
+;; 8/24
+;; add to application.properties
+;; max size in MB
+incident.media.max.size=5
+incident.person.media.count=3
+incident.business.media.count=10
+;;
+;; Steps for upgrade
+;;
+;; copy old war file
+;; stop tomcat
+;; dump mysql db
+;; add to properties file
+;; modify database
+;; move new war file
+;; restart
+;; test
+;;
+;; adding discard action to the action list
+;; 9/30/21
+;;
+insert into actions values( 7,'discarded','Discarded',1, null);
+insert into role_actions values(1,7),(2,7);
+insert into action_roles values(7,1),(7,2);
