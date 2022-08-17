@@ -35,153 +35,153 @@ public class UserController extends TopController{
     UserService userService;
     @Autowired
     RoleService roleService;
-		@Autowired
-		HttpSession session;
+    @Autowired
+    HttpSession session;
 		
     @GetMapping("/users")
     public String getAll(Model model) {
-				String ret = canUserAccess(session);
-				if(!ret.isEmpty()){
-						return ret;
-				}
+	String ret = canUserAccess(session);
+	if(!ret.isEmpty()){
+	    return ret;
+	}
         model.addAttribute("users", userService.getAll());
         return "staff/users";
     }
     @GetMapping("/users/find/{name}")
     public String findUsers(@PathVariable("name") String name, Model model) {
-				String ret = canUserAccess(session);
-				if(!ret.isEmpty()){
-						return ret;
-				}
-				if(name != null && !name.isEmpty()){
-						String str = "%"+name+"%";
-						List<User> users = userService.findByFirstnameOrByLastname(str, str);
-						if(users != null)
-								model.addAttribute("users", users);
-						return "staff/users";
-				}
-				else{
-						return "redirect:/staff";
-				}
+	String ret = canUserAccess(session);
+	if(!ret.isEmpty()){
+	    return ret;
+	}
+	if(name != null && !name.isEmpty()){
+	    String str = "%"+name+"%";
+	    List<User> users = userService.findByFirstnameOrByLastname(str, str);
+	    if(users != null)
+		model.addAttribute("users", users);
+	    return "staff/users";
+	}
+	else{
+	    return "redirect:/staff";
+	}
     }		
     @GetMapping("/user/new")
     public String newUser(Model model) {
-				String ret = canUserAccess(session);
-				if(!ret.isEmpty()){
-						return ret;
-				}
-				User user = new User();
+	String ret = canUserAccess(session);
+	if(!ret.isEmpty()){
+	    return ret;
+	}
+	User user = new User();
         model.addAttribute("user", user);
-				List<Role> roles = roleService.getAll();
-				if(roles != null)
-						model.addAttribute("roles", roles);						
+	List<Role> roles = roleService.getAll();
+	if(roles != null)
+	    model.addAttribute("roles", roles);						
         return "staff/userAdd";
     }     
     @PostMapping("/user/add")
     public String addUser(@Valid User user, BindingResult result, Model model) {
-				String ret = canUserAccess(session);
-				if(!ret.isEmpty()){
-						return ret;
-				}
+	String ret = canUserAccess(session);
+	if(!ret.isEmpty()){
+	    return ret;
+	}
         if (result.hasErrors()) {
             return "staff/userAdd";
         }
         userService.save(user);
-				addMessage("Added Successfully");
-				logger.debug("New user added "+user);
+	addMessage("Added Successfully");
+	logger.debug("New user added "+user);
         model.addAttribute("users", userService.getAll());
-				model.addAttribute("messages", messages);				
+	model.addAttribute("messages", messages);				
         return "staff/users";
     }
 
     @GetMapping("/user/edit/{id}")
     public String showEditForm(@PathVariable("id") int id, Model model) {
-				String ret = canUserAccess(session);
-				if(!ret.isEmpty()){
-						return ret;
-				}
-				User user = null;
-				try{
-						user = userService.findById(id);
+	String ret = canUserAccess(session);
+	if(!ret.isEmpty()){
+	    return ret;
+	}
+	User user = null;
+	try{
+	    user = userService.findById(id);
 						
-				}catch(Exception ex){
-						addError("Invalid user Id "+id);
-						logger.error(" "+ex);
-						model.addAttribute("users", userService.getAll());
-						model.addAttribute("errors", errors);
-						return "staff/users";
-				}
-				List<Role> roles = roleService.getAll();
-				if(roles != null)
-						model.addAttribute("roles", roles);				
-				model.addAttribute("user", user);
-				return "staff/userUpdate";
+	}catch(Exception ex){
+	    addError("Invalid user Id "+id);
+	    logger.error(" "+ex);
+	    model.addAttribute("users", userService.getAll());
+	    model.addAttribute("errors", errors);
+	    return "staff/users";
+	}
+	List<Role> roles = roleService.getAll();
+	if(roles != null)
+	    model.addAttribute("roles", roles);				
+	model.addAttribute("user", user);
+	return "staff/userUpdate";
     }
     @PostMapping("/user/update/{id}")
     public String updateUser(@PathVariable("id") int id, @Valid User user, 
-														 BindingResult result, Model model) {
-				String ret = canUserAccess(session);
-				if(!ret.isEmpty()){
-						return ret;
-				}
-				if (result.hasErrors()) {
-						String error = Helper.extractErrors(result);
-						addError("Error update user "+error);
-						user.setId(id);
-						return "staff/userUpdate";
-				}
-				addMessage("Updated Successfully");
-				userService.update(user);
-				model.addAttribute("users", userService.getAll());				
-				List<Role> roles = roleService.getAll();
-				if(roles != null)
-						model.addAttribute("roles", roles);
-				model.addAttribute("messages", messages);
-				return "staff/users";
+			     BindingResult result, Model model) {
+	String ret = canUserAccess(session);
+	if(!ret.isEmpty()){
+	    return ret;
+	}
+	if (result.hasErrors()) {
+	    String error = Helper.extractErrors(result);
+	    addError("Error update user "+error);
+	    user.setId(id);
+	    return "staff/userUpdate";
+	}
+	addMessage("Updated Successfully");
+	userService.update(user);
+	model.addAttribute("users", userService.getAll());				
+	List<Role> roles = roleService.getAll();
+	if(roles != null)
+	    model.addAttribute("roles", roles);
+	model.addAttribute("messages", messages);
+	return "staff/users";
     }
 		
     @GetMapping("/user/delete/{id}")
     public String deleteUser(@PathVariable("id") int id, Model model) {
-				String ret = canUserAccess(session);
-				if(!ret.isEmpty()){
-						return ret;
-				}
-				try{
-						User user = userService.findById(id);
-						userService.delete(id);
-						addMessage("Deleted Succefully");
-				}catch(Exception ex){
-						addError("Eror delete user "+id);
-						logger.error(" "+ex);
-				}
-				model.addAttribute("users", userService.getAll());
-				if(hasMessages()){
-						model.addAttribute("messages", messages);
-				}
-				else if(hasErrors()){
-						model.addAttribute("errors", errors);
-				}
-				return "staff/users";
+	String ret = canUserAccess(session);
+	if(!ret.isEmpty()){
+	    return ret;
+	}
+	try{
+	    User user = userService.findById(id);
+	    userService.delete(id);
+	    addMessage("Deleted Succefully");
+	}catch(Exception ex){
+	    addError("Eror delete user "+id);
+	    logger.error(" "+ex);
+	}
+	model.addAttribute("users", userService.getAll());
+	if(hasMessages()){
+	    model.addAttribute("messages", messages);
+	}
+	else if(hasErrors()){
+	    model.addAttribute("errors", errors);
+	}
+	return "staff/users";
     }
-		private User findUserFromSession(HttpSession session){
-				User user = null;
-				User user2 = getUserFromSession(session);
-				if(user2 != null){
-						user = userService.findById(user2.getId());
-				}
-				return user;
+    private User findUserFromSession(HttpSession session){
+	User user = null;
+	User user2 = getUserFromSession(session);
+	if(user2 != null){
+	    user = userService.findById(user2.getId());
+	}
+	return user;
     }
-		private String canUserAccess(HttpSession session){
-				User user = findUserFromSession(session);
-				if(user == null){
-						return "redirect:/login";
-				}
-				if(!user.isAdmin()){
-						addMessage("you can not access");
-						addMessagesAndErrorsToSession(session);
-						return "redirect:/staff";
-				}
-				return "";
-		}
+    private String canUserAccess(HttpSession session){
+	User user = findUserFromSession(session);
+	if(user == null){
+	    return "redirect:/login";
+	}
+	if(!user.isAdmin()){
+	    addMessage("you can not access");
+	    addMessagesAndErrorsToSession(session);
+	    return "redirect:/staff";
+	}
+	return "";
+    }
 		
 }

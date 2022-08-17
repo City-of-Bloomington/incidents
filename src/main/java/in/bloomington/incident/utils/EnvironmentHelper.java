@@ -29,25 +29,25 @@ public class EnvironmentHelper
     private Environment         env;
 		
     static String url = "",
-				image_url = "";
+	image_url = "";
 
     String
-				file_path            = "",
-				address_check_url    = "",
-				ldap_host            = "";
+	file_path            = "",
+	address_check_url    = "",
+	ldap_host            = "";
     boolean isSet                = false;
 
     public EnvironmentHelper()
     {
         populatePaths();
     }
-		/**
-			 // we can get env info from properites file as well
-			 // or inject directly
-			 String dbUrl = env.getProperty("jdbc.url"))
+    /**
+     // we can get env info from properites file as well
+     // or inject directly
+     String dbUrl = env.getProperty("jdbc.url"))
 
 
-		 */
+    */
 
     public void populatePaths()
     {
@@ -68,7 +68,7 @@ public class EnvironmentHelper
     }
 
     /*
-		 * getters
+     * getters
      */
     public String getFilePath()
     {

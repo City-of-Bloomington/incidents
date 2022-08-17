@@ -14,106 +14,121 @@ import org.springframework.web.bind.annotation.PathVariable;
 import javax.servlet.http.HttpSession;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.beans.factory.annotation.Value;
 
 @Controller
 public class WebController extends TopController{
 
-		@Autowired 
+    @Autowired 
     private HttpSession session;	
-		
+    
     @GetMapping("/index")		
     public String indexStart(Model model
-														 ) {
-				getMessagesAndErrorsFromSession(session, model);
-				return "intro_questions";
+			     ) {
+	getMessagesAndErrorsFromSession(session, model);
+	model.addAttribute("app_url", app_url);
+	return "intro_questions";
     }
     
     @RequestMapping(value = "/all")
     public String introStart(Model model
-														 ){
-				getMessagesAndErrorsFromSession(session, model);
-				return "intro_all";
+			     ){
+	getMessagesAndErrorsFromSession(session, model);
+	return "intro_all";
     }
-		// for testing purpose only
+    // for testing purpose only
     @RequestMapping(value = "/staff_menu")
     public String staffMenu(Model model
-														){
-				getMessagesAndErrorsFromSession(session, model);
-				return "staff_menu";
+			    ){
+	getMessagesAndErrorsFromSession(session, model);
+	
+	return "staff_menu";
     }
     @RequestMapping(value = "/")
     public String introPersonal(Model model
-														 ){
-				getMessagesAndErrorsFromSession(session, model);
-				resetAll();
-				return "intro_questions";
+				){
+	getMessagesAndErrorsFromSession(session, model);
+	model.addAttribute("app_url", app_url);
+	System.err.println(" app_url "+app_url);
+	resetAll();
+	return "intro_questions";
     }
     @RequestMapping(value = "/forBusiness")
     public String forBusiness(Model model
-														 ){
-				getMessagesAndErrorsFromSession(session, model);
-				resetAll();
-				return "business_questions";
+			      ){
+	getMessagesAndErrorsFromSession(session, model);
+	model.addAttribute("app_url", app_url);	
+	resetAll();
+	return "business_questions";
     }
     @RequestMapping(value = "/forbusiness")
     public String forBusLower(Model model
-														 ){
-				return "redirect/forBusiness";
+			      ){
+	model.addAttribute("app_url", app_url);
+	return "redirect/forBusiness";
     }						
 		
     @RequestMapping(value = "/selectCategory")
     public String selectCategory(Model model
-																 ){
-				getMessagesAndErrorsFromSession(session, model);
-				resetAll();
-				return "introSelectType";
+				 ){
+	getMessagesAndErrorsFromSession(session, model);
+	model.addAttribute("app_url", app_url);
+	resetAll();
+	return "introSelectType";
     }
 		
     @RequestMapping("/introTheft/{type_id}")
     public String introTheft(@PathVariable("type_id") int type_id,
-														 Model model
-														 ) {
-				getMessagesAndErrorsFromSession(session, model);
-				resetAll();
-				model.addAttribute("type_id", type_id);
-				return "theft_questions";
+			     Model model
+			     ) {
+	getMessagesAndErrorsFromSession(session, model);
+	
+	model.addAttribute("app_url", app_url);
+	resetAll();
+	model.addAttribute("type_id", type_id);
+	return "theft_questions";
     }
     @RequestMapping("/introFraud")
     public String introFraud(Model model
-														 ) {
-				getMessagesAndErrorsFromSession(session, model);
-				// we do not have special questions for fraud right now
-				// so we go to email page directly
-				return "redirect:/addressInput/6";				
+			     ) {
+	getMessagesAndErrorsFromSession(session, model);
+	// we do not have special questions for fraud right now
+	// so we go to email page directly
+	model.addAttribute("app_url", app_url);
+	return "redirect:/addressInput/6";				
     }   		
     @RequestMapping("/introVandal")
     public String introVandal(Model model
-															) {
-				getMessagesAndErrorsFromSession(session, model);
-				return "redirect:/addressInput/2";
+			      ) {
+	getMessagesAndErrorsFromSession(session, model);
+	model.addAttribute("app_url", app_url);
+	return "redirect:/addressInput/2";
     }       
     @RequestMapping("/introLost")
     public String introLost(Model model
-														) {
-				getMessagesAndErrorsFromSession(session, model);
-				return "lost_questions";
+			    ) {
+	getMessagesAndErrorsFromSession(session, model);
+	model.addAttribute("app_url", app_url);
+	return "lost_questions";
     }
     @RequestMapping("/businessSteps")
     public String busSteps(Model model
-														) {
-				getMessagesAndErrorsFromSession(session, model);
-				return "introBusinessSteps";
+			   ) {
+	getMessagesAndErrorsFromSession(session, model);
+	model.addAttribute("app_url", app_url);
+	return "introBusinessSteps";
     }		
 
     @RequestMapping("/emailAdd")
     public String emailAdd(@RequestParam(required=true) int type_id,
-													 @RequestParam(required=true) int address_id,
-													 Model model
-													 ){
-				getMessagesAndErrorsFromSession(session, model);
+			   @RequestParam(required=true) int address_id,
+			   Model model
+			   ){
+	getMessagesAndErrorsFromSession(session, model);
         model.addAttribute("type_id", type_id);
-				model.addAttribute("address_id", address_id);
-				return "emailAdd";
+	model.addAttribute("address_id", address_id);
+	model.addAttribute("app_url", app_url);
+	return "emailAdd";
     }
 
 

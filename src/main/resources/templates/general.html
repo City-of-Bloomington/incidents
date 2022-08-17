@@ -14,28 +14,28 @@
       content="application/xhtml+xml; charset=utf-8"
     />
     <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-    <link th:href="${@environment.getProperty('incidents.app.url')}+'/css/style.css'" rel="stylesheet" />
+    <link th:href="@{${app_url}+'/css/style.css'}" rel="stylesheet" />
     <link
       rel="stylesheet"
-      th:href="${@environment.getProperty('incidents.app.url')}+'/css/jquery-ui.min-1.12.1.css'"
+      th:href="@{${app_url}+'/css/jquery-ui.min-1.12.1.css'}"
       type="text/css"
       media="all"
     />
     <link
       rel="stylesheet"
-      th:href="${@environment.getProperty('incidents.app.url')} +'/css/jquery-ui.theme-1.12.1.css'"
-      type="text/css"
-      media="all"
-    />
-
-    <link
-      rel="stylesheet"
-      th:href="${@environment.getProperty('incidents.app.url')}+'/css/addressChooser.css'"
+      th:href="@{${app_url}+'/css/jquery-ui.theme-1.12.1.css'}"
       type="text/css"
       media="all"
     />
 
-    <link th:href="${@environment.getProperty('incidents.app.url')}+'/css/jquery.timepicker.min.css'" rel="stylesheet" />
+    <link
+      rel="stylesheet"
+      th:href="@{${app_url}+'/css/addressChooser.css'}"
+      type="text/css"
+      media="all"
+    />
+
+    <link th:href="@{${app_url}+'/css/jquery.timepicker.min.css'}" rel="stylesheet" />
 
     <script
       type="text/javascript"
@@ -48,16 +48,16 @@
     ></script>
     <script
       type="text/javascript"
-      th:src="${@environment.getProperty('incidents.app.url')}+'/js/handleAddressChoice.js'"
+      th:src="@{${app_url}+'/js/handleAddressChoice.js'}"
     ></script>
-    <script type="text/javascript" th:src="${@environment.getProperty('incidents.app.url')}+'/js/jquery-3.5.0.min.js'"></script>
-    <script type="text/javascript" th:src="${@environment.getProperty('incidents.app.url')}+'/js/jquery-ui.1.12.1.js'"></script>
+    <script type="text/javascript" th:src="@{${app_url}+'/js/jquery-3.5.0.min.js'}"></script>
+    <script type="text/javascript" th:src="@{${app_url}+'/js/jquery-ui.1.12.1.js'}"></script>
     <script
       type="text/javascript"
       th:src="@{/js/jquery.timepicker.min.js}"
     ></script>
-    <script type="text/javascript" th:src="${@environment.getProperty('incidents.app.url')}+'/js/incidents.js'"></script>
-    <script type="text/javascript" th:src="${@environment.getProperty('incidents.app.url')}+'/js/incidents_intro.js'"></script>
+    <script type="text/javascript" th:src="@{${app_url}+'/js/incidents.js'}"></script>
+    <script type="text/javascript" th:src="@{${app_url}+'/js/incidents_intro.js'}"></script>
 
     <!-- <title th:text="${title}"></title> -->
     <title>BPD Incident Reporting</title>
@@ -185,12 +185,12 @@
           <summary th:text="${#session.getAttribute('user')}"></summary>
           <ul class="menu">
             <li class="menu" th:if="${#session.getAttribute('isAmin') != null}">
-              <a th:href="${@environment.getProperty('incidents.app.url')}+'/report'">Stats Reports </a>
+              <a th:href="@{${app_url}+'/report'}">Stats Reports </a>
             </li>
             <li class="menu" th:if="${#session.getAttribute('isAmin') != null}">
-              <a th:href="${@environment.getProperty('incidents.app.url')}+'/settings'">Settings</a>
+              <a th:href="@{${app_url}+'/settings'}">Settings</a>
             </li>
-            <li class="menu"><a th:href="${@environment.getProperty('incidents.app.url')}+'/logout'">Logout</a></li>
+            <li class="menu"><a th:href="@{${app_url}+'/logout'}">Logout</a></li>
           </ul>
         </details>
       </nav>
@@ -204,7 +204,7 @@
           th:if="${#session.getAttribute('canApprove') != null}">
           <input
             type="button"
-            th:attr="onclick=|window.location.href='${@environment.getProperty('incidents.app.url')}/search/confirmed'|"
+            th:attr="onclick=|window.location.href='${app_url}/search/confirmed'|"
             value="Confirmed"
           />
         </li>
@@ -213,14 +213,14 @@
           th:if="${#session.getAttribute('canProcess') != null}">
           <input
             type="button"
-            th:attr="onclick=|window.location.href='${@environment.getProperty('incidents.app.url')}/search/approved'|"
+            th:attr="onclick=|window.location.href='${app_url}/search/approved'|"
             value="Approved"
           />
         </li>
 	<li th:attr="class=${tabName == 'Received'?'active':''}">
           <input
             type="button"
-            th:attr="onclick=|window.location.href='${@environment.getProperty('incidents.app.url')}/search/received'|"
+            th:attr="onclick=|window.location.href='${app_url}/search/received'|"
             value="Received"
           />
         </li>
@@ -229,14 +229,14 @@
           th:if="${#session.getAttribute('canProcess') != null}">
           <input
             type="button"
-            th:attr="onclick=|window.location.href='${@environment.getProperty('incidents.app.url')}/search/incomplete'|"
+            th:attr="onclick=|window.location.href='${app_url}/search/incomplete'|"
             value="Incomplete"
           />
         </li>
         <li th:attr="class=${tabName == 'Search'?'active':''}">
           <input
             type="button"
-            th:attr="onclick=|window.location.href='${@environment.getProperty('incidents.app.url')}/search'|"
+            th:attr="onclick=|window.location.href='${app_url}/search'|"
             value="Search"
           />
         </li>

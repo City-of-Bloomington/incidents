@@ -51,7 +51,7 @@ public class AddressController extends TopController{
     AddressService addressService;
     @Autowired
     IncidentService incidentService;
-		@Autowired 
+    @Autowired 
     private HttpSession session;		
 		
     @Value( "${incident.defaultcity}" )
