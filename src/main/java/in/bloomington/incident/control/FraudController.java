@@ -53,203 +53,210 @@ public class FraudController extends TopController{
     //
     @RequestMapping("/fraud/add/{incident_id}")
     public String addFraud(@PathVariable("incident_id") int incident_id,
-														Model model,
-														HttpSession session) {
-				if(!verifySession(session, ""+incident_id)){				
-						addMessage("No more changes can be made ");
-						addMessagesAndErrorsToSession(session);
-						return "redirect:/index";
-				}
-				Incident incident = null;
-				try{
-						incident = incidentService.findById(incident_id);
-				}catch(Exception ex){
-						addError("Invalid incident Id: "+incident_id);
-						logger.error(""+ex);
-						model.addAttribute("errors", errors);
-						addMessagesAndErrorsToSession(session);
-						return "redirect:/start";
-				}
-				if(incident == null || !incident.canBeChanged()){
-						addMessage("No more changes can be made");
-						addMessagesAndErrorsToSession(session);
-						return "redirect:/incident/"+incident_id;
-				}
-				Fraud fraud = new Fraud();				
-				List<FraudType> fraudTypes = fraudTypeService.getAll();
-				fraud.setIncident(incident);
-				model.addAttribute("fraud", fraud);
-				model.addAttribute("fraudTypes", fraudTypes);
+			   Model model,
+			   HttpSession session) {
+	model.addAttribute("app_url", app_url);    
+	if(!verifySession(session, ""+incident_id)){				
+	    addMessage("No more changes can be made ");
+	    addMessagesAndErrorsToSession(session);
+	    return "redirect:/index";
+	}
+	Incident incident = null;
+	try{
+	    incident = incidentService.findById(incident_id);
+	}catch(Exception ex){
+	    addError("Invalid incident Id: "+incident_id);
+	    logger.error(""+ex);
+	    model.addAttribute("errors", errors);
+	    addMessagesAndErrorsToSession(session);
+	    return "redirect:/start";
+	}
+	if(incident == null || !incident.canBeChanged()){
+	    addMessage("No more changes can be made");
+	    addMessagesAndErrorsToSession(session);
+	    return "redirect:/incident/"+incident_id;
+	}
+	Fraud fraud = new Fraud();				
+	List<FraudType> fraudTypes = fraudTypeService.getAll();
+	fraud.setIncident(incident);
+	model.addAttribute("fraud", fraud);
+	model.addAttribute("fraudTypes", fraudTypes);
         return "fraudAdd";
     }
     @PostMapping("/fraud/save")
     public String fraudSave(@Valid Fraud fraud,
-														 BindingResult result,
-														 Model model,
-														 HttpSession session
-														 ) {
+			    BindingResult result,
+			    Model model,
+			    HttpSession session
+			    ) {
         if (result.hasErrors()) {
-						String error = Helper.extractErrors(result);
-						addError(error);
-						logger.error(error);
-						List<FraudType> fraudTypes = fraudTypeService.getAll();
-						model.addAttribute("errors", errors);
-						model.addAttribute("fraud", fraud);
-						model.addAttribute("fraudTypes", fraudTypes);
-						model.addAttribute("errors", errors);
-						handleErrorsAndMessages(model);
-						return "fraudAdd";
+	    String error = Helper.extractErrors(result);
+	    addError(error);
+	    logger.error(error);
+	    List<FraudType> fraudTypes = fraudTypeService.getAll();
+	    model.addAttribute("errors", errors);
+	    model.addAttribute("fraud", fraud);
+	    model.addAttribute("fraudTypes", fraudTypes);
+	    model.addAttribute("errors", errors);
+	    model.addAttribute("app_url", app_url);    
+	    handleErrorsAndMessages(model);
+	    return "fraudAdd";
         }
-				Incident incident = fraud.getIncident();
-				if(incident == null || !incident.canBeChanged()){
-						addMessage("No more changes can be made");
-						addMessagesAndErrorsToSession(session);
-						return "redirect:/";
-				}
-				int id = incident.getId();
-				if(!verifySession(session, ""+id)){				
-						addMessage("No more changes can be made ");
-						addMessagesAndErrorsToSession(session);
-						return "redirect:/index";
-				}
+	Incident incident = fraud.getIncident();
+	if(incident == null || !incident.canBeChanged()){
+	    addMessage("No more changes can be made");
+	    addMessagesAndErrorsToSession(session);
+	    return "redirect:/";
+	}
+	int id = incident.getId();
+	if(!verifySession(session, ""+id)){				
+	    addMessage("No more changes can be made ");
+	    addMessagesAndErrorsToSession(session);
+	    return "redirect:/index";
+	}
         fraudService.save(fraud);
-				addMessage("Saved Succefully");
-				addMessagesAndErrorsToSession(session);
-				return "redirect:/incident/"+incident.getId(); 
+	addMessage("Saved Successfully");
+	addMessagesAndErrorsToSession(session);
+	return "redirect:/incident/"+incident.getId(); 
     }
     
     @GetMapping("/fraud/{id}")
     public String showFraud(@PathVariable("id") int id, Model model) {
-				Fraud fraud = null;
-				try{
-						fraud = fraudService.findById(id);
-				}catch(Exception ex){
-						addError("Invalid fraud Id "+id);
-						logger.error(" "+ex);
-						model.addAttribute("errors", errors);
-						return "index"; // need fix
-				}
+	Fraud fraud = null;
+	try{
+	    model.addAttribute("app_url", app_url);    
+	    fraud = fraudService.findById(id);
+	}catch(Exception ex){
+	    addError("Invalid fraud Id "+id);
+	    logger.error(" "+ex);
+	    model.addAttribute("errors", errors);
+	    return "index"; // need fix
+	}
         model.addAttribute("fraud", fraud);				
-				return "fraud";
+	return "fraud";
     }
     //staff
     @GetMapping("/fraudView/{id}")
     public String viewFraud(@PathVariable("id") int id,
-														 Model model,
-														 HttpSession session) {
-				Fraud fraud = null;
-				User user = getUserFromSession(session);
-				if(user == null){
-						return "redirect:/login";
-				}
-				try{
-						fraud = fraudService.findById(id);
-				}catch(Exception ex){
-						addError("Invalid fraud Id "+id);
-						logger.error(" "+ex);
-						model.addAttribute("errors", errors);
-						return "staff/staff_intro"; 
-				}
+			    Model model,
+			    HttpSession session) {
+	Fraud fraud = null;
+	model.addAttribute("app_url", app_url);    
+	User user = getUserFromSession(session);
+	if(user == null){
+	    return "redirect:/login";
+	}
+	try{
+	    fraud = fraudService.findById(id);
+	}catch(Exception ex){
+	    addError("Invalid fraud Id "+id);
+	    logger.error(" "+ex);
+	    model.addAttribute("errors", errors);
+	    return "staff/staff_intro"; 
+	}
         model.addAttribute("fraud", fraud);				
-				return "fraudView";
+	return "fraudView";
     }    
     
     @GetMapping("/fraud/edit/{id}")
     public String showEditForm(@PathVariable("id") int id,
-															 Model model,
-															 HttpSession session) {
-				Fraud fraud = null;
-				try{
-						fraud = fraudService.findById(id);
+			       Model model,
+			       HttpSession session) {
+	Fraud fraud = null;
+	try{
+	    model.addAttribute("app_url", app_url);    
+	    fraud = fraudService.findById(id);
 	    
-				}catch(Exception ex){
-						addError("Invalid fraud Id "+id);
-						logger.error(" "+ex);
-						addMessagesAndErrorsToSession(session);	    
-						return "redirect:/"; 
-				}
-				Incident incident = fraud.getIncident();
-				if(incident == null || !incident.canBeChanged()){
-						addMessage("no more changes can be made");
-						addMessagesAndErrorsToSession(session);
-						return "redirect:/";	    
-				}
-				int incident_id = incident.getId();
-				if(!verifySession(session, ""+incident_id)){				
-						addMessage("No more changes can be made ");
-						addMessagesAndErrorsToSession(session);
-						return "redirect:/";
-				}
-				List<FraudType> fraudTypes = fraudTypeService.getAll();
-				model.addAttribute("fraud", fraud);
-				model.addAttribute("fraudTypes", fraudTypes);
-				handleErrorsAndMessages(model);
-				return "fraudUpdate";
+	}catch(Exception ex){
+	    addError("Invalid fraud Id "+id);
+	    logger.error(" "+ex);
+	    addMessagesAndErrorsToSession(session);	    
+	    return "redirect:/"; 
+	}
+	Incident incident = fraud.getIncident();
+	if(incident == null || !incident.canBeChanged()){
+	    addMessage("no more changes can be made");
+	    addMessagesAndErrorsToSession(session);
+	    return "redirect:/";	    
+	}
+	int incident_id = incident.getId();
+	if(!verifySession(session, ""+incident_id)){				
+	    addMessage("No more changes can be made ");
+	    addMessagesAndErrorsToSession(session);
+	    return "redirect:/";
+	}
+	List<FraudType> fraudTypes = fraudTypeService.getAll();
+	model.addAttribute("fraud", fraud);
+	model.addAttribute("fraudTypes", fraudTypes);
+	handleErrorsAndMessages(model);
+	return "fraudUpdate";
     }
     @PostMapping("/fraud/update/{id}")
     public String updateFraud(@PathVariable("id") int id,
-															 @Valid Fraud fraud, 
-															 BindingResult result,
-															 Model model,
-															 HttpSession session
-															 ) {
-				if (result.hasErrors()) {
-						String error = Helper.extractErrors(result);
-						addError(error);
-						logger.error("Error update fraud "+error);
-						fraud.setId(id);
-						return "redirect:/fraud/edit/"+id;
+			      @Valid Fraud fraud, 
+			      BindingResult result,
+			      Model model,
+			      HttpSession session
+			      ) {
+	if (result.hasErrors()) {
+	    String error = Helper.extractErrors(result);
+	    addError(error);
+	    logger.error("Error update fraud "+error);
+	    fraud.setId(id);
+	    return "redirect:/fraud/edit/"+id;
 	    
-				}
-				Incident incident = fraud.getIncident();
-				if(incident == null || !incident.canBeChanged()){
-						addMessage("no more changes can be made");
-						addMessagesAndErrorsToSession(session);
-						return "redirect:/";	    
-				}
-				int incident_id = incident.getId();
-				if(!verifySession(session, ""+incident_id)){				
-						addMessage("No more changes can be made ");
-						addMessagesAndErrorsToSession(session);
-						return "redirect:/";
-				}							
-				fraudService.update(fraud);
-				addMessage("Updated Successfully");				
-				addMessagesAndErrorsToSession(session);
-				return "redirect:/incident/"+incident.getId();
+	}
+	model.addAttribute("app_url", app_url);    
+	Incident incident = fraud.getIncident();
+	if(incident == null || !incident.canBeChanged()){
+	    addMessage("no more changes can be made");
+	    addMessagesAndErrorsToSession(session);
+	    return "redirect:/";	    
+	}
+	int incident_id = incident.getId();
+	if(!verifySession(session, ""+incident_id)){				
+	    addMessage("No more changes can be made ");
+	    addMessagesAndErrorsToSession(session);
+	    return "redirect:/";
+	}							
+	fraudService.update(fraud);
+	addMessage("Updated Successfully");				
+	addMessagesAndErrorsToSession(session);
+	return "redirect:/incident/"+incident.getId();
     }
     
     @GetMapping("/fraud/delete/{id}")
     public String deleteFraud(@PathVariable("id") int id,
-															 Model model,
-															 HttpSession session
-															 ) {
+			      Model model,
+			      HttpSession session
+			      ) {
 	
-				Fraud fraud = null;
-				Incident incident = null;
-				try{
-						fraud = fraudService.findById(id);
-						if(fraud != null)
-								incident = fraud.getIncident();
-						if(incident == null || !incident.canBeChanged()){
-								addMessage("no more changes can be made");
-								addMessagesAndErrorsToSession(session);
-								return "redirect:/";	    
-						}
-						int incident_id = incident.getId();
-						if(!verifySession(session, ""+incident_id)){				
-								addMessage("No more changes can be made ");
-								addMessagesAndErrorsToSession(session);
-								return "redirect:/";
-						}									
-						fraudService.delete(id);
-						addMessage("Deleted Succefully");
-				}catch(Exception ex){
-						logger.error("Error delete fraud "+id+" "+ex);
-						addError("Invalid fraud ID "+id);
-				}
-				addMessagesAndErrorsToSession(session);
-				return "redirect:/incident/"+incident.getId();
+	Fraud fraud = null;
+	Incident incident = null;
+	model.addAttribute("app_url", app_url);    
+	try{
+	    fraud = fraudService.findById(id);
+	    if(fraud != null)
+		incident = fraud.getIncident();
+	    if(incident == null || !incident.canBeChanged()){
+		addMessage("no more changes can be made");
+		addMessagesAndErrorsToSession(session);
+		return "redirect:/";	    
+	    }
+	    int incident_id = incident.getId();
+	    if(!verifySession(session, ""+incident_id)){
+		addMessage("No more changes can be made ");
+		addMessagesAndErrorsToSession(session);
+		return "redirect:/";
+	    }									
+	    fraudService.delete(id);
+	    addMessage("Deleted Succefully");
+	}catch(Exception ex){
+	    logger.error("Error delete fraud "+id+" "+ex);
+	    addError("Invalid fraud ID "+id);
+	}
+	addMessagesAndErrorsToSession(session);
+	return "redirect:/incident/"+incident.getId();
 	
     }
     

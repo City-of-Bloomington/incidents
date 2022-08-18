@@ -25,12 +25,12 @@
           </p>
           <p><strong>Please, select the incident category:</strong></p>
           <ul style="list-style: none">
-            <li><a th:href="@{/introLost}">Lost Property </a></li>
-            <li><a th:href="@{/introTheft/4}">Theft From Vehicle</a></li>
-            <li><a th:href="@{/introTheft/5}">Theft From Building </a></li>
-            <li><a th:href="@{/introTheft/1}">Theft (All Other)</a></li>
-            <li><a th:href="@{/introFraud}">Fraud & Scam</a></li>
-            <li><a th:href="@{/introVandal}">Vandalism </a></li>
+            <li><a th:href="@{${app_url}+'/introLost'}">Lost Property </a></li>
+            <li><a th:href="@{${app_url}+'/introTheft/4'}">Theft From Vehicle</a></li>
+            <li><a th:href="@{${app_url}+'/introTheft/5'}">Theft From Building </a></li>
+            <li><a th:href="@{${app_url}+'/introTheft/1'}">Theft (All Other)</a></li>
+            <li><a th:href="@{${app_url}+'/introFraud'}">Fraud & Scam</a></li>
+            <li><a th:href="@{${app_url}+'/introVandal'}">Vandalism </a></li>
           </ul>
         </div>
         <div id="moreInfo">

@@ -19,13 +19,13 @@
       </div>
 
       <form
-        th:action="@{/busIncidentAddrSave}"
+        th:action="@{${app_url}+'/busIncidentAddrSave'}"
         th:object="${address}"
         onsubmit="return verifyAddress()"
         method="post"
       >
         <input type="hidden" th:field="${address.addressId}" id="addressId" />
-				<input type="hidden"
+	<input type="hidden"
           th:field="${address.old_id}"
           id="old_id"
           />
@@ -59,18 +59,18 @@
           <legend>Location of Incident</legend>
           <ul>
             <li>
-							<i>
-							Add the incident street address. Start typing the street
+	      <i>
+		Add the incident street address. Start typing the street
               address in the 'Street address' field below. A list of matching
               addresses will be populated. Please select from the list the
               correct one for where the incident occured.
-							</i>
-						</li>
+	      </i>
+	    </li>
             <li>
               <i>
                 Please note that City, Zip code and State fields are
                 automatically filled when you pick the right address.
-							</i>
+	      </i>
             </li>
           </ul>
           <label for="addr_id" class="required">
@@ -97,9 +97,9 @@
         <ul class="button-group">
           <li>
             <button
-							type="button"
+	      type="button"
               class="next-button"
-              th:attr="onclick=|window.location.href='@{/forBusiness/}'|"
+              th:attr="onclick=|window.location.href='@{${app_url}/forBusiness/}'|"
               >
                 Back
               </button>

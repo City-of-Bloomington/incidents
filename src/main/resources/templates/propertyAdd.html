@@ -26,8 +26,8 @@
       <div th:insert="general::propertyInstructions"></div>
 
       <form
-				action="#"
-        th:action="@{/property/save}"
+	action="#"
+        th:action="@{${app_url}+'/property/save'}"
         th:object="${property}"
         onsubmit="return verifyTotalValue()"
         method="post"
@@ -165,13 +165,13 @@
             <li th:unless="${property.incident.hasPropertyList()}">
               <button
                 class="next-button"
-                th:attr="onclick=|window.location.href='@{/person/edit/{id}(id=${property.incident.getFirstPersonId()})}'|"
+                th:attr="onclick=|window.location.href='@{${app_url}/person/edit/{id}(id=${property.incident.getFirstPersonId()})}'|"
               >
                 Back
               </button>
             </li>
             <li><button type="submit" class="next-button" name="action" value="Next">Next</button></li>
-						<li><button type="submit" class="next-button" name="action" value="More">Next, Add Another</button></li>						
+	    <li><button type="submit" class="next-button" name="action" value="More">Next, Add Another</button></li>						
           </ul>
         </fieldset>
       </form>

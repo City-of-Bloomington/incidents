@@ -42,10 +42,10 @@
           <span th:text="${property.description}"></span>
         </li>
         <li>
-          <a th:href="@{/businessProperty/edit/{id}(id=${property.id})}">Edit</a>
+          <a th:href="@{${app_url}+'/businessProperty/edit/{id}(id=${property.id})'}">Edit</a>
         </li>
         <li>
-          <a th:href="@{/businessIncident/{id}(id=${property.incident.id})}"
+          <a th:href="@{${app_url}+'/businessIncident/{id}(id=${property.incident.id})'}"
             >Back to Incident</a
           >
         </li>

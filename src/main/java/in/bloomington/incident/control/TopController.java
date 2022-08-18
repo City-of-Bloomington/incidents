@@ -17,13 +17,16 @@ import org.springframework.beans.factory.annotation.Value;
 
 import java.util.List;
 import java.util.ArrayList;
+import in.bloomington.incident.service.UserService;
 import in.bloomington.incident.model.User;
 
 
 @Component
 public abstract class TopController {
 
-
+    @Autowired
+    UserService userService;
+    
     @Value( "${incident.app.url}" )
     String app_url;
     
@@ -193,4 +196,25 @@ public abstract class TopController {
     public String getApp_url(){
 	return app_url;
     }
+    public User findUserFromSession(HttpSession session){
+	User user = null;
+	User user2 = getUserFromSession(session);
+	if(user2 != null){
+	    user = userService.findById(user2.getId());
+	}
+	return user;
+    }    
+    public String canUserAccess(HttpSession session){
+	User user = findUserFromSession(session);
+	if(user == null){
+	    return "redirect:/login";
+	}
+	if(!user.isAdmin()){
+	    addMessage("you can not access");
+	    addMessagesAndErrorsToSession(session);
+	    return "redirect:staff";
+	}
+	return "";
+    }	    
+
 }

@@ -26,15 +26,15 @@
 
       <p>* indicates required fields</p>
       <form
-        th:action="@{/businessIncidentChange/{id}(id=${incident.id})}"
+        th:action="@{${app_url}+'/businessIncidentChange/{id}(id=${incident.id})'}"
         th:object="${incident}"
         onsubmit="return verifyBusinessIncidentInput()"
         method="post"
-				>
-				<input type="hidden" th:field="${incident.addr_id} " />
+	>
+	<input type="hidden" th:field="${incident.addr_id} " />
         <input type="hidden" th:field="${incident.bus_id} " />
-				<input type="hidden" th:field="${incident.receivedStr} "/>
-				<input type="hidden" th:field="${incident.category} " />
+	<input type="hidden" th:field="${incident.receivedStr} "/>
+	<input type="hidden" th:field="${incident.category} " />
         <input type="hidden" th:field="${incident.business} " />
         <input type="hidden" th:field="${incident.address} " />
         <input type="hidden" th:field="${incident.email} " />				
@@ -144,11 +144,11 @@
             ></textarea>
           </div>
         </fieldset>
-				<ul class="button-group">
+	<ul class="button-group">
           <li>
             <button type="submit" class="next-button">Save Changes</button>
           </li>
-				</ul>
+	</ul>
       </form>
     </main>
   </body>

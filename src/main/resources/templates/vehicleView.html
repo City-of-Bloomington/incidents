@@ -22,14 +22,14 @@
     <p>
      Vehicle Details.
     </p>
-		<ul>
-			<li><a th:href="@{/incidentView/{id}(id=${vehicle.incident.id})}">Back to Incident</a></li>							
-			<li>Damage Type: <span th:text="${vehicle.carDamageType}"></span></li>
-			<li th:if="${vehicle.hasMakeInfo()}"><span th:text="${vehicle.makeInfo}"></span></li>
-			<li th:if="${vehicle.hasPlateInfo()}"><span th:text="${vehicle.plateInfo}"></span></li>
-			<li th:if="${vehicle.hasOwner()}"><span th:text="${'Owner: '+vehicle.owner}"></span></li>
-			<li th:if="${vehicle.hasValue()}"><span th:text="${'Value: '+vehicle.valueFr}"></span></li>
-			<li th:if="${vehicle.hasDescription()}"><span th:text="${'Description: '+vehicle.description}"></span></li>	
+    <ul>
+      <li><a th:href="@{${app_url}+'/incidentView/{id}(id=${vehicle.incident.id})'}">Back to Incident</a></li>							
+      <li>Damage Type: <span th:text="${vehicle.carDamageType}"></span></li>
+      <li th:if="${vehicle.hasMakeInfo()}"><span th:text="${vehicle.makeInfo}"></span></li>
+      <li th:if="${vehicle.hasPlateInfo()}"><span th:text="${vehicle.plateInfo}"></span></li>
+      <li th:if="${vehicle.hasOwner()}"><span th:text="${'Owner: '+vehicle.owner}"></span></li>
+      <li th:if="${vehicle.hasValue()}"><span th:text="${'Value: '+vehicle.valueFr}"></span></li>
+      <li th:if="${vehicle.hasDescription()}"><span th:text="${'Description: '+vehicle.description}"></span></li>	
 		</ul>
   </body>
 </htmL>

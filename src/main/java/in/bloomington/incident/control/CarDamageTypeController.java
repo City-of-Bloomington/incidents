@@ -26,83 +26,88 @@ import in.bloomington.incident.model.CarDamageType;
 @Controller
 public class CarDamageTypeController extends TopController{
 
-		@Autowired
-		CarDamageTypeService carDamageTypeService;
+    @Autowired
+    CarDamageTypeService carDamageTypeService;
 		
-		@GetMapping("/carDamageTypes")
+    @GetMapping("/carDamageTypes")
     public String getAll(Model model) {
         model.addAttribute("types", carDamageTypeService.getAll());
+	model.addAttribute("app_url", app_url);
         return "staff/carDamageTypes";
     }
-		@GetMapping("/carDamageType/new")
+    @GetMapping("/carDamageType/new")
     public String newDamageType(Model model) {
-				CarDamageType type = new CarDamageType();
+	CarDamageType type = new CarDamageType();
         model.addAttribute("type", type);
+	model.addAttribute("app_url", app_url);
         return "staff/carDamageTypeAdd";
     }     
     @PostMapping("/carDamageType/add")
     public String addDamageType(@Valid CarDamageType carDamageType, BindingResult result, Model model) {
+	model.addAttribute("app_url", app_url);
         if (result.hasErrors()) {
             return "staff/addCarDamageType";
         }
         carDamageTypeService.save(carDamageType);
-				addMessage("Added Successfully");
+	addMessage("Added Successfully");
         model.addAttribute("types", carDamageTypeService.getAll());
-				model.addAttribute("messages", messages);				
+	model.addAttribute("messages", messages);				
         return "staff/carDamageTypes";
     }
 
-		@GetMapping("/carDamageType/edit/{id}")
-		public String showEditForm(@PathVariable("id") int id, Model model) {
-				CarDamageType type = null;
-				try{
-						type = carDamageTypeService.findById(id);
-						
-				}catch(Exception ex){
-						addError("Invalid carDamage type Id");
-						model.addAttribute("types", carDamageTypeService.getAll());
-						model.addAttribute("errors", errors);
-						return "staff/carDamageTypes";
-				}
-				model.addAttribute("type", type);
-				if(hasMessages()){
-						model.addAttribute("messages", messages);		
-				}
-				return "staff/carDamageTypeUpdate";
-		}
-		@PostMapping("/carDamageType/update/{id}")
-		public String updateCarDamageType(@PathVariable("id") int id, @Valid CarDamageType type, 
-														 BindingResult result, Model model) {
-				if (result.hasErrors()) {
-						type.setId(id);
-						return "staff/carDamageTypeUpdate";
-				}
-				addMessage("Updated Successfully");
-				carDamageTypeService.update(type);
-				model.addAttribute("types", carDamageTypeService.getAll());				
-				model.addAttribute("messages", messages);
-				return "staff/carDamageTypes";
-		}
+    @GetMapping("/carDamageType/edit/{id}")
+    public String showEditForm(@PathVariable("id") int id, Model model) {
+	CarDamageType type = null;
+	try{
+	    model.addAttribute("app_url", app_url);    
+	    type = carDamageTypeService.findById(id);
+	}catch(Exception ex){
+	    addError("Invalid carDamage type Id");
+	    model.addAttribute("types", carDamageTypeService.getAll());
+	    model.addAttribute("errors", errors);
+	    return "staff/carDamageTypes";
+	}
+	model.addAttribute("type", type);
+	if(hasMessages()){
+	    model.addAttribute("messages", messages);		
+	}
+	return "staff/carDamageTypeUpdate";
+    }
+    @PostMapping("/carDamageType/update/{id}")
+    public String updateCarDamageType(@PathVariable("id") int id, @Valid CarDamageType type, 
+				      BindingResult result, Model model) {
+	model.addAttribute("app_url", app_url);    
+	if (result.hasErrors()) {
+	    type.setId(id);
+	    return "staff/carDamageTypeUpdate";
+	}
+	addMessage("Updated Successfully");
+	carDamageTypeService.update(type);
+	model.addAttribute("types", carDamageTypeService.getAll());				
+	model.addAttribute("messages", messages);
+	return "staff/carDamageTypes";
+    }
 		
-		@GetMapping("/carDamageType/delete/{id}")
-		public String deleteCarDamageType(@PathVariable("id") int id, Model model) {
+    @GetMapping("/carDamageType/delete/{id}")
+    public String deleteCarDamageType(@PathVariable("id") int id, Model model) {
 
-				try{
-						CarDamageType type = carDamageTypeService.findById(id);
-						carDamageTypeService.delete(id);
-						addMessage("Deleted Successfully");
-				}catch(Exception ex){
-						addError("Invalid damage type ID "+id);
-				}
-				model.addAttribute("types", carDamageTypeService.getAll());
-				if(hasMessages()){
-						model.addAttribute("messages", messages);
-				}
-				else if(hasErrors()){
-						model.addAttribute("errors", errors);
-				}
+	try{
+	    CarDamageType type = carDamageTypeService.findById(id);
+	    carDamageTypeService.delete(id);
+	    addMessage("Deleted Successfully");
+	}catch(Exception ex){
+	    addError("Invalid damage type ID "+id);
+	}
+	model.addAttribute("types", carDamageTypeService.getAll());
+	model.addAttribute("app_url", app_url);    
+	if(hasMessages()){
+	    model.addAttribute("messages", messages);
+	}
+	else if(hasErrors()){
+	    model.addAttribute("errors", errors);
+	}
 					 
-				return "staff/carDamageTypes";
-		}
+	return "staff/carDamageTypes";
+    }
 		
 }

@@ -40,6 +40,7 @@ public class UserController extends TopController{
 		
     @GetMapping("/users")
     public String getAll(Model model) {
+	model.addAttribute("app_url", app_url);
 	String ret = canUserAccess(session);
 	if(!ret.isEmpty()){
 	    return ret;
@@ -49,6 +50,7 @@ public class UserController extends TopController{
     }
     @GetMapping("/users/find/{name}")
     public String findUsers(@PathVariable("name") String name, Model model) {
+	model.addAttribute("app_url", app_url);
 	String ret = canUserAccess(session);
 	if(!ret.isEmpty()){
 	    return ret;
@@ -66,6 +68,7 @@ public class UserController extends TopController{
     }		
     @GetMapping("/user/new")
     public String newUser(Model model) {
+	model.addAttribute("app_url", app_url);
 	String ret = canUserAccess(session);
 	if(!ret.isEmpty()){
 	    return ret;
@@ -79,6 +82,7 @@ public class UserController extends TopController{
     }     
     @PostMapping("/user/add")
     public String addUser(@Valid User user, BindingResult result, Model model) {
+	model.addAttribute("app_url", app_url);
 	String ret = canUserAccess(session);
 	if(!ret.isEmpty()){
 	    return ret;
@@ -96,6 +100,7 @@ public class UserController extends TopController{
 
     @GetMapping("/user/edit/{id}")
     public String showEditForm(@PathVariable("id") int id, Model model) {
+	model.addAttribute("app_url", app_url);
 	String ret = canUserAccess(session);
 	if(!ret.isEmpty()){
 	    return ret;
@@ -120,6 +125,7 @@ public class UserController extends TopController{
     @PostMapping("/user/update/{id}")
     public String updateUser(@PathVariable("id") int id, @Valid User user, 
 			     BindingResult result, Model model) {
+	model.addAttribute("app_url", app_url);
 	String ret = canUserAccess(session);
 	if(!ret.isEmpty()){
 	    return ret;
@@ -142,6 +148,7 @@ public class UserController extends TopController{
 		
     @GetMapping("/user/delete/{id}")
     public String deleteUser(@PathVariable("id") int id, Model model) {
+	model.addAttribute("app_url", app_url);
 	String ret = canUserAccess(session);
 	if(!ret.isEmpty()){
 	    return ret;
@@ -162,26 +169,6 @@ public class UserController extends TopController{
 	    model.addAttribute("errors", errors);
 	}
 	return "staff/users";
-    }
-    private User findUserFromSession(HttpSession session){
-	User user = null;
-	User user2 = getUserFromSession(session);
-	if(user2 != null){
-	    user = userService.findById(user2.getId());
-	}
-	return user;
-    }
-    private String canUserAccess(HttpSession session){
-	User user = findUserFromSession(session);
-	if(user == null){
-	    return "redirect:/login";
-	}
-	if(!user.isAdmin()){
-	    addMessage("you can not access");
-	    addMessagesAndErrorsToSession(session);
-	    return "redirect:/staff";
-	}
-	return "";
     }
 		
 }

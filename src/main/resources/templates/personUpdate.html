@@ -21,7 +21,7 @@
 			<p>*Indicates Required Fields </p>
 			<ul th:insert="general::personInstructions">
 			</ul>
-			<form action="#" th:action="@{/person/update/{id}(id=${person.id})}" th:object="${person}" method="post">
+			<form action="#" th:action="@{${app_url}+'/person/update/{id}(id=${person.id})'}" th:object="${person}" method="post">
 				<input type="hidden" th:field="${person.incident}" />
 				<input type="hidden" th:field="${person.email}" />
 				<fieldset>

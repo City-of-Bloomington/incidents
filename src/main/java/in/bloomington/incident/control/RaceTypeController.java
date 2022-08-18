@@ -29,133 +29,117 @@ import in.bloomington.incident.utils.Helper;
 @Controller
 public class RaceTypeController extends TopController{
 
-		@Autowired
-		RaceTypeService raceTypeService;
-		@Autowired 
+    @Autowired
+    RaceTypeService raceTypeService;
+    @Autowired 
     private HttpSession session;
-		@Autowired
-    UserService userService;
 		
-		
-		@GetMapping("/raceTypes")
+    @GetMapping("/raceTypes")
     public String getAll(Model model) {
-				String ret = canUserAccess(session);
-				if(!ret.isEmpty()){
-						return ret;
-				}
+	model.addAttribute("app_url", app_url);
+	String ret = canUserAccess(session);
+	if(!ret.isEmpty()){
+	    return ret;
+	}
         model.addAttribute("types", raceTypeService.getAll());
         return "staff/raceTypes";
     }
-		@GetMapping("/raceType/new")
+    @GetMapping("/raceType/new")
     public String newRaceType(Model model) {
-				String ret = canUserAccess(session);
-				if(!ret.isEmpty()){
-						return ret;
-				}
-				RaceType raceType = new RaceType();
+	model.addAttribute("app_url", app_url);
+	String ret = canUserAccess(session);
+	if(!ret.isEmpty()){
+	    return ret;
+	}
+	RaceType raceType = new RaceType();
         model.addAttribute("type", raceType);
         return "staff/raceTypeAdd";
     }     
     @PostMapping("/raceType/add")
     public String addRaceType(@Valid RaceType raceType, BindingResult result, Model model) {
-				String ret = canUserAccess(session);
-				if(!ret.isEmpty()){
-						return ret;
-				}
+	model.addAttribute("app_url", app_url);
+	String ret = canUserAccess(session);
+	if(!ret.isEmpty()){
+	    return ret;
+	}
         if (result.hasErrors()) {
             return "staff/addRaceType";
         }
         raceTypeService.save(raceType);
-				addMessage("Added Successfully");
+	addMessage("Added Successfully");
         model.addAttribute("types", raceTypeService.getAll());
-				model.addAttribute("messages", messages);				
+	model.addAttribute("messages", messages);				
         return "staff/raceTypes";
     }
 
-		@GetMapping("/raceType/edit/{id}")
-		public String showEditForm(@PathVariable("id") int id, Model model) {
-				String ret = canUserAccess(session);
-				if(!ret.isEmpty()){
-						return ret;
-				}
-				RaceType type = null;
-				try{
-						type = raceTypeService.findById(id);
+    @GetMapping("/raceType/edit/{id}")
+    public String showEditForm(@PathVariable("id") int id, Model model) {
+	model.addAttribute("app_url", app_url);
+	String ret = canUserAccess(session);
+	if(!ret.isEmpty()){
+	    return ret;
+	}
+	RaceType type = null;
+	try{
+	    type = raceTypeService.findById(id);
 						
-				}catch(Exception ex){
-						addError("Invalid race type Id");
-						model.addAttribute("types", raceTypeService.getAll());
-						model.addAttribute("errors", errors);
-						return "staff/raceTypes";
-				}
-				model.addAttribute("type", type);
-				if(hasMessages()){
-						model.addAttribute("messages", messages);				
-				}
-				return "staff/raceTypeUpdate";
-		}
-		@PostMapping("/raceType/update/{id}")
-		public String updateRaceType(@PathVariable("id") int id,
-																	 @Valid RaceType type, 
-																	 BindingResult result, Model model) {
-				String ret = canUserAccess(session);
-				if(!ret.isEmpty()){
-						return ret;
-				}
-				if (result.hasErrors()) {
-						String error = Helper.extractErrors(result);
-						addError(error);
-						type.setId(id);
-						return "staff/raceTypeUpdate";
-				}
-				addMessage("Updated Successfully");
-				raceTypeService.save(type);
-				model.addAttribute("types", raceTypeService.getAll());				
-				model.addAttribute("messages", messages);
-				return "staff/raceTypes";
-		}
+	}catch(Exception ex){
+	    addError("Invalid race type Id");
+	    model.addAttribute("types", raceTypeService.getAll());
+	    model.addAttribute("errors", errors);
+	    return "staff/raceTypes";
+	}
+	model.addAttribute("type", type);
+	if(hasMessages()){
+	    model.addAttribute("messages", messages);				
+	}
+	return "staff/raceTypeUpdate";
+    }
+    @PostMapping("/raceType/update/{id}")
+    public String updateRaceType(@PathVariable("id") int id,
+				 @Valid RaceType type, 
+				 BindingResult result, Model model) {
+	model.addAttribute("app_url", app_url);
+	String ret = canUserAccess(session);
+	if(!ret.isEmpty()){
+	    return ret;
+	}
+	if (result.hasErrors()) {
+	    String error = Helper.extractErrors(result);
+	    addError(error);
+	    type.setId(id);
+	    return "staff/raceTypeUpdate";
+	}
+	addMessage("Updated Successfully");
+	raceTypeService.save(type);
+	model.addAttribute("types", raceTypeService.getAll());				
+	model.addAttribute("messages", messages);
+	return "staff/raceTypes";
+    }
 		
-		@GetMapping("/raceType/delete/{id}")
-		public String deleteRaceType(@PathVariable("id") int id, Model model) {
-				String ret = canUserAccess(session);
-				if(!ret.isEmpty()){
-						return ret;
-				}
-				try{
-						RaceType type = raceTypeService.findById(id);
-						raceTypeService.delete(id);
-						addMessage("Deleted Succefully");
-				}catch(Exception ex){
-						addError("Invalid raceType ID "+id);
-				}
-				model.addAttribute("types", raceTypeService.getAll());
-				if(hasMessages()){
-						model.addAttribute("messages", messages);
-				}
-				else if(hasErrors()){
-						model.addAttribute("errors", errors);
-				}
+    @GetMapping("/raceType/delete/{id}")
+    public String deleteRaceType(@PathVariable("id") int id, Model model) {
+	model.addAttribute("app_url", app_url);
+	String ret = canUserAccess(session);
+	if(!ret.isEmpty()){
+	    return ret;
+	}
+	try{
+	    RaceType type = raceTypeService.findById(id);
+	    raceTypeService.delete(id);
+	    addMessage("Deleted Succefully");
+	}catch(Exception ex){
+	    addError("Invalid raceType ID "+id);
+	}
+	model.addAttribute("types", raceTypeService.getAll());
+	if(hasMessages()){
+	    model.addAttribute("messages", messages);
+	}
+	else if(hasErrors()){
+	    model.addAttribute("errors", errors);
+	}
 					 
-				return "staff/raceTypes";
-		}
-		private User findUserFromSession(HttpSession session){
-				User user = null;
-				User user2 = getUserFromSession(session);
-				if(user2 != null){
-						user = userService.findById(user2.getId());
-				}
-				return user;
-    }		
-		private String canUserAccess(HttpSession session){
-				User user = findUserFromSession(session);
-				if(user == null){
-						return "redirect:/login";
-				}
-				if(!user.isAdmin()){
-						addMessage("you can not access");
-						addMessagesAndErrorsToSession(session);
-						return "redirect:staff";
-				}
-				return "";
-		}		
+	return "staff/raceTypes";
+    }
+
 }

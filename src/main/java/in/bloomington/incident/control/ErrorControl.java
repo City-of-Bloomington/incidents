@@ -22,47 +22,47 @@ import org.springframework.web.bind.annotation.PathVariable;
 @Controller
 public class ErrorControl implements ErrorController  {
 
-		@RequestMapping(value = "error", method = RequestMethod.GET)
+    @RequestMapping(value = "error", method = RequestMethod.GET)
     public ModelAndView renderErrorPage(HttpServletRequest
-																				httpRequest,
-																				@ModelAttribute("errors") Object errors
-																				) {
+					httpRequest,
+					@ModelAttribute("errors") Object errors
+					) {
          
         ModelAndView errorPage = new ModelAndView("errorPage");
         String errorMsg = "";
         int errorCode = getErrorCode(httpRequest);
 				
         switch (errorCode) {
-            case 400: {
-                errorMsg = "Error Code: 400. Bad Request";
-                break;
-            }
-            case 401: {
-                errorMsg = "Error Code: 401. Unauthorized";
-                break;
-            }
-            case 404: {
-                errorMsg = "Error Code: 404. Resource not found";
-                break;
-            }
-            case 500: {
-                errorMsg = "Error Code: 500. Internal Server Error";
-                break;		
-						}
-				    default:{
-						    errorMsg = "Error Code: "+errorCode+" Internal Server Error";
-						    break;		
-				    }
+	case 400: {
+	    errorMsg = "Error Code: 400. Bad Request";
+	    break;
+	}
+	case 401: {
+	    errorMsg = "Error Code: 401. Unauthorized";
+	    break;
+	}
+	case 404: {
+	    errorMsg = "Error Code: 404. Resource not found";
+	    break;
+	}
+	case 500: {
+	    errorMsg = "Error Code: 500. Internal Server Error";
+	    break;		
+	}
+	default:{
+	    errorMsg = "Error Code: "+errorCode+" Internal Server Error";
+	    break;		
+	}
         }
         errorPage.addObject("errorMsg", errorMsg);
-				if(errors != null)
-						errorPage.addObject("errors", errors);
+	if(errors != null)
+	    errorPage.addObject("errors", errors);
         return errorPage;
     }
      
     private int getErrorCode(HttpServletRequest httpRequest) {
         return (Integer) httpRequest
-          .getAttribute("javax.servlet.error.status_code");
+	    .getAttribute("javax.servlet.error.status_code");
     }
 		
     @Override

@@ -24,16 +24,16 @@
       <p>*Indicate required fields</p>
 
       <div th:insert="general::businessInstructions"></div>
-			<form
-				th:action="@{/business/update/{id}(id=${business.id})}"
-				th:object="${business}"
-				onsubmit="return verifyConfirm()"				
-				method="post">
-				<input type="hidden" th:field="${business.addr_id} " />
-				<input type="hidden" th:field="${business.oldEmail}" />
-				<input type="hidden" th:field="${business.incident_addr_id}" />
-				<input type="hidden" th:field="${business.incident_id}" />				
-				<fieldset>
+      <form
+	th:action="@{${app_url}+'/business/update/{id}(id=${business.id})'}"
+	th:object="${business}"
+	onsubmit="return verifyConfirm()"				
+	method="post">
+	<input type="hidden" th:field="${business.addr_id} " />
+	<input type="hidden" th:field="${business.oldEmail}" />
+	<input type="hidden" th:field="${business.incident_addr_id}" />
+	<input type="hidden" th:field="${business.incident_id}" />				
+	<fieldset>
           <legend>Location</legend>
           <span th:text="${business.addressInfo}"></span>
         </fieldset>
@@ -112,10 +112,10 @@
               th:field="${business.reporterTitle}"
               id="reporterTitle"
               placeholder="Your business title"
-							required="required"
+	      required="required"
             />
           </div>						
-					<ul class="button-group">
+	  <ul class="button-group">
             <li><button type="submit" class="next-button">Save Changes</button></li>
           </ul>
         </fieldset>

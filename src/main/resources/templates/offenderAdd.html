@@ -24,7 +24,7 @@
 
       <div th:insert="general::offenderInstructions"></div>
 
-      <form th:action="@{/offender/save}" th:object="${offender}" method="post">
+      <form th:action="@{${app_url}+'/offender/save'}" th:object="${offender}" method="post">
         <input type="hidden" th:field="${offender.incident}" />
         <fieldset>
           <div class="field-group checkbox">

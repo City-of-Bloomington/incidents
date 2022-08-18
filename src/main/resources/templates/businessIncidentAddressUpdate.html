@@ -19,13 +19,13 @@
       </div>
 
       <form
-        th:action="@{/businessIncidentAddrChange}"
+        th:action="@{${app_url}+'/businessIncidentAddrChange'}"
         th:object="${address}"
         onsubmit="return verifyAddress()"
         method="post"
       >
         <input type="hidden" th:field="${address.addressId}" id="addressId" />
-				<input type="hidden"
+	<input type="hidden"
           th:field="${address.old_id}"
           id="old_id"
           />
@@ -59,18 +59,18 @@
           <legend>Location of Incident</legend>
           <ul>
             <li>
-							<i> If the incident address is different than the one showing
-								start typing the street address in the 'Street address'
-								field below. A list of matching
-              addresses will be populated. Please select from the list the
+	      <i> If the incident address is different than the one showing
+		start typing the street address in the 'Street address'
+		field below. A list of matching
+		addresses will be populated. Please select from the list the
               correct one for where the incident occured.
-							</i>
-						</li>
+	      </i>
+	    </li>
             <li>
               <i>
                 Please note that City, Zip code and State fields are
                 automatically filled when you pick the right address.
-							</i>
+	      </i>
             </li>
           </ul>
           <label for="addr_id" class="required">

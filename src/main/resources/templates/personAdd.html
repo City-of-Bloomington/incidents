@@ -27,7 +27,7 @@
 
       <form
         action="#"
-        th:action="@{/person/save}"
+        th:action="@{${app_url}+'/person/save'}"
         th:object="${person}"
         method="post"
       >

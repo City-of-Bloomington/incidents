@@ -14,14 +14,14 @@
     <div th:fragment="medias(medias)">
       <h2>Uploaded Photos</h2>
       <div th:switch="${medias}">
-				<h2 th:case="null">No files found</h2>
-				<div th:case="*">
-					<ul th:each="one : ${medias}">
-						<li>Download: <a th:href="@{/media/download/{id}(id=${one.id})}"><span th:text="${one.oldFileName}"></span></a></li>
-						<li th:if="${one.hasNotes()}"><span th:text="${'Notes: '+one.notes}"></span></li>
-						<li><a th:href="@{/media/image/{id}(id=${one.id})}" onclick="return popup(this, 'image')">Click to show</a></li>		
-					</ul>
-				</div>      
+	<h2 th:case="null">No files found</h2>
+	<div th:case="*">
+	  <ul th:each="one : ${medias}">
+	    <li>Download: <a th:href="@{${app_url}+'/media/download/{id}(id=${one.id})'}"><span th:text="${one.oldFileName}"></span></a></li>
+	    <li th:if="${one.hasNotes()}"><span th:text="${'Notes: '+one.notes}"></span></li>
+	    <li><a th:href="@{${app_url}+'/media/image/{id}(id=${one.id})'}" onclick="return popup(this, 'image')">Click to show</a></li>		
+	  </ul>
+	</div>      
       </div>
     </div>
   </body>

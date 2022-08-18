@@ -20,23 +20,23 @@
       <div th:fragment="properties(properties,totalBalance)">
       <h2>Properties</h2>
       <div th:switch="${properties}">
-				<h2 th:case="null">No properties found</h2>
-				<div th:case="*">
-					<ul th:each="one,istat : ${properties}">
-						<li th:if="${one.hasDamageTypeInfo()}"><span th:text="${istat.count+' - Damage Type: '+one.damageType.name}"></span></li>
-						<ul>
-							<li th:if="${one.hasBrandInfo()}"><span th:text="${one.brandInfo}"></span></li>
+	<h2 th:case="null">No properties found</h2>
+	<div th:case="*">
+	  <ul th:each="one,istat : ${properties}">
+	    <li th:if="${one.hasDamageTypeInfo()}"><span th:text="${istat.count+' - Damage Type: '+one.damageType.name}"></span></li>
+	    <ul>
+	      <li th:if="${one.hasBrandInfo()}"><span th:text="${one.brandInfo}"></span></li>
 
-							<li th:if="${one.hasOwner()}"><span th:text="${'Owner: '+ one.owner}"></span></li>
-							<li th:if="${one.hasDescription()}"><span th:text="${'Description: '+ one.description}"></span></li>						
-							<li th:text="${'Value: '+one.valueFr}">&#36;</li>
-						</ul>
-						<li th:if="${istat.last}">
-							<strong>Total Reported Properties Value: </strong>
-							<span th:text="${totalBalance}"></span>
-						</li>
-					</ul>	      
-				</div>      
+	      <li th:if="${one.hasOwner()}"><span th:text="${'Owner: '+ one.owner}"></span></li>
+	      <li th:if="${one.hasDescription()}"><span th:text="${'Description: '+ one.description}"></span></li>						
+	      <li th:text="${'Value: '+one.valueFr}">&#36;</li>
+	    </ul>
+	    <li th:if="${istat.last}">
+	      <strong>Total Reported Properties Value: </strong>
+	      <span th:text="${totalBalance}"></span>
+	    </li>
+	  </ul>	      
+	</div>      
       </div>
     </div>
   </body>

@@ -20,7 +20,7 @@
     <div th:insert="general::vehicleInstructions">
     </div>
     <form action="#"
-	  th:action="@{/vehicle/update}"
+	  th:action="@{${app_url}+'/vehicle/update'}"
 	  th:object="${vehicle}" method="post">
       <input type="hidden" th:field="${vehicle.incident}" />
       <input type="hidden" th:field="${vehicle.id}" />
@@ -29,7 +29,7 @@
       <input type="hidden" id="max_total_id" th:field="${vehicle.maxTotalValue}" />	
       <dl>
 	<dt>Related incident</dt>
-	<dd><a th:href="@{/incident/{id}(id=${vehicle.incident.id})}">Back to Incident</a></dd>							
+	<dd><a th:href="@{${app_url}+'/incident/{id}(id=${vehicle.incident.id})'}">Back to Incident</a></dd>							
 	<dt>
 	  <label for="damageType">Damage Type</label>
 	</dt>

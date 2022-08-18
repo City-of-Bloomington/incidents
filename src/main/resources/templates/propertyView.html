@@ -25,7 +25,7 @@
 			Property Details
 		</p>
 		<ul>
-			<li>Incident: <a th:href="@{/incidentView/{id}(id=${property.incident.id})}">Back to Incident</a></li>
+			<li>Incident: <a th:href="@{${app_url}+'/incidentView/{id}(id=${property.incident.id})'}">Back to Incident</a></li>
 			<li th:if="${property.hasDamageTypeInfo()}">
 					<span th:text="${'Damage Type: '+property.damageType}"></span>
 			</li>

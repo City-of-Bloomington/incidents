@@ -21,7 +21,7 @@
       <div th:insert="general::vehicleInstructions"></div>
       <form
         action="#"
-        th:action="@{/vehicle/save}"
+        th:action="@{${app_url}+'/vehicle/save'}"
         th:object="${vehicle}"
         method="post"
       >
@@ -214,12 +214,12 @@
             columns="50"
             required="required"
             ></textarea>
-				  <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></span>
-						
+	  <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></span>
+	  
         </div>
 				<ul>
-					<li><button type="submit" class="next-button" name="action" value="Next">Next</button></li>
-					<li><button type="submit" class="next-button" name="action" value="More">Next, Add Another</button></li>
+				  <li><button type="submit" class="next-button" name="action" value="Next">Next</button></li>
+				  <li><button type="submit" class="next-button" name="action" value="More">Next, Add Another</button></li>
 				</ul>
       </form>
     </main>

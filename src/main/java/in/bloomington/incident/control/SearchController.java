@@ -62,200 +62,198 @@ public class SearchController extends TopController{
     SearchService searchService;
     @Autowired
     ActionService actionService;
-    @Autowired
-    UserService userService;
+    // @Autowired
+    // UserService userService;
     @Autowired
     IncidentService incidentService;		
-		@Autowired 
+    @Autowired 
     private HttpSession session;
 		
     
     @GetMapping("/search/received")
     public String findReceieved(Model model) {
-				User user = findUserFromSession(session);
-				if(user == null ){
-						return "redirect:/login";
-				}
-				resetAll();
-				List<Incident> all = null;
-				List<IncidentReceived> plist = receivedService.getAll();
-				if(plist != null){
-						all = new ArrayList<>();
-						for(IncidentReceived one:plist){
-								Incident incident = one.getIncident();
-								if(incident != null)
-										all.add(incident);
-						}
-				}
-				if(all != null && all.size() > 0){
-						addMessage("Found "+all.size()+" incidents");
-						model.addAttribute("incidents", all);
-						model.addAttribute("messages", messages);
-						resetAll();
-				}
+	model.addAttribute("app_url", app_url);
+	User user = findUserFromSession(session);
+	if(user == null ){
+	    return "redirect:/login";
+	}
+	resetAll();
+	List<Incident> all = null;
+	List<IncidentReceived> plist = receivedService.getAll();
+	if(plist != null){
+	    all = new ArrayList<>();
+	    for(IncidentReceived one:plist){
+		Incident incident = one.getIncident();
+		if(incident != null)
+		    all.add(incident);
+	    }
+	}
+	if(all != null && all.size() > 0){
+	    addMessage("Found "+all.size()+" incidents");
+	    model.addAttribute("incidents", all);
+	    model.addAttribute("messages", messages);
+	    resetAll();
+	}
         return "staff/received_list";
     }
     @GetMapping("/search/incomplete")
     public String findIncomplete(Model model){
 
-				List<Incident> all = null;
-				User user = findUserFromSession(session);
-				if(user == null ){
-						return "redirect:/login";
-				}
-				resetAll();
-				List<IncidentIncomplete> plist = incompleteService.getAll();
-				if(plist != null){
-						all = new ArrayList<>();
-						for(IncidentIncomplete one:plist){
-								Incident incident = one.getIncident();
-								if(incident != null)
-										all.add(incident);
-						}
-				}
-				if(all != null && all.size() > 0){
-						addMessage("Found "+all.size()+" incidents");
-						model.addAttribute("incidents", all);
-						model.addAttribute("messages", messages);
-						resetAll();
-				}
+	List<Incident> all = null;
+	model.addAttribute("app_url", app_url);
+	User user = findUserFromSession(session);
+	if(user == null ){
+	    return "redirect:/login";
+	}
+	resetAll();
+	List<IncidentIncomplete> plist = incompleteService.getAll();
+	if(plist != null){
+	    all = new ArrayList<>();
+	    for(IncidentIncomplete one:plist){
+		Incident incident = one.getIncident();
+		if(incident != null)
+		    all.add(incident);
+	    }
+	}
+	if(all != null && all.size() > 0){
+	    addMessage("Found "+all.size()+" incidents");
+	    model.addAttribute("incidents", all);
+	    model.addAttribute("messages", messages);
+	    resetAll();
+	}
         return "staff/incompletes";
     }
     
     @GetMapping("/search/confirmed")
     public String findConfirmed(Model model){
-				List<Incident> all = null;
-				User user = findUserFromSession(session);
-				if(user == null ){
-						return "redirect:/login";
-				}
-				resetAll();
-				List<IncidentConfirmed> plist = confirmedService.getAll();
-				if(plist != null){
-						all = new ArrayList<>();
-						for(IncidentConfirmed one:plist){
-								Incident incident = one.getIncident();
-								if(incident != null)
-										all.add(incident);
-						}
-				}
-				if(all != null && all.size() > 0){
-						addMessage("Found "+all.size()+" incidents");
-						model.addAttribute("incidents", all);
-						model.addAttribute("messages", messages);
-						resetAll();
-				}
-				model.addAttribute("statusOutcome", "Confirmed");					
+	List<Incident> all = null;
+	model.addAttribute("app_url", app_url);
+	User user = findUserFromSession(session);
+	if(user == null ){
+	    return "redirect:/login";
+	}
+	resetAll();
+	List<IncidentConfirmed> plist = confirmedService.getAll();
+	if(plist != null){
+	    all = new ArrayList<>();
+	    for(IncidentConfirmed one:plist){
+		Incident incident = one.getIncident();
+		if(incident != null)
+		    all.add(incident);
+	    }
+	}
+	if(all != null && all.size() > 0){
+	    addMessage("Found "+all.size()+" incidents");
+	    model.addAttribute("incidents", all);
+	    model.addAttribute("messages", messages);
+	    resetAll();
+	}
+	model.addAttribute("statusOutcome", "Confirmed");					
         return "staff/confirmed_list";
     }    
     
     @GetMapping("/search/approved")
     public String findApproved(Model model){
-				List<Incident> all = null;
-				User user = findUserFromSession(session);
-				if(user == null ){
-						return "redirect:/login";
-				}
-				resetAll();
-				List<IncidentApproved> plist = approvedService.getAll();
-				if(plist != null){
-						all = new ArrayList<>();
-						for(IncidentApproved one:plist){
-								Incident incident = one.getIncident();
-								if(incident != null)
-										all.add(incident);
-						}
-				}
-				resetAll();
-				if(all != null && all.size() > 0){
-						addMessage("Found "+all.size()+" incidents");
-						model.addAttribute("incidents", all);
-						model.addAttribute("messages", messages);
-						resetAll();
-				}
-				model.addAttribute("statusOutcome", "Approved");	
+	List<Incident> all = null;
+	model.addAttribute("app_url", app_url);
+	User user = findUserFromSession(session);
+	if(user == null ){
+	    return "redirect:/login";
+	}
+	resetAll();
+	List<IncidentApproved> plist = approvedService.getAll();
+	if(plist != null){
+	    all = new ArrayList<>();
+	    for(IncidentApproved one:plist){
+		Incident incident = one.getIncident();
+		if(incident != null)
+		    all.add(incident);
+	    }
+	}
+	resetAll();
+	if(all != null && all.size() > 0){
+	    addMessage("Found "+all.size()+" incidents");
+	    model.addAttribute("incidents", all);
+	    model.addAttribute("messages", messages);
+	    resetAll();
+	}
+	model.addAttribute("statusOutcome", "Approved");	
         return "staff/approved_outcomes";
     }
     @GetMapping("/search")
     public String search(Model model) {
-				User user = findUserFromSession(session);
-				if(user == null ){
-						return "redirect:/login";
-				}
-				Search search = new Search();
-				List<IncidentType> types = incidentTypeService.getAll();
-				List<Action> actions = actionService.getAll();
+	model.addAttribute("app_url", app_url);
+	User user = findUserFromSession(session);
+	if(user == null ){
+	    return "redirect:/login";
+	}
+	Search search = new Search();
+	List<IncidentType> types = incidentTypeService.getAll();
+	List<Action> actions = actionService.getAll();
         model.addAttribute("search", search);
-				model.addAttribute("types", types);
-				model.addAttribute("actions",actions);
-				getMessagesAndErrorsFromSession(session, model);
-				resetAll();
+	model.addAttribute("types", types);
+	model.addAttribute("actions",actions);
+	getMessagesAndErrorsFromSession(session, model);
+	resetAll();
         return "staff/search";
     }
     @PostMapping("/search/find")
     public String searchFind(@Valid Search search,
-														 BindingResult result,
-														 Model model
-														 ) {
+			     BindingResult result,
+			     Model model
+			     ) {
+	model.addAttribute("app_url", app_url);
         if (result.hasErrors()) {
-						logger.error(" Error creating new action ");
+	    logger.error(" Error creating new action ");
             return "redirect:/search";
         }
-				User user = findUserFromSession(session);
-				if(user == null ){
-						return "redirect:/login";
-				}	
-				if(!search.isValid()){
-						addError("You have to fill some search fields");
+	User user = findUserFromSession(session);
+	if(user == null ){
+	    return "redirect:/login";
+	}	
+	if(!search.isValid()){
+	    addError("You have to fill some search fields");
 	    
-						return "redirect:/search";
-				}
-				List<Incident> incidents = null;				
-				if(!search.getId().isEmpty()){
-						int id = search.getIdInt();
-						if(id > 0){						
-								if(user.canApprove()){
-										Incident incident = incidentService.findById(id);
-										if(incident != null && !incident.canBeDiscarded()){
-												return "redirect:/incidentView/"+id;
-										}
-										else{
-												incidents = new ArrayList<>();
-												incidents.add(incident);
-										}
-								}
-								else{
-										return "redirect:/incidentView/"+id;										
-								}								
-						}
-				}
-				resetAll();
-				if(incidents == null){
-						incidents = searchService.find(search);
-				}
-				if(incidents != null && incidents.size() > 0){
-						addMessage(" found "+incidents.size()+" incidents");
-				}
-				else{
-						addMessage(" No match found ");
-						addMessagesAndErrorsToSession(session);
-						return "redirect:/search";
-				}
+	    return "redirect:/search";
+	}
+	List<Incident> incidents = null;				
+	if(!search.getId().isEmpty()){
+	    int id = search.getIdInt();
+	    if(id > 0){						
+		if(user.canApprove()){
+		    Incident incident = incidentService.findById(id);
+		    if(incident != null && !incident.canBeDiscarded()){
+			return "redirect:/incidentView/"+id;
+		    }
+		    else{
+			incidents = new ArrayList<>();
+			incidents.add(incident);
+		    }
+		}
+		else{
+		    return "redirect:/incidentView/"+id;										
+		}								
+	    }
+	}
+	resetAll();
+	if(incidents == null){
+	    incidents = searchService.find(search);
+	}
+	if(incidents != null && incidents.size() > 0){
+	    addMessage(" found "+incidents.size()+" incidents");
+	}
+	else{
+	    addMessage(" No match found ");
+	    addMessagesAndErrorsToSession(session);
+	    return "redirect:/search";
+	}
         model.addAttribute("incidents", incidents);
-				model.addAttribute("messages", getMessages());
-				resetAll();
-				if(user.canApprove()){ // or admins
-						return "staff/searchAdminResults";
-				}
+	model.addAttribute("messages", getMessages());
+	resetAll();
+	if(user.canApprove()){ // or admins
+	    return "staff/searchAdminResults";
+	}
         return "staff/searchResult";
-    }    
-    private User findUserFromSession(HttpSession session){
-				User user = null;
-				User user2 = getUserFromSession(session);
-				if(user2 != null){
-						user = userService.findById(user2.getId());
-				}
-				return user;
     }    
     
 		

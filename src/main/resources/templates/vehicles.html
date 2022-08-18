@@ -40,14 +40,14 @@
             <li class="button-group">
               <input
                 type="button"
-                th:attr="onclick=|window.location.href='@{/vehicle/edit/{id}(id=${one.id})}'|"
+                th:attr="onclick=|window.location.href='@{${app_url}/vehicle/edit/{id}(id=${one.id})}'|"
                 value="Edit Vehicle"
               />
             </li>
             <li class="button-group" th:if="${canDelete}">
               <input
                 type="button"
-                th:attr="onclick=|window.location.href='@{/vehicle/delete/{id}(id=${one.id})}'|"
+                th:attr="onclick=|window.location.href='@{${app_url}/vehicle/delete/{id}(id=${one.id})}'|"
                 value="Delete Vehicle"
               />
             </li>						

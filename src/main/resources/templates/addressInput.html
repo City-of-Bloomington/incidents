@@ -19,7 +19,7 @@
       </div>
 
       <form
-        th:action="@{/addressSave}"
+        th:action="@{${app_url}+'/addressSave'}"
         th:object="${address}"
         onsubmit="return verifyAddress()"
         method="post"
@@ -103,7 +103,7 @@
           <li th:if="${address.hasBusinessCategory()}">
             <button
               class="next-button"
-              th:attr="onclick=|window.location.href='@{/introBusiness}'|"
+              th:attr="onclick=|window.location.href='@{${app_url}/introBusiness}'|"
             >
               Back
             </button>

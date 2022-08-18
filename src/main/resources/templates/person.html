@@ -21,14 +21,14 @@
 			<fieldset>
 				<caption>View Person</caption>
 				<div th:insert="personView::person(${person})">
-					<ul>
-						<li>
-							<a th:href="@{/person/edit/{id}(id=${person.id})}">Edit</a>
-						</li>
-						<li>
-							<a th:href="@{/incident/{id}(id=${person.incident.id})}">Back to Incident</a>
-						</li>
-					</ul>						
+				  <ul>
+				    <li>
+				      <a th:href="@{${app_url}+'/person/edit/{id}(id=${person.id})'}">Edit</a>
+				    </li>
+				    <li>
+				      <a th:href="@{${app_url}+'/incident/{id}(id=${person.incident.id})'}">Back to Incident</a>
+				    </li>
+				  </ul>						
 				</div>
 			</fieldset>
 		</main>

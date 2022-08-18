@@ -25,7 +25,7 @@
       <p th:insert="general::incidentInstructions"></p>
 
       <form
-        th:action="@{/businessIncident/save}"
+        th:action="@{${app_url}+'/businessIncident/save'}"
         th:object="${incident}"
         onsubmit="return verifyBusinessIncidentInput()"
         method="post"
@@ -34,9 +34,9 @@
         <input type="hidden" th:field="${incident.bus_id} " />				
         <fieldset>
           <legend>Incident Date and Time</legend>
-					<p>
-						Please complete the fields below. The information you provide for your case is critical to the Department's overall crime analysis efforts.
-					</p>
+	  <p>
+	    Please complete the fields below. The information you provide for your case is critical to the Department's overall crime analysis efforts.
+	  </p>
           <div class="field-group">
             <label for="start_date" class="required">
               *Incident occurred, Date:
@@ -145,20 +145,20 @@
             ></textarea>
           </div>
         </fieldset>
-				<ul class="button-group">
+	<ul class="button-group">
           <li>
             <button
 							type="button"
               class="next-button"
-              th:attr="onclick=|window.location.href='@{/businessEdit/{id}/{addr_id}/{incident_id}(id=${business.id},addr_id=${incident.addr_id},incident_id=${incident.id})}'|"
+              th:attr="onclick=|window.location.href='@{${app_url}/businessEdit/{id}/{addr_id}/{incident_id}(id=${business.id},addr_id=${incident.addr_id},incident_id=${incident.id})}'|"
               >
-                Back
-              </button>
+              Back
+            </button>
             </li>						
           <li>
             <button type="submit" class="next-button">Next</button>
           </li>
-				</ul>
+	</ul>
       </form>
     </main>
   </body>

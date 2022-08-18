@@ -30,7 +30,7 @@
         <div>
           <form
             enctype="multipart/form-data"
-            th:action="@{/media/save}"
+            th:action="@{${app_url}+'/media/save'}"
             method="post"
           >
             <input type="hidden" name="incident_id" th:value="${incident_id}" />
@@ -62,7 +62,7 @@
 					<li th:unless="${incident.hasMediaList()}">
             <button type="button"
               class="next-button"
-                th:attr="onclick=|window.location.href='@{/businessProperty/edit/{id}(id=${incident.getFirstPropertyId()})}'|">							
+                th:attr="onclick=|window.location.href='@{${app_url}/businessProperty/edit/{id}(id=${incident.getFirstPropertyId()})}'|">							
 							Back
 						</button>
 					</li>

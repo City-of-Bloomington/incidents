@@ -47,7 +47,6 @@ import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 //
-import in.bloomington.incident.service.UserService;
 import in.bloomington.incident.service.SearchService;
 import in.bloomington.incident.model.User;
 import in.bloomington.incident.model.Action;
@@ -59,167 +58,148 @@ import in.bloomington.incident.utils.Helper;
 public class LoginController extends TopController{
 
     final static Logger logger = LoggerFactory.getLogger(LoginController.class);
-    @Autowired
-    UserService userService;
-		// @Autowired
-		// SearchService searchService;
+
+    // @Autowired
+    // SearchService searchService;
 		
     @Value("${incident.ldap.host}")    
     private String ldap_host;
 
-		//
+    //
     @GetMapping("/logout")
     public String logout(HttpServletRequest req) {
-				HttpSession session = req.getSession();
-				session.invalidate();
+	HttpSession session = req.getSession();
+	session.invalidate();
         return "staff/logout";
     }
-		// 
+    // 
     @GetMapping("/login")
     public String login(HttpServletRequest req,
-												Model model
-												) {
-				HttpSession session = req.getSession(true);
-				getMessagesAndErrorsFromSession(session, model);
-				if(session.getAttribute("user") != null){ // already logged in
-						return "staff/staff_intro";						
-				}
-				return "staff/loginForm";
+			Model model
+			) {
+	model.addAttribute("app_url",app_url);
+	HttpSession session = req.getSession(true);
+	getMessagesAndErrorsFromSession(session, model);
+	if(session.getAttribute("user") != null){ // already logged in
+	    return "staff/staff_intro";						
+	}
+	return "staff/loginForm";
     }
-		/**
-		 // not used right now
-    @GetMapping("/businessLogin")
-    public String buslogin(HttpServletRequest req,
-													 Model model
-												) {
-				HttpSession session = req.getSession(true);
-				getMessagesAndErrorsFromSession(session, model);
-				if(session.getAttribute("business") != null){ // already logged in
-						return "TODO"; 						
-				}
-				return "businessLoginForm";
-    }
-		*/		
-		//non CAS after login action
+    /**
+     // not used right now
+     @GetMapping("/businessLogin")
+     public String buslogin(HttpServletRequest req,
+     Model model
+     ) {
+     HttpSession session = req.getSession(true);
+     getMessagesAndErrorsFromSession(session, model);
+     if(session.getAttribute("business") != null){ // already logged in
+     return "TODO"; 						
+     }
+     return "businessLoginForm";
+     }
+    */		
+    //non CAS after login action
     @PostMapping("/loginUser")
     public String tryLogin(@RequestParam("username") String username,
-													 @RequestParam("password") String password,
-													 HttpServletRequest req
-													 ) {
-				HttpSession session = req.getSession(true);
-				if(username == null || username.isEmpty()){
-						return "staff/loginForm";
-				}
+			   @RequestParam("password") String password,
+			   HttpServletRequest req,
+			   Model model
+			   ) {
+	HttpSession session = req.getSession(true);
+	model.addAttribute("app_url",app_url);
+	if(username == null || username.isEmpty()){
+	    return "staff/loginForm";
+	}
 
-				Helper helper = new Helper();
-				// for test purpose commented out
-				// uncomment for production
-				if(!helper.checkUser(username, password, ldap_host)){
-						addMessage("invalid username or password");
-						addMessagesAndErrorsToSession(session);
-						return "staff/loginForm";
-				}
-				// userService was not working
-				try{
-						User user = userService.findUser(username);
-						if(user == null){
-								// addMessage("user not found "+username);
-								// addMessagesAndErrorsToSession(session);
-								addMessage("you do not have access to this system ");
-								addMessagesAndErrorsToSession(session);						
-								return "redirect:/login";
-						}
-						session.setAttribute("user", user);
-						if(user.isAdmin()){
-								session.setAttribute("isAmin", "true");
-						}
-						if(user.canApprove()){
-								session.setAttribute("canApprove", "true");
-						}
-						if(user.canProcess()){
-								session.setAttribute("canProcess", "true");
-						}				
-						return "staff/staff_intro";
-				}catch(Exception ex){
-						addMessage("you do not have access to this system ");
-						addMessagesAndErrorsToSession(session);						
-				}
-				return "redirect:/login";						
+	Helper helper = new Helper();
+	// for test purpose commented out
+	// uncomment for production
+	if(!helper.checkUser(username, password, ldap_host)){
+	    addMessage("invalid username or password");
+	    addMessagesAndErrorsToSession(session);
+	    return "staff/loginForm";
+	}
+	// userService was not working
+	try{
+	    User user = userService.findUser(username);
+	    if(user == null){
+		// addMessage("user not found "+username);
+		// addMessagesAndErrorsToSession(session);
+		addMessage("you do not have access to this system ");
+		addMessagesAndErrorsToSession(session);						
+		return "redirect:/login";
+	    }
+	    session.setAttribute("user", user);
+	    if(user.isAdmin()){
+		session.setAttribute("isAmin", "true");
+	    }
+	    if(user.canApprove()){
+		session.setAttribute("canApprove", "true");
+	    }
+	    if(user.canProcess()){
+		session.setAttribute("canProcess", "true");
+	    }				
+	    return "staff/staff_intro";
+	}catch(Exception ex){
+	    addMessage("you do not have access to this system ");
+	    addMessagesAndErrorsToSession(session);						
+	}
+	return "redirect:/login";						
     }
 		
-		/**
-    @PostMapping("/businessLoginVerify")
-    public String busLoginVerify(@RequestParam("email") String email,
-													 @RequestParam("password") String password,
-													 HttpServletRequest req
-													 ) {
-				HttpSession session = req.getSession(true);
-				if(email == null || email.isEmpty()){
-						return "businessLoginForm";
-				}
+    /**
+       @PostMapping("/businessLoginVerify")
+       public String busLoginVerify(@RequestParam("email") String email,
+       @RequestParam("password") String password,
+       HttpServletRequest req
+       ) {
+       HttpSession session = req.getSession(true);
+       if(email == null || email.isEmpty()){
+       return "businessLoginForm";
+       }
 
-				try{
-						Credential credit = userService.findCredential(email);
-						if(credit == null){
-								// addMessage("user not found "+username);
-								// addMessagesAndErrorsToSession(session);
-								addMessage("you do not have access to this system ");
-						}
-						else{
-								// we need to check the password after encryption
-								String encrypted = userService.encryptString(password);
-								if(credit.checkPassword(encrypted)){
-										Business business = credit.getBusiness();
-										if(business != null){
-												// temp
-												return "redirect:/business/"+business.getId(); // adding incident
-										}
-										else{
-												System.err.println(" business is null");
-										}
-								}
-								else{
-										addMessage("Your password does not match");
-								}
-						}
-				}catch(Exception ex){
-						addMessage("you do not have access to this system ");
-				}
-				addMessagesAndErrorsToSession(session);
-				return "redirect:/businessLogin";						
-    }
-		*/
+       try{
+       Credential credit = userService.findCredential(email);
+       if(credit == null){
+       // addMessage("user not found "+username);
+       // addMessagesAndErrorsToSession(session);
+       addMessage("you do not have access to this system ");
+       }
+       else{
+       // we need to check the password after encryption
+       String encrypted = userService.encryptString(password);
+       if(credit.checkPassword(encrypted)){
+       Business business = credit.getBusiness();
+       if(business != null){
+       // temp
+       return "redirect:/business/"+business.getId(); // adding incident
+       }
+       else{
+       System.err.println(" business is null");
+       }
+       }
+       else{
+       addMessage("Your password does not match");
+       }
+       }
+       }catch(Exception ex){
+       addMessage("you do not have access to this system ");
+       }
+       addMessagesAndErrorsToSession(session);
+       return "redirect:/businessLogin";						
+       }
+    */
     @GetMapping("/settings")
     public String showSettings(Model model,
-															 HttpSession session) {
-				// check for user and if he is an admin
-				String ret = canUserAccess(session);
-				if(!ret.isEmpty()){
-						return ret;
-				}
+			       HttpSession session) {
+	// check for user and if he is an admin
+	model.addAttribute("app_url",app_url);
+	String ret = canUserAccess(session);
+	if(!ret.isEmpty()){
+	    return ret;
+	}
         return "staff/settings";
     }
-		private User findUserFromSession(HttpSession session){
-				User user = null;
-				User user2 = getUserFromSession(session);
-				if(user2 != null){
-						user = userService.findById(user2.getId());
-				}
-				return user;
-    }
-		private String canUserAccess(HttpSession session){
-				User user = findUserFromSession(session);
-				if(user == null){
-						return "redirect:/login";
-				}
-				if(!user.isAdmin()){
-						addMessage("you can not access");
-						addMessagesAndErrorsToSession(session);
-						return "redirect:/staff";
-				}
-				return "";
-		}		
-
-		
 
 }

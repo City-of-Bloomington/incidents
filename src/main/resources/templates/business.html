@@ -17,17 +17,17 @@
        <div th:if="${messages}">
          <div th:insert="general::messages(${messages})"></div>
        </div>
-			 <div th:fragment="business(${business})">					 
-				 <div th:insert="businessView::business(${business})">
-					 <li class="button-group">
-						 <input
-							 type="button"
-							 th:attr="onclick=|window.location.href='@{/business/edit/{id}(id=${business.id})}'|"
-							 value="Edit Establishment"
-								 />
-					 </li>
-				 </div>
-			 </div>
-		 </main>
-	 </body>
+       <div th:fragment="business(${business})">					 
+	 <div th:insert="businessView::business(${business})">
+	   <li class="button-group">
+	     <input
+	       type="button"
+	       th:attr="onclick=|window.location.href='@{${app_url}/business/edit/{id}(id=${business.id})}'|"
+	       value="Edit Establishment"
+	       />
+	   </li>
+	 </div>
+       </div>
+     </main>
+   </body>
  </html>

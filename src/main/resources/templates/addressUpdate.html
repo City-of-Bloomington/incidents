@@ -19,7 +19,7 @@
       </div>
       <form
         action="#"
-        th:action="@{/addressUpdateCheck}"
+        th:action="@{${app_url}+'/addressUpdateCheck'}"
         th:object="${address}"
         onsubmit="return verifyAddress()"
         method="post"></form>

@@ -35,141 +35,127 @@ public class RoleController extends TopController{
     RoleService roleService;
     @Autowired
     ActionService actionService;
-		@Autowired 
+    @Autowired 
     private HttpSession session;
-		@Autowired
+    @Autowired
     UserService userService;
 		
     @GetMapping("/roles")
     public String getAllRoles(Model model) {
-				String ret = canUserAccess(session);
-				if(!ret.isEmpty()){
-						return ret;
-				}
+	model.addAttribute("app_url", app_url);
+	String ret = canUserAccess(session);
+	if(!ret.isEmpty()){
+	    return ret;
+	}
         model.addAttribute("roles", roleService.getAll());
         return "staff/roles";
     }
     @GetMapping("/role/new")
     public String newRole(Model model
-													) {
-				String ret = canUserAccess(session);
-				if(!ret.isEmpty()){
-						return ret;
-				}
-				Role role = new Role();
+			  ) {
+	model.addAttribute("app_url", app_url);
+	String ret = canUserAccess(session);
+	if(!ret.isEmpty()){
+	    return ret;
+	}
+	Role role = new Role();
         model.addAttribute("role", role);
-				List<Action> actions = actionService.getAll();
-				if(actions != null)
-						model.addAttribute("actions", actions);
+	List<Action> actions = actionService.getAll();
+	if(actions != null)
+	    model.addAttribute("actions", actions);
         return "staff/roleAdd";
     }     
     @PostMapping("/role/add")
     public String addRole(@Valid Role role,
-													BindingResult result,
-													Model model
-													) {
-				String ret = canUserAccess(session);
-				if(!ret.isEmpty()){
-						return ret;
-				}
+			  BindingResult result,
+			  Model model
+			  ) {
+	model.addAttribute("app_url", app_url);
+	String ret = canUserAccess(session);
+	if(!ret.isEmpty()){
+	    return ret;
+	}
         if (result.hasErrors()) {
             return "staff/roleAdd";
         }
         roleService.save(role);
-				addMessage("Added Successfully");
+	addMessage("Added Successfully");
         model.addAttribute("roles", roleService.getAll());
-				model.addAttribute("messages", messages);				
+	model.addAttribute("messages", messages);				
         return "staff/roles";
     }
 
     @GetMapping("/role/edit/{id}")
     public String showEditForm(@PathVariable("id") int id,
-															 Model model
-															 ) {
-				String ret = canUserAccess(session);
-				if(!ret.isEmpty()){
-						return ret;
-				}
-				Role role = null;
-				try{
-						role = roleService.findById(id);
+			       Model model
+			       ) {
+	model.addAttribute("app_url", app_url);
+	String ret = canUserAccess(session);
+	if(!ret.isEmpty()){
+	    return ret;
+	}
+	Role role = null;
+	try{
+	    role = roleService.findById(id);
 						
-				}catch(Exception ex){
-						addError("Invalid role Id");
-						model.addAttribute("roles", roleService.getAll());
-						model.addAttribute("errors", errors);
-						return "staff/roles";
-				}
-				model.addAttribute("role", role);
-				List<Action> actions = actionService.getAll();
-				if(actions != null)
-						model.addAttribute("actions", actions);
-				return "staff/roleUpdate";
+	}catch(Exception ex){
+	    addError("Invalid role Id");
+	    model.addAttribute("roles", roleService.getAll());
+	    model.addAttribute("errors", errors);
+	    return "staff/roles";
+	}
+	model.addAttribute("role", role);
+	List<Action> actions = actionService.getAll();
+	if(actions != null)
+	    model.addAttribute("actions", actions);
+	return "staff/roleUpdate";
     }
     @PostMapping("/role/update/{id}")
     public String updateRole(@PathVariable("id") int id,
-														 @Valid Role role, 
-														 BindingResult result,
-														 Model model
-														 ) {
-				String ret = canUserAccess(session);
-				if(!ret.isEmpty()){
-						return ret;
-				}
-				if (result.hasErrors()) {
-						role.setId(id);
-						return "staff/roleUpdate";
-				}
-				addMessage("Updated Successfully");
-				roleService.save(role);
-				model.addAttribute("roles", roleService.getAll());				
-				model.addAttribute("messages", messages);
-				return "staff/roles";
+			     @Valid Role role, 
+			     BindingResult result,
+			     Model model
+			     ) {
+	model.addAttribute("app_url", app_url);
+	String ret = canUserAccess(session);
+	if(!ret.isEmpty()){
+	    return ret;
+	}
+	if (result.hasErrors()) {
+	    role.setId(id);
+	    return "staff/roleUpdate";
+	}
+	addMessage("Updated Successfully");
+	roleService.save(role);
+	model.addAttribute("roles", roleService.getAll());				
+	model.addAttribute("messages", messages);
+	return "staff/roles";
     }
 		
     @GetMapping("/role/delete/{id}")
     public String deleteRole(@PathVariable("id") int id, Model model) {
 
-				String ret = canUserAccess(session);
-				if(!ret.isEmpty()){
-						return ret;
-				}
-				try{
-						Role role = roleService.findById(id);
-						roleService.delete(id);
-						addMessage("Deleted Succefully");
-				}catch(Exception ex){
-						addError("Invalid role ID "+id);
-				}
-				model.addAttribute("roles", roleService.getAll());
-				if(hasMessages()){
-						model.addAttribute("messages", messages);
-				}
-				else if(hasErrors()){
-						model.addAttribute("errors", errors);
-				}
+	model.addAttribute("app_url", app_url);
+	String ret = canUserAccess(session);
+	if(!ret.isEmpty()){
+	    return ret;
+	}
+	try{
+	    Role role = roleService.findById(id);
+	    roleService.delete(id);
+	    addMessage("Deleted Succefully");
+	}catch(Exception ex){
+	    addError("Invalid role ID "+id);
+	}
+	model.addAttribute("roles", roleService.getAll());
+	if(hasMessages()){
+	    model.addAttribute("messages", messages);
+	}
+	else if(hasErrors()){
+	    model.addAttribute("errors", errors);
+	}
 					 
-				return "staff/roles";
+	return "staff/roles";
     }
-		private User findUserFromSession(HttpSession session){
-				User user = null;
-				User user2 = getUserFromSession(session);
-				if(user2 != null){
-						user = userService.findById(user2.getId());
-				}
-				return user;
-    }
-		private String canUserAccess(HttpSession session){
-				User user = findUserFromSession(session);
-				if(user == null){
-						return "redirect:/login";
-				}
-				if(!user.isAdmin()){
-						addMessage("you can not access");
-						addMessagesAndErrorsToSession(session);
-						return "redirect:staff";
-				}
-				return "";
-		}
 		
 }

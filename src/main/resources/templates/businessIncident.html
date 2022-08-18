@@ -28,7 +28,7 @@
         <li th:if="${incident.hasNoTransientOffender()}">
           <input
             type="button"
-            th:attr="onclick=|window.location.href='@{/offender/add/{id}(id=${incident.id})}'|"
+            th:attr="onclick=|window.location.href='@{${app_url}/offender/add/{id}(id=${incident.id})}'|"
             value="Add Offender"
           />
         </li>
@@ -36,21 +36,21 @@
         <li>
           <input
             type="button"
-            th:attr="onclick=|window.location.href='@{/businessProperty/add/{id}(id=${incident.id})}'|"
+            th:attr="onclick=|window.location.href='@{${app_url}/businessProperty/add/{id}(id=${incident.id})}'|"
             value="Add Property"
           />
         </li>
         <li>
           <input
             type="button"
-            th:attr="onclick=|window.location.href='@{/vehicle/add/{id}(id=${incident.id})}'|"
+            th:attr="onclick=|window.location.href='@{${app_url}/vehicle/add/{id}(id=${incident.id})}'|"
             value="Add Vehicle"
           />
         </li>
         <li>
           <input
             type="button"
-            th:attr="onclick=|window.location.href='@{/businessMedia/add/{id}(id=${incident.id})}'|"
+            th:attr="onclick=|window.location.href='@{${app_url}/businessMedia/add/{id}(id=${incident.id})}'|"
             value="Upload Photo"
           />
         </li>
@@ -64,9 +64,9 @@
           <li>
             If you want to change any information click on the corresponding edit link below.
           </li>
-					<li>
-						If you mistakenly added duplicate information you can click on the 'Delete' link underneath the duplicate to remove it.						
-					</li>
+	  <li>
+	    If you mistakenly added duplicate information you can click on the 'Delete' link underneath the duplicate to remove it.						
+	  </li>
           <li>Once your report has been submitted, no changes can be made.</li>
           <li>
             If no further changes are needed, click on 'Next' at the bottom
@@ -78,24 +78,24 @@
       <h2>Incident General Info</h2>
       <div>
         <div th:replace="incidentView::incident(${incident})"></div>
-
+	
         <li class="button-group">
           <input
             type="button"
-            th:attr="onclick=|window.location.href='@{/businessIncidentEdit/{id}(id=${incident.id})}'|"
+            th:attr="onclick=|window.location.href='@{${app_url}/businessIncidentEdit/{id}(id=${incident.id})}'|"
             value="Edit Incident"
             />
         </li>
         <div th:if="${incident.hasBusinessRecord()}">
           <div th:insert="businessView::business(${business})">
           </div>
-					 <li class="button-group">
-						 <input
-							 type="button"
-							 th:attr="onclick=|window.location.href='@{/businessEdit/{id}/{incident_addr_id}/{incident_id}(id=${incident.business.id},incident_id=${incident.id},incident_addr_id=${incident.addr_id})}'|"
-							 value="Edit Establishment"
-								 />
-					 </li>					
+	  <li class="button-group">
+	    <input
+	      type="button"
+	      th:attr="onclick=|window.location.href='@{${app_url}/businessEdit/{id}/{incident_addr_id}/{incident_id}(id=${incident.business.id},incident_id=${incident.id},incident_addr_id=${incident.addr_id})}'|"
+	      value="Edit Establishment"
+	      />
+	  </li>					
         </div>
         <div th:if="${incident.hasOffenderList()}">
           <div th:insert="offenders::offenders(${incident.offenders},${incident.canDeleteOffender()})">
@@ -119,7 +119,7 @@
         <div class="next_div" th:if="${incident.canBeSubmitted()}">
           <input
             type="button"
-            th:attr="onclick=|window.location.href='@{/businessIncident/finalPage/{id}(id=${incident.id})}'|"
+            th:attr="onclick=|window.location.href='@{${app_url}/businessIncident/finalPage/{id}(id=${incident.id})}'|"
             value="Next"
           />
         </div>

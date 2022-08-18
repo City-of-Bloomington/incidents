@@ -26,15 +26,15 @@
       <div th:insert="general::businessInstructions"></div>
 
       <form
-        th:action="@{/businessUpdate/{id}(id=${business.id})}"
+        th:action="@{${app_url}+'/businessUpdate/{id}(id=${business.id})'}"
         th:object="${business}"
-				onsubmit="return verifyConfirm()"
+	onsubmit="return verifyConfirm()"
         method="post"
       >
-				<input type="hidden" th:field="${business.addr_id} " />
-				<input type="hidden" th:field="${business.incident_addr_id} " />
-				<input type="hidden" th:field="${business.incident_id} " />				
-				<fieldset>
+	<input type="hidden" th:field="${business.addr_id} " />
+	<input type="hidden" th:field="${business.incident_addr_id} " />
+	<input type="hidden" th:field="${business.incident_id} " />				
+	<fieldset>
           <legend>Location</legend>
           <span th:text="${business.addressInfo}"></span>
         </fieldset>
@@ -45,10 +45,10 @@
               type="text"
               th:field="${business.name}"
               id="name"
-							size="80"
-							maxlength="80"
+	      size="80"
+	      maxlength="80"
               placeholder="Business name"
-							required="required"
+	      required="required"
             />
           </div>
           <div class="field-group">
@@ -57,8 +57,8 @@
               type="text"
               th:field="${business.corporateAddress}"
               id="corporateAddress"
-							size="80"
-							maxlength="160"
+	      size="80"
+	      maxlength="160"
               placeholder="Corporate address"
             />
           </div>
@@ -67,8 +67,8 @@
             <input
               type="text"
               th:field="${business.businessNumber}"
-							size="32"
-							maxlength="32"
+	      size="32"
+	      maxlength="32"
               id="businessNumber"
               placeholder="Business number"
             />
@@ -79,25 +79,25 @@
               type="tel"
               th:field="${business.phone}"
               id="phone"
-							size="80"
-							maxlength="80"
+	      size="80"
+	      maxlength="80"
               placeholder="Business phone(s)"
             />
           </div>
-					<div class="field-group">
-						<p>
-						Please note that you need to provide a valid email in the field below so that the BPD staff can use it to communicate with your establishment about the final decision.</p>
-					</div>
+	  <div class="field-group">
+	    <p>
+	      Please note that you need to provide a valid email in the field below so that the BPD staff can use it to communicate with your establishment about the final decision.</p>
+	  </div>
           <div class="field-group">
             <label for="email">* Establishment email</label>
             <input
               type="email"
               th:field="${business.email}"
               id="email"
-							size="80"
-							maxlength="160"
+	      size="80"
+	      maxlength="160"
               placeholder="business email"
-							required="required"
+	      required="required"
             />
           </div>
           <div class="field-group">
@@ -106,10 +106,10 @@
               type="email"
               th:field="${business.email2}"
               id="email2"
-							size="80"
-							maxlength="160"
+	      size="80"
+	      maxlength="160"
               placeholder="business email2"
-							required="required"
+	      required="required"
             />
           </div>
           <div class="field-group">
@@ -118,10 +118,10 @@
               type="text"
               th:field="${business.reporterName}"
               id="reporterName"
-							size="80"
-							maxlength="160"
+	      size="80"
+	      maxlength="160"
               placeholder="full name"
-							required="required"
+	      required="required"
             />
           </div>
           <div class="field-group">
@@ -130,13 +130,13 @@
               type="text"
               th:field="${business.reporterTitle}"
               id="reporterTitle"
-							size="80"
-							maxlength="80"
+	      size="80"
+	      maxlength="80"
               placeholder="Your business title"
-							required="required"
+	      required="required"
             />
           </div>							
-					<ul class="button-group">
+	  <ul class="button-group">
             <li><button type="submit" class="next-button">Save Changes</button></li>
           </ul>
         </fieldset>

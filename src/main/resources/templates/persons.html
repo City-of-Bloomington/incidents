@@ -27,14 +27,14 @@
             <li class="button-group">
               <input
                 type="button"
-                th:attr="onclick=|window.location.href='@{/person/edit/{id}(id=${person.id})}'|"
+                th:attr="onclick=|window.location.href='@{${app_url}/person/edit/{id}(id=${person.id})}'|"
                 value="Edit Person"
               />
             </li>
             <li th:if="${canDelete}" class="button-group">
               <input
                 type="button"
-                th:attr="onclick=|window.location.href='@{/person/delete/{id}(id=${person.id})}'|"
+                th:attr="onclick=|window.location.href='@{${app_url}/person/delete/{id}(id=${person.id})}'|"
                 value="Delete Person"
               />
             </li>						

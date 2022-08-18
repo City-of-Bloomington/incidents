@@ -27,7 +27,7 @@
 
 			<form
 				action="#"
-				th:action="@{/property/update/{id}(id=${property.id})}"
+				th:action="@{${app_url}+'/property/update/{id}(id=${property.id})'}"
 				th:object="${property}"
 				onsubmit="return verifyTotalValue()" method="post">
 				

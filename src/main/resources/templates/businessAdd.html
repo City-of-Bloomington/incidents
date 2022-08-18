@@ -26,14 +26,14 @@
       <div th:insert="general::businessInstructions"></div>
 
       <form
-        th:action="@{/business/save}"
+        th:action="@{${app_url}+'/business/save'}"
         th:object="${business}"
-				onsubmit="return verifyConfirm()"
+	onsubmit="return verifyConfirm()"
         method="post"
       >
-				<input type="hidden" th:field="${business.addr_id} " />
-				<input type="hidden" th:field="${business.incident_addr_id} " />				
-				<fieldset>
+	<input type="hidden" th:field="${business.addr_id} " />
+	<input type="hidden" th:field="${business.incident_addr_id} " />				
+	<fieldset>
           <legend>Establishment Location</legend>
           <span th:text="${business.addressInfo}"></span>
         </fieldset>
@@ -45,9 +45,9 @@
               th:field="${business.name}"
               id="name"
               placeholder="Business name"
-							size="80"
-							maxlength="80"
-							required="required"
+	      size="80"
+	      maxlength="80"
+	      required="required"
             />
           </div>
           <div class="field-group">
@@ -57,8 +57,8 @@
               th:field="${business.corporateAddress}"
               id="corporateAddress"
               placeholder="Corporate address"
-							size="80"
-							maxlength="160"
+	      size="80"
+	      maxlength="160"
             />
           </div>
           <div class="field-group">
@@ -67,8 +67,8 @@
               type="text"
               th:field="${business.businessNumber}"
               id="businessNumber"
-							size="32"
-							maxlength="32"
+	      size="32"
+	      maxlength="32"
               placeholder="Business number"
             />
           </div>					
@@ -79,26 +79,26 @@
               th:field="${business.phone}"
               id="phone"
               placeholder="Business phone(s)"
-							size="80"
-							maxlength="80"
-							required="required"
+	      size="80"
+	      maxlength="80"
+	      required="required"
             />
           </div>
-					<div class="field-group">
-						<p>
-							Please provide a valid email in the field below so the BPD staff can communicate with your establishment about the final decision.
-						</p>
-					</div>
+	  <div class="field-group">
+	    <p>
+	      Please provide a valid email in the field below so the BPD staff can communicate with your establishment about the final decision.
+	    </p>
+	  </div>
           <div class="field-group">
             <label for="email">* Establishment email</label>
             <input
               type="email"
               th:field="${business.email}"
               id="email"
-							size="80"
-							maxlength="160"
+	      size="80"
+	      maxlength="160"
               placeholder="business email"
-							required="required"
+	      required="required"
             />
           </div>
           <div class="field-group">
@@ -107,10 +107,10 @@
               type="email"
               th:field="${business.email2}"
               id="email2"
-							size="80"
-							maxlength="160"
+	      size="80"
+	      maxlength="160"
               placeholder="business email2"
-							required="required"
+	      required="required"
             />
           </div>
           <div class="field-group">
@@ -119,10 +119,10 @@
               type="text"
               th:field="${business.reporterName}"
               id="reporterName"
-							size="80"
-							maxlength="160"
+	      size="80"
+	      maxlength="160"
               placeholder="full name"
-							required="required"
+	      required="required"
             />
           </div>
           <div class="field-group">
@@ -131,18 +131,18 @@
               type="text"
               th:field="${business.reporterTitle}"
               id="reporterTitle"
-							size="80"
-							maxlength="80"
+	      size="80"
+	      maxlength="80"
               placeholder="Your business title"
-							required="required"
+	      required="required"
             />
           </div>							
-					<ul class="button-group">
+	  <ul class="button-group">
             <li>
               <button
-								type="button"
+		type="button"
                 class="next-button"
-                th:attr="onclick=|window.location.href='@{/businessAddrEdit/{id}/{incident_addr_id}(id=${business.address.id},incident_addr_id=${business.incident_addr_id})}'|"
+                th:attr="onclick=|window.location.href='@{${app_url}/businessAddrEdit/{id}/{incident_addr_id}(id=${business.address.id},incident_addr_id=${business.incident_addr_id})}'|"
               >
                 Back
               </button>

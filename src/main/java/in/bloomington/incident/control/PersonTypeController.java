@@ -29,132 +29,120 @@ import in.bloomington.incident.utils.Helper;
 @Controller
 public class PersonTypeController extends TopController{
 
-		@Autowired
-		PersonTypeService personTypeService;
-		@Autowired 
+    @Autowired
+    PersonTypeService personTypeService;
+    @Autowired 
     private HttpSession session;
-		@Autowired
+    @Autowired
     UserService userService;
 		
-		@GetMapping("/personTypes")
+    @GetMapping("/personTypes")
     public String getAll(Model model) {
-				String ret = canUserAccess(session);
-				if(!ret.isEmpty()){
-						return ret;
-				}
+	model.addAttribute("app_url", app_url);
+	String ret = canUserAccess(session);
+	if(!ret.isEmpty()){
+	    return ret;
+	}
         model.addAttribute("types", personTypeService.getAll());
         return "staff/personTypes";
     }
-		@GetMapping("/personType/new")
+    @GetMapping("/personType/new")
     public String newPersonType(Model model) {
-				String ret = canUserAccess(session);
-				if(!ret.isEmpty()){
-						return ret;
-				}
-				PersonType personType = new PersonType();
+	model.addAttribute("app_url", app_url);
+	String ret = canUserAccess(session);
+	if(!ret.isEmpty()){
+	    return ret;
+	}
+	PersonType personType = new PersonType();
         model.addAttribute("type", personType);
         return "staff/personTypeAdd";
     }     
     @PostMapping("/personType/add")
     public String addPersonType(@Valid PersonType personType, BindingResult result, Model model) {
-				String ret = canUserAccess(session);
-				if(!ret.isEmpty()){
-						return ret;
-				}
+	model.addAttribute("app_url", app_url);
+	String ret = canUserAccess(session);
+	if(!ret.isEmpty()){
+	    return ret;
+	}
         if (result.hasErrors()) {
             return "staff/addPersonType";
         }
         personTypeService.save(personType);
-				addMessage("Added Successfully");
+	addMessage("Added Successfully");
         model.addAttribute("types", personTypeService.getAll());
-				model.addAttribute("messages", messages);				
+	model.addAttribute("messages", messages);				
         return "staff/personTypes";
     }
 
-		@GetMapping("/personType/edit/{id}")
-		public String showEditForm(@PathVariable("id") int id, Model model) {
-				String ret = canUserAccess(session);
-				if(!ret.isEmpty()){
-						return ret;
-				}
-				PersonType type = null;
-				try{
-						type = personTypeService.findById(id);
+    @GetMapping("/personType/edit/{id}")
+    public String showEditForm(@PathVariable("id") int id, Model model) {
+	model.addAttribute("app_url", app_url);
+	String ret = canUserAccess(session);
+	if(!ret.isEmpty()){
+	    return ret;
+	}
+	PersonType type = null;
+	try{
+	    type = personTypeService.findById(id);
 						
-				}catch(Exception ex){
-						addError("Invalid person type Id");
-						model.addAttribute("types", personTypeService.getAll());
-						model.addAttribute("errors", errors);
-						return "staff/personTypes";
-				}
-				model.addAttribute("type", type);
-				if(hasMessages()){
-						model.addAttribute("messages", messages);				
-				}
-				return "staff/personTypeUpdate";
-		}
-		@PostMapping("/personType/update/{id}")
-		public String updatePersonType(@PathVariable("id") int id,
-																	 @Valid PersonType type, 
-																	 BindingResult result, Model model) {
-				String ret = canUserAccess(session);
-				if(!ret.isEmpty()){
-						return ret;
-				}
-				if (result.hasErrors()) {
-						String error = Helper.extractErrors(result);
-						addError(error);
-						type.setId(id);
-						return "staff/personTypeUpdate";
-				}
-				addMessage("Updated Successfully");
-				personTypeService.save(type);
-				model.addAttribute("types", personTypeService.getAll());				
-				model.addAttribute("messages", messages);
-				return "staff/personTypes";
-		}
+	}catch(Exception ex){
+	    addError("Invalid person type Id");
+	    model.addAttribute("types", personTypeService.getAll());
+	    model.addAttribute("errors", errors);
+	    return "staff/personTypes";
+	}
+	model.addAttribute("type", type);
+	if(hasMessages()){
+	    model.addAttribute("messages", messages);				
+	}
+	return "staff/personTypeUpdate";
+    }
+    @PostMapping("/personType/update/{id}")
+    public String updatePersonType(@PathVariable("id") int id,
+				   @Valid PersonType type, 
+				   BindingResult result, Model model) {
+	model.addAttribute("app_url", app_url);
+	String ret = canUserAccess(session);
+	if(!ret.isEmpty()){
+	    return ret;
+	}
+	if (result.hasErrors()) {
+	    String error = Helper.extractErrors(result);
+	    addError(error);
+	    type.setId(id);
+	    return "staff/personTypeUpdate";
+	}
+	addMessage("Updated Successfully");
+	personTypeService.save(type);
+	model.addAttribute("types", personTypeService.getAll());				
+	model.addAttribute("messages", messages);
+	return "staff/personTypes";
+    }
 		
-		@GetMapping("/personType/delete/{id}")
-		public String deletePersonType(@PathVariable("id") int id, Model model) {
-				String ret = canUserAccess(session);
-				if(!ret.isEmpty()){
-						return ret;
-				}
-				try{
-						PersonType type = personTypeService.findById(id);
-						personTypeService.delete(id);
-						addMessage("Deleted Succefully");
-				}catch(Exception ex){
-						addError("Invalid personType ID "+id);
-				}
-				model.addAttribute("types", personTypeService.getAll());
-				if(hasMessages()){
-						model.addAttribute("messages", messages);
-				}
-				else if(hasErrors()){
-						model.addAttribute("errors", errors);
-				}
+    @GetMapping("/personType/delete/{id}")
+    public String deletePersonType(@PathVariable("id") int id, Model model) {
+	model.addAttribute("app_url", app_url);
+	String ret = canUserAccess(session);
+	if(!ret.isEmpty()){
+	    return ret;
+	}
+	try{
+	    PersonType type = personTypeService.findById(id);
+	    personTypeService.delete(id);
+	    addMessage("Deleted Succefully");
+	}catch(Exception ex){
+	    addError("Invalid personType ID "+id);
+	}
+	model.addAttribute("types", personTypeService.getAll());
+	if(hasMessages()){
+	    model.addAttribute("messages", messages);
+	}
+	else if(hasErrors()){
+	    model.addAttribute("errors", errors);
+	}
 					 
-				return "staff/personTypes";
-		}
-		private User findUserFromSession(HttpSession session){
-				User user = null;
-				User user2 = getUserFromSession(session);
-				if(user2 != null){
-						user = userService.findById(user2.getId());
-				}
-				return user;
-    }		
-		private String canUserAccess(HttpSession session){
-				User user = findUserFromSession(session);
-				if(user == null){
-						return "redirect:/login";
-				}
-				if(!user.isAdmin()){
-						addMessage("you can not access");
-						addMessagesAndErrorsToSession(session);
-						return "redirect:staff";
-				}
-				return "";
-		}		
+	return "staff/personTypes";
+    }
+
+
 }

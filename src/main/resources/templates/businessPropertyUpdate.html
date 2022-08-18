@@ -26,15 +26,15 @@
 			<div th:insert="general::propertyInstructions"></div>
 
 			<form
-				action="#"
-				th:action="@{/businessProperty/update/{id}(id=${property.id})}"
-				th:object="${property}"
-				onsubmit="return verifyTotalValue()" method="post">
+			  action="#"
+			  th:action="@{${app_url}+'/businessProperty/update/{id}(id=${property.id})'}"
+			  th:object="${property}"
+			  onsubmit="return verifyTotalValue()" method="post">
 				
-				<input type="hidden" th:field="${property.incident}" />
-				<input type="hidden" id="old_value_id" name="oldValue" th:value="${property.value}" />
-				<input type="hidden" id="balance_id" th:field="${property.balance}" />
-				<input type="hidden" id="max_total_id" th:field="${property.maxTotalValue}" />
+			  <input type="hidden" th:field="${property.incident}" />
+			  <input type="hidden" id="old_value_id" name="oldValue" th:value="${property.value}" />
+			  <input type="hidden" id="balance_id" th:field="${property.balance}" />
+			  <input type="hidden" id="max_total_id" th:field="${property.maxTotalValue}" />
 				
 				<div th:if="${damageTypes}">
 					<label class="required">*Problem Type</label>

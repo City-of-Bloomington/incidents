@@ -25,18 +25,18 @@
 		<p>*Indicate required fields</p>
 
 		<form
-			action="#"
-			th:action="@{/fraud/update/{id}(id=${fraud.id})}"
-			th:object="${fraud}"
-			onsubmit="return verifyFraudInput()"
-			method="post">
+		  action="#"
+		  th:action="@{${app_url}+'/fraud/update/{id}(id=${fraud.id})'}"
+		  th:object="${fraud}"
+		  onsubmit="return verifyFraudInput()"
+		  method="post">
 		
-			<input type="hidden" th:field="${fraud.incident}" />
-		
-			<label> Incident: <a th:href="@{/incident/{id}(id=${fraud.incident.id})}">Back to Incident</a> </label>
-			<label class="required" for="fraudType">*Fraud/Scam Type</label>
-			<select
-				id="fraudType"
+		  <input type="hidden" th:field="${fraud.incident}" />
+		  
+		  <label> Incident: <a th:href="@{/incident/{id}(id=${fraud.incident.id})}">Back to Incident</a> </label>
+		  <label class="required" for="fraudType">*Fraud/Scam Type</label>
+		  <select
+			  id="fraudType"
 				th:field="${fraud.fraudType}"
 				onchange="handelRelatedFraud()"
 				required="required">

@@ -8,39 +8,39 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head th:replace="general::head('Images')"></head>
   <body>
-		<header th:replace="general::header"></header>
-		
-		<main class="public-questions-wrapper">
-			<div th:fragment="medias(medias,canDelete)">
-				<h2>Uploaded Photos</h2>
-				<div th:switch="${medias}">
-					<h4 th:case="null">No images found</h4>
-					<div th:case="*">
-						<ul th:each="one : ${medias}">
-							<li>
-								<strong>File Name:</strong>
-								<a th:href="@{/media/download/{id}(id=${one.id})}"><span th:text="${one.oldFileName}"></span></a>
-							</li>
-							
-							<li th:if="${one.hasNotes()}">
-								<strong>Description:</strong>
-								<span th:text="${one.notes}"></span>
-							</li>
-							
-							<li>
-								<strong>Photo:</strong>
-								<a th:href="@{/media/image/{id}(id=${one.id})}" onclick="return popup(this, 'image')">Show Photo</a>
-							</li>
-							
-							<li th:if="${canDelete}">
-								<strong>Delete:</strong>
-								<a th:href="@{/media/delete/{id}(id=${one.id})}">Delete</a>
-							</li>
-						</ul>
-					</div>
-				</div>
-			</div>
-		</main>
+    <header th:replace="general::header"></header>
+    
+    <main class="public-questions-wrapper">
+      <div th:fragment="medias(medias,canDelete)">
+	<h2>Uploaded Photos</h2>
+	<div th:switch="${medias}">
+	  <h4 th:case="null">No images found</h4>
+	  <div th:case="*">
+	    <ul th:each="one : ${medias}">
+	      <li>
+		<strong>File Name:</strong>
+		<a th:href="@{${app_url}+'/media/download/{id}(id=${one.id})'}"><span th:text="${one.oldFileName}"></span></a>
+	      </li>
+	      
+	      <li th:if="${one.hasNotes()}">
+		<strong>Description:</strong>
+		<span th:text="${one.notes}"></span>
+	      </li>
+	      
+	      <li>
+		<strong>Photo:</strong>
+		<a th:href="@{${app_url}+'/media/image/{id}(id=${one.id})'}" onclick="return popup(this, 'image')">Show Photo</a>
+	      </li>
+	      
+	      <li th:if="${canDelete}">
+		<strong>Delete:</strong>
+		<a th:href="@{${app_url}+'/media/delete/{id}(id=${one.id})'}">Delete</a>
+	      </li>
+	    </ul>
+	  </div>
+	</div>
+      </div>
+    </main>
   </body>
 </htmL>
 		

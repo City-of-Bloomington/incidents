@@ -21,71 +21,73 @@
 			<p>*Indicates Required Fields </p>
 			<ul th:insert="general::offenderInstructions">
 			</ul>
-			<form action="#" th:action="@{/offender/update/{id}(id=${offender.id})}" th:object="${offender}" method="post">
-				<input type="hidden" th:field="${offender.incident}" />
-				<fieldset>
-					<p>Information about the offender reporting this incident </p>
-					<label>Incident: </label>
-					<a th:href="@{/incident/{id}(id=${offender.incident.id})}">Back to incident page</a>
-					<label> Full name: </label>
-					<label for="firstname_id" class="required">*First name </label>
-					<input type="text"
-								 th:field="${offender.firstname}"
-								 id="firstname_id"
-								 size="70"
-								 maxlength="70"
-								 required="required"
-								 placeholder="First Name" />
-					<label for="midname_id">MI </label>
-					<input type="text"
-								 th:field="${offender.midname}"
-								 id="midname_id"
-								 size="2"
-								 maxlength="2"
-								 placeholder="MI" />
-					<label for="lastname_id" class="required">*Last name </label>
-					<input type="text"
-								 th:field="${offender.lastname}"
-								 id="lastname_id"
-								 size="70"
-								 maxlength="70"
-								 required="required"
-								 placeholder="Last Name" />
-					<label for="suffix_id">Suffix</label>
-					<input type="text"
-								 th:field="${offender.suffix}"
-								 id="suffix_id"
-								 size="10"
-								 maxlength="10"
-								 placeholder="Jr, Sr, .." />
-					<label for="address_id" class="required">*Address: </label>
-					<input type="text"
-								 th:field="${offender.address}"
-								 id="address_id"
-								 size="70"
-								 maxlength="70"
-								 required="required"
-								 placeholder="Address" />
-					<label for="city_id" class="required">*City: </label>
-					<input type="text"
-								 th:field="${offender.city}"
-								 id="city_id"
-								 size="50"
-								 maxlength="50"
-								 required="required"
-								 placeholder="City" />
-
-					<label for="state_id" class="required">*State: </label>
-						
-					<input type="text"
-								 th:field="${offender.state}"
-								 id="state_id"
-								 size="2"
-								 required="required"
-								 maxlength="2" />
-					
-					<label for="zip_id" class="required">*Zip code: </label>
-					<input type="text"
+			<form
+			  action="#"
+			  th:action="@{${app_url}+'/offender/update/{id}(id=${offender.id})'}" th:object="${offender}" method="post">
+			  <input type="hidden" th:field="${offender.incident}" />
+			  <fieldset>
+			    <p>Information about the offender reporting this incident </p>
+			    <label>Incident: </label>
+			    <a th:href="@{/incident/{id}(id=${offender.incident.id})}">Back to incident page</a>
+			    <label> Full name: </label>
+			    <label for="firstname_id" class="required">*First name </label>
+			    <input type="text"
+				   th:field="${offender.firstname}"
+				   id="firstname_id"
+				   size="70"
+				   maxlength="70"
+				   required="required"
+				   placeholder="First Name" />
+			    <label for="midname_id">MI </label>
+			    <input type="text"
+				   th:field="${offender.midname}"
+				   id="midname_id"
+				   size="2"
+				   maxlength="2"
+				   placeholder="MI" />
+			    <label for="lastname_id" class="required">*Last name </label>
+			    <input type="text"
+				   th:field="${offender.lastname}"
+				   id="lastname_id"
+				   size="70"
+				   maxlength="70"
+				   required="required"
+				   placeholder="Last Name" />
+			    <label for="suffix_id">Suffix</label>
+			    <input type="text"
+				   th:field="${offender.suffix}"
+				   id="suffix_id"
+				   size="10"
+				   maxlength="10"
+				   placeholder="Jr, Sr, .." />
+			    <label for="address_id" class="required">*Address: </label>
+			    <input type="text"
+				   th:field="${offender.address}"
+				   id="address_id"
+				   size="70"
+				   maxlength="70"
+				   required="required"
+				   placeholder="Address" />
+			    <label for="city_id" class="required">*City: </label>
+			    <input type="text"
+				   th:field="${offender.city}"
+				   id="city_id"
+				   size="50"
+				   maxlength="50"
+				   required="required"
+				   placeholder="City" />
+			    
+			    <label for="state_id" class="required">*State: </label>
+			    
+			    <input type="text"
+				   th:field="${offender.state}"
+				   id="state_id"
+				   size="2"
+				   required="required"
+				   maxlength="2" />
+			    
+			    <label for="zip_id" class="required">*Zip code: </label>
+			    <input type="text"
 								 th:field="${offender.zip}"
 								 id="zip_id"
 								 size="10"
