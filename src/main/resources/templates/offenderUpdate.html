@@ -23,7 +23,7 @@
 			</ul>
 			<form
 			  action="#"
-			  th:action="@{${app_url}+'/offender/update/{id}(id=${offender.id})'}" th:object="${offender}" method="post">
+			  th:action="@{/offender/update/{id}(id=${offender.id})}" th:object="${offender}" method="post">
 			  <input type="hidden" th:field="${offender.incident}" />
 			  <fieldset>
 			    <p>Information about the offender reporting this incident </p>

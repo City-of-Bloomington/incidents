@@ -28,7 +28,7 @@
     </ul>
     <dl>
       <dt>Incident</dt>
-      <dd><a th:href="@{${app_url}+'/incident/{id}(id=${vehicle.incident.id})'}">Back to Incident</a></dd>							
+      <dd><a th:href="@{/incident/{id}(id=${vehicle.incident.id})}">Back to Incident</a></dd>							
       <dt>
 	<label>Damage Type</label>
       </dt>
@@ -62,7 +62,7 @@
       <dd>				
 				<span th:text="${vehicle.description}"></span>
       </dd>
-      <dd><a th:href="@{${app_url}+'/vehicle/edit/{id}(id=${vehicle.id})'}">Edit</a> 
+      <dd><a th:href="@{/vehicle/edit/{id}(id=${vehicle.id})}">Edit</a> 
      </dl>
   </body>
 </htmL>

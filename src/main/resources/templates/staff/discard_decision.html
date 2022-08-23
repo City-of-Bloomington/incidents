@@ -12,8 +12,8 @@
       <div th:replace="general::header-staff"></div>
     </header>
     <main class="staff">
-		<div th:replace="general::staffMenu('Approved')">
-		</div>
+      <div th:replace="general::staffMenu('Approved')">
+      </div>
       <h2>Incident</h2>
       <div th:if="${errors}">
         <div th:insert="general::errors(${errors})"></div>
@@ -21,11 +21,13 @@
       <div th:if="${messages}">
         <div th:insert="general::messages(${messages})"></div>
       </div>
-			<div th:replace="incidentView::incidentView(${incident},${business})">
+      <div th:replace="incidentView::incidentView(${incident},${business})">
       </div>
       <h2>Discard Incident</h2>
-			<p>Note: An incident can be discarded if there are multiple reports for the same incidents (duplicates) or the entity changed its mind and no need for report any more, or it is faulty and invalid, ..etc. The incident will stay in the system but will be marked as discarded and will not be processed any more.</p>
-      <form action="#" th:action="@{/discard/final}" th:object="${actionLog}" method="post">
+      <p>Note: An incident can be discarded if there are multiple reports for the same incidents (duplicates) or the entity changed its mind and no need for report any more, or it is faulty and invalid, ..etc. The incident will stay in the system but will be marked as discarded and will not be processed any more.</p>
+      <form action="#"
+	    th:action="@{/discard/final}"
+	    th:object="${actionLog}" method="post">
         <input type="hidden" th:field="${actionLog.incident}" />
         <table>
           <tr>

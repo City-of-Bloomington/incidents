@@ -27,7 +27,7 @@
       <p>* indicate required fields</p>
       <form
         action="#"
-        th:action="@{${app_url}+'/incidentNext/{id}(id=${incident.id})'}"
+        th:action="@{/incidentNext/{id}(id=${incident.id})}"
         th:object="${incident}"
         onsubmit="return verifyIncidentInput()"
         method="post"
@@ -182,7 +182,7 @@
           <li th:unless="${incident.hasPersonList()}">
             <button
               class="next-button"
-              th:attr="onclick=|window.location.href='@{${app_url}/emailUpdate/{id}(id=${incident.id})}'|"
+              th:attr="onclick=|window.location.href='@{/emailUpdate/{id}(id=${incident.id})}'|"
             >
               Back
             </button>

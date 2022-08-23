@@ -10,18 +10,18 @@
   <body class="staff">
     <header>
       <div th:replace="general::header-staff"></div>
-		</header>
-		<main class="staff">
-			<div th:replace="general::staffMenu('Search')">
-			</div>
-			<h2>Search</h2>
-			<div th:if="${errors}">
-				<div th:insert="general::errors(${errors})"></div>
-			</div>
-			<div th:if="${messages}">
-				<div th:insert="general::messages(${messages})"></div>
-			</div>
+    </header>
+    <main class="staff">
+      <div th:replace="general::staffMenu('Search')">
+      </div>
+      <h2>Search</h2>
+      <div th:if="${errors}">
+	<div th:insert="general::errors(${errors})"></div>
+      </div>
+      <div th:if="${messages}">
+	<div th:insert="general::messages(${messages})"></div>
+      </div>
       <div th:insert="incidents::incidents(${incidents})"></div>			
-		</main>
+    </main>
   </body>
 </html>

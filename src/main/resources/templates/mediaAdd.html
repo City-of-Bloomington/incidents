@@ -30,7 +30,7 @@
         <div>
           <form
             enctype="multipart/form-data"
-            th:action="@{${app_url}+'/media/save'}"
+            th:action="@{/media/save}"
             method="post"
           >
             <input type="hidden" name="incident_id" th:value="${incident_id}" />

@@ -20,7 +20,7 @@
       <div>To add a new establishment we need to know the establishment local street address</div>
       <form
         action="#"
-        th:action="@{${app_url}+'/businessAddrSave'}"
+        th:action="@{/businessAddrSave}"
         th:object="${address}"
         onsubmit="return verifyBusinessAddress()"
         method="post"
@@ -118,7 +118,7 @@
             <button
 	      type="button"
               class="next-button"
-              th:attr="onclick=|window.location.href='@{${app_url}/businessIncidentAddrEdit/{id}(id=${address.incident_addr_id})}'|"
+              th:attr="onclick=|window.location.href='@{/businessIncidentAddrEdit/{id}(id=${address.incident_addr_id})}'|"
               >
                 Back
               </button>

@@ -13,8 +13,8 @@
       <div th:replace="general::header-staff"></div>
     </header> 
     <main class="staff">
-			<div th:replace="general::staffMenu('Settings')">
-			</div>
+      <div th:replace="general::staffMenu('Settings')">
+      </div>
       <h2>Workflow Actions</h2>
       <div th:if="${errors}">
         <div th:insert="general::errors(${errors})"></div>
@@ -22,12 +22,11 @@
       <div th:if="${messages}">
         <div th:insert="general::messages(${messages})"></div>
       </div>
-			<ul class="button-group">
-				<li>
-					<input type="button" th:attr="onclick=|window.location.href='@{/action/new}'|"
-								 value="Add Workflow Action" />
-				</li>
-			</ul>      
+      <ul class="button-group">
+	<li>
+	  <a th:href="@{${app_url}+'/action/new'}">Add New Action </a>
+	</li>
+      </ul>      
       <div th:switch="${actions}">
         <h2 th:case="null">No actions found</h2>
         <div th:case="*">
@@ -48,8 +47,8 @@
                 <td th:text="${action.name}"></td>
                 <td th:text="${action.description}"></td>
                 <td th:text="${action.workflowStep}"></td>
-                <td><a th:href="@{/action/edit/{id}(id=${action.id})}">Edit</a></td>
-                <td><a th:href="@{/action/delete/{id}(id=${action.id})}">Delete</a></td>
+                <td><a th:href="@{/action/edit/${action.id}}">Edit</a></td>
+                <td><a th:href="@{/action/delete/${action.id}}">Delete</a></td>
               </tr>
             </tbody>
           </table>

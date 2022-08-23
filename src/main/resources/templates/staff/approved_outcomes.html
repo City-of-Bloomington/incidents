@@ -10,49 +10,49 @@
   <body class="staff">
     <header>
       <div th:replace="general::header-staff"></div>
-		</header>
+    </header>
     <main class="staff">
-			<div th:replace="general::staffMenu('Received')">
-			</div>
-			<h2 th:text="${statusOutcome+' Incidents'}"></h2>
-			<div th:if="${errors}">
-				<div th:insert="general::errors(${errors})"></div>			
+      <div th:replace="general::staffMenu('Received')">
       </div>
-			<div th:if="${messages}">
-				<div th:insert="general::messages(${messages})"></div>			
+      <h2 th:text="${statusOutcome+' Incidents'}"></h2>
+      <div th:if="${errors}">
+	<div th:insert="general::errors(${errors})"></div>			
       </div>
-			
+      <div th:if="${messages}">
+	<div th:insert="general::messages(${messages})"></div>			
+      </div>
+      
       <div th:switch="${incidents}">
-				<div class="message alert" th:case="null">No incident found </div>
-				<div th:case="*">
-
-					<table>
-						<thead>
-							<tr>
-								<th>ID</th>
-								<th>Category</th>
-								<th>Incident Type</th>
-								<th>Received Date & Time</th>
-								<th>Incident Date & Time</th>
-								<th>Address </th>
-								<th>Details </th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr th:each="incident : ${incidents}">
-								<td>
-									<a th:href="@{/process/{id}(id=${incident.id})}" th:text="${incident.id}"></a>
-								</td>
-								<td th:text="${incident.category}"></td>								
-								<td th:text="${incident.incidentType}"></td>
-								<td th:text="${incident.receivedStr}"></td>
-								<td th:text="${incident.dateTimeInfo}"></td>
-								<td th:text="${incident.addressInfo}"></td>
-								<td th:text="${incident.details}"></td>
-							</tr>
-						</tbody>
-					</table>
-				</div>      
+	<div class="message alert" th:case="null">No incident found </div>
+	<div th:case="*">
+	  
+	  <table>
+	    <thead>
+	      <tr>
+		<th>ID</th>
+		<th>Category</th>
+		<th>Incident Type</th>
+		<th>Received Date & Time</th>
+		<th>Incident Date & Time</th>
+		<th>Address </th>
+		<th>Details </th>
+	      </tr>
+	    </thead>
+	    <tbody>
+	      <tr th:each="incident : ${incidents}">
+		<td>
+		  <a th:href="@{/process/${incident.id}}" th:text="${incident.id}"></a>
+		</td>
+		<td th:text="${incident.category}"></td>								
+		<td th:text="${incident.incidentType}"></td>
+		<td th:text="${incident.receivedStr}"></td>
+		<td th:text="${incident.dateTimeInfo}"></td>
+		<td th:text="${incident.addressInfo}"></td>
+		<td th:text="${incident.details}"></td>
+	      </tr>
+	    </tbody>
+	  </table>
+	</div>      
       </div>
     </main>
   </body>

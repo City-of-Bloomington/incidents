@@ -26,7 +26,7 @@
       <div th:insert="general::businessInstructions"></div>
 
       <form
-        th:action="@{${app_url}+'/business/save'}"
+        th:action="@{/business/save}"
         th:object="${business}"
 	onsubmit="return verifyConfirm()"
         method="post"
@@ -142,7 +142,7 @@
               <button
 		type="button"
                 class="next-button"
-                th:attr="onclick=|window.location.href='@{${app_url}/businessAddrEdit/{id}/{incident_addr_id}(id=${business.address.id},incident_addr_id=${business.incident_addr_id})}'|"
+                th:attr="onclick=|window.location.href='@{/businessAddrEdit/{id}/{incident_addr_id}(id=${business.address.id},incident_addr_id=${business.incident_addr_id})}'|"
               >
                 Back
               </button>

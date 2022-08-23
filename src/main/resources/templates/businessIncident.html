@@ -28,7 +28,7 @@
         <li th:if="${incident.hasNoTransientOffender()}">
           <input
             type="button"
-            th:attr="onclick=|window.location.href='@{${app_url}/offender/add/{id}(id=${incident.id})}'|"
+            th:attr="onclick=|window.location.href='@{/offender/add/{id}(id=${incident.id})}'|"
             value="Add Offender"
           />
         </li>
@@ -36,7 +36,7 @@
         <li>
           <input
             type="button"
-            th:attr="onclick=|window.location.href='@{${app_url}/businessProperty/add/{id}(id=${incident.id})}'|"
+            th:attr="onclick=|window.location.href='@{/businessProperty/add/{id}(id=${incident.id})}'|"
             value="Add Property"
           />
         </li>
@@ -50,7 +50,7 @@
         <li>
           <input
             type="button"
-            th:attr="onclick=|window.location.href='@{${app_url}/businessMedia/add/{id}(id=${incident.id})}'|"
+            th:attr="onclick=|window.location.href='@{/businessMedia/add/{id}(id=${incident.id})}'|"
             value="Upload Photo"
           />
         </li>
@@ -82,7 +82,7 @@
         <li class="button-group">
           <input
             type="button"
-            th:attr="onclick=|window.location.href='@{${app_url}/businessIncidentEdit/{id}(id=${incident.id})}'|"
+            th:attr="onclick=|window.location.href='@{/businessIncidentEdit/{id}(id=${incident.id})}'|"
             value="Edit Incident"
             />
         </li>
@@ -92,7 +92,7 @@
 	  <li class="button-group">
 	    <input
 	      type="button"
-	      th:attr="onclick=|window.location.href='@{${app_url}/businessEdit/{id}/{incident_addr_id}/{incident_id}(id=${incident.business.id},incident_id=${incident.id},incident_addr_id=${incident.addr_id})}'|"
+	      th:attr="onclick=|window.location.href='@{/businessEdit/{id}/{incident_addr_id}/{incident_id}(id=${incident.business.id},incident_id=${incident.id},incident_addr_id=${incident.addr_id})}'|"
 	      value="Edit Establishment"
 	      />
 	  </li>					
@@ -119,7 +119,7 @@
         <div class="next_div" th:if="${incident.canBeSubmitted()}">
           <input
             type="button"
-            th:attr="onclick=|window.location.href='@{${app_url}/businessIncident/finalPage/{id}(id=${incident.id})}'|"
+            th:attr="onclick=|window.location.href='@{/businessIncident/finalPage/{id}(id=${incident.id})}'|"
             value="Next"
           />
         </div>

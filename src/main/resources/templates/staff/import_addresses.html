@@ -12,24 +12,24 @@
       <div th:replace="general::header-staff"></div>
     </header>
     <main class="staff">
-			<div th:replace="general::staffMenu('Settings')">
-			</div>
-			<h2>Addresses Import Utility</h2>
-			<div th:if="${errors}">
-				<div th:insert="general::errors(${errors})"></div>
-			</div>
-			<div th:if="${messages}">
-				<div th:insert="general::messages(${messages})"></div>
-			</div>
-			<p> Please do not use the page, this for Admin only </p>
+      <div th:replace="general::staffMenu('Settings')">
+      </div>
+      <h2>Addresses Import Utility</h2>
+      <div th:if="${errors}">
+	<div th:insert="general::errors(${errors})"></div>
+      </div>
+      <div th:if="${messages}">
+	<div th:insert="general::messages(${messages})"></div>
+      </div>
+      <p> Please do not use the page, this for Admin only </p>
       <p>This page handles importing addresses from old incidents to the addresses table. To be used only once. </p>			
-			<form action="#" th:action="@{/performImport}" method="get">
-				<ul>
-					<li>
-						<input type="submit" value="Submit" />
-					</li>
-				</ul>
-			</form>
+      <form action="#" th:action="@{/performImport}" method="get">
+	<ul>
+	  <li>
+	    <input type="submit" value="Submit" />
+	  </li>
+	</ul>
+      </form>
     </main>
    </body>
 </html>

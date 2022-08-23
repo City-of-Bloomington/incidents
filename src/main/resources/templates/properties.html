@@ -36,21 +36,21 @@
             <li class="button-group">
               <input
                 type="button"
-                th:attr="onclick=|window.location.href='@{${app_url}/property/edit/{id}(id=${one.id})}'|"
+                th:attr="onclick=|window.location.href='@{/property/edit/{id}(id=${one.id})}'|"
                 value="Edit Property"
               />
             </li>
             <li class="button-group" th:if="${canDelete}">
               <input
                 type="button"
-                th:attr="onclick=|window.location.href='@{${app_url}/property/delete/{id}(id=${one.id})}'|"
+                th:attr="onclick=|window.location.href='@{/property/delete/{id}(id=${one.id})}'|"
                 value="Delete Property"
               />
             </li>						
-						<li th:if="${istat.last}">
+	    <li th:if="${istat.last}">
               <strong>Total Reported Properties Value: </strong>
               <span th:text="${totalBalance}"></span>
-						</li>
+	    </li>
           </ul>
         </div>
       </div>

@@ -11,9 +11,9 @@
     <header>
       <div th:replace="general::header-staff"></div>
     </header> 
-		<main class="staff">
-			<div th:replace="general::staffMenu('Settings')">
-			</div>
+    <main class="staff">
+      <div th:replace="general::staffMenu('Settings')">
+      </div>
       <h2>Vehicle Damage Types</h2>
       
       <div th:if="${errors}">
@@ -25,12 +25,12 @@
       </div>
       
       <p><a th:href="@{/carDamageType/new}">Add new type</a></p>
-			<ul class="button-group">
-				<li>
-					<input type="button" th:attr="onclick=|window.location.href='@{/carDamageType/new}'|"
-								 value="Add New Vehicle Damage Type" />
-				</li>
-			</ul>
+      <ul class="button-group">
+	<li>
+	  <input type="button" th:attr="onclick=|window.location.href='@{/carDamageType/new}'|"
+		 value="Add New Vehicle Damage Type" />
+	</li>
+      </ul>
       <div th:switch="${types}">
         <h4 th:case="null">No types found </h4>
         <div th:case="*">

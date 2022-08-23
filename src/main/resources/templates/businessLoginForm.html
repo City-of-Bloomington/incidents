@@ -18,7 +18,7 @@
 	
 	<div class="body">
 	  
-	  <form action="#" th:action="@{${app_url}+'/businessLoginVerify'}" method="post">
+	  <form action="#" th:action="@{/businessLoginVerify}" method="post">
 	    <div th:if="${errors}">
 	      <div th:insert="general::errors(${errors})"></div>
 	    </div>

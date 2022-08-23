@@ -47,10 +47,10 @@
                 <td th:text="${type.id}"></td>
                 <td th:text="${type.name}"></td>
                 <td>
-                  <a th:href="@{/personType/edit/{id}(id=${type.id})}">Edit</a>
+                  <a th:href="@{${app_url}+'/personType/edit/{id}(id=${type.id})'}">Edit</a>
                 </td>
                 <td>
-                  <a th:href="@{/personType/delete/{id}(id=${type.id})}"
+                  <a th:href="@{${app_url}+'/personType/delete/{id}(id=${type.id})'}"
                     >Delete</a
                   >
                 </td>

@@ -19,11 +19,11 @@
       </div>
       <form
         action="#"
-        th:action="@{${app_url}+'/addressUpdateCheck'}"
+        th:action="@{/addressUpdateCheck}"
         th:object="${address}"
         onsubmit="return verifyAddress()"
         method="post"></form>
-				<input
+      <input
           type="hidden"
           th:field="${address.old_id}"
           id="old_id"
@@ -39,7 +39,7 @@
           value=""
           id="subunitId"
           />
-				<input
+	<input
           type="hidden"
           th:field="${address.latitude}"
           id="latitude"
@@ -51,73 +51,73 @@
           id="longitude"
           size="20"
           />
-				<input
+	<input
           type="hidden"
             th:field="${address.city}"
             id="city"
             size="60"
           />
           <input
-						type="hidden"
+	    type="hidden"
             th:field="${address.jurisdiction}"
             id="jurisdiction"
             size="60"
           />
           <input
-						type="hidden"
+	    type="hidden"
             th:field="${address.zipcode}"
             id="zip"
             size="10"
           />
           <input
-						type="hidden"
+	    type="hidden"
             th:field="${address.state}"
             id="state"
             size="2"
-						/>
-				<!-- type_id here is a temporary place holder for incident type that was selected before address -->
-        <input type="hidden" th:field="${address.type_id}" />
-        <fieldset>
-          <legend>Location of Incident</legend>
-          <ol>
-            <li>To add the incident location address, start typing the street address in the 'Street address' field below. A list of matching addresses will be populated. Please select from the list the correct one for where the incident occured.</li>
-						<li><i>Please note that City, Zip code and State fields are
-						automatically filled when you pick the right address.</i></li>
-          </ol>
-          <label for="addr_id" class="required">
-            Street address where the incident occured
-					</label>
-					<div class="form-group autocomplete-wrapper">
-            <span id="address-full"></span>
-						<input
-							type="text"
-							autocomplete="off"
-							th:field="${address.name}"
-							id="addr_id"
-							size="60"
-							placeholder="start typing street address and then pick from a list"
-              required="required"
-              name="address"
-							/>
-					</div>
-					<!-- <div id="address_display" class="form-group">
-						<label for="address_info">City, State Zipcode</label>
-						<p id="address_info">&nbsp;</p>
-					</div> -->
-        </fieldset>
-				<p>Click on Next to continue </p>
-				<ul class="button-group">
-					<li>
-						<button
-							class="next-button"
-							th:attr="onclick=|window.location.href='@{/selectCategory}'|"
-							> Back</button>
-					</li>
-					<li>
-						<button type="submit" class="next-button"> Next</button>
-					</li>
-				</ul>
-      </form>
+	    />
+	  <!-- type_id here is a temporary place holder for incident type that was selected before address -->
+          <input type="hidden" th:field="${address.type_id}" />
+          <fieldset>
+            <legend>Location of Incident</legend>
+            <ol>
+              <li>To add the incident location address, start typing the street address in the 'Street address' field below. A list of matching addresses will be populated. Please select from the list the correct one for where the incident occured.</li>
+	      <li><i>Please note that City, Zip code and State fields are
+		  automatically filled when you pick the right address.</i></li>
+            </ol>
+            <label for="addr_id" class="required">
+              Street address where the incident occured
+	    </label>
+	    <div class="form-group autocomplete-wrapper">
+              <span id="address-full"></span>
+	      <input
+		type="text"
+		autocomplete="off"
+		th:field="${address.name}"
+		id="addr_id"
+		size="60"
+		placeholder="start typing street address and then pick from a list"
+		required="required"
+		name="address"
+		/>
+	    </div>
+	    <!-- <div id="address_display" class="form-group">
+		 <label for="address_info">City, State Zipcode</label>
+		 <p id="address_info">&nbsp;</p>
+	    </div> -->
+          </fieldset>
+      <p>Click on Next to continue </p>
+      <ul class="button-group">
+	<li>
+	  <button
+	    class="next-button"
+	    th:attr="onclick=|window.location.href='@{/selectCategory}'|"
+	    > Back</button>
+	</li>
+	<li>
+	  <button type="submit" class="next-button"> Next</button>
+	</li>
+      </ul>
+    </form>
     </main>
   </body>
 </html>

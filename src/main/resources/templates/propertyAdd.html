@@ -27,7 +27,7 @@
 
       <form
 	action="#"
-        th:action="@{${app_url}+'/property/save'}"
+        th:action="@{/property/save}"
         th:object="${property}"
         onsubmit="return verifyTotalValue()"
         method="post"
@@ -165,7 +165,7 @@
             <li th:unless="${property.incident.hasPropertyList()}">
               <button
                 class="next-button"
-                th:attr="onclick=|window.location.href='@{${app_url}/person/edit/{id}(id=${property.incident.getFirstPersonId()})}'|"
+                th:attr="onclick=|window.location.href='@{/person/edit/{id}(id=${property.incident.getFirstPersonId()})}'|"
               >
                 Back
               </button>

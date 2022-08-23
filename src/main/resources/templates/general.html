@@ -185,12 +185,12 @@
           <summary th:text="${#session.getAttribute('user')}"></summary>
           <ul class="menu">
             <li class="menu" th:if="${#session.getAttribute('isAmin') != null}">
-              <a th:href="@{${app_url}+'/report'}">Stats Reports </a>
+              <a th:href="@{/report}">Stats Reports </a>
             </li>
             <li class="menu" th:if="${#session.getAttribute('isAmin') != null}">
-              <a th:href="@{${app_url}+'/settings'}">Settings</a>
+              <a th:href="@{/settings}">Settings</a>
             </li>
-            <li class="menu"><a th:href="@{${app_url}+'/logout'}">Logout</a></li>
+            <li class="menu"><a th:href="@{/logout}">Logout</a></li>
           </ul>
         </details>
       </nav>
@@ -204,7 +204,7 @@
           th:if="${#session.getAttribute('canApprove') != null}">
           <input
             type="button"
-            th:attr="onclick=|window.location.href='${app_url}/search/confirmed'|"
+            th:attr="onclick=|window.location.href='/search/confirmed'|"
             value="Confirmed"
           />
         </li>
@@ -213,14 +213,14 @@
           th:if="${#session.getAttribute('canProcess') != null}">
           <input
             type="button"
-            th:attr="onclick=|window.location.href='${app_url}/search/approved'|"
+            th:attr="onclick=|window.location.href='/search/approved'|"
             value="Approved"
           />
         </li>
 	<li th:attr="class=${tabName == 'Received'?'active':''}">
           <input
             type="button"
-            th:attr="onclick=|window.location.href='${app_url}/search/received'|"
+            th:attr="onclick=|window.location.href='/search/received'|"
             value="Received"
           />
         </li>
@@ -229,14 +229,14 @@
           th:if="${#session.getAttribute('canProcess') != null}">
           <input
             type="button"
-            th:attr="onclick=|window.location.href='${app_url}/search/incomplete'|"
+            th:attr="onclick=|window.location.href='/search/incomplete'|"
             value="Incomplete"
           />
         </li>
         <li th:attr="class=${tabName == 'Search'?'active':''}">
           <input
             type="button"
-            th:attr="onclick=|window.location.href='${app_url}/search'|"
+            th:attr="onclick=|window.location.href='/search'|"
             value="Search"
           />
         </li>

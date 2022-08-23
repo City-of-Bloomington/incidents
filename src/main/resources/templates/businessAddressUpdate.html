@@ -19,7 +19,7 @@
       </div>
       <div>To add a new establishment we need to know the establishment local street address</div>
       <form
-        th:action="@{${app_url}+'/businessAddrChange'}"
+        th:action="@{/businessAddrChange}"
         th:object="${address}"
         onsubmit="return verifyBusinessAddress()"
         method="post"

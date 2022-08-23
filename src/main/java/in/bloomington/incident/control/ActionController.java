@@ -83,6 +83,7 @@ public class ActionController extends TopController{
     @GetMapping("/action/edit/{id}")
     public String showEditForm(@PathVariable("id") int id, Model model) {
 	Action action = null;
+	model.addAttribute("app_url", app_url);
 	String ret = canUserAccess(session);
 	if(!ret.isEmpty()){
 	    return ret;
@@ -94,7 +95,7 @@ public class ActionController extends TopController{
 	    addError("Invalid action Id");
 	    model.addAttribute("actions", actionService.getAll());
 	    model.addAttribute("errors", errors);
-	    model.addAttribute("app_url", app_url);
+
 	    logger.error("Exception getting action ="+id+" "+ex);
 	    return "staff/actions";
 	}

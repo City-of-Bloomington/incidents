@@ -27,7 +27,7 @@
       <div id="finalStep" class="question" style="display: none">
         <form
           action="#"
-          th:action="@{${app_url}+'/emailRequest'}"
+          th:action="@{/emailRequest}"
           onsubmit="return verifyConfirm();"
           method="post"
         >
@@ -48,7 +48,7 @@
             <li th:unless="${category != null}">
               <button
                 class="next-button"
-                th:attr="onclick=|window.location.href='@{${app_url}/addressUpdate/{id}/{type_id}(id=${address_id},type_id=${type_id})}'|"
+                th:attr="onclick=|window.location.href='@{/addressUpdate/{id}/{type_id}(id=${address_id},type_id=${type_id})}'|"
               >
                 Back
               </button>
@@ -56,7 +56,7 @@
             <li th:if="${category != null}">
               <button
                 class="next-button"
-                th:attr="onclick=|window.location.href='@{${app_url}/addressBusinessUpdate/{id}/{type_id}/{category}(id=${address_id},type_id=${type_id},category=${category})}'|"
+                th:attr="onclick=|window.location.href='@{/addressBusinessUpdate/{id}/{type_id}/{category}(id=${address_id},type_id=${type_id},category=${category})}'|"
               >
                 Back
               </button>

@@ -15,24 +15,24 @@
   </header>
 
   <main class="staff">
-		<div th:replace="general::staffMenu('Settings')">
-		</div>
+    <div th:replace="general::staffMenu('Settings')">
+    </div>
     <h2>Settings</h2>
-		<div th:if="${errors}">
-			<div th:insert="general::errors(${errors})"></div>
-		</div>
-		<div th:if="${messages}">
-			<div th:insert="general::messages(${messages})"></div>
-		</div>
-		
+    <div th:if="${errors}">
+      <div th:insert="general::errors(${errors})"></div>
+    </div>
+    <div th:if="${messages}">
+      <div th:insert="general::messages(${messages})"></div>
+    </div>
+    
     <ul>
       <li><a th:href="@{/addressInput}">Address Check</a></li>
       <li><a th:href="@{/users}">Users</a></li>
       <li><a th:href="@{/personTypes}">Person Types</a></li>
       <li><a th:href="@{/incidentTypes}">Incident Types</a></li>
       <li><a th:href="@{/damageTypes}">Damage Types</a></li>
-			<li><a th:href="@{/raceTypes}">Race Types</a></li>
-			<li><a th:href="@{/fraudTypes}">Fraud & Scam Types</a></li>			
+      <li><a th:href="@{/raceTypes}">Race Types</a></li>
+      <li><a th:href="@{/fraudTypes}">Fraud & Scam Types</a></li>			
       <li><a th:href="@{/carDamageTypes}">Vehicle Damage Types</a></li>
       <li><a th:href="@{/actions}">Action Options</a></li>
       <li><a th:href="@{/roles}">User roles</a></li>

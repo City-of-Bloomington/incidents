@@ -19,7 +19,7 @@
       </div>
 
       <form
-        th:action="@{${app_url}+'/businessIncidentAddrChange'}"
+        th:action="@{/businessIncidentAddrChange}"
         th:object="${address}"
         onsubmit="return verifyAddress()"
         method="post"

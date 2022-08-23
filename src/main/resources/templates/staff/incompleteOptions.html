@@ -15,47 +15,49 @@
 	</header>
 
 	<main class="staff">
-		<div th:replace="general::staffMenu('Settings')">
+	  <div th:replace="general::staffMenu('Settings')">
+	  </div>
+	  <h2>Incomplete Records Management</h2>
+	  <div th:if="${errors}">
+	    <div th:insert="general::errors(${errors})"></div>
 		</div>
-		<h2>Incomplete Records Management</h2>
-		<div th:if="${errors}">
-			<div th:insert="general::errors(${errors})"></div>
-		</div>
-		<div th:if="${messages}">
-			<div th:insert="general::messages(${messages})"></div>
-		</div>
-		<form action="#" th:action="@{/incompleteAction}" method="get">
-			<fieldset>
-				<p>Please select one of the action below.
-					If the action is already scheduled, no need to reschedule again </p>
-				<div th:if="${incidents}">
-					<div th:replace="incidents::incidents(${incidents})"></div>
-				</div>
-				<table summary="layout for incomplete records" width="90%">
-					<tr>
-						<td width="18%">
-							<label for="action_id">Action ?</label>
-						</td>
-						<td>
-							<ul class="menu">
-								<li class="menu">
-									<input type="radio" name="action" value="Schedule" /><label>Schedule</label>
-								</li>
-								<li class="menu">
-									<input type="radio" name="action" value="Run" /><label>Run Now</label></li>
-							</ul>
-						</td>
-					</tr>
-				</table>
-			</fieldset>
-			<table>
-				<tr>
-					<td>
-						<input type="submit" value="Submit" />
-					</td>
-				</tr>
-			</table>
-		</form>
+	  <div th:if="${messages}">
+	    <div th:insert="general::messages(${messages})"></div>
+	  </div>
+	  <form action="#"
+		th:action="@{/incompleteAction}"
+		method="get">
+	    <fieldset>
+	      <p>Please select one of the action below.
+		If the action is already scheduled, no need to reschedule again </p>
+	      <div th:if="${incidents}">
+		<div th:replace="incidents::incidents(${incidents})"></div>
+	      </div>
+	      <table summary="layout for incomplete records" width="90%">
+		<tr>
+		  <td width="18%">
+		    <label for="action_id">Action ?</label>
+		  </td>
+		  <td>
+		    <ul class="menu">
+		      <li class="menu">
+			<input type="radio" name="action" value="Schedule" /><label>Schedule</label>
+		      </li>
+		      <li class="menu">
+			<input type="radio" name="action" value="Run" /><label>Run Now</label></li>
+		    </ul>
+		  </td>
+		</tr>
+	      </table>
+	    </fieldset>
+	    <table>
+	      <tr>
+		<td>
+		  <input type="submit" value="Submit" />
+		</td>
+	      </tr>
+	    </table>
+	  </form>
 	</main>
 
 </body>

@@ -8,23 +8,31 @@
 spring.application.name=incidents
 address.required.message=address is required
 server.servlet.context-path=/incidents
-;; session time max 120m
-server.servlet.session.timeout=120m
 spring.cache.type=NONE
+;;
+;; the following url is needed to create the full path url
+;; use your whole path, change this for the production one after testing
+incident.app.url=https://localhost:8080/incidents
 ;;
 ;; the following zipcodes, defaultCity and defualState 
 ;; are required, if multiple cities, put comma in between
 ;; 
-incident.zipcodes=47401,47403,47404,47408
 ;; maximum of total value of all properties damage allowed in dollars
 incident.property.maxtotalvalue=750.0
 ;;
 ;; geoserver url to check address within city limits
 incident.address.geoUrl=
+;; address service for auto complete
+incident.master.addressService=
+;; for sending email
+incident.email.host=
+incident.email.sender=
 ;;
 ;; file storage location
+;; set this where you want the uploades to be saved on your drive
 ;;
 incident.upload.storage=c:/data/incidents/files
+;;
 ;; uploaded file size restrictions
 ;;
 spring.servlet.multipart.max-file-size=2MB
@@ -42,11 +50,11 @@ spring.servlet.multipart.location=${java.io.tmpdir}
 incident.defaultcity=Bloomington
 incident.defaultjurisdiction=Bloomington
 incident.defaultstate=IN
-
+incident.zipcodes=
 ;;
 ;;
 ;; application name that is part of the app url for 
-;; testing it is empty, in production e.g. incident_reporting
+;; testing it is empty, in production e.g. incidents
 ;;
 incident.application.name=
 ;;
@@ -90,3 +98,26 @@ spring.session.timeout.seconds=900
 ;;
 spring.quartz.job-store-type = jdbc
 spring.quartz.properties.org.quartz.threadPool.threadCount = 5
+;; session related settings
+;; session time max 120m
+server.servlet.session.timeout=120m
+;;
+;; add secoure and httpOnly to cookie
+server.servlet.session.cookie.secure=true
+server.servlet.session.cookie.http-only=true
+;;
+;; mail properties
+;; ports are 25, 587 or 465 for ssl
+spring.mail.host=smtp.bloomington.in.gov
+spring.mail.port=25
+spring.mail.username=
+spring.mail.password=
+spring.mail.properties.mail.smtp.auth=false
+spring.mail.properties.mail.smtp.starttls.enable=false
+;;
+;; in development set this flag to false to avoid caching
+;;
+spring.thymeleaf.cache=false
+;;
+spring.jpa.hibernate.naming.physical-strategy=org.hibernate.boot.model.naming.Ph
+ysicalNamingStrategyStandardImpl

@@ -37,7 +37,7 @@
               <tr>
                 <th>ID</th>
                 <th>Name</th>
-								<th>Available for Business</th>
+		<th>Available for Business</th>
                 <th>Edit</th>
                 <th>Delete</th>
               </tr>
@@ -46,14 +46,14 @@
               <tr th:each="type : ${types}">
                 <td th:text="${type.id}"></td>
                 <td th:text="${type.name}"></td>
-								<td th:text="${type.usedInBusiness?'Yes':'No'}" /></td>
+		<td th:text="${type.usedInBusiness?'Yes':'No'}" /></td>
                 <td>
-                  <a th:href="@{/incidentType/edit/{id}(id=${type.id})}"
+                  <a th:href="@{${app_url}+'/incidentType/edit/{id}(id=${type.id})'}"
                     >Edit</a
                   >
                 </td>
                 <td>
-                  <a th:href="@{/incidentType/delete/{id}(id=${type.id})}"
+                  <a th:href="@{${app_url}+'/incidentType/delete/{id}(id=${type.id})'}"
                     >Delete</a
                   >
                 </td>

@@ -14,29 +14,29 @@
 		<div th:replace="general::header-staff"></div>
 	</header>
 	<main class="staff">
-		<h2>Property Details</h2>
-		<div th:if="${errors}">
-			<div th:insert="general::errors(${errors})"></div>
-		</div>
-		<div th:if="${messages}">
-			<div th:insert="general::messages(${messages})"></div>
-		</div>
-		<p>
-			Property Details
-		</p>
-		<ul>
-			<li>Incident: <a th:href="@{${app_url}+'/businessIncidentView/{id}(id=${property.incident.id})'}">Back to Incident</a></li>
-			<li th:if="${property.hasDamageTypeInfo()}">
-			  <span th:text="${'Damage Type: '+property.damageType}"></span>
-			</li>
-			<li th:if="${property.hasBrandInfo()}">
-				<span th:text="${property.brandInfo}"></span>
-			</li>
-			<li th:text="${'Value: '+property.valueFr}"></li>
-			<li th:if="${property.hasDescription()}">
-			  <span th:text="${'Description: '+property.description}"></span>
-			</li>
-		</ul>
+	  <h2>Property Details</h2>
+	  <div th:if="${errors}">
+	    <div th:insert="general::errors(${errors})"></div>
+	  </div>
+	  <div th:if="${messages}">
+	    <div th:insert="general::messages(${messages})"></div>
+	  </div>
+	  <p>
+	    Property Details
+	  </p>
+	  <ul>
+	    <li>Incident: <a th:href="@{/businessIncidentView/{id}(id=${property.incident.id})}">Back to Incident</a></li>
+	    <li th:if="${property.hasDamageTypeInfo()}">
+	      <span th:text="${'Damage Type: '+property.damageType}"></span>
+	    </li>
+	    <li th:if="${property.hasBrandInfo()}">
+	      <span th:text="${property.brandInfo}"></span>
+	    </li>
+	    <li th:text="${'Value: '+property.valueFr}"></li>
+	    <li th:if="${property.hasDescription()}">
+	      <span th:text="${'Description: '+property.description}"></span>
+	    </li>
+	  </ul>
 	</main>
 </body>
 

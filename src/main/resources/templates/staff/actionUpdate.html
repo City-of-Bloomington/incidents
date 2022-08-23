@@ -24,7 +24,7 @@
 
       <form
         action="#"
-        th:action="@{/action/update/{id}(id=${action.id})}"
+        th:action="@{/action/update/${action.id}}"
         th:object="${action}"
         method="post"
       >
@@ -70,13 +70,13 @@
             <td>
               <input
                 type="text"
-                th:field="${action.workflow_step}"
+                th:field="${action.workflowStep}"
                 id="workflow"
                 placeholder="Workflow Step"
               />
               <span
-                th:if="${#fields.hasErrors('workflow_step')}"
-                th:errors="*{workflow_step}"
+                th:if="${#fields.hasErrors('workflowStep')}"
+                th:errors="*{workflowStep}"
               ></span>
             </td>
           </tr>

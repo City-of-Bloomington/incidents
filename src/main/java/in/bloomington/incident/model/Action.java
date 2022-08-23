@@ -30,13 +30,13 @@ import javax.persistence.ConstructorResult;
 import javax.persistence.ColumnResult;
 
 @SqlResultSetMapping(name="ResultMapping", classes={
-				@ConstructorResult(
-													 targetClass=IncidentStats.class,
-													 columns={
-															 @ColumnResult(name="name", type=String.class),
-															 @ColumnResult(name="total", type=Integer.class),
-													 }
-													 )
+	@ConstructorResult(
+			   targetClass=IncidentStats.class,
+			   columns={
+			       @ColumnResult(name="name", type=String.class),
+			       @ColumnResult(name="total", type=Integer.class),
+			   }
+			   )
     }
     )
 
@@ -48,13 +48,13 @@ public class Action implements java.io.Serializable{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @NotNull		
-		@Column(name="name")
+    @Column(name="name")
     private String name;
-		@Column(name="description")
+    @Column(name="description")
     private String description;
-		@Column(name="workflow_step")
+    @Column(name="workflow_step")
     private Integer workflowStep;
-		@Column(name="nextstep")
+    @Column(name="nextstep")
     private Integer nextstep;
     @ManyToMany
     @JoinTable(name = "role_actions")
@@ -113,46 +113,46 @@ public class Action implements java.io.Serializable{
     }
 
     public Integer getWorkflowStep() {
-				return workflowStep;
+	return workflowStep;
     }
 
     public void setNextstep(Integer val) {
-				this.nextstep = val;
+	this.nextstep = val;
     }
     public Integer getNextstep(){
-				return nextstep;
+	return nextstep;
     }
     @Transient
     public boolean hasNextstep(){
-				return nextstep != null && nextstep > 0;
+	return nextstep != null && nextstep > 0;
     }
     public void setWorkflowStep(Integer workflowStep) {
-				this.workflowStep = workflowStep;
+	this.workflowStep = workflowStep;
     }    
     public void setRoles(List<Role> roles) {
-				this.roles = roles;
+	this.roles = roles;
     }
     @Transient
     private boolean hasRoles(){
-				return roles != null && roles.size() > 0;
+	return roles != null && roles.size() > 0;
     }
     @Transient
     public boolean isApproved(){
-				return name != null && name.equals("approved");
+	return name != null && name.equals("approved");
     }		
     @Transient
     public boolean isRejected(){
-				return name != null && name.equals("rejected");
+	return name != null && name.equals("rejected");
     }
     @Transient
     public boolean isProcessed(){
-				return name != null && name.equals("processed");
+	return name != null && name.equals("processed");
     }				
     @Override
     public boolean equals(Object obj) { 
           
-				if(this == obj) 
-						return true; 
+	if(this == obj) 
+	    return true; 
 				
         if(obj == null || obj.getClass()!= this.getClass()) 
             return false; 
@@ -168,10 +168,10 @@ public class Action implements java.io.Serializable{
 
     @Override
     public String toString() {
-				if(name == null || name.isEmpty()) {
-						return "";
-				}
-				return name.substring(0, 1).toUpperCase() + name.substring(1);
+	if(name == null || name.isEmpty()) {
+	    return "";
+	}
+	return name.substring(0, 1).toUpperCase() + name.substring(1);
     } 	
 		
 }

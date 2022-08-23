@@ -26,7 +26,7 @@
 
 		<form
 		  action="#"
-		  th:action="@{${app_url}+'/fraud/update/{id}(id=${fraud.id})'}"
+		  th:action="@{/fraud/update/{id}(id=${fraud.id})}"
 		  th:object="${fraud}"
 		  onsubmit="return verifyFraudInput()"
 		  method="post">

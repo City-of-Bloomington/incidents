@@ -22,7 +22,7 @@
       </div>
       
       <form
-	th:action="@{${app_url}+'/businessIncident/submit/{id}(id=${incident.id})'}"
+	th:action="@{/businessIncident/submit/{id}(id=${incident.id})}"
 	th:object="${incident}"
 	method="get">
 	

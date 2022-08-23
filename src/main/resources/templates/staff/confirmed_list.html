@@ -10,69 +10,69 @@
   <body class="staff">
     <header>
       <div th:replace="general::header-staff"></div>
-		</header>
+    </header>
     <main class="staff">
-			<div th:replace="general::staffMenu('Received')">
-			</div>
-			<h2>Confirmed Incidents</h2>
-			<div th:if="${errors}">
-				<div th:insert="general::errors(${errors})"></div>			
+      <div th:replace="general::staffMenu('Received')">
       </div>
-			<div th:if="${messages}">
-				<div th:insert="general::messages(${messages})"></div>			
+      <h2>Confirmed Incidents</h2>
+      <div th:if="${errors}">
+	<div th:insert="general::errors(${errors})"></div>			
       </div>
-			<p>
-				You may discard a batch of the incidents at once by selecting the ones you want to discard by marking their corresponding checkbox next to their ID, adding the discard notes and then clicking on 'Discard Selected' submit button.
-			</p>
+      <div th:if="${messages}">
+	<div th:insert="general::messages(${messages})"></div>			
+      </div>
+      <p>
+	You may discard a batch of the incidents at once by selecting the ones you want to discard by marking their corresponding checkbox next to their ID, adding the discard notes and then clicking on 'Discard Selected' submit button.
+      </p>
       <form action="#" th:action="@{/discard/batch}" method="post">
-				<input type="hidden" name="target" value="confirmed" />
-				<div th:switch="${incidents}">
-					<div class="message alert" th:case="null">No incident found </div>
-					<div th:case="*">
-						<table>
-							<thead>
-								<tr>
-									<th>ID</th>
-									<th>Select to Discard</th>
-									<th>Category</th>
-									<th>Incident Type</th>
-									<th>Received Date & Time</th>
-									<th>Incident Date & Time</th>
-									<th>Address </th>
-									<th>Details </th>
-									<th>Action </th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr th:each="incident : ${incidents}">
-									<td>
-										<a th:href="@{/staff/{id}(id=${incident.id})}" th:text="${incident.id}"></a>
-									</td>
-									<td>
-										<input type="checkbox" name="incident_ids" th:value="${incident.id}" />
-									</td>									
-									<td th:text="${incident.category}"></td>								
-									<td th:text="${incident.incidentType}"></td>
-									<td th:text="${incident.receivedStr}"></td>
-									<td th:text="${incident.dateTimeInfo}"></td>
-									<td th:text="${incident.addressInfo}"></td>
-									<td th:text="${incident.details}"></td>
-									<td>
-										<a th:href="@{/discard/{id}(id=${incident.id})}" th:text="${'Discard Incident'}"></a>
-									</td>								
-								</tr>
-							</tbody>
-						</table>
-						<div class="field-group">
-							<label>Discard Notes (apply to all selected incidents)</label>
-							<textarea name="comments" rows="5" cols="50"></textarea>
-						</div>
-					<ul class="button-group">
-            <li><button type="submit" class="next-button">Discard Selected</button></li>
-          </ul>						
-					</div>      
-				</div>
-			</form>
+	<input type="hidden" name="target" value="confirmed" />
+	<div th:switch="${incidents}">
+	  <div class="message alert" th:case="null">No incident found </div>
+	  <div th:case="*">
+	    <table>
+	      <thead>
+		<tr>
+		  <th>ID</th>
+		  <th>Select to Discard</th>
+		  <th>Category</th>
+		  <th>Incident Type</th>
+		  <th>Received Date & Time</th>
+		  <th>Incident Date & Time</th>
+		  <th>Address </th>
+		  <th>Details </th>
+		  <th>Action </th>
+		</tr>
+	      </thead>
+	      <tbody>
+		<tr th:each="incident : ${incidents}">
+		  <td>
+		    <a th:href="@{/staff/{id}(id=${incident.id})}" th:text="${incident.id}"></a>
+		  </td>
+		  <td>
+		    <input type="checkbox" name="incident_ids" th:value="${incident.id}" />
+		  </td>									
+		  <td th:text="${incident.category}"></td>								
+		  <td th:text="${incident.incidentType}"></td>
+		  <td th:text="${incident.receivedStr}"></td>
+		  <td th:text="${incident.dateTimeInfo}"></td>
+		  <td th:text="${incident.addressInfo}"></td>
+		  <td th:text="${incident.details}"></td>
+		  <td>
+		    <a th:href="@{/discard/{id}(id=${incident.id})}" th:text="${'Discard Incident'}"></a>
+		  </td>								
+		</tr>
+	      </tbody>
+	    </table>
+	    <div class="field-group">
+	      <label>Discard Notes (apply to all selected incidents)</label>
+	      <textarea name="comments" rows="5" cols="50"></textarea>
+	    </div>
+	    <ul class="button-group">
+              <li><button type="submit" class="next-button">Discard Selected</button></li>
+            </ul>						
+	  </div>      
+	</div>
+      </form>
     </main>
   </body>
 </htmL>

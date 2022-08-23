@@ -23,7 +23,7 @@
       
       <form
 	action="#"
-	th:action="@{${app_url}+'/incident/submit/{id}(id=${incident.id})'}"
+	th:action="@{/incident/submit/{id}(id=${incident.id})}"
 	th:object="${incident}"
 	method="get">
 	

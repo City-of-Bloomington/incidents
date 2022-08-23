@@ -29,7 +29,7 @@
         <li>
           <input
             type="button"
-            th:attr="onclick=|window.location.href='@{${app_url}/person/add/{id}(id=${incident.id})}'|"
+            th:attr="onclick=|window.location.href='@{/person/add/{id}(id=${incident.id})}'|"
             value="Add Person"
           />
         </li>
@@ -37,21 +37,21 @@
         <li th:if="${!incident.isFraudRelated()}">
           <input
             type="button"
-            th:attr="onclick=|window.location.href='@{${app_url}/property/add/{id}(id=${incident.id})}'|"
+            th:attr="onclick=|window.location.href='@{/property/add/{id}(id=${incident.id})}'|"
             value="Add Property"
           />
         </li>
         <li th:if="${!incident.isFraudRelated()}">
           <input
             type="button"
-            th:attr="onclick=|window.location.href='@{${app_url}/vehicle/add/{id}(id=${incident.id})}'|"
+            th:attr="onclick=|window.location.href='@{/vehicle/add/{id}(id=${incident.id})}'|"
             value="Add Vehicle"
           />
         </li>
         <li>
           <input
             type="button"
-            th:attr="onclick=|window.location.href='@{${app_url}/media/add/{id}(id=${incident.id})}'|"
+            th:attr="onclick=|window.location.href='@{/media/add/{id}(id=${incident.id})}'|"
             value="Upload Image"
           />
         </li>
@@ -83,7 +83,7 @@
           <li>
             <input
               type="button"
-              th:attr="onclick=|window.location.href='@{${app_url}/incidentEdit/{id}(id=${incident.id})}'|"
+              th:attr="onclick=|window.location.href='@{/incidentEdit/{id}(id=${incident.id})}'|"
               value="Edit Incident"
             />
           </li>
@@ -115,7 +115,7 @@
         <div class="next_div" th:if="${incident.canBeSubmitted()}">
           <input
             type="button"
-            th:attr="onclick=|window.location.href='@{${app_url}/incident/finalPage/{id}(id=${incident.id})}'|"
+            th:attr="onclick=|window.location.href='@{/incident/finalPage/{id}(id=${incident.id})}'|"
             value="Next"
           />
         </div>

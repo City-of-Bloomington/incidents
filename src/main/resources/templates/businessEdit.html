@@ -26,7 +26,7 @@
       <div th:insert="general::businessInstructions"></div>
 
       <form
-        th:action="@{${app_url}+'/businessUpdate/{id}(id=${business.id})'}"
+        th:action="@{/businessUpdate/{id}(id=${business.id})}"
         th:object="${business}"
 	onsubmit="return verifyConfirm()"
         method="post"

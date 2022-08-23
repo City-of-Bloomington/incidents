@@ -23,7 +23,7 @@
      Vehicle Details.
     </p>
     <ul>
-      <li><a th:href="@{${app_url}+'/incidentView/{id}(id=${vehicle.incident.id})'}">Back to Incident</a></li>							
+      <li><a th:href="@{/incidentView/{id}(id=${vehicle.incident.id})}">Back to Incident</a></li>							
       <li>Damage Type: <span th:text="${vehicle.carDamageType}"></span></li>
       <li th:if="${vehicle.hasMakeInfo()}"><span th:text="${vehicle.makeInfo}"></span></li>
       <li th:if="${vehicle.hasPlateInfo()}"><span th:text="${vehicle.plateInfo}"></span></li>

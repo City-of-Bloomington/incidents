@@ -70,14 +70,14 @@
             <td>
               <input
                 type="text"
-                th:field="${action.workflow_step}"
+                th:field="${action.workflowStep}"
                 id="workflow"
                 placeholder="Workflow step"
               />
               (integer value)
               <span
-                th:if="${#fields.hasErrors('workflow_step')}"
-                th:errors="*{workflow_step}"
+                th:if="${#fields.hasErrors('workflowStep')}"
+                th:errors="*{workflowStep}"
               ></span>
             </td>
           </tr>
