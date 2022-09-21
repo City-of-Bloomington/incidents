@@ -41,7 +41,7 @@
 	    <tbody>
 	      <tr th:each="incident : ${incidents}">
 		<td>
-		  <a th:href="@{/process/${incident.id}}" th:text="${incident.id}"></a>
+		  <a th:href="@{'/process/'+${incident.id}}" th:text="${incident.id}"></a>
 		</td>
 		<td th:text="${incident.category}"></td>								
 		<td th:text="${incident.incidentType}"></td>

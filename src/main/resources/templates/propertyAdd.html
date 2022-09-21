@@ -33,7 +33,6 @@
         method="post"
       >
         <input type="hidden" th:field="${property.incident}" />
-        <fieldset>
           <input
             type="hidden"
             id="old_value_id"
@@ -45,7 +44,7 @@
             id="max_total_id"
             th:field="${property.maxTotalValue}"
           />
-
+        <fieldset>
           <div class="field-group"></div>
           <div th:if="${damageTypes}">
             <label class="required">*Problem Type</label>

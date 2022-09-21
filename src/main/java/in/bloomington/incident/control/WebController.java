@@ -82,9 +82,8 @@ public class WebController extends TopController{
 			     Model model
 			     ) {
 	getMessagesAndErrorsFromSession(session, model);
-	
+	resetAll();	
 	model.addAttribute("app_url", app_url);
-	resetAll();
 	model.addAttribute("type_id", type_id);
 	return "theft_questions";
     }

@@ -40,9 +40,10 @@
               >Back to Incident</a
             >
           </dd>
-				</dl>
+	</dl>
         <div class="field-group">
-          <label for="damageType_id" class="required">*Damage Type</label>
+          <label for="damageType_id" class="required">*Damage
+          Type</label>
           <select
             id="damageType_id"
             th:field="${vehicle.carDamageType}"
@@ -63,8 +64,8 @@
             type="text"
             th:field="${vehicle.year}"
             id="year"
-						size="4"
-						maxlength="4"
+	    size="4"
+	    maxlength="4"
             placeholder="year"
             />
           <span
@@ -79,8 +80,8 @@
             type="text"
             th:field="${vehicle.make}"
             id="make"
-						size="40"
-						maxlength="80"
+	    size="40"
+	    maxlength="80"
             placeholder="Make"
             />
           <span
@@ -95,8 +96,8 @@
             type="text"
             th:field="${vehicle.model}"
             id="model"
-						size="40"
-						maxlength="80"
+	    size="40"
+	    maxlength="80"
             placeholder="Model"
             />
           <span
@@ -112,8 +113,8 @@
             type="text"
             th:field="${vehicle.color}"
             id="color"
-						size="30"
-						maxlength="30"
+	    size="30"
+	    maxlength="30"
             placeholder="Color"
             />
           <span
@@ -128,8 +129,8 @@
             type="text"
             th:field="${vehicle.plateNumber}"
             id="plateNum"
-						size="20"
-						maxlength="20"
+	    size="20"
+	    maxlength="20"
             placeholder="Plate Number"
             />
           <span
@@ -144,8 +145,8 @@
             type="text"
             th:field="${vehicle.plateYear}"
             id="plateYear"
-						size="4"
-						maxlength="4"
+	    size="4"
+	    maxlength="4"
             placeholder="Year"
             />
           <span
@@ -177,17 +178,17 @@
             type="text"
             th:field="${vehicle.valueFr}"
             id="value_id"
-						size="10"
-						maxlength="10"
+	    size="10"
+	    maxlength="10"
             placeholder="ddd.dd"
             />(damage value related to this incident only)
           <span
             th:if="${#fields.hasErrors('valueFr')}"
             th:errors="*{valueFr}"
             ></span>
-				</div>
-				
-				<div class="field-group">
+	</div>
+	
+	<div class="field-group">
           <label for="owener">Owner</label>
           <input
             type="text"
@@ -201,11 +202,11 @@
             th:if="${#fields.hasErrors('owner')}"
             th:errors="*{owner}"
             ></span>
-				</div>
+	</div>
         
-				<div class="field-group">
+	<div class="field-group">
           <label for="description" class="required">*Description</label>
-					
+	  
           <textarea
             th:field="${vehicle.description}"
             id="description"
@@ -217,10 +218,10 @@
 	  <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></span>
 	  
         </div>
-				<ul>
-				  <li><button type="submit" class="next-button" name="action" value="Next">Next</button></li>
-				  <li><button type="submit" class="next-button" name="action" value="More">Next, Add Another</button></li>
-				</ul>
+	<ul class="button-group">
+	  <li><button type="submit" class="next-button" name="action" value="Next">Next</button></li>
+	  <li><button type="submit" class="next-button" name="action" value="More">Next, Add Another</button></li>
+	</ul>
       </form>
     </main>
   </body>

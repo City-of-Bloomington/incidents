@@ -204,7 +204,7 @@
           th:if="${#session.getAttribute('canApprove') != null}">
           <input
             type="button"
-            th:attr="onclick=|window.location.href='/search/confirmed'|"
+            th:attr="onclick=|window.location.href='@{/search/confirmed}'|"
             value="Confirmed"
           />
         </li>
@@ -213,14 +213,14 @@
           th:if="${#session.getAttribute('canProcess') != null}">
           <input
             type="button"
-            th:attr="onclick=|window.location.href='/search/approved'|"
+            th:attr="onclick=|window.location.href='@{/search/approved}'|"
             value="Approved"
           />
         </li>
 	<li th:attr="class=${tabName == 'Received'?'active':''}">
           <input
             type="button"
-            th:attr="onclick=|window.location.href='/search/received'|"
+            th:attr="onclick=|window.location.href='@{/search/received}'|"
             value="Received"
           />
         </li>
@@ -229,14 +229,14 @@
           th:if="${#session.getAttribute('canProcess') != null}">
           <input
             type="button"
-            th:attr="onclick=|window.location.href='/search/incomplete'|"
+            th:attr="onclick=|window.location.href='@{/search/incomplete}'|"
             value="Incomplete"
           />
         </li>
         <li th:attr="class=${tabName == 'Search'?'active':''}">
           <input
             type="button"
-            th:attr="onclick=|window.location.href='/search'|"
+            th:attr="onclick=|window.location.href='@{/search}'|"
             value="Search"
           />
         </li>
