@@ -76,11 +76,15 @@ public class ProcessController extends TopController{
 
     //
     @GetMapping("/staff")
-    public String staff(HttpSession session) {
+    public String staff(HttpSession session,
+			Model model) {
+	model.addAttribute("app_url", app_url);
 	User user = findUserFromSession(session);
 	if(user == null ){
 	    return "redirect:/login";
-	}       
+	}
+	getMessagesAndErrorsFromSession(session, model);
+	
 	return "staff/staff_intro";
     }
     @GetMapping("/staff/{id}")
@@ -275,7 +279,7 @@ public class ProcessController extends TopController{
 		    sendApproveEmail(email);
 		    addMessage("Email sent successfully ");
 		    getMessagesAndErrorsFromSession(session, model);
-		    return "redirect:/search/received";
+		    return "redirect:/search/confirmed";
 		}
 		else if(action.isRejected()){
 		    addMessagesAndErrorsToSession(session);
@@ -390,11 +394,13 @@ public class ProcessController extends TopController{
 	    //
 	    EmailHelper emailer = new EmailHelper(mailSender, email);
 	    String back = emailer.send();
+	    addMessage("Email Sent Successfully");
+	    addMessagesAndErrorsToSession(session);
 	    //
 	    // we may need add email to email logs
 	    //
 	    // back to main staff page
-	    return "redirect:/staff";
+	    return "redirect:/search/confirmed";
 	}
 	else{
 	    addMessage("You do not have approve or reject role ");

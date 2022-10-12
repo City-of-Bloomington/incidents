@@ -62,8 +62,6 @@ public class SearchController extends TopController{
     SearchService searchService;
     @Autowired
     ActionService actionService;
-    // @Autowired
-    // UserService userService;
     @Autowired
     IncidentService incidentService;		
     @Autowired 
@@ -148,7 +146,7 @@ public class SearchController extends TopController{
 	    model.addAttribute("messages", messages);
 	    resetAll();
 	}
-	model.addAttribute("statusOutcome", "Confirmed");					
+	model.addAttribute("statusOutcome", "Confirmed");				getMessagesAndErrorsFromSession(session, model);		
         return "staff/confirmed_list";
     }    
     
