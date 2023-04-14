@@ -183,12 +183,17 @@
         </fieldset>
         <ul class="button-group">
           <li th:unless="${incident.hasPersonList()}">
+	    <a th:href="@{/emailUpdate/{id}(id=${incident.id})}">
+	      Back
+	    </a>
+	    <!--
             <button
               class="next-button"
               th:attr="onclick=|window.location.href='@{/emailUpdate/{id}(id=${incident.id})}'|"
             >
               Back
             </button>
+	    -->
           </li>
           <li th:unless="${incident.hasPersonList()}">
             <button class="next-button" type="submit">Next</button>

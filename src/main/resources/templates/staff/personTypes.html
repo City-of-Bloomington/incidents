@@ -22,11 +22,16 @@
       </div>
       <ul class="button-group">
         <li>
+	  <a th:href="@{/personType/new}" class="btn">
+	    Add New Person Type
+	  </a>
+	  <!--
           <input
             type="button"
             th:attr="onclick=|window.location.href='@{/personType/new}'|"
             value="Add New Person Type"
           />
+	  -->
         </li>
       </ul>
 
@@ -47,10 +52,10 @@
                 <td th:text="${type.id}"></td>
                 <td th:text="${type.name}"></td>
                 <td>
-                  <a th:href="@{${app_url}+'/personType/edit/{id}(id=${type.id})'}">Edit</a>
+                  <a class="btn" th:href="@{${app_url}+'/personType/edit/{id}(id=${type.id})'}">Edit</a>
                 </td>
                 <td>
-                  <a th:href="@{${app_url}+'/personType/delete/{id}(id=${type.id})'}"
+                  <a class="btn" th:href="@{${app_url}+'/personType/delete/{id}(id=${type.id})'}"
                     >Delete</a
                   >
                 </td>

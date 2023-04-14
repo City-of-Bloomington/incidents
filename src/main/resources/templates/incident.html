@@ -26,7 +26,20 @@
         supporting photos, please use the links below
       </p>
       <ul class="button-group">
-        <li>
+	<li>
+	  <a class="btn" th:href="@{/person/add/{id}(id=${incident.id})}">Add Person</a>
+	</li>
+	<li>
+	  <a class="btn" th:href="@{/property/add/{id}(id=${incident.id})}">Add Property</a>
+	</li>
+	<li>
+	  <a class="btn" th:href="@{/vehicle/add/{id}(id=${incident.id})}">Add Vehicle</a>
+	</li>	
+	<li>
+	  <a class="btn" th:href="@{/media/add/{id}(id=${incident.id})}">Uploand Photo</a>
+	</li>	
+	<!--
+	<li>
           <input
             type="button"
             th:attr="onclick=|window.location.href='@{/person/add/{id}(id=${incident.id})}'|"
@@ -55,6 +68,7 @@
             value="Upload Image"
           />
         </li>
+	-->
       </ul>
       <p>
         If you notice any incident information need change click on the
@@ -80,6 +94,10 @@
         <div th:replace="incidentView::incident(${incident})"></div>
 
         <ul class="button-group">
+	  <li>
+	    <a class="btn" th:href="@{/incidentEdit/{id}(id=${incident.id})}">Edit Incident</a>
+	  </li>
+	  <!--
           <li>
             <input
               type="button"
@@ -87,6 +105,7 @@
               value="Edit Incident"
             />
           </li>
+	  -->
         </ul>
         <div th:if="${incident.hasPersonList()}">
           <div
@@ -113,11 +132,15 @@
         </div>
 
         <div class="next_div" th:if="${incident.canBeSubmitted()}">
+	  <a class="btn" th:href="@{/incident/finalPage/{id}(id=${incident.id})}">Next</a>
+	  <!--
           <input
+	    class="abtn"
             type="button"
             th:attr="onclick=|window.location.href='@{/incident/finalPage/{id}(id=${incident.id})}'|"
             value="Next"
           />
+	  -->
         </div>
       </div>
     </main>

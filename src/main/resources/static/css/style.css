@@ -684,9 +684,15 @@ ol li:last-of-type {
 a {
   color: #1e5aae;
   text-decoration: none;
+
+}
+a.btn {
+    color: white;
+    background-color: #4caf50;
 }
 a:hover, a:focus {
-  color: #4f4f4f;
+    color: #4f4f4f;
+
 }
 
 form input,

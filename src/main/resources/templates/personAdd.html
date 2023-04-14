@@ -337,15 +337,20 @@
 					<p>If you want to add more people click 'Next, Add Another' otherwise click on 'Next'</p>
           <ul class="button-group">
             <li th:unless="${person.incident.hasPersonList()}">
+	      <a class="btn" th:href="@{/incidentEdit/{id}(id=${person.incident.id})}">
+		Back
+	      </a>
+	      <!--
               <button
                 class="next-button"
                 th:attr="onclick=|window.location.href='@{/incidentEdit/{id}(id=${person.incident.id})}'|"
               >
                 Back
               </button>
+	      -->
             </li>
             <li><button type="submit" class="next-button" name="action" value="Next">Next</button></li>
-						<li><button type="submit" class="next-button" name="action" value="More">Next, Add Another</button></li>	
+	    <li><button type="submit" class="next-button" name="action" value="More">Next, Add Another</button></li>	
           </ul>
         </fieldset>
       </form>

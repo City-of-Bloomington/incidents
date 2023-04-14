@@ -34,18 +34,28 @@
               <span th:text="${one.valueFr}"></span>
             </li>
             <li class="button-group">
+	      <a class="btn" th:href="@{/property/edit/{id}(id=${one.id})}">
+		Edit Property
+	      </a>
+	      <!--
               <input
                 type="button"
                 th:attr="onclick=|window.location.href='@{/property/edit/{id}(id=${one.id})}'|"
                 value="Edit Property"
               />
+	      -->
             </li>
             <li class="button-group" th:if="${canDelete}">
+	      <a class="btn" th:href="@{/property/delete/{id}(id=${one.id})}">
+		Delete Property
+	      </a>
+	      <!--
               <input
                 type="button"
                 th:attr="onclick=|window.location.href='@{/property/delete/{id}(id=${one.id})}'|"
                 value="Delete Property"
               />
+	      -->
             </li>						
 	    <li th:if="${istat.last}">
               <strong>Total Reported Properties Value: </strong>

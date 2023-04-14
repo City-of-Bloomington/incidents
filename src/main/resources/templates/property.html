@@ -47,10 +47,10 @@
           <span th:text="${property.description}"></span>
         </li>
         <li>
-          <a th:href="@{/property/edit/{id}(id=${property.id})}">Edit</a>
+          <a class="btn" th:href="@{/property/edit/{id}(id=${property.id})}">Edit</a>
         </li>
         <li>
-          <a th:href="@{/incident/{id}(id=${property.incident.id})}"
+          <a class="btn" th:href="@{/incident/{id}(id=${property.incident.id})}"
             >Back to Incident</a
           >
         </li>

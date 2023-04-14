@@ -22,11 +22,16 @@
       </div>
       <ul class="button-group">
         <li>
+	  <a class="btn" th:href="@{/damageType/new}">
+	    Add New Damage Type
+	  </a>
+	  <!--
           <input
             type="button"
             th:attr="onclick=|window.location.href='@{/damageType/new}'|"
             value="Add New Damage Type"
           />
+	  -->
         </li>
       </ul>
       <div th:switch="${types}">

@@ -23,11 +23,15 @@
 
       <ul class="button-group">
         <li>
+	  <a class="btn" th:href="@{/fraudType/new}">
+	  </a>
+	  <!--
           <input
             type="button"
             th:attr="onclick=|window.location.href='@{/fraudType/new}'|"
             value="Add New Fraud Type"
           />
+	  -->
         </li>
       </ul>
       <div th:switch="${types}">
@@ -47,10 +51,10 @@
                 <td th:text="${type.id}"></td>
                 <td th:text="${type.name}"></td>
                 <td>
-                  <a th:href="@{${app_url}+'/fraudType/edit/{id}(id=${type.id})'}">Edit</a>
+                  <a class="btn" th:href="@{${app_url}+'/fraudType/edit/{id}(id=${type.id})'}">Edit</a>
                 </td>
                 <td>
-                  <a th:href="@{${app_url}+'/fraudType/delete/{id}(id=${type.id})'}"
+                  <a class="btn" th:href="@{${app_url}+'/fraudType/delete/{id}(id=${type.id})'}"
                     >Delete</a
                   >
                 </td>

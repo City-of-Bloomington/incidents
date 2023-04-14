@@ -203,43 +203,68 @@
         <li
           th:attr="class=${tabName == 'Confirmed'?'active':''}"
           th:if="${#session.getAttribute('canApprove') != null}">
+	  <a class="btn" th:href="@{/search/confirmed}">
+	    Confirmed
+	  </a>
+	  <!--
           <input
             type="button"
             th:attr="onclick=|window.location.href='@{/search/confirmed}'|"
             value="Confirmed"
           />
+	  -->
         </li>
         <li
           th:attr="class=${tabName == 'Approved'?'active':''}"
           th:if="${#session.getAttribute('canProcess') != null}">
+	  <a class="btn" th:href="@{/search/approved}">
+	    Confirmed
+	  </a>
+	  <!--
           <input
             type="button"
             th:attr="onclick=|window.location.href='@{/search/approved}'|"
             value="Approved"
           />
+	  -->
         </li>
 	<li th:attr="class=${tabName == 'Received'?'active':''}">
+	  <a class="btn" th:href="@{/search/received}">
+	    Received
+	  </a>
+	  <!--
           <input
             type="button"
             th:attr="onclick=|window.location.href='@{/search/received}'|"
             value="Received"
           />
+	  -->
         </li>
         <li
           th:attr="class=${tabName == 'Incomplete'?'active':''}"
           th:if="${#session.getAttribute('canProcess') != null}">
+	  <a class="btn" th:href="@{/search/incomplete}">
+	    Incomplete
+	  </a>
+	  <!--
           <input
             type="button"
             th:attr="onclick=|window.location.href='@{/search/incomplete}'|"
             value="Incomplete"
           />
+	  -->
         </li>
         <li th:attr="class=${tabName == 'Search'?'active':''}">
+	  <a class="btn" th:href="@{/search}">
+	    Search
+	  </a>
+	  <!--
           <input
             type="button"
             th:attr="onclick=|window.location.href='@{/search}'|"
             value="Search"
           />
+	  -->
         </li>
         <li th:if="${tabName == 'Settings'}" class="active">Settings</li>
         <li th:if="${tabName == 'Report'}" class="active">Report</li>

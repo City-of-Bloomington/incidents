@@ -145,29 +145,30 @@
 
           <div class="field-group">
             <label for="description" class="required"
-              >*Property Description</label
-            >
+              >*Property Description</label>
             <textarea
               th:field="${property.description}"
               id="description"
               placeholder="Description"
               rows="5"
               cols="50"
-              required="required"
-            >
-						<span th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></span>
-					</textarea
-            >
+              required="required">
+	      <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></span>
+	    </textarea>
           </div>
-					<p>If you want to add more properties click 'Next, Add Another' otherwise click on 'Next'</p>
+	  <p>If you want to add more properties click 'Next, Add Another' otherwise click on 'Next'</p>
           <ul class="button-group">
             <li th:unless="${property.incident.hasPropertyList()}">
+	      <a th:href="@{/person/edit/{id}(id=${property.incident.getFirstPersonId()})}"> Back 
+	      </a>
+	      <!--
               <button
                 class="next-button"
                 th:attr="onclick=|window.location.href='@{/person/edit/{id}(id=${property.incident.getFirstPersonId()})}'|"
               >
                 Back
               </button>
+	      -->
             </li>
             <li><button type="submit" class="next-button" name="action" value="Next">Next</button></li>
 	    <li><button type="submit" class="next-button" name="action" value="More">Next, Add Another</button></li>						

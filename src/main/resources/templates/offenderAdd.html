@@ -32,7 +32,7 @@
               type="checkbox"
               th:field="${offender.transientOffender}"
               id="transient_offender"
-							onclick="showOrHide('offender_info',this)"
+	      onclick="showOrHide('offender_info',this)"
             />
             <label for="transient_offender">Transient Offender</label>
           </div>
@@ -311,6 +311,10 @@
 	  </div>
 	  <ul class="button-group">
 	    <li th:unless="${offender.incident.hasOffenderList()}">
+	      <a clas="btn" th:href="@{/businessIncidentEdit/{id}(id=${offender.incident.id})}">
+		Back
+	      </a>
+	      <!--
 	      <button
 		type="button"
 		class="next-button"
@@ -318,6 +322,7 @@
 		>
 		Back
 	      </button>
+	      -->
 	    </li>
 	    <li>
 	      <button

@@ -23,11 +23,16 @@
       </div>
       <ul class="button-group">
         <li>
+	  <a th:href="@{/raceType/new}" class="btn">
+	    Add New Race Type
+	  </a>
+	  <!--
           <input
             type="button"
             th:attr="onclick=|window.location.href='@{/raceType/new}'|"
             value="Add New Race Type"
           />
+	  -->
         </li>
       </ul>
       <div th:switch="${types}">

@@ -32,6 +32,17 @@ function verifyConfirm() {
   }
 }
 $(document).ready(function () {
+    document.querySelectorAll('input.abtn').forEach(link => {
+	link.addEventListener('click', (e) => {
+	    // Retrieve href and store in targetUrl variable
+	    let targetUrl = e.currentTarget.href; // currentTarget
+	    // Output value of targetUrl to console
+	    console.log('A link with target URL ' + targetUrl + 'was clicked');
+	});
+    });
+    
+});
+$(document).ready(function () {
   $("input.timepicker").timepicker({
     timeFormat: "hh:mm p",
     interval: 15,

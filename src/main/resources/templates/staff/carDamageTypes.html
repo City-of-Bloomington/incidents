@@ -27,8 +27,13 @@
       <p><a th:href="@{/carDamageType/new}">Add new type</a></p>
       <ul class="button-group">
 	<li>
+	  <a class="btn" th:href="@{/carDamageType/new}">
+	    Add New Vehicle Damage Type
+	  </a>
+	  <!--
 	  <input type="button" th:attr="onclick=|window.location.href='@{/carDamageType/new}'|"
 		 value="Add New Vehicle Damage Type" />
+	    -->
 	</li>
       </ul>
       <div th:switch="${types}">
