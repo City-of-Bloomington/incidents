@@ -114,7 +114,9 @@
         </fieldset>
         <p>Click on Next to continue</p>
         <ul class="button-group">
-					<li>
+	  <li>
+	    <a class="btn" th:href="@{/businessIncidentAddrEdit/{id}(id=${address.incident_addr_id})}">Back</a>
+	    <!--
             <button
 	      type="button"
               class="next-button"
@@ -122,6 +124,7 @@
               >
                 Back
               </button>
+	    -->
             </li>			
           <li>
             <button type="submit" class="next-button">Next</button>

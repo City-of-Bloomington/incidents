@@ -23,15 +23,8 @@
       <ul class="button-group">
         <li>
 	  <a class="btn" th:href="@{/incidentType/new}">
-	    Add New Incident Type
+	    New Incident Type
 	  </a>
-	  <!--
-          <input
-            type="button"
-            th:attr="onclick=|window.location.href='@{/incidentType/new}'|"
-            value="Add New Incident Type"
-          />
-	  -->
         </li>
       </ul>
       <div th:switch="${types}">

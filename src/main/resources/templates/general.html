@@ -218,7 +218,7 @@
           th:attr="class=${tabName == 'Approved'?'active':''}"
           th:if="${#session.getAttribute('canProcess') != null}">
 	  <a class="btn" th:href="@{/search/approved}">
-	    Confirmed
+	    Approved
 	  </a>
 	  <!--
           <input
@@ -232,13 +232,6 @@
 	  <a class="btn" th:href="@{/search/received}">
 	    Received
 	  </a>
-	  <!--
-          <input
-            type="button"
-            th:attr="onclick=|window.location.href='@{/search/received}'|"
-            value="Received"
-          />
-	  -->
         </li>
         <li
           th:attr="class=${tabName == 'Incomplete'?'active':''}"
@@ -246,13 +239,6 @@
 	  <a class="btn" th:href="@{/search/incomplete}">
 	    Incomplete
 	  </a>
-	  <!--
-          <input
-            type="button"
-            th:attr="onclick=|window.location.href='@{/search/incomplete}'|"
-            value="Incomplete"
-          />
-	  -->
         </li>
         <li th:attr="class=${tabName == 'Search'?'active':''}">
 	  <a class="btn" th:href="@{/search}">
@@ -279,22 +265,22 @@
       <div class="field-group">
         <label for="email" class="required">*Email</label>
         <input id="email"
-							 type="email"
-							 name="email"
-							 size="80"
-							 maxlength="80"
-							 value="" />
+	       type="email"
+	       name="email"
+	       size="80"
+	       maxlength="80"
+	       value="" />
       </div>
       <p>Please re-enter the same email to confirm</p>
       <div class="field-group">
         <label for="email2"
-							 class="required">*Confirm Email</label>
+	       class="required">*Confirm Email</label>
         <input id="email2"
-							 type="email"
-							 name="email2"
-							 size="80"
-							 maxlength="80"
-							 value="" />
+	       type="email"
+	       name="email2"
+	       size="80"
+	       maxlength="80"
+	       value="" />
       </div>
     </div>
 

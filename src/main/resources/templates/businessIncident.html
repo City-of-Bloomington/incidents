@@ -26,11 +26,14 @@
       </p>
       <ul class="button-group">
         <li th:if="${incident.hasNoTransientOffender()}">
+	  <a class="btn" th:href="@{/offender/add/{id}(id=${incident.id})}"> Add Offender</a>
+	  <!--
           <input
             type="button"
             th:attr="onclick=|window.location.href='@{/offender/add/{id}(id=${incident.id})}'|"
             value="Add Offender"
           />
+	  -->
         </li>
 
         <li>

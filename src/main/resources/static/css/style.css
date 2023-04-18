@@ -686,14 +686,21 @@ a {
   text-decoration: none;
 
 }
-a.btn {
-    color: white;
-    background-color: #4caf50;
-}
 a:hover, a:focus {
     color: #4f4f4f;
 
 }
+
+a.btn {
+    color: white;
+    background-color: #4caf50;
+}
+a.btn:hover, a.btn:focus {
+    color: white;
+}
+
+
+
 
 form input,
 form textarea {

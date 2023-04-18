@@ -23,15 +23,8 @@
 
       <ul class="button-group">
         <li>
-	  <a class="btn" th:href="@{/fraudType/new}">
+	  <a class="btn" th:href="@{/fraudType/new}">New Fraud Type
 	  </a>
-	  <!--
-          <input
-            type="button"
-            th:attr="onclick=|window.location.href='@{/fraudType/new}'|"
-            value="Add New Fraud Type"
-          />
-	  -->
         </li>
       </ul>
       <div th:switch="${types}">

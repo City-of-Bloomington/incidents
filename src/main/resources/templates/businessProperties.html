@@ -34,11 +34,14 @@
               <span th:text="${one.valueFr}"></span>
             </li>
             <li class="button-group">
+	      <a class="btn" th:href="@{/businessProperty/edit/{id}(id=${one.id})}"> Edit Property</a>
+	      <!--
               <input
                 type="button"
                 th:attr="onclick=|window.location.href='@{/businessProperty/edit/{id}(id=${one.id})}'|"
                 value="Edit Property"
               />
+	      -->
             </li>
             <li class="button-group" th:if="${canDelete}">
               <input

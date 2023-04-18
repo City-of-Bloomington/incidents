@@ -56,20 +56,23 @@
                 placeholder="Image description"
               ></textarea>
             </div>
-					</div>
-				</fieldset>
-				<ul class="button-group">
-					<li th:unless="${incident.hasMediaList()}">
+	  </div>
+	</fieldset>
+	<ul class="button-group">
+	  <li th:unless="${incident.hasMediaList()}">
+	    <a class="btn" th:href="@{/businessProperty/edit/{id}(id=${incident.getFirstPropertyId()})}"> Back </a>
+	    <!--
             <button type="button"
               class="next-button"
-                th:attr="onclick=|window.location.href='@{/businessProperty/edit/{id}(id=${incident.getFirstPropertyId()})}'|">							
-							Back
-						</button>
-					</li>
-					<li>
-						<button class="next-button" type="submit">Next</button>							
-					</li>
-				</ul>
+                    th:attr="onclick=|window.location.href='@{/businessProperty/edit/{id}(id=${incident.getFirstPropertyId()})}'|">							
+	      Back
+	    </button>
+	    -->
+	  </li>
+	  <li>
+	    <button class="next-button" type="submit">Next</button>							
+	  </li>
+	</ul>
       </form>
     </main>
   </body>

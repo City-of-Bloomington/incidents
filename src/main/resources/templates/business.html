@@ -20,11 +20,14 @@
        <div th:fragment="business(${business})">					 
 	 <div th:insert="businessView::business(${business})">
 	   <li class="button-group">
+	     <a class="btn" th:href="@{/business/edit/{id}(id=${business.id})}">Edit Establishment </a>
+	     <!--
 	     <input
 	       type="button"
 	       th:attr="onclick=|window.location.href='@{/business/edit/{id}(id=${business.id})}'|"
 	       value="Edit Establishment"
 	       />
+	     -->
 	   </li>
 	 </div>
        </div>

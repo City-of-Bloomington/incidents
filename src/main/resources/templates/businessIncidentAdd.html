@@ -147,13 +147,16 @@
         </fieldset>
 	<ul class="button-group">
           <li>
+	    <!--
             <button
-							type="button"
+	      type="button"
               class="next-button"
               th:attr="onclick=|window.location.href='@{/businessEdit/{id}/{addr_id}/{incident_id}(id=${business.id},addr_id=${incident.addr_id},incident_id=${incident.id})}'|"
               >
               Back
             </button>
+	    -->
+	    <a class="btn" th:href="@{/businessEdit/{id}/{addr_id}/{incident_id}(id=${business.id},addr_id=${incident.addr_id},incident_id=${incident.id})}"> Back </a>
             </li>						
           <li>
             <button type="submit" class="next-button">Next</button>
