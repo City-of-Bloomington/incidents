@@ -21,24 +21,21 @@
     <h2>Incident log history</h2>
     <div th:fragment="actionLogs(actionLogs)">
       <div th:switch="${actionLogs}">
-				<h2 th:case="null">No logs found</h2>
-				<div th:case="*">
-					<h2>Action History</h2>
-					<ul th:each="one,status : ${actionLogs}">
-						<li th:text="${status.count}+' - '+${one.info}"></li>
-						<ul>						
-							<li th:if="${one.canBeCancelled()}"><span>
-									<input
-										type="button"
-										th:attr="onclick=|window.location.href='@{/cancelAction/{id}(id=${one.id})}'|"
-										value="Cancel This Action"
-										/>
-								</span>
-							</li>
-							<li th:if="${one.hasCommentsInfo()}"><span th:text="|Comments: ${one.comments}|"></span></li>							
-						</ul>
-					</ul>
-				</div>      
+	<h2 th:case="null">No logs found</h2>
+	<div th:case="*">
+	  <h2>Action History</h2>
+	  <ul th:each="one,status : ${actionLogs}">
+	    <li th:text="${status.count}+' - '+${one.info}"></li>
+	    <ul>						
+	      <li th:if="${one.canBeCancelled()}">
+		<span>
+		  <a class="btn" th:href="@{/cancelAction/{id}(id=${one.id})}">Cancel This Action </a>
+		</span>
+	      </li>
+	      <li th:if="${one.hasCommentsInfo()}"><span th:text="|Comments: ${one.comments}|"></span></li>							
+	    </ul>
+	  </ul>
+	</div>      
       </div>
     </div>
   </body>
