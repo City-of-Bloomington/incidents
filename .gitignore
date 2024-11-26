@@ -12,3 +12,4 @@ ansible/roles
 .classpath
 .project
 /src/main/webapp/js/addressChooser.js
+/.metadata/
