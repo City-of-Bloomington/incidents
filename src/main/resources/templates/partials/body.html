@@ -1,0 +1,14 @@
+<body th:fragment="body(content)" class="display-flex flex-column minh-viewport">
+    <a class="usa-skipnav" href="#main-content">Skip to main content</a>
+    <section th:replace="partials/gov-banner::section"></section>
+    <div class="usa-overlay"></div>
+    <header th:replace="partials/header::header">
+    </header>
+    <main id="main-content" class="flex-1 tablet:padding-bottom-10">
+        <section th:replace="${content}">
+        </section>
+    </main>
+    <footer th:replace="partials/footer::footer"></footer>
+    <div th:replace="partials/identifier::identifier"></div>
+    <script src="/static/uswds/dist/js/uswds.min.js"></script>
+</body>

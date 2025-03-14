@@ -1,0 +1,58 @@
+<head th:fragment="head(title)">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <link rel="icon" href="/static/citylogo-64.png" />
+    <title th:text="${title}"></title>
+    <!-- <title>BPD Incident Reporting</title> -->
+    <!-- <link th:href="@{${app_url}+'/css/style.css'}" rel="stylesheet" /> -->
+
+    <link
+    rel="stylesheet"
+    th:href="@{${app_url}+'/css/jquery-ui.min-1.13.2.css'}"      
+    type="text/css"
+    media="all"
+    />
+
+    <link
+    rel="stylesheet"
+    th:href="@{${app_url}+'/css/jquery-ui.theme-1.13.2.css'}"
+    type="text/css"
+    media="all"
+    />
+
+    <link
+    rel="stylesheet"
+    th:href="@{${app_url}+'/css/addressChooser.css'}"
+    type="text/css"
+    media="all"
+    />
+
+    <link th:href="@{${app_url}+'/css/jquery.timepicker.min.css'}"
+    rel="stylesheet" />
+
+
+    <link rel="stylesheet" href="/static/uswds/dist/css/uswds.min.css">
+    <script src="/static/uswds/dist/js/uswds-init.min.js"></script>
+
+
+    <script
+    type="text/javascript"
+    src="https://bloomington.in.gov/master_address/js/choosers/env.php"
+    ></script>
+
+    <script
+    type="text/javascript"
+    src="https://bloomington.in.gov/master_address/js/choosers/addressChooser.js"
+    ></script>
+    <script
+    type="text/javascript"
+    th:src="@{${app_url}+'/js/handleAddressChoice.js'}"
+    ></script>
+    <script type="text/javascript" th:src="@{${app_url}+'/js/jquery-3.6.1.min.js'}"></script>
+    <script type="text/javascript" th:src="@{${app_url}+'/js/jquery-ui.min-1.13.2.js'}"></script>
+    <script
+    type="text/javascript"
+    th:src="@{${app_url}+'/js/jquery.timepicker.min.js'}"
+    ></script>
+    <script type="text/javascript" th:src="@{${app_url}+'/js/incidents.js'}"></script>
+    <script type="text/javascript" th:src="@{${app_url}+'/js/incidents_intro.js'}"></script>
+</head>
