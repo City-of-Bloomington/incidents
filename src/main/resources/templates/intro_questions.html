@@ -5,11 +5,11 @@
  - @author W. Sibo <sibow@bloomington.in.gov>
  -
  -->
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head th:replace="general::head('incidents')"> </head>
 
-  <body>
-    <header th:replace="general::header"></header>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head th:replace="partials/head::head('incidents')"></head>
+  <body th:replace="~{ partials/body :: body(~{::section})}">
+    <section class="grid-container">
 
     <div th:if="${errors}">
       <div th:replace="general::errors(${errors})"></div>
@@ -175,5 +175,7 @@
         </div>
       </div>
     </main>
+  </section>
+    <script src="/static/uswds/dist/js/uswds.min.js"></script>
   </body>
 </html>
