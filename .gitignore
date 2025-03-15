@@ -1,6 +1,5 @@
 prepare.java
 quartz.properties
-context.xml
 web.xml
 target
 ansible/roles

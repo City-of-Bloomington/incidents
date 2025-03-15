@@ -1,0 +1,16 @@
+<Context reloadable="false" crossContext="true">
+    <Environemnt name="SPRING_CONFIG_NAME" value="{{ incidents_site_home }}/conf/application.properties" type="java.lang.String" />
+
+    <Parameter name="serverName"   value="{{ ansible_host }}" />
+    <Parameter name="url"          value="https://{{ ansible_host }}/incidents" />
+    <Parameter name="checkAddrUrl" value="{{ incidents_address_service }}" />
+    <Parameter name="activeMail"   value="false" />
+    <Parameter name="emailStr"     value="bloomington.in.gov" />
+
+    <Resources>
+        <PostResources
+            base="{{ incidents_site_home }}/conf"
+            className="org.apache.catalina.webresources.DirResourceSet"
+            webAppMount="/WEB-INF/classes" />
+        </Resources>
+</Context>
