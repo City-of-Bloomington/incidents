@@ -46,33 +46,6 @@ public class WebController extends TopController{
 	return "staff_menu";
     }
 
-
-    @RequestMapping(value = "/")
-    public String introPersonal(Model model){
-	getMessagesAndErrorsFromSession(session, model);
-	model.addAttribute("app_url", app_url);
-	System.err.println(" app_url "+app_url);
-	resetAll();
-	return "intro/intro";
-    }
-	@PostMapping("/submitIntro")
-	public String submitIntro(@RequestParam("question1") String answer, Model model) {
-		if ("emergency".equals(answer)) {
-			return "redirect:/emergency";
-		} else {
-			return "redirect:intro/age";
-		}
-	}
-	@GetMapping(value = "/emergency")
-    public String showEmergencyPage(Model model){
-	getMessagesAndErrorsFromSession(session, model);
-	model.addAttribute("app_url", app_url);
-	System.err.println(" app_url "+app_url);
-	resetAll();
-        return "intro/emergency";
-    }
-
-
     @RequestMapping(value = "/forBusiness")
     public String forBusiness(Model model
 			      ){

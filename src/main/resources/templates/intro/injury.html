@@ -18,31 +18,19 @@
         <p>
             <strong>Note: Filing a false police report is a crime and is punishable by up to 180 days in jail and a fine of up to $1000.</strong>
         </p>
-            <p>
-            The following are the incident types that can be reported through
-            this system:
-            </p>
-            <ul>
-            <li>Lost Property</li>
-            <li>Theft From Vehicle</li>
-            <li>Theft From Building</li>
-            <li>Theft (All Other)</li>
-            <li>Fraud & Scam</li>
-            <li>Vandalism</li>
-            </ul>
         <p>
             Please answer the following questions carefully to create your report.
         </p>
-        <p>1. Is this an emergency or a crime in progress?</p>
+        <p>4. Are you reporting injury to an animal or human?</p>
         <form 
             action="#"
-            th:action="@{/emergencyQuestion}"
+            th:action="@{/injuryQuestion}"
             method="post">
             <ul>
                 <li>
                 <input
                     type="radio"
-                    name="question1"
+                    name="question4"
                     value="Yes"
                 />
                 Yes
@@ -50,7 +38,7 @@
                 <li>
                 <input
                     type="radio"
-                    name="question1"
+                    name="question4"
                     value="No"
                 />
                 No

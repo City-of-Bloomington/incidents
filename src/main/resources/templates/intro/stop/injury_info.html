@@ -1,0 +1,39 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head th:replace="partials/head::head('incidents')"></head>
+  <body th:replace="~{ partials/body :: body(~{::section})}">
+    <section class="grid-container">
+        <p><strong>Stop. If you would like to report injury to a being, please contact us at 812-339-4477</strong></p>
+
+        <p>
+          To report a crime that does not fit the specifications of this system,
+          please call (812) 339-4477 or report it in person at the police station.
+          If the incident did not occur in the jurisdiction of the Bloomington, IN
+          Police Department, this report can not be made on this system.
+        </p>
+  
+        <p>You may contact one of the following nearby Police Departments:</p>
+        <ul>
+          <li>
+            Indiana University Police Department; 812-855-4111; 1469 E 17th St,
+            Bloomington, IN 47408
+          </li>
+          <li>
+            Monroe County Sheriff's Office; 812-349-2780; 301 N College Ave,
+            Bloomington, IN 47404
+          </li>
+          <li>
+            Indiana State Police; 812-332-4411; 1500 N Packinghouse Road,
+            Bloomington, IN 47404
+          </li>
+          <li>
+            Ellettsville Police Department; 812-876-2272; 1406 W Guy McCown Drive,
+            Ellettsville, IN 47429
+          </li>
+        </ul>
+        <a href="/" th:href="@{/}">Go back</a>
+    </section>
+    <script src="/static/uswds/dist/js/uswds.min.js"></script>
+  </body>
+</html>

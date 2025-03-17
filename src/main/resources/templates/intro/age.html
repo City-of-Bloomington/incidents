@@ -4,7 +4,48 @@
   <head th:replace="partials/head::head('incidents')"></head>
   <body th:replace="~{ partials/body :: body(~{::section})}">
     <section class="grid-container">
-        
+        <div th:if="${errors}">
+        <div th:replace="general::errors(${errors})"></div>
+        </div>
+
+        <div th:if="${messages}">
+        <div th:replace="general::messages(${messages})"></div>
+        </div>
+        <h2>Welcome to Incident Reporting</h2>
+        <p>
+            Guidelines for Using the Bloomington Police Department Online Reporting System.
+        </p>
+        <p>
+            <strong>Note: Filing a false police report is a crime and is punishable by up to 180 days in jail and a fine of up to $1000.</strong>
+        </p>
+        <p>
+            Please answer the following questions carefully to create your report.
+        </p>
+        <p>2. Are you 18 years or older?</p>
+        <form 
+            action="#"
+            th:action="@{/ageQuestion}"
+            method="post">
+            <ul>
+                <li>
+                <input
+                    type="radio"
+                    name="question2"
+                    value="Yes"
+                />
+                Yes
+                </li>
+                <li>
+                <input
+                    type="radio"
+                    name="question2"
+                    value="No"
+                />
+                No
+                </li>
+            </ul>
+            <button type="submit">Next</button>
+        </form>
     </section>
     <script src="/static/uswds/dist/js/uswds.min.js"></script>
   </body>
