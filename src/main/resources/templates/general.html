@@ -6,21 +6,22 @@
  - @author W. Sibo <sibow@bloomington.in.gov>
  -
  -->
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head th:fragment="head(title)">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta
-      http-equiv="Content-Type"
-      content="application/xhtml+xml; charset=utf-8"
-    />
     <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-    <link th:href="@{${app_url}+'/css/style.css'}" rel="stylesheet" />
+    <link rel="icon" href="/static/citylogo-64.png" />
+    <!-- <title th:text="${title}"></title> -->
+    <title>BPD Incident Reporting</title>
+
+    <!-- <link th:href="@{${app_url}+'/css/style.css'}" rel="stylesheet" /> -->
+
     <link
       rel="stylesheet"
       th:href="@{${app_url}+'/css/jquery-ui.min-1.13.2.css'}"      
       type="text/css"
       media="all"
     />
+
     <link
       rel="stylesheet"
       th:href="@{${app_url}+'/css/jquery-ui.theme-1.13.2.css'}"
@@ -37,6 +38,11 @@
 
     <link th:href="@{${app_url}+'/css/jquery.timepicker.min.css'}"
 	  rel="stylesheet" />
+
+
+    <link rel="stylesheet" href="/static/uswds/dist/css/uswds.min.css">
+    <script src="/static/uswds/dist/js/uswds-init.min.js"></script>
+
 
     <script
       type="text/javascript"
@@ -59,12 +65,14 @@
     ></script>
     <script type="text/javascript" th:src="@{${app_url}+'/js/incidents.js'}"></script>
     <script type="text/javascript" th:src="@{${app_url}+'/js/incidents_intro.js'}"></script>
-
-    <!-- <title th:text="${title}"></title> -->
-    <title>BPD Incident Reporting</title>
   </head>
 
-  <body>
+  <body class="display-flex flex-column minh-viewport">
+    <a class="usa-skipnav" href="#main-content">Skip to main content</a>
+    <section th:replace="partials/gov-banner::section"></section>
+    <div class="usa-overlay"></div>
+
+
     <header th:fragment="header">
       <a
         href="https://bloomington.in.gov/"
@@ -523,5 +531,6 @@
         </ul>
       </div>
     </div>
+    <script src="/static/uswds/dist/js/uswds.min.js"></script>
   </body>
 </html>

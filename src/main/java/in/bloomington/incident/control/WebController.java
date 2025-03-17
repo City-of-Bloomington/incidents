@@ -9,6 +9,7 @@ package in.bloomington.incident.control;
 import org.springframework.stereotype.Controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PathVariable;
 import javax.servlet.http.HttpSession;
@@ -44,15 +45,34 @@ public class WebController extends TopController{
 	
 	return "staff_menu";
     }
+
+
     @RequestMapping(value = "/")
-    public String introPersonal(Model model
-				){
+    public String introPersonal(Model model){
 	getMessagesAndErrorsFromSession(session, model);
 	model.addAttribute("app_url", app_url);
 	System.err.println(" app_url "+app_url);
 	resetAll();
-	return "intro_questions";
+	return "intro/intro";
     }
+	@PostMapping("/submitIntro")
+	public String submitIntro(@RequestParam("question1") String answer, Model model) {
+		if ("emergency".equals(answer)) {
+			return "redirect:/emergency";
+		} else {
+			return "redirect:intro/age";
+		}
+	}
+	@GetMapping(value = "/emergency")
+    public String showEmergencyPage(Model model){
+	getMessagesAndErrorsFromSession(session, model);
+	model.addAttribute("app_url", app_url);
+	System.err.println(" app_url "+app_url);
+	resetAll();
+        return "intro/emergency";
+    }
+
+
     @RequestMapping(value = "/forBusiness")
     public String forBusiness(Model model
 			      ){

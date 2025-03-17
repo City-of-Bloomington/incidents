@@ -5,10 +5,13 @@
  - @author W. Sibo <sibow@bloomington.in.gov>
  -
  -->
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head th:replace="general::head('Incident')"></head>
 
-  <body>
+  <body class="display-flex flex-column minh-viewport">
+    <a class="usa-skipnav" href="#main-content">Skip to main content</a>
+    <section th:replace="partials/gov-banner :: section"></section>
+    <div class="usa-overlay"></div>
     <header th:replace="general::header"></header>
 
     <main class="public-questions-wrapper">
@@ -204,5 +207,6 @@
         </ul>
       </form>
     </main>
+    <script src="/static/uswds/dist/js/uswds.min.js"></script>
   </body>
 </html>
