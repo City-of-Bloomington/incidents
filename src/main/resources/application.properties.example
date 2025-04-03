@@ -28,7 +28,17 @@ incident.media.max.size=5
 incident.person.media.count=3
 incident.business.media.count=10
 incident.property.maxtotalvalue=750.0
-
+;;
+;; for ADFS authentication
+incident.adfs.auth_end_point =
+incident.adfs.token_end_point = 
+incident.adfs.callback_uri = 
+incident.adfs.client_id = 
+incident.adfs.client_secret = 
+incident.adfs.scope=openid
+incident.adfs.dicovery_uri = 
+incident.adfs.username = 
+;;
 ;; Address Validation
 incident.address.geoUrl=
 incident.master.addressService=

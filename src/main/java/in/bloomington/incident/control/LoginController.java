@@ -7,6 +7,8 @@ package in.bloomington.incident.control;
  */
 
 import java.util.List;
+import java.util.Enumeration;
+import java.net.URI;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -21,24 +23,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
+import com.nimbusds.oauth2.sdk.*;
+import com.nimbusds.oauth2.sdk.id.*;
+import com.nimbusds.oauth2.sdk.token.*;
+import com.nimbusds.openid.connect.sdk.Nonce;
 
-/**
-import java.util.Collection;
-import java.util.Enumeration;
-import java.security.Principal;
-import org.springframework.security.core.userdetails.UserDetails;
-
-import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.web.authentication.logout.CookieClearingLogoutHandler;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.GrantedAuthority;
-
-import org.springframework.security.web.authentication.rememberme.AbstractRememberMeServices;
-import org.springframework.web.bind.annotation.ResponseBody;
-*/
 import javax.validation.Valid;
 
 //
@@ -53,18 +42,34 @@ import in.bloomington.incident.model.Action;
 import in.bloomington.incident.model.Credential;
 import in.bloomington.incident.model.Business;
 import in.bloomington.incident.utils.Helper;
+import in.bloomington.incident.util.Configuration;
+import in.bloomington.incident.util.OidcClient;
+import in.bloomington.incident.util.CityClient;
 
 @Controller
 public class LoginController extends TopController{
 
     final static Logger logger = LoggerFactory.getLogger(LoginController.class);
-
-    // @Autowired
-    // SearchService searchService;
-		
+    static Configuration config = null;
     @Value("${incident.ldap.host}")    
     private String ldap_host;
-
+    // ADFS params
+    @Value("${incident.adfs.auth_end_point}")
+    private String auth_end_point;
+    @Value("${incident.adfs.token_end_point}")
+    private String token_end_point;
+    @Value("${incident.adfs.callback_uri}")    
+    private String callback_uri;
+    @Value("${incident.adfs.client_id}")
+    private String client_id;
+    @Value("${incident.adfs.client_secret}")
+    private String client_secret;    
+    @Value("${incident.adfs.discovery_uri}")
+    private String discovery_uri;
+    @Value("${incident.adfs.adfs_username}")
+    private String adfs_username;
+    //
+    private String scope="openid";
     //
     @GetMapping("/logout")
     public String logout(HttpServletRequest req) {
@@ -77,28 +82,37 @@ public class LoginController extends TopController{
     public String login(HttpServletRequest req,
 			Model model
 			) {
+	String ret_str = "";
 	model.addAttribute("app_url",app_url);
 	HttpSession session = req.getSession(true);
 	getMessagesAndErrorsFromSession(session, model);
-	if(session.getAttribute("user") != null){ // already logged in
-	    return "staff/staff_intro";						
+	User user = (User)session.getAttribute("user");
+	if(user == null){ // already logged in
+	    OidcClient oidcClient = OidcClient.getInstance();
+	    //
+	    //
+	    if(config == null){
+		prepareConf();
+	    }
+	    oidcClient.setConfig(config);
+	    URI redirectUrl = oidcClient.getRequestURI();
+	    // System.err.println("login auth url "+redirectUrl.toString());
+	    State state = oidcClient.getState();
+	    Nonce nonce = oidcClient.getNonce();
+	    session.setAttribute("state",state.toString());
+	    session.setAttribute("nonce",nonce.toString());
+	    // save state in session for verification later	   
+	    // need to redirect
+	    //
+	    ret_str = redirectUrl.toString();
+	    //
 	}
-	return "staff/loginForm";
+	else{
+	    ret_str =  "/staff/staff_intro";
+	}
+	return "redirect:"+ret_str;
     }
     /**
-     // not used right now
-     @GetMapping("/businessLogin")
-     public String buslogin(HttpServletRequest req,
-     Model model
-     ) {
-     HttpSession session = req.getSession(true);
-     getMessagesAndErrorsFromSession(session, model);
-     if(session.getAttribute("business") != null){ // already logged in
-     return "TODO"; 						
-     }
-     return "businessLoginForm";
-     }
-    */		
     //non CAS after login action
     @PostMapping("/loginUser")
     public String tryLogin(@RequestParam("username") String username,
@@ -147,49 +161,66 @@ public class LoginController extends TopController{
 	}
 	return "redirect:/login";						
     }
-		
-    /**
-       @PostMapping("/businessLoginVerify")
-       public String busLoginVerify(@RequestParam("email") String email,
-       @RequestParam("password") String password,
-       HttpServletRequest req
-       ) {
-       HttpSession session = req.getSession(true);
-       if(email == null || email.isEmpty()){
-       return "businessLoginForm";
-       }
-
-       try{
-       Credential credit = userService.findCredential(email);
-       if(credit == null){
-       // addMessage("user not found "+username);
-       // addMessagesAndErrorsToSession(session);
-       addMessage("you do not have access to this system ");
-       }
-       else{
-       // we need to check the password after encryption
-       String encrypted = userService.encryptString(password);
-       if(credit.checkPassword(encrypted)){
-       Business business = credit.getBusiness();
-       if(business != null){
-       // temp
-       return "redirect:/business/"+business.getId(); // adding incident
-       }
-       else{
-       System.err.println(" business is null");
-       }
-       }
-       else{
-       addMessage("Your password does not match");
-       }
-       }
-       }catch(Exception ex){
-       addMessage("you do not have access to this system ");
-       }
-       addMessagesAndErrorsToSession(session);
-       return "redirect:/businessLogin";						
-       }
     */
+    @GetMapping("/callback")
+    public String callback(@RequestParam("code") String code,
+			   @RequestParam("state") String state,
+			   HttpServletRequest req,
+			   Model model
+			   ) {
+	HttpSession session = req.getSession();	
+	Enumeration values = req.getParameterNames();
+	String name= "";
+	String value = "";
+	String id = "";
+	String url = "";
+	boolean error_flag = false;
+	while (values.hasMoreElements()) {
+	    name = ((String)values.nextElement()).trim();
+	    value = req.getParameter(name).trim();
+	    if (name.equals("id"))
+		id = value;
+	    if(name.equals("error")){
+		error_flag = true;
+		System.err.println(" Error : "+value);		
+	    }
+	}
+	String return_str = "";
+	if(!error_flag){
+	    String original_state = (String)req.getSession().getAttribute("state");
+	    // System.err.println(" state "+state);
+	    // System.err.println(" code "+code);	
+	    if(state == null || !original_state.equals(state)){
+		System.err.println(" invalid state "+state);
+		error_flag = true;
+		// 
+	    }
+	    if(!error_flag){
+		User user = CityClient.getInstance().endAuthentication(code, config);
+		if(user != null){
+		    req.getSession().setAttribute("user", user);
+		    session.setAttribute("user", user);
+		    if(user.isAdmin()){
+			session.setAttribute("isAmin", "true");
+		    }
+		    if(user.canApprove()){
+			session.setAttribute("canApprove", "true");
+		    }
+		    if(user.canProcess()){
+			session.setAttribute("canProcess", "true");
+		    }
+		    return_str = "/staff/staff_intro";
+		}
+	    }
+	    else{
+		error_flag= true;
+	    }
+	}
+	if(error_flag){
+	    return_str = "/login";
+	}
+	return "redirect:"+return_str;
+    }
     @GetMapping("/settings")
     public String showSettings(Model model,
 			       HttpSession session) {
@@ -200,6 +231,10 @@ public class LoginController extends TopController{
 	    return ret;
 	}
         return "staff/settings";
+    }
+    private void prepareConf(){
+	config = new
+	    Configuration(auth_end_point, token_end_point, callback_uri, client_id, client_secret, scope, discovery_uri, adfs_username);
     }
 
 }
