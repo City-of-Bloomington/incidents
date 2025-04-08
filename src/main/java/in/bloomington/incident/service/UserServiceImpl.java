@@ -27,54 +27,54 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void save(User user){
-				repository.save(user);
+	repository.save(user);
     }
     @Override
     public void update(User user){
-				repository.save(user);
+	repository.save(user);
     }
     @Override
     public void delete(int id){
-				repository.deleteById(id);
+	repository.deleteById(id);
     }
     @Override
     public User findById(int id){
-				User user = repository.findById(id)
-						.orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + id));
-				return user;
+	User user = repository.findById(id)
+	    .orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + id));
+	return user;
     }		
     @Override
     public List<User> getAll(){
-				List<User> all = null;
-				Iterable<User> it = repository.findAll();
-				all = new ArrayList<>();
-				for(User one:it){
-						all.add(one);
-				}
-				return all;
+	List<User> all = null;
+	Iterable<User> it = repository.findAll();
+	all = new ArrayList<>();
+	for(User one:it){
+	    all.add(one);
+	}
+	return all;
     }
     @Override
     public User findUserByUsername(String username){
-				User user = repository.findUserByUsername(username);
-				return user;
+	User user = repository.findUserByUsername(username);
+	return user;
     }
     @Override
     public List<User> findByFirstnameOrByLastname(String str, String str2){
-				List<User> users = repository.findByFirstnameOrByLastname(str, str2);
-				return users;
+	List<User> users = repository.findByFirstnameOrByLastname(str, str2);
+	return users;
     }
-		@Override
-		public User findUser(String username) throws IOException{
-				User user = repo.findUser(username);
-				return user;
+    @Override
+    public User findUser(String username) throws IOException{
+	User user = repo.findUser(username);
+	return user;
 		}
-		@Override
-		public String encryptString(String str) throws IOException{
-				return repo.encryptString(str);
-		}
-		@Override
-		public Credential findCredential(String email) throws IOException{
+    @Override
+    public String encryptString(String str) throws IOException{
+	return repo.encryptString(str);
+    }
+    @Override
+    public Credential findCredential(String email) throws IOException{
 				return repo.findCredential(email);
-		}
-		
+    }
+    
 }

@@ -1,4 +1,4 @@
-package in.bloomington.incident.util;
+package in.bloomington.incident.utils;
 /**
  * @copyright Copyright (C) 2014-2016 City of Bloomington, Indiana. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
@@ -66,19 +66,27 @@ import org.apache.logging.log4j.Logger;
 @Component
 public class CityClient {
 
-    private static CityClient cityClient;
+    static CityClient cityClient;
     @Autowired
-    UserService userService;    
+    static UserService userService;    
     static Logger logger = LogManager.getLogger(CityClient.class);
     public static CityClient getInstance() {
         if (cityClient == null) {
 	    cityClient = new CityClient();
+	    CityClient.setUserService(userService);
 	}
 	return cityClient;	
     }
-    public User endAuthentication(String code, Configuration config) {
+    static void setUserService(UserService service){
+	userService = service;
+    }
+    
+    public String endAuthentication(String code, Configuration config) {
 	String uri = config.getTokenEndPoint();
-	User user = null;
+	System.err.println("cityClient uri: "+uri);
+	System.err.println("cityClient code: "+code);	
+	// User user = null;
+	String username = null;
 	try{
 	    CloseableHttpClient client = HttpClients.createDefault();
 	    HttpPost httpPost = new HttpPost(uri);
@@ -87,7 +95,6 @@ public class CityClient {
 	    // System.err.println(" nonce "+nonce);
 	    List<NameValuePair> params = new ArrayList<NameValuePair>();
 	    params.add(new BasicNameValuePair("code", code));
-						
 	    params.add(new BasicNameValuePair("client_id", config.getClientId()));
 	    params.add(new BasicNameValuePair("client_secret", config.getClientSecret()));
 	    params.add(new BasicNameValuePair("redirect_uri", config.getCallbackUri()));
@@ -98,13 +105,13 @@ public class CityClient {
 	    CloseableHttpResponse response = client.execute(httpPost);
 	    // check if not 200				
 	    int resStatus = response.getStatusLine().getStatusCode();
-	    // System.err.println(" res status "+resStatus);
+	    System.err.println(" res status "+resStatus);
 	    String jsonString = EntityUtils.toString(response.getEntity());
-	    // System.err.println("response json str "+jsonString);
+	    System.err.println("response json str "+jsonString);
 	    JSONObject json = new JSONObject(jsonString);
 	    String access_token = json.getString("access_token");
 	    String id_token = json.getString("id_token");
-	    // System.err.println(" id_token "+id_token);
+	    System.err.println(" id_token "+id_token);
 
 	    client.close();
 	    String[] chunks = id_token.split("\\.");
@@ -121,19 +128,28 @@ public class CityClient {
 	    // System.err.println(" header "+header);
 	    // System.err.println(" payload "+payload);
 	    JSONObject jjson = new JSONObject(payload);
-	    String username = jjson.getString(config.getUsername());
-	    // System.err.println(" username "+username);
+	    String username2 = jjson.getString(config.getUsername());
+	    // System.err.println("city username "+username2); 
+	    if(username2 != null){
+		if(username2.indexOf("\\") > 0){ // to remove COB\\sibow 
+		    username = username2.substring(username2.indexOf("\\")+1);
+		}
+		else{
+		    username = username2;
+		}
+	    }
+	    /**
 	    if(username != null && !username.isEmpty()){
 		user = getUser(username);
 	    }
 	    verify(header_chunk, payLoad_chunk, signature, config);
-						
+	    */
 
 	}catch(Exception ex){
 	    System.err.println(" Error "+ex);
 	    logger.error(ex);
 	}
-	return user;
+	return username;
     }
     User getUser(String username){
 
@@ -147,8 +163,10 @@ public class CityClient {
 	    username2 = username;
 	}
 	System.err.println(username2);
+	System.err.println(" user service "+userService);
 	try{
-	    User user2 = userService.findUser(username2);	    
+	    User user2 = userService.findUser(username2);
+	    System.err.println(" user "+user2);
 	    if(user2 != null)
 		user = user2;
 	}

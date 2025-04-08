@@ -42,9 +42,9 @@ import in.bloomington.incident.model.Action;
 import in.bloomington.incident.model.Credential;
 import in.bloomington.incident.model.Business;
 import in.bloomington.incident.utils.Helper;
-import in.bloomington.incident.util.Configuration;
-import in.bloomington.incident.util.OidcClient;
-import in.bloomington.incident.util.CityClient;
+import in.bloomington.incident.utils.Configuration;
+import in.bloomington.incident.utils.OidcClient;
+import in.bloomington.incident.utils.CityClient;
 
 @Controller
 public class LoginController extends TopController{
@@ -68,6 +68,8 @@ public class LoginController extends TopController{
     private String discovery_uri;
     @Value("${incident.adfs.adfs_username}")
     private String adfs_username;
+    @Value("${incident.app.url}")
+    private String url;    
     //
     private String scope="openid";
     //
@@ -96,22 +98,91 @@ public class LoginController extends TopController{
 	    }
 	    oidcClient.setConfig(config);
 	    URI redirectUrl = oidcClient.getRequestURI();
-	    // System.err.println("login auth url "+redirectUrl.toString());
+	    System.err.println("login auth url "+redirectUrl.toString());
 	    State state = oidcClient.getState();
 	    Nonce nonce = oidcClient.getNonce();
-	    session.setAttribute("state",state.toString());
-	    session.setAttribute("nonce",nonce.toString());
+	    session.setAttribute("state", state.toString());
+	    session.setAttribute("nonce", nonce.toString());
+	    // config stuff
+	    session.setAttribute("auth_end_point", auth_end_point);
+	    session.setAttribute("token_end_point", token_end_point);
+	    session.setAttribute("callback_uri", callback_uri);
+	    session.setAttribute("client_id", client_id);
+	    session.setAttribute("client_secret", client_secret);
+	    session.setAttribute("discovery_uri", discovery_uri);
+	    session.setAttribute("adfs_username", adfs_username);
+	    session.setAttribute("scope",scope);
+	    if(config == null)
+		prepareConf();
+	    // session.setAttribute("config", config);
+	    session.setAttribute("url", url);	    
+	    // System.err.println("config "+config.toString());
+	    // System.err.println("url "+url);
+	    // System.err.println("login state "+state.toString());	    
 	    // save state in session for verification later	   
 	    // need to redirect
 	    //
 	    ret_str = redirectUrl.toString();
-	    //
 	}
 	else{
-	    ret_str =  "/staff/staff_intro";
+	    ret_str =  "/staff";
 	}
 	return "redirect:"+ret_str;
     }
+    @GetMapping("/callbackNext")
+    public String callbackNext(HttpServletRequest req,
+			       Model model
+			       ) {
+	HttpSession session = req.getSession();	
+	Enumeration values = req.getParameterNames();
+	String name= "";
+	String value = "";
+	String return_str = "";
+	String url = "";
+	boolean error_flag = false;
+	String username = null;
+	while (values.hasMoreElements()) {
+	    name = ((String)values.nextElement()).trim();
+	    value = req.getParameter(name).trim();
+	    /**
+	    if(name.equals("username")){
+		username = value;
+		System.err.println(" username : "+username);		
+	    }
+	    */
+	}
+	username = (String) session.getAttribute("username");
+	if(username != null){
+	    try{
+		User user = userService.findUser(username);
+		System.err.println(" user "+user);
+		if(user != null){
+		    session.setAttribute("user", user);
+		    if(user.isAdmin()){
+			session.setAttribute("isAmin", "true");
+		    }
+		    if(user.canApprove()){
+			session.setAttribute("canApprove", "true");
+		    }
+		    if(user.canProcess()){
+			session.setAttribute("canProcess", "true");
+		    }
+		    return_str = "staff";
+		    return return_str;
+		}
+		else{
+		    error_flag = true;
+		}
+	    }catch(Exception ex){
+		System.err.println(ex);
+	    }
+	}
+	if(error_flag){
+	    return_str = "/error";
+	}
+	return "redirect:"+return_str;
+    }
+    
     /**
     //non CAS after login action
     @PostMapping("/loginUser")
@@ -162,65 +233,6 @@ public class LoginController extends TopController{
 	return "redirect:/login";						
     }
     */
-    @GetMapping("/callback")
-    public String callback(@RequestParam("code") String code,
-			   @RequestParam("state") String state,
-			   HttpServletRequest req,
-			   Model model
-			   ) {
-	HttpSession session = req.getSession();	
-	Enumeration values = req.getParameterNames();
-	String name= "";
-	String value = "";
-	String id = "";
-	String url = "";
-	boolean error_flag = false;
-	while (values.hasMoreElements()) {
-	    name = ((String)values.nextElement()).trim();
-	    value = req.getParameter(name).trim();
-	    if (name.equals("id"))
-		id = value;
-	    if(name.equals("error")){
-		error_flag = true;
-		System.err.println(" Error : "+value);		
-	    }
-	}
-	String return_str = "";
-	if(!error_flag){
-	    String original_state = (String)req.getSession().getAttribute("state");
-	    // System.err.println(" state "+state);
-	    // System.err.println(" code "+code);	
-	    if(state == null || !original_state.equals(state)){
-		System.err.println(" invalid state "+state);
-		error_flag = true;
-		// 
-	    }
-	    if(!error_flag){
-		User user = CityClient.getInstance().endAuthentication(code, config);
-		if(user != null){
-		    req.getSession().setAttribute("user", user);
-		    session.setAttribute("user", user);
-		    if(user.isAdmin()){
-			session.setAttribute("isAmin", "true");
-		    }
-		    if(user.canApprove()){
-			session.setAttribute("canApprove", "true");
-		    }
-		    if(user.canProcess()){
-			session.setAttribute("canProcess", "true");
-		    }
-		    return_str = "/staff/staff_intro";
-		}
-	    }
-	    else{
-		error_flag= true;
-	    }
-	}
-	if(error_flag){
-	    return_str = "/login";
-	}
-	return "redirect:"+return_str;
-    }
     @GetMapping("/settings")
     public String showSettings(Model model,
 			       HttpSession session) {

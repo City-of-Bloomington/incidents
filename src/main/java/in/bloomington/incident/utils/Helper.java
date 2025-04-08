@@ -46,8 +46,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.core.env.Environment;
 import org.springframework.beans.factory.annotation.Autowired;
 
+
 @Component
 public class Helper{
+
     public final static SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
     public final static SimpleDateFormat dft = new SimpleDateFormat("MM/dd/yyyy HH:mm");
     public final static SimpleDateFormat dfDate = new SimpleDateFormat("yyyy-MM-dd");
@@ -116,20 +118,20 @@ public class Helper{
         }
         return fileType;
     }
-		/**
-		 * we expect to have an integer or double
-		 * remove any $ or , from the string
-		 */
-		public final static String cleanNumber(String str){
-				String str2 = "";
-				try{
-						str2 = str.replaceAll("[$,]","");
-				}catch(Exception ex){
-						System.err.println(str+" "+ex);
-						str2 = str;
-				}
-				return str2;
-		}
+    /**
+     * we expect to have an integer or double
+     * remove any $ or , from the string
+     */
+    public final static String cleanNumber(String str){
+	String str2 = "";
+	try{
+	    str2 = str.replaceAll("[$,]","");
+	}catch(Exception ex){
+	    System.err.println(str+" "+ex);
+	    str2 = str;
+	}
+	return str2;
+    }
     //
     // check multiple emails separated by comma
     //
@@ -154,7 +156,6 @@ public class Helper{
         }
         return true;
     }
-
     public final static boolean isValidEmail(final String email)
     {
         String       expression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
@@ -300,7 +301,7 @@ public class Helper{
     public final static String getToday()
     {
         // LocalDate date  = LocalDate.now();
-				Date date = new Date();
+	Date date = new Date();
         String today = df.format(date);
         return today;
     }

@@ -1,4 +1,4 @@
-package in.bloomington.incident.util;
+package in.bloomington.incident.utils;
 /**
  * @copyright Copyright (C) 2014-2016 City of Bloomington, Indiana. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
@@ -26,7 +26,7 @@ import com.nimbusds.openid.connect.sdk.Nonce;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import in.bloomington.incident.util.Configuration.*;
+import in.bloomington.incident.utils.Configuration.*;
 
 public class OidcClient {
     static Logger logger = LogManager.getLogger(OidcClient.class);
