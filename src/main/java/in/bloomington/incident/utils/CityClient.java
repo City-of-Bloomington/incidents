@@ -105,13 +105,13 @@ public class CityClient {
 	    CloseableHttpResponse response = client.execute(httpPost);
 	    // check if not 200				
 	    int resStatus = response.getStatusLine().getStatusCode();
-	    System.err.println(" res status "+resStatus);
+	    // System.err.println(" res status "+resStatus);
 	    String jsonString = EntityUtils.toString(response.getEntity());
-	    System.err.println("response json str "+jsonString);
+	    // System.err.println("response json str "+jsonString);
 	    JSONObject json = new JSONObject(jsonString);
 	    String access_token = json.getString("access_token");
 	    String id_token = json.getString("id_token");
-	    System.err.println(" id_token "+id_token);
+	    // System.err.println(" id_token "+id_token);
 
 	    client.close();
 	    String[] chunks = id_token.split("\\.");

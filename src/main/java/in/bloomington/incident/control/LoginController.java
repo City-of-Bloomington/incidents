@@ -98,7 +98,7 @@ public class LoginController extends TopController{
 	    }
 	    oidcClient.setConfig(config);
 	    URI redirectUrl = oidcClient.getRequestURI();
-	    System.err.println("login auth url "+redirectUrl.toString());
+	    // System.err.println("login auth url "+redirectUrl.toString());
 	    State state = oidcClient.getState();
 	    Nonce nonce = oidcClient.getNonce();
 	    session.setAttribute("state", state.toString());
@@ -155,7 +155,7 @@ public class LoginController extends TopController{
 	if(username != null){
 	    try{
 		User user = userService.findUser(username);
-		System.err.println(" user "+user);
+		// System.err.println(" user "+user);
 		if(user != null){
 		    session.setAttribute("user", user);
 		    if(user.isAdmin()){

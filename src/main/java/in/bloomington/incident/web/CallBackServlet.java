@@ -80,7 +80,7 @@ public class CallBackServlet extends HttpServlet{
 		System.err.println(name+" "+value);
 	    }
 	}
-	System.err.println(" call back called, code "+code);
+	// System.err.println(" call back called, code "+code);
 	if(!error_flag){
 	    String original_state = (String)session.getAttribute("state");
 	    url = (String)session.getAttribute("url");
@@ -93,8 +93,8 @@ public class CallBackServlet extends HttpServlet{
 	    adfs_username = (String)session.getAttribute("adfs_username");
 	    scope = (String)session.getAttribute("scope");
 	    config = new Configuration(auth_end_point, token_end_point, callback_uri, client_id, client_secret, scope, discovery_uri, adfs_username);	    
-	    System.err.println("callback url "+url);
-	    System.err.println(" callback conf "+config.toString());
+	    // System.err.println("callback url "+url);
+	    // System.err.println(" callback conf "+config.toString());
 	    if(state == null || !original_state.equals(state)){
 		System.err.println(" invalid state "+state);
 		// error_flag = true;
