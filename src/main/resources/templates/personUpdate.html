@@ -25,7 +25,7 @@
 	<input type="hidden" th:field="${person.incident}" />
 	<input type="hidden" th:field="${person.email}" />
 	<fieldset>
-	  <p>Information about the person reporting this incident </p>
+	  <legend>Information about the person reporting this incident </legend>
           <div class="field-group">	  
 	    <label for="person_type_id" class="required">*Involvement of this person to the incident: </label>
 	    <select id="person_type_id" th:field="${person.personType}" required>

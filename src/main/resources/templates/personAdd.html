@@ -34,6 +34,7 @@
         <input type="hidden" th:field="${person.incident}" />
         <input type="hidden" name="email" th:value="${person.incident.email}" />
         <fieldset>
+	  <legend>Person Info</legend>
           <div class="field-group">
             <label for="person_type_id" class="required"
               >*Involvement of this person to the incident:
@@ -58,7 +59,7 @@
               th:field="${person.firstname}"
               id="firstname_id"
               size="70"
-							maslength="70"
+	      maslength="70"
               required="required"
               placeholder="First Name"
             />
@@ -83,7 +84,7 @@
               th:field="${person.lastname}"
               id="lastname_id"
               size="70"
-							maxlength="70"
+	      maxlength="70"
               required="required"
               placeholder="Last Name"
             />
@@ -96,7 +97,7 @@
               th:field="${person.suffix}"
               id="suffix_id"
               size="10"
-							maxlength="10"
+	      maxlength="10"
               placeholder="Jr, Sr, .."
             />
           </div>
@@ -108,7 +109,7 @@
               th:field="${person.address}"
               id="address_id"
               size="70"
-							maxlength="70"
+	      maxlength="70"
               required="required"
               placeholder="Address"
             />
@@ -121,7 +122,7 @@
               th:field="${person.city}"
               id="city_id"
               size="50"
-							maxlength="50"
+	      maxlength="50"
               required="required"
               placeholder="City"
             />
@@ -330,7 +331,7 @@
               th:field="${person.occupation}"
               id="occupation_id"
               size="70"
-							maxlength="128"
+	      maxlength="128"
               placeholder="Occupation"
             />
           </div>
@@ -340,14 +341,6 @@
 	      <a class="btn" th:href="@{/incidentEdit/{id}(id=${person.incident.id})}">
 		Back
 	      </a>
-	      <!--
-              <button
-                class="next-button"
-                th:attr="onclick=|window.location.href='@{/incidentEdit/{id}(id=${person.incident.id})}'|"
-              >
-                Back
-              </button>
-	      -->
             </li>
             <li><button type="submit" class="next-button" name="action" value="Next">Next</button></li>
 	    <li><button type="submit" class="next-button" name="action" value="More">Next, Add Another</button></li>	

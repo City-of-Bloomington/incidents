@@ -18,7 +18,7 @@
     <div th:if="${messages}">
       <div th:insert="general::messages(${messages})"></div>			
     </div>				
-    <h2>Incident log history</h2>
+    <h2>Incident history</h2>
     <div th:fragment="actionLogs(actionLogs)">
       <div th:switch="${actionLogs}">
 	<h2 th:case="null">No logs found</h2>

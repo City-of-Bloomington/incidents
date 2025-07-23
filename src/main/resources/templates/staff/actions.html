@@ -30,7 +30,7 @@
       <div th:switch="${actions}">
         <h2 th:case="null">No actions found</h2>
         <div th:case="*">
-          <table>
+          <table><caption>Actions</caption>
             <thead>
               <tr>
                 <th>ID</th>

@@ -46,21 +46,21 @@
 	<label>Plate Info</label>
       </dt>
       <dd>
-				<span th:text="${vehicle.plateInfo}"></span>
+	<span th:text="${vehicle.plateInfo}"></span>
       </dd>
       
       <dt>
-				<label for="owener">Owner</label>
+	<label for="owener">Owner</label>
       </dt>
       <dd>
-				<span th:text="${vehicle.owner}"></span>
+	<span th:text="${vehicle.owner}"></span>
       </dd>
       
       <dt>
-				<label for="description">Description</label>
+	<label for="description">Description</label>
       </dt>
       <dd>				
-				<span th:text="${vehicle.description}"></span>
+	<span th:text="${vehicle.description}"></span>
       </dd>
       <dd><a th:href="@{/vehicle/edit/{id}(id=${vehicle.id})}">Edit</a> 
      </dl>

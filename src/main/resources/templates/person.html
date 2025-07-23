@@ -8,29 +8,29 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head th:replace="general::head('Person')"></head>
   <body>
-		<header th:replace="general::header"></header>
-		<main class="public-questions-wrapper">
-			<h2>Person Info</h2>
-			<div th:if="${errors}">
-				<div th:insert="general::errors(${errors})"></div>
-			</div>
-			
-			<div th:if="${messages}">
-				<div th:insert="general::messages(${messages})"></div>
-			</div>
-			<fieldset>
-				<caption>View Person</caption>
-				<div th:insert="personView::person(${person})">
-				  <ul>
-				    <li>
-				      <a th:href="@{/person/edit/{id}(id=${person.id})}">Edit</a>
-				    </li>
-				    <li>
-				      <a th:href="@{/incident/{id}(id=${person.incident.id})}">Back to Incident</a>
-				    </li>
-				  </ul>						
-				</div>
-			</fieldset>
-		</main>
+    <header th:replace="general::header"></header>
+    <main class="public-questions-wrapper">
+      <h2>Person Info</h2>
+      <div th:if="${errors}">
+	<div th:insert="general::errors(${errors})"></div>
+      </div>
+      
+      <div th:if="${messages}">
+	<div th:insert="general::messages(${messages})"></div>
+      </div>
+      <fieldset>
+	<legend>View Person</legend>
+	<div th:insert="personView::person(${person})">
+	  <ul>
+	    <li>
+	      <a th:href="@{/person/edit/{id}(id=${person.id})}">Edit</a>
+	    </li>
+	    <li>
+	      <a th:href="@{/incident/{id}(id=${person.incident.id})}">Back to Incident</a>
+	    </li>
+	  </ul>						
+	</div>
+      </fieldset>
+    </main>
   </body>
 </htmL>

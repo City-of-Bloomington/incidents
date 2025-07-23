@@ -30,7 +30,7 @@
       <div th:switch="${users}">
         <h4 th:case="null">No users found</h4>
         <div th:case="*">
-          <table>
+          <table><caption>Users</caption>
             <thead>
               <tr>
                 <th>ID</th>

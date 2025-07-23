@@ -21,37 +21,37 @@
     <div th:fragment="incidents(incidents)">
       <h2>Incidents</h2>
       <div th:switch="${incidents}">
-				<div class="message alert" th:case="null">No incident found </div>
-				<div th:case="*">
-					<table>
-						<thead>
-							<tr>
-								<th>ID</th>
-								<th>Case #</th>								
-								<th>Status</th>
-								<th>Category</th>
-								<th>Incident Type</th>
-								<th>Received</th>
-								<th>Address</th>
-								<th>Incident Date & Time</th>
-								<th>Details </th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr th:each="one : ${incidents}">
-								<td><a th:href="@{/incidentView/{id}(id=${one.id})}" th:text="${one.id}"></a></td>
-								<td th:text="${one.caseNumber}"></td>										
-								<td th:text="${one.status}"></td>
-								<td th:text="${one.category}"></td>
-								<td th:text="${one.incidentType}"></td>		
-								<td th:text="${one.receivedStr}"></td>
-								<td th:text="${one.addressInfo}"></td>								
-								<td th:text="${one.dateTimeInfo}"></td>
-								<td th:text="${one.details}"></td>								
-							</tr>
-						</tbody>
-					</table>
-				</div>      
+	<div class="message alert" th:case="null">No incident found </div>
+	<div th:case="*">
+	  <table><caption>Incidents</caption>
+	    <thead>
+	      <tr>
+		<th>ID</th>
+		<th>Case #</th>								
+		<th>Status</th>
+		<th>Category</th>
+		<th>Incident Type</th>
+		<th>Received</th>
+		<th>Address</th>
+		<th>Incident Date & Time</th>
+		<th>Details </th>
+	      </tr>
+	    </thead>
+	    <tbody>
+	      <tr th:each="one : ${incidents}">
+		<td><a th:href="@{/incidentView/{id}(id=${one.id})}" th:text="${one.id}"></a></td>
+		<td th:text="${one.caseNumber}"></td>										
+		<td th:text="${one.status}"></td>
+		<td th:text="${one.category}"></td>
+		<td th:text="${one.incidentType}"></td>		
+		<td th:text="${one.receivedStr}"></td>
+		<td th:text="${one.addressInfo}"></td>								
+		<td th:text="${one.dateTimeInfo}"></td>
+		<td th:text="${one.details}"></td>								
+	      </tr>
+	    </tbody>
+	  </table>
+	</div>      
       </div>
     </div>
   </body>

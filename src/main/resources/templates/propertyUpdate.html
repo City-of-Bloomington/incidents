@@ -37,8 +37,8 @@
 	<input type="hidden" id="max_total_id" th:field="${property.maxTotalValue}" />
 	
 	<div>
-	  <label>Incident: 
-	    <a class="btn" th:href="@{/incident/{id}(id=${property.incident.id})}">Back to Incident</a> </label>
+	  <strong>Incident: 
+	    <a class="btn" th:href="@{/incident/{id}(id=${property.incident.id})}">Back to Incident</a> </strong>
 	</div>
 	
 	<div th:if="${damageTypes}">

@@ -29,7 +29,7 @@
 	    th:action="@{/discard/final}"
 	    th:object="${actionLog}" method="post">
         <input type="hidden" th:field="${actionLog.incident}" />
-        <table>
+        <table><caption>Discard Incident Reason</caption>
           <tr>
             <td>Change Status</td>
             <td>

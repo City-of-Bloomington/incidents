@@ -36,7 +36,7 @@
         <input type="hidden" th:field="${incident.receivedStr}" />
         <input type="hidden" th:field="${incident.incidentType} " />
         <input type="hidden" th:field="${incident.addr_id} " />
-				<input type="hidden" th:field="${incident.category} " />				
+	<input type="hidden" th:field="${incident.category} " />				
         <fieldset>
           <legend>Incident Date and Time</legend>
           <p>
@@ -101,10 +101,10 @@
           </div>
 
           <div class="field-group">
-            <p>
+            <label for="date_description">
               If unsure of exact dates/times, please give approximate
               dates/times below.
-            </p>
+            </label>
 
             <textarea
               th:field="${incident.dateDescription}"
@@ -186,14 +186,6 @@
 	    <a th:href="@{/emailUpdate/{id}(id=${incident.id})}">
 	      Back
 	    </a>
-	    <!--
-            <button
-              class="next-button"
-              th:attr="onclick=|window.location.href='@{/emailUpdate/{id}(id=${incident.id})}'|"
-            >
-              Back
-            </button>
-	    -->
           </li>
           <li th:unless="${incident.hasPersonList()}">
             <button class="next-button" type="submit">Next</button>

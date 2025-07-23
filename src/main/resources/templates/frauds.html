@@ -37,13 +37,6 @@
 	      <a class="btn" th:href="@{/fraud/edit/{id}(id=${one.id})}">
 		Edit Fraud/Scam
 	      </a>
-	      <!--
-              <input
-                type="button"
-                th:attr="onclick=|window.location.href='@{/fraud/edit/{id}(id=${one.id})}'|"
-                value="Edit Fraud/Scam"
-              />
-	      -->
             </li>
 	    <li th:if="${canDelete}">
 	      <strong>Delete:</strong>

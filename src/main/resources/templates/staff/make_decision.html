@@ -35,7 +35,7 @@
 	    th:action="@{/staff/decision}"
 	    th:object="${actionLog}" method="post">
 	<input type="hidden" th:field="${actionLog.incident}" />
-	<table>
+	<table><caption>Incident status</caption>
 	  <tr>
 	    <td>Set Status</td>
 	    <td>
@@ -63,7 +63,7 @@
 	  </tr>
 	</table>				
       </form>
-		</div>
+    </div>
     <div th:unless="${actionLog}">
       <p> Incomplete (not submitted nor confirmed), no further actions can be done</p>
     </div>

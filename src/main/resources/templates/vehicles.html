@@ -41,25 +41,11 @@
 	      <a class="btn" th:href="@{/vehicle/edit/{id}(id=${one.id})}">
 		Edit Vehicle
 	      </a>
-	      <!--
-              <input
-                type="button"
-                th:attr="onclick=|window.location.href='@{/vehicle/edit/{id}(id=${one.id})}'|"
-                value="Edit Vehicle"
-              />
-	      -->
             </li>
             <li class="button-group" th:if="${canDelete}">
 	      <a class="btn" th:href="@{/vehicle/delete/{id}(id=${one.id})}">
 		Delete Vehicle
 	      </a>
-	      <!--
-              <input
-                type="button"
-                th:attr="onclick=|window.location.href='@{/vehicle/delete/{id}(id=${one.id})}'|"
-                value="Delete Vehicle"
-              />
-	      -->
             </li>						
           </ul>
         </div>

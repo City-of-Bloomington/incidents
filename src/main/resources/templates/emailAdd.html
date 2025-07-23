@@ -47,26 +47,9 @@
           <ul class="button-group">
             <li th:unless="${category != null}">
 	      <a class="btn" th:href="@{/addressUpdate/{id}/{type_id}(id=${address_id},type_id=${type_id})}"> Back </a>
-	      <!--
-              <button
-                class="next-button"
-                th:attr="onclick=|window.location.href='@{/addressUpdate/{id}/{type_id}(id=${address_id},type_id=${type_id})}'|"
-              >
-                Back
-              </button>
-	      -->
             </li>
             <li th:if="${category != null}">
 	      <a class="btn" th:href="@{/addressBusinessUpdate/{id}/{type_id}/{category}(id=${address_id},type_id=${type_id},category=${category})}"> Back </a>
-	      <!--
-	      
-              <button
-                class="next-button"
-                th:attr="onclick=|window.location.href='@{/addressBusinessUpdate/{id}/{type_id}/{category}(id=${address_id},type_id=${type_id},category=${category})}'|"
-              >
-                Back
-              </button>
-	      -->
             </li>						
             <li><button type="submit" class="next-button">Next</button></li>
           </ul>

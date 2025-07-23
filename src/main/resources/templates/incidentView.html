@@ -10,129 +10,129 @@
 <head th:replace="general::head('Incident Details')"></head>
 
 <body class="staff">
-	<header>
-		<div th:replace="general::header-staff"></div>
-	</header>
-	<main class="staff">
-		<div th:replace="general::staffMenu('Search')">
-		</div>		
-		<h2>View Incident</h2>
-
-		<div th:if="${errors}">
-			<div th:insert="general::errors(${errors})"></div>
-		</div>
-		
-		<div th:if="${messages}">
-			<div th:insert="general::messages(${messages})"></div>
-		</div>
-
-		<div th:fragment="incidentView(incident,business)">				
-			<fieldset>
-				<div th:fragment="incident(${incident})">
-				<div class="m-b-10">
-					<label>ID: </label>
-					<span th:text="${incident.id}"> </span>
-					<br />
-				</div>
-				
-				<div class="m-b-10" th:if="${incident.hasCaseNumber()}">
-					<label>Case #:</label>
-					<span th:text="${incident.caseNumber}"> </span>
-					<br />
-				</div>
-				<div class="m-b-10" th:if="${incident.hasCategory()}">
-					<label>Category:</label>
-					<span th:text="${incident.category}"> </span>
-					<br />
-				</div>				
-				
-				<div class="m-b-10" th:if="${incident.hasStatusInfo()}">
-					<label>Status: </label>
-					<span th:text="${incident.status}"> </span>
-					<br />
-				</div>
-				<div class="m-b-10">
-					<label>Incident type:</label>
-					<span th:text="${incident.incidentType}"> </span>
-					<br />
-				</div>
-				
-				
-				<div class="m-b-10">
-					<label> Reporter email:</label>
-					<span th:text="${incident.email}"> </span>
-					<br />
-				</div>
-				
-				<div class="m-b-10">
-					<label>Report date & time: </label>
-					<span th:text="${incident.receivedStr}"> </span>
-					<br />
-				</div>
-				
-				<div class="m-b-10">
-					<label>Incident date & time: </label>
-					<span th:text="${incident.dateTimeInfo}"> </span>
-					<br />
-				</div>
-				
-				<div class="m-b-10">
-					<label>Location of incident: </label>
-					<span th:text="${incident.addressInfo}"> </span>
-					<br />
-				</div>									
-				
-				<div class="m-b-10" th:if="${incident.hasAccessInfo()}">
-					<label>Entry access: </label>
-					<span th:text="${incident.entryInfo}"></span>
-					<br />
-				</div>
-
-				<div class="m-b-10">
-					<label>Incident details: </label>
-					<span th:text="${incident.details}"></span>
-					<br />
-				</div>							
-				
-				<div class="m-b-10" th:if="${incident.hasEvidenceInfo()}">
-					<label>Evidence left behind:</label>
-					<span th:text="${incident.evidence}"></span>
-				</div>
-				<div th:if="${business != null && incident.getTransientOffender()}">
-					<span th:text="'Transient Offender'"></span>
-				</div>				
-			</div>
-			</fieldset>
-			<div th:if="${business != null}">
+  <header>
+    <div th:replace="general::header-staff"></div>
+  </header>
+  <main class="staff">
+    <div th:replace="general::staffMenu('Search')">
+    </div>		
+    <h2>View Incident</h2>
+    
+    <div th:if="${errors}">
+      <div th:insert="general::errors(${errors})"></div>
+    </div>
+    
+    <div th:if="${messages}">
+      <div th:insert="general::messages(${messages})"></div>
+    </div>
+    
+    <div th:fragment="incidentView(incident,business)">				
+      <fieldset>
+	<div th:fragment="incident(${incident})">
+	  <div class="m-b-10">
+	    <label>ID: </label>
+	    <span th:text="${incident.id}"> </span>
+	    <br />
+	  </div>
+	  
+	  <div class="m-b-10" th:if="${incident.hasCaseNumber()}">
+	    <label>Case #:</label>
+	    <span th:text="${incident.caseNumber}"> </span>
+	    <br />
+	  </div>
+	  <div class="m-b-10" th:if="${incident.hasCategory()}">
+	    <label>Category:</label>
+	    <span th:text="${incident.category}"> </span>
+	    <br />
+	  </div>				
+	  
+	  <div class="m-b-10" th:if="${incident.hasStatusInfo()}">
+	    <label>Status: </label>
+	    <span th:text="${incident.status}"> </span>
+	    <br />
+	  </div>
+	  <div class="m-b-10">
+	    <label>Incident type:</label>
+	    <span th:text="${incident.incidentType}"> </span>
+	    <br />
+	  </div>
+	  
+	  
+	  <div class="m-b-10">
+	    <label> Reporter email:</label>
+	    <span th:text="${incident.email}"> </span>
+	    <br />
+	  </div>
+	  
+	  <div class="m-b-10">
+	    <label>Report date & time: </label>
+	    <span th:text="${incident.receivedStr}"> </span>
+	    <br />
+	  </div>
+	  
+	  <div class="m-b-10">
+	    <label>Incident date & time: </label>
+	    <span th:text="${incident.dateTimeInfo}"> </span>
+	    <br />
+	  </div>
+	  
+	  <div class="m-b-10">
+	    <label>Location of incident: </label>
+	    <span th:text="${incident.addressInfo}"> </span>
+	    <br />
+	  </div>									
+	  
+	  <div class="m-b-10" th:if="${incident.hasAccessInfo()}">
+	    <label>Entry access: </label>
+	    <span th:text="${incident.entryInfo}"></span>
+	    <br />
+	  </div>
+	  
+	  <div class="m-b-10">
+	    <label>Incident details: </label>
+	    <span th:text="${incident.details}"></span>
+	    <br />
+	  </div>							
+	  
+	  <div class="m-b-10" th:if="${incident.hasEvidenceInfo()}">
+	    <label>Evidence left behind:</label>
+	    <span th:text="${incident.evidence}"></span>
+	  </div>
+	  <div th:if="${business != null && incident.getTransientOffender()}">
+	    <span th:text="'Transient Offender'"></span>
+	  </div>				
+	</div>
+      </fieldset>
+      <div th:if="${business != null}">
         <div th:insert="businessView::business(${business})"></div>
-			</div>
+      </div>
       <div th:if="${incident.hasOffenderList()}">
         <div th:insert="offendersView::offenders(${incident.offenders})"></div>
       </div>			
-			<div th:if="${incident.hasPersonList()}">
-				<div th:insert="personsView::persons(${incident.persons})"></div>
-			</div>
-		<div th:if="${incident.hasPropertyList()}">
-			<div th:insert="propertiesView::properties(${incident.properties},${incident.totalValueFr})"></div>
-		</div>
-		
-		<div th:if="${incident.hasVehicleList()}">
-			<div th:insert="vehiclesView::vehicles(${incident.vehicles})"></div>
-		</div>
-		
-		<div th:if="${incident.hasFraudList()}">
-			<div th:insert="fraudsView::frauds(${incident.frauds})"></div>
-		</div>
-			
-		<div th:if="${incident.hasMediaList()}">
-			<div th:insert="mediasView::medias(${incident.medias})"></div>
-		</div>
-		
-		<div th:if="${incident.hasActionLogs()}">
-			<div th:insert="actionLogs::actionLogs(${incident.actionLogs})"></div>
-		</div>
-
-	</div>
-	</main>
+      <div th:if="${incident.hasPersonList()}">
+	<div th:insert="personsView::persons(${incident.persons})"></div>
+      </div>
+      <div th:if="${incident.hasPropertyList()}">
+	<div th:insert="propertiesView::properties(${incident.properties},${incident.totalValueFr})"></div>
+      </div>
+      
+      <div th:if="${incident.hasVehicleList()}">
+	<div th:insert="vehiclesView::vehicles(${incident.vehicles})"></div>
+      </div>
+      
+      <div th:if="${incident.hasFraudList()}">
+	<div th:insert="fraudsView::frauds(${incident.frauds})"></div>
+      </div>
+      
+      <div th:if="${incident.hasMediaList()}">
+	<div th:insert="mediasView::medias(${incident.medias})"></div>
+      </div>
+      
+      <div th:if="${incident.hasActionLogs()}">
+	<div th:insert="actionLogs::actionLogs(${incident.actionLogs})"></div>
+      </div>
+      
+    </div>
+  </main>
 </body>
 </html>

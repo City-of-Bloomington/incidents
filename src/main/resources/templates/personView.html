@@ -10,70 +10,70 @@
 <head th:replace="general::head('Person')"></head>
 
 <body class="staff">
-	<header>
-		<div th:replace="general::header-staff"></div>
-	</header>
-
-	<main class="staff">
-		<h2>Person Info</h2>
-		<div th:if="${errors}">
-			<div th:insert="general::errors(${errors})"></div>
-		</div>
-		<div th:if="${messages}">
-			<div th:insert="general::messages(${messages})"></div>
-		</div>
-		<fieldset>
-			<caption>Person</caption>
-			<div th:fragment="person(${person})">			
-				<ul>
-					<li>
-						<strong>Involvement:</strong>
-						<span th:text="${person.personType}"></span>
-					</li>
-					<li>
-						<strong>Name:</strong>
-						<span th:text="${person.fullname}"></span>
-					</li>
-					<li>
-						<strong>Address:</strong>
-						<span th:text="${person.address}"></span>
-					</li>
-					<li>
-						<strong>City, State Zipcode:</strong>
-						<span th:text="${person.cityStateZip}"> </span>
-					</li>
-					<li>
-						<strong>Phone(s):</strong>
-						<span th:text="${person.phones}"></span>
-					</li>
-					<li>
-						<strong>Email(s):</strong>
-						<span th:text="${person.emails}"></span>
-					</li>
-					<li>
-						<strong>Date of Birth:</strong>
-						<span th:text="${person.dobStr}"></span>
-					</li>
-					
-					<li th:if="${person.hasDlnAndSsn()}">
-						<span th:text="${person.dlnAndSsn}"></span>
-					</li>
-					<li th:if="${person.hasHeightAndWeight()}">
-						<span th:text="${person.heightAndWeight}"></span>
-					</li>
-					<li th:if="${person.hasSexAndGender()}">
-						<span th:text="${person.sexAndGender}"></span>
-					</li>
-					<li th:if="${person.hasRaceAndEthnicity()}">
-						<span th:text="${person.raceAndEthnicity}"></span>
-					</li>
-					<li>
-						<strong>Occupation:</strong>
-						<span th:text="${person.occupation}"></span>
-					</li>
-				</ul>
-			</div>				
-		</fielset>
-	</main>
+  <header>
+    <div th:replace="general::header-staff"></div>
+  </header>
+  
+  <main class="staff">
+    <h2>Person Info</h2>
+    <div th:if="${errors}">
+      <div th:insert="general::errors(${errors})"></div>
+    </div>
+    <div th:if="${messages}">
+      <div th:insert="general::messages(${messages})"></div>
+    </div>
+    <fieldset>
+      <legend>Person</legend>
+      <div th:fragment="person(${person})">			
+	<ul>
+	  <li>
+	    <strong>Involvement:</strong>
+	    <span th:text="${person.personType}"></span>
+	  </li>
+	  <li>
+	    <strong>Name:</strong>
+	    <span th:text="${person.fullname}"></span>
+	  </li>
+	  <li>
+	    <strong>Address:</strong>
+	    <span th:text="${person.address}"></span>
+	  </li>
+	  <li>
+	    <strong>City, State Zipcode:</strong>
+	    <span th:text="${person.cityStateZip}"> </span>
+	  </li>
+	  <li>
+	    <strong>Phone(s):</strong>
+	    <span th:text="${person.phones}"></span>
+	  </li>
+	  <li>
+	    <strong>Email(s):</strong>
+	    <span th:text="${person.emails}"></span>
+	  </li>
+	  <li>
+	    <strong>Date of Birth:</strong>
+	    <span th:text="${person.dobStr}"></span>
+	  </li>
+	  
+	  <li th:if="${person.hasDlnAndSsn()}">
+	    <span th:text="${person.dlnAndSsn}"></span>
+	  </li>
+	  <li th:if="${person.hasHeightAndWeight()}">
+	    <span th:text="${person.heightAndWeight}"></span>
+	  </li>
+	  <li th:if="${person.hasSexAndGender()}">
+	    <span th:text="${person.sexAndGender}"></span>
+	  </li>
+	  <li th:if="${person.hasRaceAndEthnicity()}">
+	    <span th:text="${person.raceAndEthnicity}"></span>
+	  </li>
+	  <li>
+	    <strong>Occupation:</strong>
+	    <span th:text="${person.occupation}"></span>
+	  </li>
+	</ul>
+      </div>				
+    </fielset>
+  </main>
 </body>
 </htmL>

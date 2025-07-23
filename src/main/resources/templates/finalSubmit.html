@@ -31,15 +31,15 @@
 	  <p>
 	    Your report is ready to be submitted. After submission you will receive an email with a verification link. <b><u>You must click on the confirmation link to finalize your report submission</u></b>. Reports not confirmed within 24 hours will not be processed by the system.</p>
 					
-					<p> If approved, you will receive an email with the case number for your report. If denied, you will receive an email with a reason for the denial.</p>
-					<p>If you need to review your report one more time click on 
-						<a class="m-b-10" th:href="@{${app_url}+'/incident/{id}(id=${incident.id})'}">Review report details</a>
-					</p>
-					<ul class="button-group">
-					  <li>
-					    <input type="submit" value="Submit Report" />
-					  </li>
-					</ul>
+	  <p> If approved, you will receive an email with the case number for your report. If denied, you will receive an email with a reason for the denial.</p>
+	  <p>If you need to review your report one more time click on 
+	    <a class="m-b-10" th:href="@{${app_url}+'/incident/{id}(id=${incident.id})'}">Review report details</a>
+	  </p>
+	  <ul class="button-group">
+	    <li>
+	      <input type="submit" value="Submit Report" />
+	    </li>
+	  </ul>
 	</fieldset>
       </form>
     </main>

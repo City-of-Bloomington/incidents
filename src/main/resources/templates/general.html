@@ -206,13 +206,6 @@
 	  <a class="btn" th:href="@{/search/confirmed}">
 	    Confirmed
 	  </a>
-	  <!--
-          <input
-            type="button"
-            th:attr="onclick=|window.location.href='@{/search/confirmed}'|"
-            value="Confirmed"
-          />
-	  -->
         </li>
         <li
           th:attr="class=${tabName == 'Approved'?'active':''}"
@@ -220,13 +213,6 @@
 	  <a class="btn" th:href="@{/search/approved}">
 	    Approved
 	  </a>
-	  <!--
-          <input
-            type="button"
-            th:attr="onclick=|window.location.href='@{/search/approved}'|"
-            value="Approved"
-          />
-	  -->
         </li>
 	<li th:attr="class=${tabName == 'Received'?'active':''}">
 	  <a class="btn" th:href="@{/search/received}">
@@ -244,13 +230,6 @@
 	  <a class="btn" th:href="@{/search}">
 	    Search
 	  </a>
-	  <!--
-          <input
-            type="button"
-            th:attr="onclick=|window.location.href='@{/search}'|"
-            value="Search"
-          />
-	  -->
         </li>
         <li th:if="${tabName == 'Settings'}" class="active">Settings</li>
         <li th:if="${tabName == 'Report'}" class="active">Report</li>
@@ -345,15 +324,15 @@
     </p>
     <div th:fragment="businessInstructions">
       <p>Information about Business data entry</p>
-			<ul>
-				<li>Business name and email are required</li>
-				<li>Use '(123) 456-7890' format for each phone number</li>
-				<li>
-					For multiple phone numbers, use comma or semicolon to separate each number
-					
-				</li>
-			</ul>
-		</div>
+      <ul>
+	<li>Business name and email are required</li>
+	<li>Use '(123) 456-7890' format for each phone number</li>
+	<li>
+	  For multiple phone numbers, use comma or semicolon to separate each number
+	  
+	</li>
+      </ul>
+    </div>
     <ul th:fragment="personInstructions">
       <li>Information about the Person Reporting this Incident</li>
       <li>
@@ -371,12 +350,12 @@
       <li>Information about the incident offender</li>
       <li>
         Please add information about the offender related to this incident.
-			</li>
-			<li>
-				If the offender is unknown check the 'Transient offender' checkbox.
       </li>
-			<li>
-				If the offender's address is unknown check the 'Transiant address' checkbox.</li>
+      <li>
+	If the offender is unknown check the 'Transient offender' checkbox.
+      </li>
+      <li>
+	If the offender's address is unknown check the 'Transiant address' checkbox.</li>
       <li>
         If reporting multiple offenders, click “Next, Add Another” after adding information for each offender.
       </li>
@@ -401,11 +380,11 @@
           If you are reporting damage to a vehicle, please give the description
           and value of the damage in the vehicle screen.
         </li>
-				<li> If you are reporting multiple properties on one entry or
-					add them individually by clicking ‘Next, Add Another’.
-				</li>
+	<li> If you are reporting multiple properties on one entry or
+	  add them individually by clicking ‘Next, Add Another’.
+	</li>
         <li>
-					If reporting multiple properties on one entry, give the appropriate total value and description below.
+	  If reporting multiple properties on one entry, give the appropriate total value and description below.
         </li>
       </ul>
     </div>		
@@ -461,7 +440,7 @@
       <li>When your are done with photo uploads, click on 'Submit'</li>
     </ul>
     <ul th:fragment="mediaBusinessInstructions(media_max_count,media_max_size)">
-			<li> You are required to upload photo(s)/receipt(s) of the incident </li>
+      <li> You are required to upload photo(s)/receipt(s) of the incident </li>
       <li>You can upload up to <span th:text="${media_max_count}"> </span> photos of the incident or photos of the receipts related to incident.</li>
       <li>
         Optional, you may also add explantions about these image in the text field below.
@@ -475,8 +454,8 @@
         the photo editing tools such as MS paint
       </li>
       <li>Total max upload limit should not exceed <span th:text="${media_max_count*media_max_size}"> </span> MB</li>
-			<li>When you are done with photo uploads, click on ‘Next.’
-				</li>
+      <li>When you are done with photo uploads, click on ‘Next.’
+      </li>
     </ul>
     <div th:fragment="introMoreInfo">
       <p>

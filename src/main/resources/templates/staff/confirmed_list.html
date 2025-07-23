@@ -29,7 +29,7 @@
 	<div th:switch="${incidents}">
 	  <div class="message alert" th:case="null">No incident found </div>
 	  <div th:case="*">
-	    <table>
+	    <table><caption>Confirmed Incidents</caption>
 	      <thead>
 		<tr>
 		  <th>ID</th>

@@ -27,23 +27,8 @@
             <li class="button-group">
 	      <a class="btn" th:href="@{/person/edit/{id}(id=${person.id})}">Edit Person</a>
 	    </li>
-	    <!--
-              <input
-                type="button"
-                th:attr="onclick=|window.location.href='@{/person/edit/{id}(id=${person.id})}'|"
-                value="Edit Person"
-              />
-            </li>
-	  -->
           <li th:if="${canDelete}" class="button-group">
 	    <a class="btn" th:href="@{/person/delete/{id}(id=${person.id})}">Delete Person </a>
-	    <!--
-            <input
-                type="button"
-                th:attr="onclick=|window.location.href='@{/person/delete/{id}(id=${person.id})}'|"
-                value="Delete Person"
-              />
-	    -->
             </li>						
           </div>
         </div>

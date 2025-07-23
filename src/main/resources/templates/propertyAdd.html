@@ -44,7 +44,8 @@
             id="max_total_id"
             th:field="${property.maxTotalValue}"
           />
-        <fieldset>
+          <fieldset>
+	    <legend>Property Info</legend>
           <div class="field-group"></div>
           <div th:if="${damageTypes}">
             <label class="required">*Problem Type</label>
@@ -67,8 +68,8 @@
               type="text"
               th:field="${property.brand}"
               id="brand"
-							size="40"
-							maxlength="80"
+	      size="40"
+	      maxlength="80"
               placeholder="Brand"
             />
             <span
@@ -83,8 +84,8 @@
               type="text"
               th:field="${property.model}"
               id="model"
-							size="40"
-							maxlength="80"
+	      size="40"
+	      maxlength="80"
               placeholder="Model"
             />
             <span
@@ -99,8 +100,8 @@
               type="text"
               th:field="${property.serialNum}"
               id="serialNum"
-							size="40"
-							maxlength="80"
+	      size="40"
+	      maxlength="80"
               placeholder="Serial Number"
             />
             <span
@@ -115,8 +116,8 @@
               type="text"
               th:field="${property.valueFr}"
               id="value_id"
-							maxlength="10"
-							size="10"
+	      maxlength="10"
+	      size="10"
               placeholder="dddd.dd"
               required="required"
             />
@@ -161,14 +162,6 @@
             <li th:unless="${property.incident.hasPropertyList()}">
 	      <a th:href="@{/person/edit/{id}(id=${property.incident.getFirstPersonId()})}"> Back 
 	      </a>
-	      <!--
-              <button
-                class="next-button"
-                th:attr="onclick=|window.location.href='@{/person/edit/{id}(id=${property.incident.getFirstPersonId()})}'|"
-              >
-                Back
-              </button>
-	      -->
             </li>
             <li><button type="submit" class="next-button" name="action" value="Next">Next</button></li>
 	    <li><button type="submit" class="next-button" name="action" value="More">Next, Add Another</button></li>						

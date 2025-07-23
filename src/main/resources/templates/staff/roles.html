@@ -33,7 +33,7 @@
       <div th:switch="${roles}">
         <h4 th:case="null">No roles found </h4>
         <div th:case="*">
-          <table>
+          <table><caption>User Roles</caption>
             <thead>
               <tr>
                 <th>ID</th>

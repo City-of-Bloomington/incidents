@@ -20,25 +20,25 @@
     <div th:fragment="frauds(frauds)">
       <h2>Frauds/Scams</h2>
       <div th:switch="${frauds}">
-				<h2 th:case="null">No frauds found</h2>
-				<div th:case="*">
-					<ul th:each="one : ${frauds}" style="padding: 0;">
-						<li th:if="${one.hasFraudTypeInfo()}">
-							<strong>Fraud/Scam Type: </strong>
-							<span th:text="${one.fraudType}"></span>
-						</li>
-						<li>
-							<strong>Details: </strong>
-							<span th:text="${one.info}"></span>
-						</li>
-						<li th:if="${one.hasValidAmount()}">
-							<strong>Amount Taken: </strong>
-							<span th:text="${one.amountTakenFr}"></span>
-						</li>
-					</ul>
-				</div>
-			</div>      
-		</div>
-	</body>
+	<h2 th:case="null">No frauds found</h2>
+	<div th:case="*">
+	  <ul th:each="one : ${frauds}" style="padding: 0;">
+	    <li th:if="${one.hasFraudTypeInfo()}">
+	      <strong>Fraud/Scam Type: </strong>
+	      <span th:text="${one.fraudType}"></span>
+	    </li>
+	    <li>
+	      <strong>Details: </strong>
+	      <span th:text="${one.info}"></span>
+	    </li>
+	    <li th:if="${one.hasValidAmount()}">
+	      <strong>Amount Taken: </strong>
+	      <span th:text="${one.amountTakenFr}"></span>
+	    </li>
+	  </ul>
+	</div>
+      </div>      
+    </div>
+  </body>
 </htmL>
 		

@@ -12,8 +12,7 @@
 <body
   onload="ADDRESS_CHOOSER.start(handleAddressChoice2, {addressQuery:window.opener.document.getElementById('addr_id').value})"
   class="address-popup">
-  <!-- <header th:replace="general::header">
-  </header> -->
+
   <h3>Look up Address</h3>
   
   <div th:if="${errors}">
@@ -23,16 +22,6 @@
   <div th:if="${messages}">
     <div th:replace="general::messages(${messages})"></div>
   </div>
-  
-  <!-- <ul>
-    <li>If the address is not entered, enter the address</li>
-    <li>Click on 'Search'</li>
-    <li>Pick one address</li>
-    <li>If the address has units (such as appartments, condos, etc) pick one</li>
-    <li>When you are done, click on 'Close this window'</li>
-    <li>You will see the address info on the original incident form </li>
-  </ul> -->
-  
   <a href="javascript:window.close()" class="button">Close this window </a>
 </body>
 </html>
