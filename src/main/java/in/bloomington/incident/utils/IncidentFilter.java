@@ -16,7 +16,8 @@ import org.springframework.stereotype.Component;
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class IncidentFilter implements Filter {
 
-    static String securityPolicy = "frame-src 'none'; sandbox allow-forms allow-scripts allow-popups allow-same-origin allow-top-navigation allow-popups-to-escape-sandbox; img-src 'self' data:; object-src 'none';frame-ancestors 'none'; script-src 'self' https://bloomington.in.gov https://outlaw.bloomington.in.gov https://auth.bloomington.in.gov;";  
+    // static String securityPolicy = "frame-src 'none'; sandbox allow-forms allow-scripts allow-popups allow-same-origin allow-top-navigation allow-popups-to-escape-sandbox; img-src 'self' data:; object-src 'none';frame-ancestors 'none'; script-src 'self' https://bloomington.in.gov https://outlaw.bloomington.in.gov https://auth.bloomington.in.gov;";
+    static String securityPolicy = "frame-src 'none'; sandbox allow-forms allow-scripts allow-popups allow-same-origin allow-top-navigation allow-popups-to-escape-sandbox; img-src 'self' data:; object-src 'none';frame-ancestors 'none';";  
     @Override
     public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) 
         throws IOException, ServletException {
