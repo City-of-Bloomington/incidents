@@ -14,6 +14,9 @@ document.addEventListener('DOMContentLoaded', function () {
 function verifyAnswer(){
     var radios = document.getElementsByTagName('input');
     var answer_cnt = 0;
+    var need_more = false;
+    var size = radios.length;
+    var size2 = size/2;
     for (var i = 0; i < radios.length; i++) {
 	if (radios[i].type === 'radio' && radios[i].checked) {
 	    var name = radios[i].getAttribute("name");	    
@@ -23,25 +26,28 @@ function verifyAnswer(){
 		answer_cnt = answer_cnt*1+1*1;
 	    }
 	    else{
+		need_more = true;
 		// showing the div that has stop text
 		document.getElementById(name).style.display = 'block';
 	    }
 	}
     }
-    console.log(" cnt "+answer_cnt);
-    if(answer_cnt*1 < 1*4){
+    if(need_more){
+	document.getElementById("finalStep").style.display = 'none';		
 	document.getElementById("moreInfo").style.display = 'block';
-	document.getElementById("finalStep").style.display = 'none';	
     }
-    if(answer_cnt*1 == 1*4){
+    else{
 	document.getElementById("moreInfo").style.display = 'none';
-	document.getElementById("q1").style.display = 'none';
-	document.getElementById("q2").style.display = 'none';
-	document.getElementById("q3").style.display = 'none';
-	document.getElementById("q4").style.display = 'none';
+    }
+    if(answer_cnt === size2 ){
+	document.getElementById("moreInfo").style.display = 'none';
+	for(var jj=1;jj <= size2;jj++){
+	    qq = "q"+jj;
+	    document.getElementById(qq).style.display = 'none';
+	}
 	document.getElementById("finalStep").style.display = 'block';	
     }
-    
+
 }
 function popwit(url, name) {
     var args =

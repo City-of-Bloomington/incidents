@@ -27,26 +27,21 @@
       <p>Please answer the following theft question carefully to create your report.</p>
     </div>
     <div id="questions">
-      <div class="question" style="display:none" id="lastQuestion">
-        <p>1. Is the stolen property a firearm, vehicle or license plate?
-        </p>
-        <form>
-          <ul>
-            <li> <input class="option" type="radio" name="question1"
-                value="Stop. Please contact us at 812-339-4477 to make this report." />Yes
-            </li>
-            <li> <input class="option" type="radio" name="question1" value="Next" />No
-            </li>
-          </ul>
-        </form>
-      </div>
-      <div id="next_div">
-        Click on <input type="button" id='next' value="Next" /> to continue.
-      </div>
-    
-      <div id="moreInfo">
-        <div th:replace="general::introMoreInfo"></div>
-      </div>
+      <p>1. Is the stolen property a firearm, vehicle or license plate?
+      </p>
+      <li> <input class="option" type="radio" name="q1"
+                  value="Yes" />Yes
+      </li>
+      <li> <input class="option" type="radio" name="q1" value="Next" />No
+      </li>
+    </div>
+    <br /><br />
+    <div id="q1" style="display:none">
+      <p> Stop. Please contact us at 812-339-4477 to make this report. </p>
+    </div>
+    <div id="moreInfo" style="display:none">
+      <div th:replace="general::introMoreInfo"></div>
+    </div>
     
       <div id="finalStep" class="question" style="display:none">
         <p> In the next step you will provide a valid incident address, please click on Next </p>

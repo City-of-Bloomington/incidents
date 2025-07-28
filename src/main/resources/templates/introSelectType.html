@@ -18,7 +18,7 @@
     <main class="public-questions-wrapper">
       <div class="welcome">
         <h2>Incident Reporting</h2>
-        <div id="finalStep" class="question" style="display: none">
+        <div style="display: block">
           <p>
             There will be a few additional questions depending on incident's
             category.
@@ -33,14 +33,9 @@
             <li><a th:href="@{/introVandal}">Vandalism </a></li>
           </ul>
         </div>
-        <div id="moreInfo">
-          <div th:replace="general::introMoreInfo"></div>
-        </div>
-        <div id="next_div">
-          <p>
-            Click on <input type="button" id="next" value="Next" /> to continue.
-          </p>
-        </div>
+      <div id="moreInfo">
+	<div th:replace="general::introMoreInfo"></div>
+      </div>	
       </div>
     </main>
   </body>

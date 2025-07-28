@@ -18,9 +18,9 @@ public interface AddressService{
     public abstract void delete(int id);
     public abstract List<Address> getAll();
 
-		public List<Address> findDistinctAddressByName(String name);
-		public List<Address> findDistinctAddressByAddressId(Integer addressId);
-		public List<Address> findDistinctAddressByAddressIdAndSubunitId(Integer addressId, Integer subunitId);
-		public List<Address> findByNameContaining(String str);
+    public List<Address> findDistinctAddressByName(String name);
+    public List<Address> findDistinctAddressByAddressId(Integer addressId);
+    public List<Address> findDistinctAddressByAddressIdAndSubunitId(Integer addressId, Integer subunitId);
+    public List<Address> findByNameContaining(String str);
 		
 }

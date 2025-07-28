@@ -131,24 +131,21 @@ public class AddressController extends TopController{
 	model.addAttribute("messages","Enter your address");
         return "addressWindow";
     }    		
-    @CrossOrigin(origins = "https://bloomington.in.gov")
     @GetMapping("/addressInput/{type_id}")
     public String addressInput(@PathVariable("type_id") int type_id,
 			       Model model) {
-	getMessagesAndErrorsFromSession(session, model);		
-	handleErrorsAndMessages(model);
-	Address address = new Address();
-	address.setType_id(type_id);
-	model.addAttribute("address", address);
+	model.addAttribute("type_id", type_id);
 	model.addAttribute("app_url", app_url);
 	if(hasErrors()){
-	    System.err.println(" addresInput "+hasErrors());
+	    System.err.println(" has Errors "+errors);
+	    System.err.println("addresInput "+hasErrors());
 	    model.addAttribute("errors", errors);
 	}
-	resetAll();
+	// resetAll();
         return "addressInput";
     }
-		
+
+    /**
     @CrossOrigin(origins = "https://bloomington.in.gov")
     @GetMapping("/addressUpdate/{id}/{type_id}")
     public String addressInput(@PathVariable("id") int id,
@@ -161,6 +158,28 @@ public class AddressController extends TopController{
 	model.addAttribute("app_url", app_url);
         return "addressUpdate";
     }
+    */
+    @CrossOrigin(origins = "https://bloomington.in.gov")
+    @GetMapping("/addressFind/{type_id}/{addr_in}")
+    public String addressFind(@PathVariable("addr_in") String addr_in,
+			      @PathVariable("type_id") int type_id,
+			       Model model) {
+	// ToDo this is not the right one to call
+	String jsonObj = addressCheck.findMatchedAddresses(addr_in);
+	System.err.println("josn "+jsonObj);
+	if(jsonObj != null){
+	    // convert json to addresses
+	    // model.addAttribute("addresses", addresses);
+	    model.addAttribute("app_url", app_url);
+	    model.addAttribute("type_id", type_id);	    
+	    // return "addressSelect";
+	    return "addressInput";
+	}
+	else{
+	    model.addAttribute("messages","No matching address found, try again");
+	    return "addressInput";
+	}
+    }    
     // for testing purpose
     // @CrossOrigin(origins = "https://bloomington.in.gov")
     @GetMapping("/addressTest")
