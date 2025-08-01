@@ -19,9 +19,10 @@
       </div>
 
       <form
-        th:action="@{/addressFind/{type_id}(type_id=${type_id})}"
-        method="get"
-      >
+        th:action="@{/addressFind}"
+        method="post"
+	>
+        <input type="hidden" name="type_id" th:value="${type_id}" />	
         <fieldset>
           <legend>Location of Incident</legend>
           <ul>

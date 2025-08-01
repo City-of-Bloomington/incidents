@@ -7,6 +7,9 @@ package in.bloomington.incident.control;
  */
 
 import java.util.List;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
 import java.util.Locale;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -102,7 +105,7 @@ public class AddressController extends TopController{
 	    address = addressService.findById(id);
 						
 	}catch(Exception ex){
-	    addError("Invalid address Id"+id);
+	    addError("Invalid address Id "+id);
 	    model.addAttribute("errors", errors);
 	    model.addAttribute("app_url", app_url);
 	    logger.error("Exception getting address ="+id+" "+ex);
@@ -141,44 +144,183 @@ public class AddressController extends TopController{
 	    System.err.println("addresInput "+hasErrors());
 	    model.addAttribute("errors", errors);
 	}
+	if(hasMessages()){
+	    model.addAttribute("messages", messages);
+	}
 	// resetAll();
         return "addressInput";
     }
 
-    /**
     @CrossOrigin(origins = "https://bloomington.in.gov")
-    @GetMapping("/addressUpdate/{id}/{type_id}")
-    public String addressInput(@PathVariable("id") int id,
-			       @PathVariable("type_id") int type_id,
+    @GetMapping("/addressPicked/{type_id}/{addr_ref}")
+    public String addressPicked(@PathVariable("type_id") int type_id,
+			       @PathVariable("addr_ref") String addr_ref,
 			       Model model) {
-	Address address = addressService.findById(id);
-	address.setOld_id(id);
-	address.setType_id(type_id);
-	model.addAttribute("address", address);
+	Address addr = null;
+	Map<String, Address> map = null;
+	if(session != null){
+	    map = (Map<String, Address>) session.getAttribute("addrMap");
+	}
+	if(map != null){
+	    addr = map.get(addr_ref);
+	    System.err.println("found addr "+addr.getName());
+	}
+	if(addr != null){
+	    //
+	    // check if within city limits using lat/long
+	    //
+	    System.err.println(" checking address ");
+	    if(checkAddress(addr)){
+		System.err.println(" addr in Bloomington ");
+		if(session != null && session.getAttribute("addrMap") !=null){
+		    session.removeAttribute("addrMap");
+		}
+		Address addr2 = saveOrUpdate(addr);
+		if(addr2 != null){
+		    addr2.setType_id(type_id);
+		    model.addAttribute("type_id", type_id);
+		    model.addAttribute("address_id", addr2.getId());
+		    model.addAttribute("app_url", app_url);
+		    return "emailAdd";
+		}
+		else{
+		    System.err.println(" Error saving addr ");
+		}
+	    }
+	    else{
+		System.err.println(" addr not in Bloomington ");
+		addMessage("Address not in Bloomington Police District");
+		model.addAttribute("messages", messages);
+	    }
+	}
+	//model.addAttribute("address", address);
+	model.addAttribute("type_id", type_id);
 	model.addAttribute("app_url", app_url);
-        return "addressUpdate";
+        return "addressInput";
     }
-    */
+
     @CrossOrigin(origins = "https://bloomington.in.gov")
-    @GetMapping("/addressFind/{type_id}/{addr_in}")
-    public String addressFind(@PathVariable("addr_in") String addr_in,
-			      @PathVariable("type_id") int type_id,
-			       Model model) {
+    @RequestMapping("/addressFind")	
+    public String addressFind(@RequestParam(required=true) int type_id,
+			      @RequestParam(required=true) String addr_in,
+			      Model model) {
 	// ToDo this is not the right one to call
-	String jsonObj = addressCheck.findMatchedAddresses(addr_in);
-	System.err.println("josn "+jsonObj);
-	if(jsonObj != null){
+	JSONObject jObj = null;
+	JSONArray jarr = null;
+	String jsonStr = addressCheck.findMatchedAddresses(addr_in);
+	System.err.println(" json "+jsonStr);
+	if(jsonStr != null && !jsonStr.trim().equals("[]")){
+	    if(jsonStr.indexOf("[") > -1){
+		jarr = new JSONArray(jsonStr);
+		if(jarr.length() == 1){ // we get exact address
+		    jObj = jarr.getJSONObject(0);
+		}
+	    }
+	    else{
+		jObj = new JSONObject(jsonStr);
+	    }
+	}
+	else{
+	    System.err.println(" no match found");
+	}
+	if(jObj != null){
+	    Double lat = jObj.getDouble("latitude");
+	    Double lon = jObj.getDouble("longitude");
+	    // Integer sub_id = jobj.getInt("subunit_id");
+	    Integer add_id = jObj.getInt("address_id");
+	    Integer sub_id = null;
+	    if(jObj.isNull("subunit_id")){
+		System.err.println(" junit id is null");
+	    }
+	    else{
+		sub_id=jObj.getInt("subunit_id");
+	    }
+	    String adr = jObj.getString("value");
+	    String city = jObj.getString("city");
+	    String state = jObj.getString("state");
+	    String zip = "";
+	    if(jObj.has("zip")){
+		zip =""+jObj.getInt("zip");
+	    }
+	    Address addr = new Address(adr,
+				       lat,
+				       lon,
+				       city,
+				       state,
+				       zip,
+				       jObj.getString("jurisdiction_name"),
+				       add_id,
+				       sub_id);
+	    // we need to check for lat long
+	    //
+	    if(checkAddress(addr)){
+		Address addr2 = saveOrUpdate(addr);
+		addr2.setType_id(type_id);
+		model.addAttribute("type_id", type_id);
+		model.addAttribute("address_id", addr2.getId());
+		model.addAttribute("app_url", app_url);
+		return "emailAdd";		
+	    }
+	    else{
+		System.err.println(" not in bloomington ");
+		addMessage("This address is not in bloomington Police district ");
+		model.addAttribute("messages", messages);
+	    }
+	}
+	else if(jarr != null){
+	    Map<String, Address> addrMap = new HashMap<>();
+	    List<Address> addresses = new ArrayList<>();
+	    for(int j = 0; j < jarr.length(); j++){
+		JSONObject jobj = jarr.getJSONObject(j);
+		System.err.println(j+" "+jobj);
+		Double lat = jobj.getDouble("latitude");
+		Double lon = jobj.getDouble("longitude");
+		// Integer sub_id = jobj.getInt("subunit_id");
+		Integer add_id = jobj.getInt("address_id");
+		Integer sub_id = null;
+		if(jobj.isNull("subunit_id")){
+		    System.err.println(" junit id is null");
+		}
+		else{
+		    sub_id=jobj.getInt("subunit_id");
+		}
+		String adr = jobj.getString("value");
+		String city = jobj.getString("city");
+		String state = jobj.getString("state");
+		String zip = "";
+		if(jobj.has("zip")){
+		    zip =""+jobj.getInt("zip");
+		}
+		Address addr = new Address(adr,
+					   lat,
+					   lon,
+					   city,
+					   state,
+					   zip,
+					   jobj.getString("jurisdiction_name"),
+					   add_id,
+					   sub_id);
+		
+		addrMap.put(addr.getAddrid_subid(), addr);
+		addresses.add(addr);
+	    }
+	    if(session != null){
+		session.setAttribute("addrMap",addrMap);
+	    }
 	    // convert json to addresses
 	    // model.addAttribute("addresses", addresses);
 	    model.addAttribute("app_url", app_url);
-	    model.addAttribute("type_id", type_id);	    
-	    // return "addressSelect";
-	    return "addressInput";
+	    model.addAttribute("type_id", type_id);
+	    model.addAttribute("addresses", addresses);
+	    return "addressSelect";
 	}
 	else{
-	    model.addAttribute("messages","No matching address found, try again");
-	    return "addressInput";
+	    addMessage("No matching address found, try again");
+	    model.addAttribute("messages", messages);
 	}
+	model.addAttribute("app_url", app_url);
+	model.addAttribute("type_id", type_id);	    
+	return "addressInput";
     }    
     // for testing purpose
     // @CrossOrigin(origins = "https://bloomington.in.gov")
@@ -311,7 +453,7 @@ public class AddressController extends TopController{
        list of addresses to try
 
        IUPD Area
-       275 N Jordan AVE
+       1275 E 10th st
        https://bloomington.in.gov/master_address/addresses/32177
        location_id: 42326
        state_plane_x: 3113403
