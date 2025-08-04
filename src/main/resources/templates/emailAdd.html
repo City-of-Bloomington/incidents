@@ -10,20 +10,15 @@
 
   <body>
     <header th:replace="general::header"></header>
-
-    <div th:if="${errors}">
+    <main class="public-questions-wrapper">
+      <h2>Incident Reporting (continue)</h2>      
+      <div th:if="${errors}">
       <div th:replace="general::errors(${errors})"></div>
-    </div>
-
+      </div>
+      
     <div th:if="${messages}">
       <div th:replace="general::messages(${messages})"></div>
     </div>
-
-    <main class="public-questions-wrapper">
-      <div>
-        <h2>Incident Reporting (continue)</h2>
-      </div>
-
       <div id="finalStep" class="question" style="display: block">
         <form
           action="#"

@@ -124,19 +124,18 @@ public class IncidentController extends TopController{
 	}
 	if(!email.equals(email2)){
 	    addError("The two emails do not match");
-	    addMessagesAndErrorsToSession(session);
 	    emailProblem = true;
 	}
 	if(!Helper.isValidEmail(email)){
 	    addError("Invalid Email "+email);
-	    addMessagesAndErrorsToSession(session);
 	    emailProblem = true;
 	}
 	if(emailProblem){
 	    model.addAttribute("type_id", type_id);
 	    model.addAttribute("address_id", address_id);
-
-	    handleErrorsAndMessages(model);
+	    if(hasErrors())
+		model.addAttribute("errors", errors);
+	    resetAll();
 	    return "emailAdd";
 	}
 	List<String> ids = null;

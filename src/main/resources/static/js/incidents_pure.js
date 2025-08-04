@@ -11,6 +11,10 @@ document.addEventListener('DOMContentLoaded', function () {
 	options[i].addEventListener('change',verifyAnswer);
     }
 });
+document.addEventListener('DOMContentLoaded', function () {
+    const elem = document.getElementById("email2");
+    elem.addEventListener('change', verifyEmail);    
+});
 function verifyAnswer(){
     var radios = document.getElementsByTagName('input');
     var answer_cnt = 0;
@@ -62,7 +66,8 @@ function popwit(url, name) {
     }
     return false;
 };
-function verifyConfirm() {
+
+function verifyEmail() {
     var email = document.getElementById("email");
     var val = email.value;
     var val2 = document.getElementById("email2").value;

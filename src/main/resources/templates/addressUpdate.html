@@ -22,7 +22,7 @@
         th:action="@{/addressUpdateCheck}"
         th:object="${address}"
         onsubmit="return verifyAddress()"
-        method="post"></form>
+        method="post">
       <input
           type="hidden"
           th:field="${address.old_id}"
@@ -97,21 +97,23 @@
 		size="60"
 		placeholder="start typing street address and then pick from a list"
 		required="required"
-		name="address"
+		name="name"
 		/>
 	    </div>
           </fieldset>
-      <p>Click on Next to continue </p>
-      <ul class="button-group">
-	<li>
-	  <a class="btn" th:href="@{/selectCategory}">Back
-	  </a>
-	</li>
-	<li>
-	  <button type="submit" class="next-button"> Next</button>
-	</li>
-      </ul>
-    </form>
+	  <div class="next_div">
+	    <p>Click on Next to continue </p>
+	  </div>
+	  <ul class="button-group">
+	    <li>
+	      <a class="btn" th:href="@{/selectCategory}">Back
+	      </a>
+	    </li>
+	    <li>
+	      <button type="submit" class="next-button"> Next</button>
+	    </li>
+	  </ul>
+      </form>
     </main>
   </body>
 </html>

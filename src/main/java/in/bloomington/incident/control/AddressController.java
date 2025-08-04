@@ -66,7 +66,20 @@ public class AddressController extends TopController{
     @Value( "${incident.zipcodes}" )
     private List<String> zipCodes;
 		
-
+    @GetMapping("/addressUpdate/{addr_id}/{type_id}")
+    public String addressPicked(@PathVariable("type_id") int type_id,
+			       @PathVariable("addr_id") int addr_id,
+			       Model model) {
+	resetAll();
+	Address addr = addressService.findById(addr_id);
+	if(addr != null){
+	    addr.setType_id(type_id);
+	    //model.addAttribute("address", address);
+	    model.addAttribute("address", addr);
+	}
+	return "addressUpdate";
+    }
+    
     @PostMapping("/address/update/{id}")
     public String addressUpdate(@PathVariable("id") int id,
 				@Valid Address address, 
@@ -80,6 +93,7 @@ public class AddressController extends TopController{
 	addressService.update(address);
 	model.addAttribute("messages", messages);
 	model.addAttribute("app_url", app_url);
+	resetAll();
 	return "redirect:address/"+id;
     }
     @GetMapping("/address/edit/{id}")
@@ -147,7 +161,7 @@ public class AddressController extends TopController{
 	if(hasMessages()){
 	    model.addAttribute("messages", messages);
 	}
-	// resetAll();
+	resetAll();
         return "addressInput";
     }
 
@@ -156,6 +170,7 @@ public class AddressController extends TopController{
     public String addressPicked(@PathVariable("type_id") int type_id,
 			       @PathVariable("addr_ref") String addr_ref,
 			       Model model) {
+	resetAll();
 	Address addr = null;
 	Map<String, Address> map = null;
 	if(session != null){
@@ -196,6 +211,7 @@ public class AddressController extends TopController{
 	//model.addAttribute("address", address);
 	model.addAttribute("type_id", type_id);
 	model.addAttribute("app_url", app_url);
+	resetAll();
         return "addressInput";
     }
 
@@ -305,6 +321,7 @@ public class AddressController extends TopController{
 		addresses.add(addr);
 	    }
 	    if(session != null){
+		session.removeAttribute("addrMap");
 		session.setAttribute("addrMap",addrMap);
 	    }
 	    // convert json to addresses
@@ -318,6 +335,7 @@ public class AddressController extends TopController{
 	    addMessage("No matching address found, try again");
 	    model.addAttribute("messages", messages);
 	}
+	resetAll();
 	model.addAttribute("app_url", app_url);
 	model.addAttribute("type_id", type_id);	    
 	return "addressInput";
