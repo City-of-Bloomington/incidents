@@ -5,22 +5,20 @@
  - @author W. Sibo <sibow@bloomington.in.gov>
  -
  -->
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html lang="en">
   <head th:replace="general::head('Properties')"></head>
 
   <body>
     <header th:replace="general::header"></header>
-
-    <div th:if="${errors}">
-      <div th:insert="general::errors(${errors})"></div>
-    </div>
-
-    <div th:if="${messages}">
-      <div th:insert="general::messages(${messages})"></div>
-    </div>
-
     <main class="public-questions-wrapper">
-      <h2>Add Property/Item</h2>
+      <h2>Add Property/Item</h2>      
+      <div th:if="${errors}">
+	<div th:insert="general::errors(${errors})"></div>
+      </div>
+
+      <div th:if="${messages}">
+	<div th:insert="general::messages(${messages})"></div>
+      </div>
       <p>*Indicate required fields</p>
 
       <div th:insert="general::propertyInstructions"></div>
@@ -109,7 +107,12 @@
               th:errors="*{serialNum}"
             ></span>
           </div>
-
+	  <div id="value_div" style="display:none">
+	    <i>Invalid value</li>
+	  </div>
+	  <div id="max_div" style="display:none">
+	    <i>Maximum total value of $750 exceeded</li>
+	  </div>	  
           <div class="field-group">
             <label for="value_id" class="required">*$ Value</label>
             <input
@@ -120,6 +123,7 @@
 	      size="10"
               placeholder="dddd.dd"
               required="required"
+	      onkeyup="doClearDiv()"
             />
             <span
               th:if="${#fields.hasErrors('value')}"

@@ -5,23 +5,20 @@
  - @author W. Sibo <sibow@bloomington.in.gov>
  -
  -->
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html lang="en">
   <head th:replace="general::head('incidents')"> </head>
-
-  <body>
-    <header th:replace="general::header"></header>
-
-    <div th:if="${errors}">
-      <div th:replace="general::errors(${errors})"></div>
-    </div>
-
-    <div th:if="${messages}">
-      <div th:replace="general::messages(${messages})"></div>
-    </div>
-
+  <body>  
+  <header th:replace="general::header"></header>
+  <main class="public-questions-wrapper">
     <main class="public-questions-wrapper">
       <div class="welcome">
         <h2>Welcome to Incident Reporting</h2>
+	<div th:if="${errors}">
+	  <div th:replace="general::errors(${errors})"></div>
+	</div>
+	<div th:if="${messages}">
+	  <div th:replace="general::messages(${messages})"></div>
+	</div>
         <p>
           Guidelines for Using the Bloomington Police Department Online
           Reporting System.
@@ -52,7 +49,9 @@
         </p>
       </div>
       <div id="questions">
-        <p>1. Is this an emergency or a crime in progress?</p>
+        <p>1. Is this an emergency or a crime in progress?
+	  </p>
+	<ul>
         <li>
           <input
             autofocus
@@ -60,17 +59,21 @@
             type="radio"
             name="q1"
             value="Yes"
+	    id="qq1"
             />
-          Yes
+          <label for="qq1">Yes</label>
           <input
             class="option"
             type="radio"
             name="q1"
             value="Next"
+	    id="qq11"
             />
-          No
+          <label for="qq11">No</label>
         </li>
-        <p>2. Are you 18 years or older?</p> 
+	</ul>
+        <p>2. Are you 18 years or older?</p>
+	<ul>
         <li>
           <input
             autofocus
@@ -78,48 +81,59 @@
             type="radio"
             name="q2"
             value="Next"
-            />Yes
+	    id="qq2"
+            /><label for=\"qq2\">Yes</label>
           <input
 	    class="option"
             type="radio"
             name="q2"
             value="No"
+	    id="qq22"
             />
-          No
+          <label for="qq22">No</label>
         </li>
+	</ul>
         <p>
           3. Are there known suspects or evidence that could lead to
           identification of a suspect (including surveillance video)?
         </p>
+	<ul>
         <li>
           <input
             class="option"
             type="radio"
             name="q3"
             value="Yes"
-            />Yes
+	    id="qq3"
+            /><label for"qq3">Yes</label>
           <input
             class="option"
             type="radio"
             name="q3"
             value="Next"
-            />No
+	    id="qq33"
+            /><label for="qq33">No</label>
         </li>
+	</ul>
         <p>4. Are you reporting injury to an animal or human?</p>
+	<ul>
         <li>
           <input
             class="option"
             type="radio"
             name="q4"
             value="Yes"
-            />Yes
+	    id="qq4"
+            /><label for="qq4">Yes</label>
           <input
             class="option"
             type="radio"
             name="q4"
             value="Next"
-            />No
+	    id="qq44"
+            /><label for="qq44">No</label>
         </li>
+	</ul>
       </div>
       <br /><br />
       <div id="q1" style="display:none">

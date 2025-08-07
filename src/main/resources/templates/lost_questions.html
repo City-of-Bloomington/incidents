@@ -5,7 +5,7 @@
  - @author W. Sibo <sibow@bloomington.in.gov>
  -
  -->
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html lang="en">
 
 <head th:replace="general::head('incidents')">
 </head>
@@ -26,15 +26,29 @@
     <p>Please answer the following lost property questions carefully to create your report.</p>
 
     <div id="questions">
-        <p>1. Is the lost property a pet or pets?</p>
+      <p>1. Is the lost property a pet or pets?</p>
+      <ul>
         <li> <input class="option" type="radio" name="q1"
-                    value="Yes"/>Yes </li>
-        <li> <input class="option" type="radio" name="q1" value="Next" />No </li>
-        <p>2. Is the lost property a firearm, vehicle or license plate?</p>
-        <li> <input class="option" type="radio" name="q2" value="Yes" />Yes
+		    id="qq1"
+                    value="Yes"/>
+	  <label for="qq1">Yes </label>
+	</li>
+        <li> <input class="option" type="radio" name="q1" value="Next"
+		    id="qq11" />
+	  <label for="qq11">No </label>
+	</li>
+      </ul>
+      <p>2. Is the lost property a firearm, vehicle or license plate?</p>
+      <ul>
+        <li> <input class="option" type="radio" name="q2" value="Yes"
+		    id="qq2" />
+	  <label for="qq2">Yes</label>
         </li>
-        <li> <input class="option" type="radio" name="q2" value="Next" />No
+        <li> <input class="option" type="radio" name="q2" value="Next"
+		    id="qq22" />
+	  <label for="qq22">No</label>
         </li>
+      </ul>
     </div>
     <br /><br />
     <div id="q1" style="display:none">

@@ -12,8 +12,10 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 document.addEventListener('DOMContentLoaded', function () {
-    const elem = document.getElementById("email2");
-    elem.addEventListener('change', verifyEmail);    
+    if(document.getElementById("email2")){
+	const elem = document.getElementById("email2");
+	elem.addEventListener('change', verifyEmail);
+    }
 });
 function verifyAnswer(){
     var radios = document.getElementsByTagName('input');
@@ -112,7 +114,10 @@ document.addEventListener('DOMContentLoaded',function () {
 	val_input.addEventListener('change',verifyTotalValue);
     }
 });
-
+function doClearDiv() {
+    document.getElementById("value_div").style.display="none";
+    document.getElementById("max_div").style.display="none";    
+}
 //  
 function verifyTotalValue() {
     var val_elem = document.getElementById("value_id");
@@ -121,24 +126,32 @@ function verifyTotalValue() {
 	var old_val = document.getElementById("old_value_id").value;
 	var balance = document.getElementById("balance_id").value;
 	var max_val = document.getElementById("max_total_id").value;
-   
+	console.log('value '+val);
 	//
 	// if max_val is set to 0 this means there is not limit
 	//
 	if (max_val == 0) return true;
-	if (typeof val != 'number') {
-	    alert("You need to provide a valid value ");
+	if (isNaN(val)) {
+	    console.log('not valid '+val);
+	    document.getElementById("value_div").style.display="inline";
 	    val_elem.focus();
 	    return false;
+	}
+	else{
+	    document.getElementById("value_div").style.display="none";
 	}
    
 	if (val * 1 > 0) {
 	    var new_total =
 		parseFloat(balance) + parseFloat(val) - parseFloat(old_val);
 	    if (new_total * 1 > max_val * 1) {
+		document.getElementById("max_div").style.display="inline";
+		/**
 		alert("Current balance of  $" +new_total +
 		      " is greater than the max allowed of  $" +
-		  max_val);
+		      max_val);
+		      */
+		console.log('max exceeded '+new_total);
 		val_elem.focus();
 		return false;
 	    }
@@ -146,6 +159,7 @@ function verifyTotalValue() {
 	else {
 	    if (val.trim() == "" || val * 1 == 0) {
 		alert("You need to provide a value for the damage ");
+		console.log('not valid value here '+val);
 		val_elem.focus();
 	    return false;
 	    }
@@ -157,6 +171,7 @@ function verifyTotalValue() {
 			" is greater than the max allowed of  $" +
 			max_val
 		);
+		console.log('exceeded '+new_total);		
 		val_elem.focus();
 		return false;
 	    }

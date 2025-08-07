@@ -5,7 +5,7 @@
  - @author W. Sibo <sibow@bloomington.in.gov>
  -
  -->
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html lang="en">
 
 <head th:replace="general::head('incidents')">
 </head>
@@ -29,11 +29,14 @@
     <div id="questions">
       <p>1. Is the stolen property a firearm, vehicle or license plate?
       </p>
-      <li> <input class="option" type="radio" name="q1"
-                  value="Yes" />Yes
-      </li>
-      <li> <input class="option" type="radio" name="q1" value="Next" />No
-      </li>
+      <ul>
+	<li> <input class="option" type="radio" name="q1"
+                  value="Yes" id="qq1" /><label for="qq1">Yes</label>
+	</li>
+	<li> <input class="option" type="radio" name="q1" value="Next"
+		    id="qq22" /><label for="qq22">No</label>
+	</li>
+      </ul>
     </div>
     <br /><br />
     <div id="q1" style="display:none">

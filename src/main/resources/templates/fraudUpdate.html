@@ -5,77 +5,77 @@
  - @author W. Sibo <sibow@bloomington.in.gov>
  -
  -->
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html lang="en">
 
 <head th:replace="general::head('Properties')"></head>
 
 <body>
-	<header th:replace="general::header"></header>
+  <header th:replace="general::header"></header>
 
-	<div th:if="${errors}">
-		<div th:insert="general::errors(${errors})"></div>
-	</div>
-	
-	<div th:if="${messages}">
-		<div th:insert="general::messages(${messages})"></div>
-	</div>
-
-	<main class="public-questions-wrapper">
-	  <h2>Report Fraud/Scam Details</h2>
-	  <p>*Indicate required fields</p>
-	  
-	  <form
-	    action="#"
-	    th:action="@{/fraud/update/{id}(id=${fraud.id})}"
-	    th:object="${fraud}"
-	    onsubmit="return verifyFraudInput()"
-	    method="post">
-	    
-	    <input type="hidden" th:field="${fraud.incident}" />
-	    
-	    <label> Incident: <a th:href="@{/incident/{id}(id=${fraud.incident.id})}">Back to Incident</a> </label>
-	    <label class="required" for="fraudType">*Fraud/Scam Type</label>
-	    <select
-	      id="fraudType"
-	      th:field="${fraud.fraudType}"
-	      onchange="handelRelatedFraud()"
-	      required="required">
-	      <option value="">Pick Fraud/Scam type</option>
-	      <option th:each="r : ${fraudTypes}" th:value="${r.id}" th:text="${r.name}">
-	      </option>
-	    </select>
-	    <div id="type_other" th:attr="style=${fraud.isUnspecified()}?'display:inline':'display:none'">
-	      <label for="otherType">Other type:</label>
-	      <input type="text" th:field="${fraud.otherType}" id="otherType" placeholder="Specify other fraud type" />
-	    </div>
-	    <div id="personal" th:attr="style=${fraud.isPersonal()}?'display:inline':'display:none'">			
-	      <label for="identityUsed">Identity used</label>
-	      <input type="text"
-		     th:field="${fraud.identityUsed}"
-		     id="identityUsed"
-		     size="80"
-		     placeholder="Identity Used" />
-	    </div>
-	    <div id="account" th:attr="style=${fraud.isAccountRelated()}?'display:inline':'display:none'">
-	      <label for="accountUsed">Account used</label>
-	      <input type="text"
+  <div th:if="${errors}">
+    <div th:insert="general::errors(${errors})"></div>
+  </div>
+  
+  <div th:if="${messages}">
+    <div th:insert="general::messages(${messages})"></div>
+  </div>
+  
+  <main class="public-questions-wrapper">
+    <h2>Report Fraud/Scam Details</h2>
+    <p>*Indicate required fields</p>
+    
+    <form
+      action="#"
+      th:action="@{/fraud/update/{id}(id=${fraud.id})}"
+      th:object="${fraud}"
+      onsubmit="return verifyFraudInput()"
+      method="post">
+      
+      <input type="hidden" th:field="${fraud.incident}" />
+      
+      <label> Incident: <a th:href="@{/incident/{id}(id=${fraud.incident.id})}">Back to Incident</a> </label>
+      <label class="required" for="fraudType">*Fraud/Scam Type</label>
+      <select
+	id="fraudType"
+	th:field="${fraud.fraudType}"
+	onchange="handelRelatedFraud()"
+	required="required">
+	<option value="">Pick Fraud/Scam type</option>
+	<option th:each="r : ${fraudTypes}" th:value="${r.id}" th:text="${r.name}">
+	</option>
+      </select>
+      <div id="type_other" th:attr="style=${fraud.isUnspecified()}?'display:inline':'display:none'">
+	<label for="otherType">Other type:</label>
+	<input type="text" th:field="${fraud.otherType}" id="otherType" placeholder="Specify other fraud type" />
+      </div>
+      <div id="personal" th:attr="style=${fraud.isPersonal()}?'display:inline':'display:none'">			
+	<label for="identityUsed">Identity used</label>
+	<input type="text"
+	       th:field="${fraud.identityUsed}"
+	       id="identityUsed"
+	       size="80"
+	       placeholder="Identity Used" />
+      </div>
+      <div id="account" th:attr="style=${fraud.isAccountRelated()}?'display:inline':'display:none'">
+	<label for="accountUsed">Account used</label>
+	<input type="text"
 		     th:field="${fraud.accountUsed}"
-		     id="accountUsed"
-		     size="80"
-		     placeholder="Account Used" />
-	      <label for="amountTaken">Amount taken ($)</label>
-	      <input type="text"
-		     th:field="${fraud.amountTaken}"
-		     id="amountTaken"
-		     size="12"
-		     maxlength="12"
-		     placeholder="dddd.dd" />
-	    </div>
-	    <label for="details" class="required">*Fraud/Scam details</label>
-	    <textarea th:field="${fraud.details}" id="details" placeholder="Fraud or scam details" rows="5" cols="50" required="required">
-	    </textarea>
-	    <input type="submit" value="Save Changes" />			
-	  </form>
-	</main>
+	       id="accountUsed"
+	       size="80"
+	       placeholder="Account Used" />
+	<label for="amountTaken">Amount taken ($)</label>
+	<input type="text"
+	       th:field="${fraud.amountTaken}"
+	       id="amountTaken"
+	       size="12"
+	       maxlength="12"
+	       placeholder="dddd.dd" />
+      </div>
+      <label for="details" class="required">*Fraud/Scam details</label>
+      <textarea th:field="${fraud.details}" id="details" placeholder="Fraud or scam details" rows="5" cols="50" required="required">
+      </textarea>
+      <input type="submit" value="Save Changes" />			
+    </form>
+  </main>
 </body>
 </htmL>

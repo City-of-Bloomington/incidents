@@ -86,26 +86,29 @@ public class IncompleteJob extends QuartzJobBean{
 	    }
 	    for(Incident incident:all){
 		if(incident.hasEmail()){
-		    String body = "We noticed that you haven't completed your report. Please click <a href='"+url+"/incident/"+incident.getId()+"'>here</a> to finish and submit your report. If not, your report will not be seen or processed by a representative of the Bloomington Police Department.";
 		    String toEmail = incident.getEmail();
-		    EmailHelper emailHelper = new EmailHelper(mailSender,sender, toEmail, subject, body);
-		    String back = emailHelper.send();
-		    if(back.isEmpty()){
-			// success
-			// action log
-			ActionLog actionLog = new ActionLog();
-			actionLog.setIncident(incident);
-			Action action = actionService.findById(1); // emailed
-			actionLog.setAction(action);
-			actionLog.setDateNow();
-			actionLogService.save(actionLog);			
-		    }
-		    else{
-			System.err.println(" error sending email "+back);
+		    if(!toEmail.startsWith("blah@")){
+			String body = "We noticed that you haven't completed your report. Please click <a href='"+url+"/incident/"+incident.getId()+"'>here</a> to finish and submit your report. If not, your report will not be seen or processed by a representative of the Bloomington Police Department.";
+
+			EmailHelper emailHelper = new EmailHelper(mailSender,sender, toEmail, subject, body);
+			String back = emailHelper.send();
+			if(back.isEmpty()){
+			    // success
+			    // action log
+			    ActionLog actionLog = new ActionLog();
+			    actionLog.setIncident(incident);
+			    Action action = actionService.findById(1); // emailed
+			    actionLog.setAction(action);
+			    actionLog.setDateNow();
+			    actionLogService.save(actionLog);			
+			}
+			else{
+			    System.err.println(" error sending email "+back);
 			
-			// failure
+			    // failure
 			// add email log
-			
+			    
+			}
 		    }
 		}
 	    }
