@@ -605,6 +605,10 @@ public class IncidentController extends TopController{
 	body += "https://bloomington.in.gov/police<br />";
 	body += "\n";
 	EmailHelper emailHelper = new EmailHelper(mailSender, email_sender, to, subject, body);
+	// testing ignore email
+	if(to.startsWith("blah@")){
+	    return ret;
+	}
 	String back = emailHelper.send();
 	if(!back.isEmpty()){
 	    addError(back);
@@ -648,6 +652,10 @@ public class IncidentController extends TopController{
 	    String subject = "Incident reporting resume link";
 						
 	    if(one.hasEmail()){
+		String toEmail = one.getEmail();
+		if(toEmail.startsWith("blah@")){
+		    return message;
+		}
 		String body = "If for any reason, you stopped from completing your report, you may click on <a href='"+url+"/incomplete/resume/"+one.getId()+"/"+one.getReceivedNoSep()+"'>here</a> to resume and submit your report. If you completed your report you may discard this email. Thanks<br />\n\n";
 		body += "Please do not reply to this email as this is an automated system.";
 		body += "<br />\n\n";
@@ -657,7 +665,7 @@ public class IncidentController extends TopController{
 		body += "https://bloomington.in.gov/police<br />";
 		body += "\n";
 								
-		String toEmail = one.getEmail();
+
 		EmailHelper emailHelper = new EmailHelper(mailSender, email_sender, toEmail, subject, body);
 		message = emailHelper.send();
 		if(!message.isEmpty()){
