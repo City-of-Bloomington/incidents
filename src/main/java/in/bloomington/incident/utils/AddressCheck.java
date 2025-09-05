@@ -9,6 +9,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -19,6 +20,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 //
+
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
@@ -43,10 +45,14 @@ public class AddressCheck{
 		
     @Autowired
     private Environment env;
-    @Value("${incident.address.geoUrl}")
-    private String geoUrl;
+    @Value("${incident.address.arcGisUrl}")
+    private String arcGisUrl;
+
+    private String geoUrl=""; //old geo server, not used
+    
     // Lat Long projection 
-    private String projection="4269";
+    private String projection="4269"; // old gis
+    private String spatial_type="4362"; // for arcGIS lat/long 
     // address service
     @Value("${incident.master.addressService}")
     private String masterAddressService;		
@@ -120,6 +126,7 @@ public class AddressCheck{
 	}
 	return back;
     }
+    // old gis code
     public String isInTheLayer(String xmlStr){
 	String back = "";
 	// System.err.println(" xml "+xmlStr);
@@ -164,8 +171,8 @@ public class AddressCheck{
 	}
 	return back;
     }
-		
-    public boolean isInIUPDLayer(double lat,
+    // old gis code
+    public boolean isInIUPDLayer2(double lat,
 				 double longi){
 	// IU Compus
 	String typeName="publicgis:IUPDPoliceDistrict";
@@ -178,6 +185,44 @@ public class AddressCheck{
 	    return true;
 	return (back != null  && back.indexOf("Polygon") > -1);
     }
+    public boolean isInIUPDLayer(double lat,
+				 double longi){
+	String back = "";
+	String urlStr = arcGisUrl+"query?where=&text=&objectIds=&time=&timeRelation=esriTimeRelationOverlaps&geometry=%7B%27%27x%27%27%3A"+longi+"%2C%27%27y%27%27%3A"+lat+"%2C%27%27spatialReference%27%27%3A4326%7D&geometryType=esriGeometryPoint&inSR=4326&spatialRel=esriSpatialRelIntersects&distance=&units=esriSRUnit_Foot&relationParam=&outFields=*&returnGeometry=false&returnTrueCurves=false&maxAllowableOffset=&geometryPrecision=&outSR=&havingClause=&returnIdsOnly=false&returnCountOnly=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&returnZ=false&returnM=false&gdbVersion=&historicMoment=&returnDistinctValues=false&resultOffset=&resultRecordCount=&returnExtentOnly=false&sqlFormat=none&datumTransformation=&parameterValues=&rangeValues=&quantizationParameters=&featureEncoding=esriDefault&f=json";
+	
+	System.err.println(" url "+urlStr);
+	try{
+	    URL url_obj = new URL(urlStr);
+	    HttpURLConnection con = (HttpURLConnection) url_obj.openConnection();
+	    con.setRequestMethod("GET");
+	    int code = con.getResponseCode();
+	    System.out.println("GET Code :: " + code);
+	    if (code == HttpURLConnection.HTTP_OK) { // success
+		BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+		String inputLine;
+		StringBuffer response = new StringBuffer();
+		
+		while ((inputLine = in.readLine()) != null) {
+		    response.append(inputLine);
+		}
+		in.close();
+		back = response.toString();
+		System.out.println(back);
+		if(back.indexOf("error") > 0){
+		    logger.error(back);
+		}
+		return (back.indexOf("IUPD") > 0);
+	    } else {
+		System.out.println("Code Error "+code);
+	    }
+	}catch(Exception ex){
+	    System.err.println(" "+ex);
+	    back += ex;
+	}
+	if(back.indexOf("IUPD") > 0) return true;
+	return false;
+    }	
+
     public boolean isInCityPDLayer(double lat,
 				   double longi){
 	// Bloomington City Boundary
