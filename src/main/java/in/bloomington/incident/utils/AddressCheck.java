@@ -188,9 +188,9 @@ public class AddressCheck{
     public boolean isInIUPDLayer(double lat,
 				 double longi){
 	String back = "";
-	String urlStr = arcGisUrl+"query?where=&text=&objectIds=&time=&timeRelation=esriTimeRelationOverlaps&geometry=%7B%27%27x%27%27%3A"+longi+"%2C%27%27y%27%27%3A"+lat+"%2C%27%27spatialReference%27%27%3A4326%7D&geometryType=esriGeometryPoint&inSR=4326&spatialRel=esriSpatialRelIntersects&distance=&units=esriSRUnit_Foot&relationParam=&outFields=*&returnGeometry=false&returnTrueCurves=false&maxAllowableOffset=&geometryPrecision=&outSR=&havingClause=&returnIdsOnly=false&returnCountOnly=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&returnZ=false&returnM=false&gdbVersion=&historicMoment=&returnDistinctValues=false&resultOffset=&resultRecordCount=&returnExtentOnly=false&sqlFormat=none&datumTransformation=&parameterValues=&rangeValues=&quantizationParameters=&featureEncoding=esriDefault&f=json";
-	
-	System.err.println(" url "+urlStr);
+	String urlStr = arcGisUrl+"query?where=&text=&objectIds=&time=&timeRelation=esriTimeRelationOverlaps&geometry=%7B%27%27x%27%27%3A"+longi+"%2C%27%27y%27%27%3A"+lat+"%2C%27%27spatialReference%27%27%3A4326%7D&geometryType=esriGeometryPoint&inSR=4326&spatialRel=esriSpatialRelIntersects&distance=&units=esriSRUnit_Foot&relationParam=&outFields=agencycode&returnGeometry=false&returnTrueCurves=false&maxAllowableOffset=&geometryPrecision=&outSR=&havingClause=&returnIdsOnly=false&returnCountOnly=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&returnZ=false&returnM=false&gdbVersion=&historicMoment=&returnDistinctValues=false&resultOffset=&resultRecordCount=&returnExtentOnly=false&sqlFormat=none&datumTransformation=&parameterValues=&rangeValues=&quantizationParameters=&featureEncoding=esriDefault&f=json";
+
+	// System.err.println(" url "+urlStr);
 	try{
 	    URL url_obj = new URL(urlStr);
 	    HttpURLConnection con = (HttpURLConnection) url_obj.openConnection();
